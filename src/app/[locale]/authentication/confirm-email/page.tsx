@@ -1,4 +1,4 @@
-import ConfirmEmailContent from "@/components/Authentication/ConfirmEmailContent";
+import ConfirmEmailForm from "@/components/Authentication/ConfirmEmailForm";
 import DarkMode from "@/components/Authentication/DarkMode";
 
 export default function Page() {
@@ -6,7 +6,7 @@ export default function Page() {
     <>
       <DarkMode />
 
-      <ConfirmEmailContent />
+      <ConfirmEmailForm />
     </>
   );
 }

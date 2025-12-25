@@ -278,26 +278,26 @@ button {
     width: 3px;
   }
   /* Track */
-  &::-webkit-scrollbar-track { 
+  &::-webkit-scrollbar-track {
     border-radius: 10px;
   }
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    background: #fff; 
+    background: #fff;
     border-radius: 10px;
   }
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
-    background: #fff; 
+    background: #fff;
   }
 
   &:hover {
     &::-webkit-scrollbar-thumb {
-      background: #e6e6e6;  
+      background: #e6e6e6;
     }
     /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover {
-      background: #a1a1a1; 
+      background: #a1a1a1;
     }
   }
 }
@@ -305,25 +305,25 @@ button {
   .sidebar-custom-scrollbar {
     /* Handle */
     &::-webkit-scrollbar-thumb {
-      background: #0c1427;  
+      background: #0c1427;
     }
     /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover {
-      background: #333333; 
+      background: #333333;
     }
     &:hover {
       /* Handle */
       &::-webkit-scrollbar-thumb {
-        background: #2a2929;  
+        background: #2a2929;
       }
       /* Handle on hover */
       &::-webkit-scrollbar-thumb:hover {
-        background: #333333; 
+        background: #333333;
       }
     }
   }
 }
- 
+
 .main-content-wrap {
   &.active {
     .sidebar-area {
@@ -334,6 +334,10 @@ button {
       }
     }
   }
+}
+
+.form-input {
+  @apply h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500;
 }
 
 @layer utilities {
@@ -731,11 +735,12 @@ button {
       }
     }
   }
-  #recentPropertiesSlides, #customerReviewsSlides {
+  #recentPropertiesSlides,
+  #customerReviewsSlides {
     .swiper {
       .swiper-pagination {
         @apply mt-[15px] w-auto relative top-0 bottom-0 left-0 ltr:text-left rtl:text-right leading-0;
-  
+
         .swiper-pagination-bullet {
           @apply w-[8px] h-[8px] transition-all rounded-full bg-gray-200 dark:bg-gray-800 mt-0 mb-0 ltr:ml-0 rtl:mr-0 ltr:mr-[5px] rtl:ml-[5px] opacity-100;
 
@@ -802,7 +807,7 @@ button {
     }
   }
   #clientRatingsSlides {
-    .swiper-pagination { 
+    .swiper-pagination {
       position: initial;
       margin-top: 10px;
       line-height: 1;
@@ -1615,7 +1620,7 @@ html[dir="rtl"] {
 /** Front Page Navbar */
 #navbar {
   &.is-sticky {
-    @apply z-[999] bg-white dark:bg-dark;
+    @apply z-[999] bg-transparent py-1 transition-all duration-300;
 
     &.lms-navbar {
       @apply py-[15px] md:py-[20px];
@@ -1805,8 +1810,10 @@ html[dir="rtl"] {
   }
 }
 
-.room-details-image-slides, .property-details-image-slides {
-  .swiper-button-prev, .swiper-button-next {
+.room-details-image-slides,
+.property-details-image-slides {
+  .swiper-button-prev,
+  .swiper-button-next {
     @apply text-primary-600;
 
     &::after {

@@ -1,0 +1,512 @@
+{
+  "HomePage": {
+    "title": "مرحبا بك في موقعنا"
+  },
+  "Landing": {
+    "hero": {
+      "title": "أنشئ قائمتك الرقمية",
+      "subtitle": "في دقائق",
+      "description": "حوّل قائمة مطعمك إلى تجربة رقمية جميلة وسهلة الاستخدام. بدون برمجة.",
+      "getStarted": "ابدأ مجاناً",
+      "viewPricing": "عرض الأسعار"
+    },
+    "features": {
+      "title": "كل ما تحتاجه",
+      "customization": {
+        "title": "تخصيص سهل",
+        "description": "خصص الألوان والخطوط والتصميم لتتناسب تماماً مع علامتك التجارية."
+      },
+      "multiLanguage": {
+        "title": "متعدد اللغات",
+        "description": "دعم اللغتين العربية والإنجليزية لجميع عناصر القائمة والأوصاف."
+      },
+      "analytics": {
+        "title": "التحليلات والتقييمات",
+        "description": "تتبع المشاهدات واحصل على تعليقات العملاء وحسّن قائمتك."
+      }
+    },
+    "pricing": {
+      "title": "أسعار بسيطة وشفافة",
+      "subtitle": "اختر الخطة المناسبة لعملك",
+      "free": {
+        "name": "مجاني",
+        "price": "$0",
+        "period": "/شهرياً",
+        "feature1": "قائمة واحدة",
+        "feature2": "حتى 20 عنصر",
+        "feature3": "تخصيص أساسي",
+        "feature4": "مدعوم بالإعلانات",
+        "button": "ابدأ الآن"
+      },
+      "starter": {
+        "name": "المبتدئ",
+        "price": "$9",
+        "period": "/شهرياً",
+        "badge": "الأكثر شعبية",
+        "feature1": "3 قوائم",
+        "feature2": "عناصر غير محدودة",
+        "feature3": "تخصيص متقدم",
+        "feature4": "بدون إعلانات",
+        "feature5": "تحليلات",
+        "button": "ابدأ الآن"
+      },
+      "professional": {
+        "name": "المحترف",
+        "price": "$29",
+        "period": "/شهرياً",
+        "feature1": "قوائم غير محدودة",
+        "feature2": "عناصر غير محدودة",
+        "feature3": "تخصيص كامل",
+        "feature4": "دعم أولوية",
+        "feature5": "تحليلات متقدمة",
+        "feature6": "نطاق مخصص",
+        "button": "ابدأ الآن"
+      }
+    },
+    "cta": {
+      "title": "هل أنت مستعد للبدء؟",
+      "description": "أنشئ قائمتك الأولى في دقائق. بدون بطاقة ائتمان.",
+      "button": "ابدأ التجربة المجانية"
+    },
+    "footer": {
+      "copyright": "© 2024 قائمة SaaS. جميع الحقوق محفوظة."
+    }
+  },
+  "Dashboard": {
+    "title": "لوحة التحكم",
+    "welcomeBack": "مرحباً بعودتك",
+    "email": "البريد الإلكتروني",
+    "role": "الدور",
+    "logout": "تسجيل الخروج",
+    "stats": {
+      "totalMenus": "إجمالي القوائم",
+      "activeMenus": "القوائم النشطة",
+      "totalViews": "إجمالي المشاهدات"
+    },
+    "quickActions": {
+      "title": "إجراءات سريعة",
+      "manageMenus": "إدارة القوائم",
+      "viewProfile": "عرض الملف الشخصي",
+      "analytics": "التحليلات (قريباً)",
+      "settings": "الإعدادات (قريباً)"
+    }
+  },
+  "Menus": {
+    "title": "قوائمي",
+    "subtitle": "إدارة جميع قوائم مطعمك",
+    "backToDashboard": "العودة للوحة التحكم",
+    "createMenu": "إنشاء قائمة",
+    "noMenus": "لا توجد قوائم بعد",
+    "getStarted": "ابدأ بإنشاء قائمتك الأولى",
+    "createFirst": "أنشئ قائمتك الأولى",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "slug": "الرابط",
+    "created": "تاريخ الإنشاء",
+    "noDescription": "لا يوجد وصف",
+    "manageItems": "إدارة العناصر",
+    "openDashboard": "فتح لوحة التحكم",
+    "edit": "تعديل",
+    "activate": "تفعيل",
+    "deactivate": "إلغاء التفعيل",
+    "delete": "حذف",
+    "viewPublic": "عرض الصفحة العامة",
+    "deleteConfirm": "هل أنت متأكد من حذف هذه القائمة؟",
+    "menuPaused": "تم إيقاف القائمة مؤقتاً",
+    "menuActivated": "تم تفعيل القائمة",
+    "toggleError": "حدث خطأ أثناء تغيير حالة القائمة",
+    "createModal": {
+      "title": "إنشاء قائمة جديدة",
+      "menuNames": "أسماء القائمة",
+      "descriptions": "الأوصاف",
+      "urlSettings": "إعدادات الرابط",
+      "nameEn": "Name (English)",
+      "nameAr": "الاسم (العربية)",
+      "descriptionEn": "Description (English)",
+      "descriptionAr": "الوصف (العربية)",
+      "slug": "الرابط (URL)",
+      "slugHint": "حروف إنجليزية صغيرة وأرقام وشرطات فقط. هذا سيكون رابط قائمتك العام:",
+      "logo": "شعار القائمة",
+      "logoUpload": "رفع الشعار",
+      "logoHint": "سيتم استخدام هذه الصورة كـ favicon للصفحة العامة للمنيو",
+      "cancel": "إلغاء",
+      "create": "إنشاء القائمة",
+      "creating": "جاري الإنشاء..."
+    }
+  },
+  "Profile": {
+    "view": {
+      "title": "ملفي الشخصي",
+      "subtitle": "عرض معلومات حسابك",
+      "backToDashboard": "العودة للوحة التحكم",
+      "editProfile": "تعديل الملف الشخصي",
+      "personalInfo": "المعلومات الشخصية",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "country": "الدولة",
+      "dateOfBirth": "تاريخ الميلاد",
+      "gender": "الجنس",
+      "male": "ذكر",
+      "female": "أنثى",
+      "other": "آخر",
+      "address": "العنوان",
+      "notProvided": "غير مُدخل",
+      "role": "الدور",
+      "memberSince": "عضو منذ",
+      "accountStatus": "حالة الحساب",
+      "emailVerification": "التحقق من البريد",
+      "verified": "مُوثق",
+      "accountActive": "حالة الحساب",
+      "active": "نشط",
+      "subscription": "الاشتراك",
+      "manageSubscription": "إدارة الاشتراك",
+      "currentPlan": "الخطة الحالية",
+      "freePlan": "الخطة المجانية",
+      "starterPlan": "خطة المبتدئ",
+      "professionalPlan": "الخطة المحترفة",
+      "status": "الحالة",
+      "billingCycle": "دورة الفواتير",
+      "started": "تاريخ البداية",
+      "renews": "تاريخ التجديد",
+      "upgradeTitle": "ترقية خطتك",
+      "upgradeDescription": "احصل على المزيد من الميزات وأنشئ قوائم غير محدودة",
+      "viewPlans": "عرض الخطط"
+    },
+    "edit": {
+      "title": "تعديل الملف الشخصي",
+      "subtitle": "تحديث إعدادات حسابك",
+      "backToProfile": "العودة للملف الشخصي",
+      "profilePicture": "صورة الملف الشخصي",
+      "clickToChange": "انقر على الصورة لتغييرها",
+      "uploadOrInitials": "ارفع صورة أو سيتم عرض الحرف الأول من اسمك",
+      "uploadPhoto": "رفع صورة",
+      "uploading": "جاري الرفع...",
+      "remove": "حذف",
+      "recommendedSize": "يُنصح: صورة مربعة، 400×400 بكسل على الأقل. الحد الأقصى: 5MB",
+      "personalInformation": "المعلومات الشخصية",
+      "personalInfo": "المعلومات الشخصية",
+      "fullName": "الاسم الكامل *",
+      "email": "البريد الإلكتروني",
+      "emailAddress": "البريد الإلكتروني",
+      "emailCannotChange": "لا يمكن تغيير البريد الإلكتروني",
+      "emailCannotBeChanged": "لا يمكن تغيير البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "phoneNumber": "رقم الهاتف",
+      "country": "الدولة",
+      "countryPlaceholder": "مثال: المملكة العربية السعودية",
+      "dateOfBirth": "تاريخ الميلاد",
+      "gender": "الجنس",
+      "selectGender": "اختر الجنس",
+      "male": "ذكر",
+      "female": "أنثى",
+      "other": "آخر",
+      "address": "العنوان",
+      "addressPlaceholder": "مثال: الرياض، المملكة العربية السعودية",
+      "saveChanges": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
+      "changePassword": "تغيير كلمة المرور",
+      "currentPassword": "كلمة المرور الحالية *",
+      "newPassword": "كلمة المرور الجديدة *",
+      "confirmPassword": "تأكيد كلمة المرور الجديدة",
+      "confirmNewPassword": "تأكيد كلمة المرور الجديدة *",
+      "passwordHint": "8 أحرف على الأقل",
+      "passwordMinLength": "8 أحرف على الأقل",
+      "changePasswordBtn": "تغيير كلمة المرور",
+      "changePasswordButton": "تغيير كلمة المرور",
+      "changing": "جاري التغيير...",
+      "manageSubscription": "إدارة الاشتراك",
+      "mostPopular": "الأكثر شعبية",
+      "upgradePlan": "ترقية الخطة",
+      "processing": "جاري المعالجة...",
+      "onFreePlan": "أنت على الخطة المجانية",
+      "paymentNote": "سيتم معالجة الدفع بعد التأكيد",
+      "paymentConfirmation": "سيتم معالجة الدفع بعد التأكيد",
+      "paymentPending": "ملاحظة: تكامل بوابة الدفع قيد التطوير. هذه ميزة تجريبية.",
+      "note": "ملاحظة",
+      "paymentGatewayNote": "تكامل بوابة الدفع قيد الانتظار. هذه ميزة تجريبية.",
+      "imageTypeError": "يرجى اختيار ملف صورة",
+      "imageSizeError": "يجب أن يكون حجم الصورة أقل من 5MB",
+      "imageUploadSuccess": "تم تحديث صورة الملف الشخصي بنجاح!",
+      "imageUploadError": "فشل رفع الصورة",
+      "imageRemoveSuccess": "تم حذف صورة الملف الشخصي",
+      "dragDropOrClick": "اسحب وأفلت الصورة هنا أو انقر للرفع",
+      "dropImageHere": "أفلت الصورة هنا",
+      "supportedFormats": "PNG, JPG, GIF حتى 5MB",
+      "plans": {
+        "free": {
+          "name": "مجاني",
+          "period": "للأبد",
+          "features": {
+            "0": "قائمة واحدة",
+            "1": "حتى 20 عنصر",
+            "2": "تخصيص أساسي",
+            "3": "مدعوم بالإعلانات"
+          }
+        },
+        "starter": {
+          "name": "مبتدئ",
+          "period": "/شهر",
+          "features": {
+            "0": "3 قوائم",
+            "1": "عناصر غير محدودة",
+            "2": "تخصيص متقدم",
+            "3": "بدون إعلانات",
+            "4": "تحليلات"
+          }
+        },
+        "professional": {
+          "name": "احترافي",
+          "period": "/شهر",
+          "features": {
+            "0": "قوائم غير محدودة",
+            "1": "تخصيص كامل",
+            "2": "دعم ذو أولوية",
+            "3": "تحليلات متقدمة",
+            "4": "نطاق مخصص"
+          }
+        }
+      }
+    }
+  },
+  "SignIn": {
+    "title": "مرحباً بعودتك!",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "example@domain.com",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "signInButton": "تسجيل الدخول",
+    "signingIn": "جاري تسجيل الدخول...",
+    "noAccount": "ليس لديك حساب؟",
+    "createAccount": "إنشاء حساب",
+    "fillAllFields": "يرجى ملء جميع الحقول"
+  },
+  "SignUp": {
+    "title": "إنشاء حساب",
+    "name": "الاسم الكامل",
+    "namePlaceholder": "محمد أحمد",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "example@domain.com",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "8 أحرف على الأقل",
+    "signUpButton": "إنشاء حساب",
+    "signingUp": "جاري إنشاء الحساب...",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "signIn": "تسجيل الدخول",
+    "fillAllFields": "يرجى ملء جميع الحقول"
+  },
+  "Common": {
+    "loading": "جاري التحميل...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "search": "بحث",
+    "filter": "تصفية",
+    "yes": "نعم",
+    "no": "لا"
+  },
+  "Header": {
+    "myProfile": "ملفي الشخصي",
+    "billing": "الفواتير",
+    "manageMenus": "إدارة القوائم",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "Sidebar": {
+    "main": "الرئيسية",
+    "other": "أخرى",
+    "dashboard": "لوحة التحكم",
+    "menus": "قوائمي",
+    "overview": "نظرة عامة",
+    "categories": "التصنيفات",
+    "products": "المنتجات",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "accountSettings": "إعدادات الحساب",
+    "needHelp": "تحتاج مساعدة؟",
+    "helpDescription": "تحقق من الوثائق أو تواصل مع الدعم",
+    "contactSupport": "تواصل مع الدعم"
+  },
+  "MenuItems": {
+    "title": "عناصر القائمة",
+    "subtitle": "إدارة عناصر القائمة",
+    "addItem": "إضافة عنصر",
+    "editItem": "تعديل العنصر",
+    "addFirstItem": "إضافة أول عنصر",
+    "noItems": "لا توجد عناصر بعد",
+    "noItemsDesc": "ابدأ بإضافة عناصر لقائمتك",
+    "nameAr": "الاسم بالعربي",
+    "nameEn": "الاسم بالإنجليزي",
+    "nameArPlaceholder": "مثال: كباب دجاج",
+    "nameEnPlaceholder": "مثال: Chicken Kebab",
+    "descriptionAr": "الوصف بالعربي",
+    "descriptionEn": "الوصف بالإنجليزي",
+    "descriptionPlaceholder": "اكتب وصف العنصر...",
+    "price": "السعر",
+    "category": "الفئة",
+    "imageUrl": "رابط الصورة",
+    "imagePlaceholder": "https://example.com/image.jpg",
+    "imageHint": "اختياري: أدخل رابط الصورة أو اتركه فارغاً",
+    "available": "متوفر",
+    "notAvailable": "غير متوفر",
+    "categories": {
+      "starters": "المقبلات",
+      "main": "الأطباق الرئيسية",
+      "desserts": "الحلويات",
+      "drinks": "المشروبات",
+      "other": "أخرى"
+    },
+    "selectCategory": "اختر تصنيف",
+    "noCategoriesHint": "لا توجد تصنيفات. يرجى إنشاء تصنيف أولاً من صفحة التصنيفات.",
+    "pricing": "التسعير",
+    "originalPrice": "السعر الأصلي",
+    "discountPercent": "نسبة الخصم",
+    "finalPrice": "السعر النهائي",
+    "calculatedPrice": "السعر محسوب تلقائياً",
+    "nameRequired": "الاسم مطلوب باللغتين",
+    "priceRequired": "السعر مطلوب",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "cancel": "إلغاء",
+    "saving": "جاري الحفظ...",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
+    "createSuccess": "تم إنشاء العنصر بنجاح!",
+    "updateSuccess": "تم تحديث العنصر بنجاح!",
+    "deleteSuccess": "تم حذف العنصر بنجاح!",
+    "saveError": "فشل حفظ العنصر",
+    "fetchError": "فشل تحميل العناصر",
+    "deleteError": "فشل حذف العنصر"
+  },
+  "Categories": {
+    "title": "التصنيفات",
+    "subtitle": "إدارة تصنيفات القائمة",
+    "addCategory": "إضافة تصنيف",
+    "editCategory": "تعديل التصنيف",
+    "createFirst": "أنشئ أول تصنيف",
+    "noCategories": "لا توجد تصنيفات بعد",
+    "getStarted": "ابدأ بإنشاء تصنيفك الأول",
+    "nameAr": "الاسم (العربية)",
+    "nameEn": "الاسم (الإنجليزية)",
+    "image": "الصورة",
+    "sortOrder": "ترتيب العرض",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "deleteConfirm": "هل أنت متأكد من حذف هذا التصنيف؟",
+    "createSuccess": "تم إنشاء التصنيف بنجاح!",
+    "updateSuccess": "تم تحديث التصنيف بنجاح!",
+    "deleteSuccess": "تم حذف التصنيف بنجاح!",
+    "saveError": "فشل حفظ التصنيف",
+    "fetchError": "فشل تحميل التصنيفات",
+    "deleteError": "فشل حذف التصنيف",
+    "imageUploadSuccess": "تم رفع الصورة بنجاح",
+    "imageUploadError": "فشل رفع الصورة",
+    "uploading": "جاري الرفع",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "cancel": "إلغاء",
+    "saving": "جاري الحفظ..."
+  },
+  "PublicMenu": {
+    "notFound": "القائمة غير موجودة",
+    "notFoundDescription": "هذه القائمة غير موجودة أو غير نشطة",
+    "fetchError": "فشل تحميل القائمة",
+    "rateUs": "قيّمنا",
+    "allCategories": "الكل",
+    "categories": {
+      "starters": "المقبلات",
+      "main": "الأطباق الرئيسية",
+      "desserts": "الحلويات",
+      "drinks": "المشروبات",
+      "other": "أخرى"
+    },
+    "noItems": "لا توجد عناصر متاحة",
+    "noItemsInCategory": "لا توجد عناصر في هذه الفئة بعد",
+    "ourBranches": "فروعنا",
+    "rating": {
+      "title": "قيّم هذه القائمة",
+      "rating": "تقييمك",
+      "name": "اسمك",
+      "namePlaceholder": "أدخل اسمك (اختياري)",
+      "comment": "تعليق",
+      "commentPlaceholder": "شارك تجربتك...",
+      "cancel": "إلغاء",
+      "submit": "إرسال",
+      "submitting": "جاري الإرسال...",
+      "selectStars": "الرجاء اختيار تقييم",
+      "submitSuccess": "شكراً لتقييمك!",
+      "submitError": "فشل إرسال التقييم"
+    }
+  },
+  "MenuDashboard": {
+    "subtitle": "إدارة القائمة بالكامل",
+    "manageItems": "إدارة العناصر",
+    "settings": "الإعدادات",
+    "viewPublic": "عرض القائمة العامة",
+    "stats": {
+      "totalItems": "إجمالي العناصر",
+      "activeItems": "العناصر النشطة",
+      "categories": "الفئات",
+      "views": "المشاهدات"
+    },
+    "quickLinks": {
+      "items": "عناصر القائمة",
+      "itemsDesc": "إضافة وتعديل وحذف العناصر",
+      "settings": "إعدادات القائمة",
+      "settingsDesc": "تخصيص المظهر والإعدادات",
+      "preview": "معاينة عامة",
+      "previewDesc": "عرض القائمة كما يراها العملاء"
+    },
+    "recentActivity": {
+      "title": "النشاط الأخير",
+      "noActivity": "لا يوجد نشاط حديث"
+    }
+  },
+  "MenuSettings": {
+    "title": "إعدادات القائمة",
+    "subtitle": "تخصيص إعدادات القائمة والمظهر",
+    "fetchError": "فشل تحميل الإعدادات",
+    "saveSuccess": "تم حفظ التغييرات بنجاح!",
+    "saveError": "فشل حفظ التغييرات",
+    "deleteConfirm": "هل أنت متأكد من حذف هذه القائمة؟ لا يمكن التراجع عن هذا الإجراء!",
+    "deleteSuccess": "تم حذف القائمة بنجاح",
+    "deleteError": "فشل حذف القائمة",
+    "sections": {
+      "general": "إعدادات عامة",
+      "appearance": "المظهر",
+      "status": "الحالة"
+    },
+    "fields": {
+      "nameEn": "الاسم بالإنجليزية",
+      "nameAr": "الاسم بالعربية",
+      "descriptionEn": "الوصف بالإنجليزية",
+      "descriptionAr": "الوصف بالعربية",
+      "slug": "الرابط المخصص",
+      "slugHint": "سيظهر في رابط القائمة: yoursite.com/menu/slug",
+      "theme": "المظهر",
+      "isActive": "تفعيل القائمة",
+      "isActiveHint": "عند التفعيل، ستكون القائمة مرئية للعامة"
+    },
+    "themes": {
+      "classic": "كلاسيكي",
+      "modern": "عصري",
+      "elegant": "أنيق"
+    },
+    "buttons": {
+      "save": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
+      "cancel": "إلغاء"
+    },
+    "dangerZone": {
+      "title": "منطقة الخطر",
+      "description": "حذف هذه القائمة سيؤدي إلى حذف جميع العناصر المرتبطة بها. لا يمكن التراجع عن هذا الإجراء!",
+      "deleteButton": "حذف القائمة نهائياً"
+    }
+  }
+}

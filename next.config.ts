@@ -1,18 +1,46 @@
 import type { NextConfig } from "next";
-import path from 'path';
+import createNextIntlPlugin from "next-intl/plugin";
+import path from "path";
 
 const nextConfig: NextConfig = {
-  // For Static Export
-  output: 'export',
-  trailingSlash: true,
+  // Removed static export for dynamic routes to work
+  // output: "export",
+  // trailingSlash: true,
+  
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  
+
   sassOptions: {
-    includePaths: [path.join(__dirname, 'styles')],
-    // Additional Sass options can go here
+    includePaths: [path.join(__dirname, "styles")],
+  },
+
+  // Enable experimental features for better subdomain support
+  experimental: {
+    // serverActions: true,
+  },
+
+  // Allow multiple domains/subdomains
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+        ],
+      },
+    ];
   },
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin();
+export default withNextIntl(nextConfig);

@@ -1,12 +1,58 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import toast, { Toaster } from "react-hot-toast";
 
 const SignUpForm: React.FC = () => {
+  const locale = useLocale();
+  const router = useRouter();
+  const { signup } = useAuth();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!name || !email || !password || !confirmPassword) {
+      toast.error("يرجى ملء جميع الحقول");
+      return;
+    }
+
+    if (password.length < 8) {
+      toast.error("كلمة المرور يجب أن تكون 8 أحرف على الأقل");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("كلمة المرور غير متطابقة");
+      return;
+    }
+
+    setLoading(true);
+
+    const success = await signup(email, password, name);
+
+    if (success) {
+      router.push(`/${locale}/authentication/confirm-email`);
+    }
+
+    setLoading(false);
+  };
+
   return (
     <>
+      <Toaster position="top-center" />
+
       <div className="auth-main-content bg-white dark:bg-[#0a0e19] py-[60px] md:py-[80px] lg:py-[120px] xl:py-[135px]">
         <div className="mx-auto px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-center">
@@ -38,135 +84,111 @@ const SignUpForm: React.FC = () => {
 
               <div className="my-[17px] md:my-[25px]">
                 <h1 className="!font-semibold !text-[22px] md:!text-xl lg:!text-2xl !mb-[5px] md:!mb-[7px]">
-                  Sign Up to Trezo Dashboard
+                  إنشاء حساب جديد
                 </h1>
-                <p className="font-medium lg:text-md text-[#445164] dark:text-gray-400">
-                  Sign Up with social account or enter your details
-                </p>
               </div>
 
-              <div className="flex items-center justify-between mb-[20px] md:mb-[23px] gap-[12px]">
-                <div className="grow">
+              <form onSubmit={handleSubmit}>
+                <div className="mb-[15px] relative">
+                  <label className="mb-[10px] md:mb-[12px] text-black dark:text-white font-medium block">
+                    الاسم الكامل
+                  </label>
+                  <input
+                    type="text"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    placeholder="أدخل اسمك الكامل"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={loading}
+                    required
+                  />
+                </div>
+
+                <div className="mb-[15px] relative">
+                  <label className="mb-[10px] md:mb-[12px] text-black dark:text-white font-medium block">
+                    البريد الإلكتروني
+                  </label>
+                  <input
+                    type="email"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    placeholder="example@domain.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={loading}
+                    required
+                  />
+                </div>
+
+                <div className="mb-[15px] relative">
+                  <label className="mb-[10px] md:mb-[12px] text-black dark:text-white font-medium block">
+                    كلمة المرور
+                  </label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    placeholder="8 أحرف على الأقل"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={loading}
+                    required
+                    minLength={8}
+                  />
                   <button
+                    className="absolute text-lg ltr:right-[20px] rtl:left-[20px] bottom-[12px] transition-all hover:text-primary-500"
                     type="button"
-                    className="block text-center w-full rounded-md transition-all py-[8px] md:py-[10.5px] px-[15px] md:px-[25px] text-black dark:text-white border border-[#D6DAE1] bg-white dark:bg-[#0a0e19] dark:border-[#172036] shadow-sm hover:border-primary-500"
+                    onClick={() => setShowPassword(!showPassword)}
                   >
-                    <Image
-                      src="/images/icons/google.svg"
-                      className="inline-block"
-                      alt="google"
-                      width={25}
-                      height={25}
-                    />
+                    <i
+                      className={
+                        showPassword ? "ri-eye-line" : "ri-eye-off-line"
+                      }
+                    ></i>
                   </button>
                 </div>
 
-                <div className="grow">
-                  <button
-                    type="button"
-                    className="block text-center w-full rounded-md transition-all py-[8px] md:py-[10.5px] px-[15px] md:px-[25px] text-black dark:text-white border border-[#D6DAE1] bg-white dark:bg-[#0a0e19] dark:border-[#172036] shadow-sm hover:border-primary-500"
-                  >
-                    <Image
-                      src="/images/icons/facebook2.svg"
-                      className="inline-block"
-                      alt="google"
-                      width={25}
-                      height={25}
-                    />
-                  </button>
+                <div className="mb-[15px] relative">
+                  <label className="mb-[10px] md:mb-[12px] text-black dark:text-white font-medium block">
+                    تأكيد كلمة المرور
+                  </label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    placeholder="أعد إدخال كلمة المرور"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    disabled={loading}
+                    required
+                  />
                 </div>
 
-                <div className="grow">
-                  <button
-                    type="button"
-                    className="block text-center w-full rounded-md transition-all py-[8px] md:py-[10.5px] px-[15px] md:px-[25px] text-black dark:text-white border border-[#D6DAE1] bg-white dark:bg-[#0a0e19] dark:border-[#172036] shadow-sm hover:border-primary-500"
-                  >
-                    <Image
-                      src="/images/icons/apple.svg"
-                      className="inline-block"
-                      alt="google"
-                      width={25}
-                      height={25}
-                    />
-                  </button>
-                </div>
-              </div>
-
-              <div className="mb-[15px] relative">
-                <label className="mb-[10px] md:mb-[12px] text-black dark:text-white font-medium block">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              <div className="mb-[15px] relative">
-                <label className="mb-[10px] md:mb-[12px] text-black dark:text-white font-medium block">
-                  Email Address
-                </label>
-                <input
-                  type="text"
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                  placeholder="example@trezo.com"
-                />
-              </div>
-
-              <div className="mb-[15px] relative" id="passwordHideShow">
-                <label className="mb-[10px] md:mb-[12px] text-black dark:text-white font-medium block">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                  id="password"
-                  placeholder="Type password"
-                />
                 <button
-                  className="absolute text-lg ltr:right-[20px] rtl:left-[20px] bottom-[12px] transition-all hover:text-primary-500"
-                  id="toggleButton"
-                  type="button"
+                  type="submit"
+                  className="md:text-md block w-full text-center transition-all rounded-md font-medium my-[20px] md:my-[25px] py-[12px] px-[25px] text-white bg-primary-500 hover:bg-primary-400 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  disabled={loading}
                 >
-                  <i className="ri-eye-off-line"></i>
+                  <span className="flex items-center justify-center gap-[5px]">
+                    {loading ? (
+                      <>
+                        <i className="ri-loader-4-line animate-spin"></i>
+                        جاري إنشاء الحساب...
+                      </>
+                    ) : (
+                      <>
+                        <i className="material-symbols-outlined">person_4</i>
+                        إنشاء حساب
+                      </>
+                    )}
+                  </span>
                 </button>
-              </div>
+              </form>
 
-              <button
-                type="submit"
-                className="md:text-md block w-full text-center transition-all rounded-md font-medium my-[20px] md:my-[25px] py-[12px] px-[25px] text-white bg-primary-500 hover:bg-primary-400"
-              >
-                <span className="flex items-center justify-center gap-[5px]">
-                  <i className="material-symbols-outlined">person_4</i>
-                  Sign Up
-                </span>
-              </button>
-
-              <p className="!leading-[1.6]">
-                By confirming your email, you agree to our{" "}
+              <p>
+                لديك حساب بالفعل؟{" "}
                 <Link
-                  href="#"
-                  className="font-medium text-black dark:text-white transition-all hover:text-primary-500"
-                >
-                  Terms of Service
-                </Link>{" "}
-                and that you have read and understood our{" "}
-                <Link
-                  href="#"
-                  className="font-medium text-black dark:text-white transition-all hover:text-primary-500"
-                >
-                  Privacy Policy
-                </Link>
-              </p>
-
-              <p className="!leading-[1.6]">
-                Already have an account.{" "}
-                <Link
-                  href="/authentication/sign-in"
+                  href={`/${locale}/authentication/sign-in`}
                   className="text-primary-500 transition-all font-semibold hover:underline"
                 >
-                  Sign In
+                  تسجيل الدخول
                 </Link>
               </p>
             </div>

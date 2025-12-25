@@ -2,9 +2,10 @@
 
 import React, { useState, ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import SidebarMenu from "@/components/Layout/SidebarMenu";
+import SidebarMenu from "@/components/Layout/SidebarMenu/SimpleMenu";
 import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
+import { routing } from "@/i18n/routing";
 
 interface LayoutProviderProps {
   children: ReactNode;
@@ -13,27 +14,36 @@ interface LayoutProviderProps {
 const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
   const pathname = usePathname();
 
-  const [active, setActive] = useState<boolean>(false);
+  const [active, setActive] = useState<boolean>(true);
 
   const toggleActive = () => {
     setActive(!active);
   };
 
-  const isAuthPage = [
-    "/authentication/sign-in/",
-    "/authentication/sign-up/",
-    "/authentication/forgot-password/",
-    "/authentication/reset-password/",
-    "/authentication/confirm-email/",
-    "/authentication/lock-screen/",
-    "/authentication/logout/",
-    "/coming-soon/",
-    "/",
-    "/front-pages/features/",
-    "/front-pages/team/",
-    "/front-pages/faq/",
-    "/front-pages/contact/",
-  ].includes(pathname);
+  // Remove locale prefix from pathname to check against routes
+  const pathnameWithoutLocale =
+    pathname.replace(new RegExp(`^/(${routing.locales.join("|")})`), "") || "/";
+
+  // Check if current page is authentication or public page (no header/sidebar/footer)
+  const isAuthPage =
+    pathnameWithoutLocale.startsWith("/authentication/") ||
+    pathnameWithoutLocale.startsWith("/menu/") || // Public menu pages
+    pathnameWithoutLocale === "/" ||
+    pathnameWithoutLocale.startsWith("/coming-soon") ||
+    pathnameWithoutLocale.startsWith("/front-pages/");
+
+  // Check if current page should hide sidebar (but keep header)
+  const shouldHideSidebar =
+    pathnameWithoutLocale === "/menus" || // Menu selection page (OUTSIDE dashboard)
+    pathnameWithoutLocale === "/dashboard/menus" || // Menu selection page (old location)
+    pathnameWithoutLocale === "/dashboard/profile/user-profile" || // Profile view
+    pathnameWithoutLocale === "/dashboard/profile/edit" || // Profile edit
+    pathnameWithoutLocale === "/dashboard"; // Main dashboard (if needed)
+
+  // Check if we're in a menu dashboard context (show sidebar)
+  const isInMenuContext =
+    pathnameWithoutLocale.startsWith("/menus/") &&
+    pathnameWithoutLocale !== "/menus";
 
   return (
     <>
@@ -42,8 +52,12 @@ const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
       >
         {!isAuthPage && (
           <>
-            <SidebarMenu toggleActive={toggleActive} />
+            {/* Show Sidebar only if not in sidebar-hidden pages OR if in menu context */}
+            {(!shouldHideSidebar || isInMenuContext) && (
+              <SidebarMenu toggleActive={toggleActive} />
+            )}
 
+            {/* Always show Header for authenticated pages */}
             <Header toggleActive={toggleActive} />
           </>
         )}

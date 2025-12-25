@@ -1,20 +1,35 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { useAuth } from "@/contexts/AuthContext";
+import UserAvatar from "@/components/UserAvatar";
 
 const ProfileMenu: React.FC = () => {
   const pathname = usePathname();
+  const locale = useLocale();
+  const router = useRouter();
+  const t = useTranslations("Header");
+  const { user, logout } = useAuth();
 
   const [active, setActive] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref for the dropdown container
- 
+
   const handleDropdownToggle = () => {
     setActive((prevState) => !prevState);
   };
-    
+
+  const handleLogout = async () => {
+    setActive(false);
+    logout();
+    // Wait a bit before redirecting to allow logout to complete
+    setTimeout(() => {
+      router.push(`/${locale}/authentication/sign-in`);
+    }, 100);
+  };
+
   // Handle clicks outside the dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -47,88 +62,69 @@ const ProfileMenu: React.FC = () => {
           active ? "active" : ""
         }`}
       >
-        <Image
-          src="/images/admin.png"
-          className="w-[35px] h-[35px] md:w-[42px] md:h-[42px] rounded-full ltr:md:mr-[2px] ltr:lg:mr-[8px] rtl:md:ml-[2px] rtl:lg:ml-[8px] border-[2px] border-primary-200 inline-block"
-          alt="admin-image"
-          width={35}
-          height={35}
+        <UserAvatar
+          src={user?.profileImage}
+          name={user?.name || "User"}
+          size="md"
+          showBorder
+          className="ltr:md:mr-[2px] ltr:lg:mr-[8px] rtl:md:ml-[2px] rtl:lg:ml-[8px]"
         />
         <span className="block font-semibold text-[0px] lg:text-base">
-          Olivia
+          {user?.name || "User"}
         </span>
         <i className="ri-arrow-down-s-line text-[15px] absolute ltr:-right-[3px] rtl:-left-[3px] top-1/2 -translate-y-1/2 mt-px"></i>
       </button>
 
       {active && (
-        <div className="profile-menu-dropdown bg-white dark:bg-[#0c1427] transition-all shadow-3xl dark:shadow-none py-[22px] absolute mt-[13px] md:mt-[14px] w-[195px] z-[1] top-full ltr:right-0 rtl:left-0 rounded-md">
+        <div className="profile-menu-dropdown bg-white dark:bg-[#0c1427] transition-all shadow-3xl dark:shadow-none py-[22px] absolute mt-[13px] md:mt-[14px] w-[220px] z-[1] top-full ltr:right-0 rtl:left-0 rounded-md">
           <div className="flex items-center border-b border-gray-100 dark:border-[#172036] pb-[12px] mx-[20px] mb-[10px]">
-            <Image
-              src="/images/admin.png"
-              className="rounded-full w-[31px] h-[31px] ltr:mr-[9px] rtl:ml-[9px] border-2 border-primary-200 inline-block"
-              alt="admin-image"
-              width={31}
-              height={31}
+            <UserAvatar
+              src={user?.profileImage}
+              name={user?.name || "User"}
+              size="sm"
+              showBorder
+              className="ltr:mr-[9px] rtl:ml-[9px]"
             />
-            <div>
-              <span className="block text-black dark:text-white font-medium">
-                Olivia John
+            <div className="flex-1 min-w-0">
+              <span className="block text-black dark:text-white font-medium truncate">
+                {user?.name || "User"}
               </span>
-              <span className="block text-xs">Marketing Manager</span>
+              <span className="block text-xs text-gray-500 dark:text-gray-400 truncate">
+                {user?.email || ""}
+              </span>
             </div>
           </div>
 
           <ul>
             <li>
               <Link
-                href="/my-profile/"
+                href={`/${locale}/dashboard/profile/user-profile`}
                 className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname === "/my-profile/" ? "text-primary-500" : ""
+                  pathname.includes("/dashboard/profile")
+                    ? "text-primary-500"
+                    : ""
                 }`}
+                onClick={() => setActive(false)}
               >
                 <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
                   account_circle
                 </i>
-                My Profile
+                {t("myProfile")}
               </Link>
             </li>
+
             <li>
               <Link
-                href="/apps/chat/"
+                href={`/${locale}/dashboard/profile/edit`}
                 className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname === "/apps/chat/" ? "text-primary-500" : ""
+                  pathname.includes("/profile/edit") ? "text-primary-500" : ""
                 }`}
-              >
-                <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
-                  chat
-                </i>
-                Messages
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/apps/to-do-list/"
-                className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname === "/apps/to-do-list/" ? "text-primary-500" : ""
-                }`}
-              >
-                <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
-                  format_list_bulleted
-                </i>
-                My Task
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/ecommerce/checkout/"
-                className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname === "/ecommerce/checkout/" ? "text-primary-500" : ""
-                }`}
+                onClick={() => setActive(false)}
               >
                 <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
                   credit_card
                 </i>
-                Billing
+                {t("billing")}
               </Link>
             </li>
           </ul>
@@ -138,55 +134,26 @@ const ProfileMenu: React.FC = () => {
           <ul>
             <li>
               <Link
-                href="/settings/"
-                className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname === "/settings/" ? "text-primary-500" : ""
-                }`}
+                href={`/${locale}/menus`}
+                className="w-full text-left block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500  "
+                onClick={() => setActive(false)}
               >
                 <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
-                  settings
+                  restaurant_menu
                 </i>
-                Settings
+                {t("manageMenus")}
               </Link>
             </li>
             <li>
-              <Link
-                href="/faq/"
-                className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname === "/faq/" ? "text-primary-500" : ""
-                }`}
-              >
-                <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
-                  support
-                </i>
-                Support
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/authentication/lock-screen/"
-                className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname === "/authentication/lock-screen/" ? "text-primary-500" : ""
-                }`}
-              >
-                <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
-                  lock
-                </i>
-                Lock Screen
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/authentication/logout/"
-                className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname === "/authentication/logout/" ? "text-primary-500" : ""
-                }`}
+              <button
+                onClick={handleLogout}
+                className="w-full text-left block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500"
               >
                 <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
                   logout
                 </i>
-                Logout
-              </Link>
+                {t("logout")}
+              </button>
             </li>
           </ul>
         </div>

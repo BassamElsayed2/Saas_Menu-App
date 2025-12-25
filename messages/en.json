@@ -1,0 +1,512 @@
+{
+  "HomePage": {
+    "title": "Hello world!"
+  },
+  "Landing": {
+    "hero": {
+      "title": "Create Your Digital Menu",
+      "subtitle": "In Minutes",
+      "description": "Transform your restaurant menu into a beautiful, easy-to-use digital experience. No coding required.",
+      "getStarted": "Get Started Free",
+      "viewPricing": "View Pricing"
+    },
+    "features": {
+      "title": "Everything You Need",
+      "customization": {
+        "title": "Easy Customization",
+        "description": "Customize colors, fonts, and layout to match your brand perfectly."
+      },
+      "multiLanguage": {
+        "title": "Multi-Language",
+        "description": "Support Arabic and English for all your menu items and descriptions."
+      },
+      "analytics": {
+        "title": "Analytics & Ratings",
+        "description": "Track views, get customer feedback, and improve your menu."
+      }
+    },
+    "pricing": {
+      "title": "Simple, Transparent Pricing",
+      "subtitle": "Choose the plan that works best for your business",
+      "free": {
+        "name": "Free",
+        "price": "$0",
+        "period": "/month",
+        "feature1": "1 Menu",
+        "feature2": "Up to 20 items",
+        "feature3": "Basic customization",
+        "feature4": "Ads supported",
+        "button": "Get Started"
+      },
+      "starter": {
+        "name": "Starter",
+        "price": "$9",
+        "period": "/month",
+        "badge": "Most Popular",
+        "feature1": "3 Menus",
+        "feature2": "Unlimited items",
+        "feature3": "Advanced customization",
+        "feature4": "No ads",
+        "feature5": "Analytics",
+        "button": "Get Started"
+      },
+      "professional": {
+        "name": "Professional",
+        "price": "$29",
+        "period": "/month",
+        "feature1": "Unlimited menus",
+        "feature2": "Unlimited items",
+        "feature3": "Full customization",
+        "feature4": "Priority support",
+        "feature5": "Advanced analytics",
+        "feature6": "Custom domain",
+        "button": "Get Started"
+      }
+    },
+    "cta": {
+      "title": "Ready to Get Started?",
+      "description": "Create your first menu in minutes. No credit card required.",
+      "button": "Start Free Trial"
+    },
+    "footer": {
+      "copyright": "© 2024 SaaS Menu. All rights reserved."
+    }
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "welcomeBack": "Welcome back",
+    "email": "Email",
+    "role": "Role",
+    "logout": "Logout",
+    "stats": {
+      "totalMenus": "Total Menus",
+      "activeMenus": "Active Menus",
+      "totalViews": "Total Views"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "manageMenus": "Manage Menus",
+      "viewProfile": "View Profile",
+      "analytics": "Analytics (Coming Soon)",
+      "settings": "Settings (Coming Soon)"
+    }
+  },
+  "Menus": {
+    "title": "My Menus",
+    "subtitle": "Manage all your restaurant menus",
+    "backToDashboard": "Back to Dashboard",
+    "createMenu": "Create Menu",
+    "noMenus": "No menus yet",
+    "getStarted": "Get started by creating your first menu",
+    "createFirst": "Create Your First Menu",
+    "active": "Active",
+    "inactive": "Inactive",
+    "slug": "Slug",
+    "created": "Created",
+    "noDescription": "No description",
+    "manageItems": "Manage Items",
+    "openDashboard": "Open Dashboard",
+    "edit": "Edit",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "delete": "Delete",
+    "viewPublic": "View Public Page",
+    "deleteConfirm": "Are you sure you want to delete this menu?",
+    "menuPaused": "Menu paused successfully",
+    "menuActivated": "Menu activated successfully",
+    "toggleError": "Error toggling menu status",
+    "createModal": {
+      "title": "Create New Menu",
+      "menuNames": "Menu Names",
+      "descriptions": "Descriptions",
+      "urlSettings": "URL Settings",
+      "nameEn": "Name (English)",
+      "nameAr": "الاسم (العربية)",
+      "descriptionEn": "Description (English)",
+      "descriptionAr": "الوصف (العربية)",
+      "slug": "Slug (URL)",
+      "slugHint": "Only lowercase letters, numbers, and hyphens. This will be your menu's public URL:",
+      "logo": "Menu Logo",
+      "logoUpload": "Upload Logo",
+      "logoHint": "This image will be used as the favicon for the public menu page",
+      "cancel": "Cancel",
+      "create": "Create Menu",
+      "creating": "Creating..."
+    }
+  },
+  "Profile": {
+    "view": {
+      "title": "My Profile",
+      "subtitle": "View your account information",
+      "backToDashboard": "Back to Dashboard",
+      "editProfile": "Edit Profile",
+      "personalInfo": "Personal Information",
+      "email": "Email",
+      "phone": "Phone",
+      "country": "Country",
+      "dateOfBirth": "Date of Birth",
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "other": "Other",
+      "address": "Address",
+      "notProvided": "Not provided",
+      "role": "Role",
+      "memberSince": "Member Since",
+      "accountStatus": "Account Status",
+      "emailVerification": "Email Verification",
+      "verified": "Verified",
+      "accountActive": "Account Status",
+      "active": "Active",
+      "subscription": "Subscription",
+      "manageSubscription": "Manage Subscription",
+      "currentPlan": "Current Plan",
+      "freePlan": "Free Plan",
+      "starterPlan": "Starter Plan",
+      "professionalPlan": "Professional Plan",
+      "status": "Status",
+      "billingCycle": "Billing Cycle",
+      "started": "Started",
+      "renews": "Renews",
+      "upgradeTitle": "Upgrade Your Plan",
+      "upgradeDescription": "Unlock more features and create unlimited menus",
+      "viewPlans": "View Plans"
+    },
+    "edit": {
+      "title": "Edit Profile",
+      "subtitle": "Update your account settings",
+      "backToProfile": "Back to Profile",
+      "profilePicture": "Profile Picture",
+      "clickToChange": "Click on the image to change it",
+      "uploadOrInitials": "Upload a profile picture or your initials will be shown",
+      "uploadPhoto": "Upload Photo",
+      "uploading": "Uploading...",
+      "remove": "Remove",
+      "recommendedSize": "Recommended: Square image, at least 400x400px. Max size: 5MB",
+      "personalInformation": "Personal Information",
+      "personalInfo": "Personal Information",
+      "fullName": "Full Name *",
+      "email": "Email Address",
+      "emailAddress": "Email Address",
+      "emailCannotChange": "Email cannot be changed",
+      "emailCannotBeChanged": "Email cannot be changed",
+      "phone": "Phone Number",
+      "phoneNumber": "Phone Number",
+      "country": "Country",
+      "countryPlaceholder": "e.g., Saudi Arabia",
+      "dateOfBirth": "Date of Birth",
+      "gender": "Gender",
+      "selectGender": "Select Gender",
+      "male": "Male",
+      "female": "Female",
+      "other": "Other",
+      "address": "Address",
+      "addressPlaceholder": "e.g., Riyadh, Saudi Arabia",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "changePassword": "Change Password",
+      "currentPassword": "Current Password *",
+      "newPassword": "New Password *",
+      "confirmPassword": "Confirm New Password",
+      "confirmNewPassword": "Confirm New Password *",
+      "passwordHint": "At least 8 characters",
+      "passwordMinLength": "At least 8 characters",
+      "changePasswordBtn": "Change Password",
+      "changePasswordButton": "Change Password",
+      "changing": "Changing...",
+      "manageSubscription": "Manage Subscription",
+      "mostPopular": "Most Popular",
+      "upgradePlan": "Upgrade Plan",
+      "processing": "Processing...",
+      "onFreePlan": "You are on the Free plan",
+      "paymentNote": "Payment will be processed after confirmation",
+      "paymentConfirmation": "Payment will be processed after confirmation",
+      "paymentPending": "Note: Payment gateway integration is pending. This is a demo feature.",
+      "note": "Note",
+      "paymentGatewayNote": "Payment gateway integration is pending. This is a demo feature.",
+      "imageTypeError": "Please select an image file",
+      "imageSizeError": "Image size should be less than 5MB",
+      "imageUploadSuccess": "Profile image updated successfully!",
+      "imageUploadError": "Failed to upload image",
+      "imageRemoveSuccess": "Profile image removed",
+      "dragDropOrClick": "Drag & drop image here or click to upload",
+      "dropImageHere": "Drop image here",
+      "supportedFormats": "PNG, JPG, GIF up to 5MB",
+      "plans": {
+        "free": {
+          "name": "Free",
+          "period": "forever",
+          "features": {
+            "0": "1 Menu",
+            "1": "Up to 20 items",
+            "2": "Basic customization",
+            "3": "Ads supported"
+          }
+        },
+        "starter": {
+          "name": "Starter",
+          "period": "/month",
+          "features": {
+            "0": "3 Menus",
+            "1": "Unlimited items",
+            "2": "Advanced customization",
+            "3": "No ads",
+            "4": "Analytics"
+          }
+        },
+        "professional": {
+          "name": "Professional",
+          "period": "/month",
+          "features": {
+            "0": "Unlimited menus",
+            "1": "Full customization",
+            "2": "Priority support",
+            "3": "Advanced analytics",
+            "4": "Custom domain"
+          }
+        }
+      }
+    }
+  },
+  "SignIn": {
+    "title": "Welcome Back!",
+    "email": "Email Address",
+    "emailPlaceholder": "example@domain.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot Password?",
+    "signInButton": "Sign In",
+    "signingIn": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "createAccount": "Create Account",
+    "fillAllFields": "Please fill in all fields"
+  },
+  "SignUp": {
+    "title": "Create Account",
+    "name": "Full Name",
+    "namePlaceholder": "John Doe",
+    "email": "Email Address",
+    "emailPlaceholder": "example@domain.com",
+    "password": "Password",
+    "passwordPlaceholder": "At least 8 characters",
+    "signUpButton": "Sign Up",
+    "signingUp": "Creating account...",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign In",
+    "fillAllFields": "Please fill in all fields"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update",
+    "search": "Search",
+    "filter": "Filter",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "Header": {
+    "myProfile": "My Profile",
+    "billing": "Billing",
+    "manageMenus": "Manage Menus",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "Sidebar": {
+    "main": "Main",
+    "other": "Other",
+    "dashboard": "Dashboard",
+    "menus": "My Menus",
+    "overview": "Overview",
+    "categories": "Categories",
+    "products": "Products",
+    "profile": "Profile",
+    "settings": "Settings",
+    "accountSettings": "Account Settings",
+    "needHelp": "Need Help?",
+    "helpDescription": "Check our documentation or contact support",
+    "contactSupport": "Contact Support"
+  },
+  "MenuItems": {
+    "title": "Menu Items",
+    "subtitle": "Manage your menu items",
+    "addItem": "Add Item",
+    "editItem": "Edit Item",
+    "addFirstItem": "Add First Item",
+    "noItems": "No items yet",
+    "noItemsDesc": "Start adding items to your menu",
+    "nameAr": "Arabic Name",
+    "nameEn": "English Name",
+    "nameArPlaceholder": "e.g., كباب دجاج",
+    "nameEnPlaceholder": "e.g., Chicken Kebab",
+    "descriptionAr": "Arabic Description",
+    "descriptionEn": "English Description",
+    "descriptionPlaceholder": "Describe this item...",
+    "price": "Price",
+    "category": "Category",
+    "imageUrl": "Image URL",
+    "imagePlaceholder": "https://example.com/image.jpg",
+    "imageHint": "Optional: Enter image URL or leave empty",
+    "available": "Available",
+    "notAvailable": "Not Available",
+    "categories": {
+      "starters": "Starters",
+      "main": "Main Course",
+      "desserts": "Desserts",
+      "drinks": "Drinks",
+      "other": "Other"
+    },
+    "selectCategory": "Select Category",
+    "noCategoriesHint": "No categories available. Please create a category first from the Categories page.",
+    "pricing": "Pricing",
+    "originalPrice": "Original Price",
+    "discountPercent": "Discount Percent",
+    "finalPrice": "Final Price",
+    "calculatedPrice": "Price calculated automatically",
+    "nameRequired": "Name is required in both languages",
+    "priceRequired": "Valid price is required",
+    "create": "Create",
+    "update": "Update",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this item?",
+    "createSuccess": "Item created successfully!",
+    "updateSuccess": "Item updated successfully!",
+    "deleteSuccess": "Item deleted successfully!",
+    "saveError": "Failed to save item",
+    "fetchError": "Failed to load items",
+    "deleteError": "Failed to delete item"
+  },
+  "Categories": {
+    "title": "Categories",
+    "subtitle": "Manage menu categories",
+    "addCategory": "Add Category",
+    "editCategory": "Edit Category",
+    "createFirst": "Create First Category",
+    "noCategories": "No categories yet",
+    "getStarted": "Get started by creating your first category",
+    "nameAr": "Name (Arabic)",
+    "nameEn": "Name (English)",
+    "image": "Image",
+    "sortOrder": "Sort Order",
+    "active": "Active",
+    "inactive": "Inactive",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this category?",
+    "createSuccess": "Category created successfully!",
+    "updateSuccess": "Category updated successfully!",
+    "deleteSuccess": "Category deleted successfully!",
+    "saveError": "Failed to save category",
+    "fetchError": "Failed to load categories",
+    "deleteError": "Failed to delete category",
+    "imageUploadSuccess": "Image uploaded successfully",
+    "imageUploadError": "Failed to upload image",
+    "uploading": "Uploading",
+    "create": "Create",
+    "update": "Update",
+    "cancel": "Cancel",
+    "saving": "Saving..."
+  },
+  "PublicMenu": {
+    "notFound": "Menu Not Found",
+    "notFoundDescription": "This menu doesn't exist or is not active",
+    "fetchError": "Failed to load menu",
+    "rateUs": "Rate Us",
+    "allCategories": "All",
+    "categories": {
+      "starters": "Starters",
+      "main": "Main Course",
+      "desserts": "Desserts",
+      "drinks": "Drinks",
+      "other": "Other"
+    },
+    "noItems": "No items available",
+    "noItemsInCategory": "No items in this category yet",
+    "ourBranches": "Our Branches",
+    "rating": {
+      "title": "Rate This Menu",
+      "rating": "Your Rating",
+      "name": "Your Name",
+      "namePlaceholder": "Enter your name (optional)",
+      "comment": "Comment",
+      "commentPlaceholder": "Share your experience...",
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "submitting": "Submitting...",
+      "selectStars": "Please select a rating",
+      "submitSuccess": "Thank you for your rating!",
+      "submitError": "Failed to submit rating"
+    }
+  },
+  "MenuDashboard": {
+    "subtitle": "Manage your entire menu",
+    "manageItems": "Manage Items",
+    "settings": "Settings",
+    "viewPublic": "View Public Menu",
+    "stats": {
+      "totalItems": "Total Items",
+      "activeItems": "Active Items",
+      "categories": "Categories",
+      "views": "Views"
+    },
+    "quickLinks": {
+      "items": "Menu Items",
+      "itemsDesc": "Add, edit, and delete items",
+      "settings": "Menu Settings",
+      "settingsDesc": "Customize appearance and settings",
+      "preview": "Public Preview",
+      "previewDesc": "View menu as customers see it"
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "noActivity": "No recent activity"
+    }
+  },
+  "MenuSettings": {
+    "title": "Menu Settings",
+    "subtitle": "Customize your menu settings and appearance",
+    "fetchError": "Failed to load settings",
+    "saveSuccess": "Changes saved successfully!",
+    "saveError": "Failed to save changes",
+    "deleteConfirm": "Are you sure you want to delete this menu? This action cannot be undone!",
+    "deleteSuccess": "Menu deleted successfully",
+    "deleteError": "Failed to delete menu",
+    "sections": {
+      "general": "General Settings",
+      "appearance": "Appearance",
+      "status": "Status"
+    },
+    "fields": {
+      "nameEn": "Name (English)",
+      "nameAr": "Name (Arabic)",
+      "descriptionEn": "Description (English)",
+      "descriptionAr": "Description (Arabic)",
+      "slug": "Custom URL",
+      "slugHint": "Will appear in menu URL: yoursite.com/menu/slug",
+      "theme": "Theme",
+      "isActive": "Activate Menu",
+      "isActiveHint": "When active, the menu will be visible to the public"
+    },
+    "themes": {
+      "classic": "Classic",
+      "modern": "Modern",
+      "elegant": "Elegant"
+    },
+    "buttons": {
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "cancel": "Cancel"
+    },
+    "dangerZone": {
+      "title": "Danger Zone",
+      "description": "Deleting this menu will remove all associated items. This action cannot be undone!",
+      "deleteButton": "Delete Menu Permanently"
+    }
+  }
+}

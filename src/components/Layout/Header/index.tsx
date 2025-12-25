@@ -3,18 +3,19 @@
 import React, { useEffect } from "react";
 import Settings from "./Settings";
 import DarkMode from "./DarkMode";
-import SearchForm from "./SearchForm";
-import AppsMenu from "./AppsMenu";
-import ChooseLanguage from "./ChooseLanguage";
 import Fullscreen from "./Fullscreen";
-import Notifications from "./Notifications";
 import ProfileMenu from "./ProfileMenu";
+import { usePathname } from "next/navigation";
+import { useLocale } from "next-intl";
 
 interface HeaderProps {
   toggleActive: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleActive }) => {
+  const pathname = usePathname();
+  const locale = useLocale();
+
   useEffect(() => {
     const elementId = document.getElementById("header");
     const handleScroll = () => {
@@ -33,6 +34,22 @@ const Header: React.FC<HeaderProps> = ({ toggleActive }) => {
     };
   }, []); // Added empty dependency array to avoid repeated effect calls
 
+  const handleLanguageChange = (newLocale: string) => {
+    // Get pathname without locale prefix
+    const pathnameWithoutLocale = pathname.replace(/^\/(ar|en)/, "") || "/";
+    // Navigate to the same page with the new locale
+    window.location.href = `/${newLocale}${pathnameWithoutLocale}`;
+  };
+
+  // Check if we should hide the sidebar toggle button
+  const pathnameWithoutLocale = pathname.replace(/^\/(ar|en)/, "") || "/";
+  const shouldHideSidebarToggle =
+    pathnameWithoutLocale === "/menus" ||
+    pathnameWithoutLocale === "/dashboard/menus" ||
+    pathnameWithoutLocale === "/dashboard/profile/user-profile" ||
+    pathnameWithoutLocale === "/dashboard/profile/edit" ||
+    pathnameWithoutLocale === "/dashboard";
+
   return (
     <>
       <div
@@ -41,33 +58,49 @@ const Header: React.FC<HeaderProps> = ({ toggleActive }) => {
       >
         <div className="md:flex md:items-center md:justify-between">
           <div className="flex items-center justify-center md:justify-normal">
-            <div className="relative leading-none top-px ltr:mr-[13px] ltr:md:mr-[18px] ltr:lg:mr-[23px] rtl:ml-[13px] rtl:md:ml-[18px] rtl:lg:ml-[23px]">
-              <button
-                type="button"
-                className="hide-sidebar-toggle transition-all inline-block hover:text-primary-500"
-                onClick={toggleActive}
-              >
-                <i className="material-symbols-outlined !text-[20px]">menu</i>
-              </button>
-            </div>
+            {!shouldHideSidebarToggle && (
+              <div className="relative leading-none top-px ltr:mr-[13px] ltr:md:mr-[18px] ltr:lg:mr-[23px] rtl:ml-[13px] rtl:md:ml-[18px] rtl:lg:ml-[23px]">
+                <button
+                  type="button"
+                  className="hide-sidebar-toggle transition-all inline-block hover:text-primary-500"
+                  onClick={toggleActive}
+                >
+                  <i className="material-symbols-outlined !text-[20px]">menu</i>
+                </button>
+              </div>
+            )}
 
-            <SearchForm />
+            {/* <SearchForm /> */}
 
-            <AppsMenu />
+            {/* <AppsMenu /> */}
           </div>
 
           <div className="flex items-center justify-center md:justify-normal mt-[13px] md:mt-0">
-            <DarkMode />
+            {/* <ChooseLanguage /> */}
 
-            <ChooseLanguage />
+            {/* Language Switcher */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() =>
+                  handleLanguageChange(locale === "ar" ? "en" : "ar")
+                }
+                className="inline-flex items-center justify-center w-[40px] h-[40px] rounded-md transition-all hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                title={
+                  locale === "ar" ? "Switch to English" : "التبديل إلى العربية"
+                }
+              >
+                <i className="material-symbols-outlined !text-[20px] md:!text-[22px]">
+                  translate
+                </i>
+              </button>
+            </div>
+
+            <DarkMode />
 
             <Fullscreen />
 
-            <Notifications />
-
             <ProfileMenu />
-
-            <Settings />
           </div>
         </div>
       </div>

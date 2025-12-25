@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 
 const NAV_ITEMS = [
   { name: "Home", path: "/" },
@@ -16,8 +17,46 @@ const NAV_ITEMS = [
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
+  const locale = useLocale();
   const [isMenuOpen, setMenuOpen] = useState(false);
   const handleToggle = () => setMenuOpen(!isMenuOpen);
+
+  // Dark Mode State
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  const t = useTranslations("HomePage");
+
+  // Initialize Dark Mode
+  useEffect(() => {
+    const storedPreference = localStorage.getItem("theme");
+    if (storedPreference === "dark") {
+      setIsDarkMode(true);
+    }
+  }, []);
+
+  // Update Dark Mode
+  useEffect(() => {
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+    const htmlElement = document.querySelector("html");
+    if (htmlElement) {
+      if (isDarkMode) {
+        htmlElement.classList.add("dark");
+      } else {
+        htmlElement.classList.remove("dark");
+      }
+    }
+  }, [isDarkMode]);
+
+  const handleDarkModeToggle = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  const handleLanguageChange = (newLocale: string) => {
+    // Get pathname without locale prefix
+    const pathnameWithoutLocale = pathname.replace(/^\/(ar|en)/, "") || "/";
+    // Navigate to the same page with the new locale
+    window.location.href = `/${newLocale}${pathnameWithoutLocale}`;
+  };
 
   // handleScroll
   useEffect(() => {
@@ -44,23 +83,16 @@ const Navbar: React.FC = () => {
         className="fixed top-0 right-0 left-0 transition-all h-auto z-[5] py-[20px]"
         id="navbar"
       >
-        <div className="container 2xl:max-w-[1320px] mx-auto px-[12px]">
+        <div className=" mx-auto px-10 ">
           <div className="flex items-center relative flex-wrap lg:flex-nowrap justify-between lg:justify-start">
             <Link
               href="/"
               className="inline-block max-w-[130px] ltr:mr-[15px] rtl:ml-[15px]"
             >
               <Image
-                src="/images/logo-big.svg"
+                src="/images/ENS-copy.png"
                 alt="logo"
-                className="inline-block dark:hidden"
-                width={126}
-                height={36}
-              />
-              <Image
-                src="/images/white-logo-big.svg"
-                alt="logo"
-                className="hidden dark:inline-block"
+                className="inline-block "
                 width={126}
                 height={36}
               />
@@ -96,8 +128,46 @@ const Navbar: React.FC = () => {
               </ul>
 
               <div className="flex items-center ltr:ml-auto rtl:mr-auto gap-[15px]">
+                {/* Language Switcher */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleLanguageChange(locale === "ar" ? "en" : "ar")
+                    }
+                    className="inline-flex items-center justify-center w-[40px] h-[40px] rounded-md transition-all hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                    title={
+                      locale === "ar"
+                        ? "Switch to English"
+                        : "التبديل إلى العربية"
+                    }
+                  >
+                    <i className="material-symbols-outlined !text-[20px] md:!text-[22px]">
+                      translate
+                    </i>
+                  </button>
+                </div>
+
+                {/* Dark Mode Toggle */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={handleDarkModeToggle}
+                    className="inline-flex items-center justify-center w-[40px] h-[40px] rounded-md transition-all hover:bg-gray-100 dark:hover:bg-gray-800 text-[#fe7a36]"
+                    title={
+                      isDarkMode
+                        ? "Switch to Light Mode"
+                        : "Switch to Dark Mode"
+                    }
+                  >
+                    <i className="material-symbols-outlined !text-[20px] md:!text-[22px]">
+                      {isDarkMode ? "dark_mode" : "light_mode"}
+                    </i>
+                  </button>
+                </div>
+
                 <Link
-                  href="/authentication/sign-in"
+                  href={`/${locale}/authentication/sign-in`}
                   className="inline-block text-purple-600 lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] rounded-md transition-all font-medium border border-purple-600 hover:text-white hover:bg-purple-500 hover:border-purple-500"
                 >
                   <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
@@ -109,7 +179,7 @@ const Navbar: React.FC = () => {
                 </Link>
 
                 <Link
-                  href="/authentication/sign-up"
+                  href={`/${locale}/authentication/sign-up`}
                   className="inline-block lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] bg-purple-600 text-white rounded-md transition-all font-medium border border-purple-600 hover:bg-purple-500 hover:border-purple-500"
                 >
                   <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
@@ -148,8 +218,46 @@ const Navbar: React.FC = () => {
               </ul>
 
               <div className="flex items-center gap-[15px] mt-[14px] md:mt-[16px]">
+                {/* Language Switcher */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleLanguageChange(locale === "ar" ? "en" : "ar")
+                    }
+                    className="inline-flex items-center justify-center w-[40px] h-[40px] rounded-md transition-all hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                    title={
+                      locale === "ar"
+                        ? "Switch to English"
+                        : "التبديل إلى العربية"
+                    }
+                  >
+                    <i className="material-symbols-outlined !text-[20px] md:!text-[22px]">
+                      translate
+                    </i>
+                  </button>
+                </div>
+
+                {/* Dark Mode Toggle */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={handleDarkModeToggle}
+                    className="inline-flex items-center justify-center w-[40px] h-[40px] rounded-md transition-all hover:bg-gray-100 dark:hover:bg-gray-800 text-[#fe7a36]"
+                    title={
+                      isDarkMode
+                        ? "Switch to Light Mode"
+                        : "Switch to Dark Mode"
+                    }
+                  >
+                    <i className="material-symbols-outlined !text-[20px] md:!text-[22px]">
+                      {isDarkMode ? "dark_mode" : "light_mode"}
+                    </i>
+                  </button>
+                </div>
+
                 <Link
-                  href="/authentication/sign-in"
+                  href={`/${locale}/authentication/sign-in`}
                   className="inline-block text-purple-600 lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] rounded-md transition-all font-medium border border-purple-600 hover:text-white hover:bg-purple-500 hover:border-purple-500"
                 >
                   <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
@@ -161,7 +269,7 @@ const Navbar: React.FC = () => {
                 </Link>
 
                 <Link
-                  href="/authentication/sign-up"
+                  href={`/${locale}/authentication/sign-up`}
                   className="inline-block lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] bg-purple-600 text-white rounded-md transition-all font-medium border border-purple-600 hover:bg-purple-500 hover:border-purple-500"
                 >
                   <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">

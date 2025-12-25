@@ -2,29 +2,43 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
+import { usePathname, useRouter } from "@/i18n/navigation";
 
 type Language = {
   name: string;
   code: string;
-  flag: string;
+  flag?: string;
+  emoji: string;
+  nameAr: string;
 };
 
 const languages: Language[] = [
-  { name: "English", code: "en", flag: "/images/flags/usa.svg" },
-  { name: "French", code: "fr", flag: "/images/flags/france.svg" },
-  { name: "German", code: "de", flag: "/images/flags/germany.svg" },
-  { name: "Portuguese", code: "pt", flag: "/images/flags/portugal.svg" },
-  { name: "Spanish", code: "es", flag: "/images/flags/spain.svg" },
+  { name: "العربية", nameAr: "العربية", code: "ar", emoji: "🇸🇦" },
+  { name: "English", nameAr: "الإنجليزية", code: "en", flag: "/images/flags/usa.svg", emoji: "🇺🇸" },
 ];
 
 const ChooseLanguage: React.FC = () => {
-  const handleLanguageChange = (code: string) => {
-    console.log(`Selected language: ${code}`);
-    // Add logic here to update the app's language state
-  };
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const [active, setActive] = useState<boolean>(false);
-  const dropdownRef = useRef<HTMLDivElement>(null); // Ref for the dropdown container
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const currentLanguage = languages.find((lang) => lang.code === locale) || languages[0];
+
+  const handleLanguageChange = (code: string) => {
+    if (code === locale) {
+      setActive(false);
+      return;
+    }
+
+    // Use router.push with the current pathname
+    // The router from next-intl will automatically handle the locale prefix
+    router.push(pathname, { locale: code });
+    setActive(false);
+  };
 
   const handleDropdownToggle = () => {
     setActive((prevState) => !prevState);
@@ -37,14 +51,12 @@ const ChooseLanguage: React.FC = () => {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setActive(false); // Close the dropdown if clicked outside
+        setActive(false);
       }
     };
 
-    // Attach the event listener
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Cleanup the event listener
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -58,43 +70,62 @@ const ChooseLanguage: React.FC = () => {
       <button
         type="button"
         onClick={handleDropdownToggle}
-        className={`leading-none pr-[12px] inline-block transition-all relative top-[2px] hover:text-primary-500 ${
-          active ? "active" : ""
+        className={`flex items-center gap-1 leading-none px-2 py-1 rounded transition-all hover:text-primary-500 hover:bg-gray-100 dark:hover:bg-gray-800 ${
+          active ? "text-primary-500 bg-gray-100 dark:bg-gray-800" : ""
         }`}
       >
-        <i className="material-symbols-outlined !text-[20px] md:!text-[22px]">
-          translate
-        </i>
-        <i className="ri-arrow-down-s-line text-[15px] absolute -right-[3px] top-1/2 -translate-y-1/2 -mt-[2px]"></i>
+        {currentLanguage.flag ? (
+          <Image
+            src={currentLanguage.flag}
+            alt={currentLanguage.name}
+            width={20}
+            height={20}
+            className="rounded-sm"
+          />
+        ) : (
+          <span className="text-xl">{currentLanguage.emoji}</span>
+        )}
+        <span className="hidden md:inline-block text-sm font-medium">
+          {currentLanguage.name}
+        </span>
+        <i className="ri-arrow-down-s-line text-[15px]"></i>
       </button>
 
       {active && (
-        <div className="language-menu-dropdown bg-white dark:bg-[#0c1427] transition-all shadow-3xl dark:shadow-none pt-[13px] md:pt-[14px] absolute mt-[18px] md:mt-[21px] w-[200px] md:w-[240px] z-[1] top-full ltr:left-0 ltr:md:left-auto ltr:lg:right-0 rtl:right-0 rtl:md:right-auto rtl:lg:left-0 rounded-md">
-          <span className="block text-black dark:text-white font-semibold px-[20px] pb-[14px] text-sm md:text-[15px]">
-            Choose Language
-          </span>
+        <div className="language-menu-dropdown bg-white dark:bg-[#0c1427] transition-all shadow-3xl dark:shadow-none py-2 absolute mt-2 w-[180px] z-[1] top-full ltr:right-0 rtl:left-0 rounded-md border border-gray-100 dark:border-[#172036]">
+          <div className="px-3 pb-2 mb-2 border-b border-gray-100 dark:border-[#172036]">
+            <span className="block text-black dark:text-white font-semibold text-sm">
+              {locale === "ar" ? "اختر اللغة" : "Choose Language"}
+            </span>
+          </div>
 
           <ul>
             {languages.map((language) => (
-              <li
-                key={language.code}
-                className="border-t border-dashed border-gray-100 dark:border-[#172036]"
-              >
+              <li key={language.code}>
                 <button
                   type="button"
-                  className="text-black dark:text-white px-[20px] py-[12px] d-block w-full font-medium"
+                  className={`w-full text-left px-3 py-2 font-medium transition-all hover:bg-gray-50 dark:hover:bg-[#0a0e19] flex items-center gap-2 ${
+                    language.code === locale
+                      ? "text-primary-500 bg-gray-50 dark:bg-[#0a0e19]"
+                      : "text-black dark:text-white"
+                  }`}
                   onClick={() => handleLanguageChange(language.code)}
                 >
-                  <div className="flex items-center">
+                  {language.flag ? (
                     <Image
                       src={language.flag}
-                      className="ltr:mr-[10px] rtl:ml-[10px]"
                       alt={language.name}
-                      width={30}
-                      height={30}
+                      width={24}
+                      height={24}
+                      className="rounded-sm"
                     />
-                    {language.name}
-                  </div>
+                  ) : (
+                    <span className="text-2xl">{language.emoji}</span>
+                  )}
+                  <span className="flex-1">{language.name}</span>
+                  {language.code === locale && (
+                    <i className="ri-check-line text-primary-500"></i>
+                  )}
                 </button>
               </li>
             ))}
