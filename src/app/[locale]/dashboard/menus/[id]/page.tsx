@@ -96,37 +96,51 @@ export default function MenuDashboard({
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="flex gap-3 mt-4">
-          <Link
-            href={`/${locale}/dashboard/menus/${id}/items`}
-            className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center gap-2"
-          >
-            <i className="material-symbols-outlined !text-[20px]">
-              restaurant_menu
-            </i>
-            {t("manageItems")}
-          </Link>
-          <Link
-            href={`/${locale}/dashboard/menus/${id}/settings`}
-            className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
-          >
-            <i className="material-symbols-outlined !text-[20px]">settings</i>
-            {t("settings")}
-          </Link>
-          {menuSlug && (
-            <a
-              href={getMenuPublicUrl(menuSlug)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors flex items-center gap-2"
+        {/* Sidebar Navigation */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={`/${locale}/dashboard/menus/${id}`}
+              className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center gap-2"
             >
-              <i className="material-symbols-outlined !text-[20px]">
-                open_in_new
-              </i>
-              {t("viewPublic")}
-            </a>
-          )}
+              <i className="material-symbols-outlined !text-[18px]">dashboard</i>
+              نظرة عامة
+            </Link>
+            <Link
+              href={`/${locale}/dashboard/menus/${id}/categories`}
+              className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center gap-2"
+            >
+              <i className="material-symbols-outlined !text-[18px]">category</i>
+              التصنيفات
+            </Link>
+            <Link
+              href={`/${locale}/dashboard/menus/${id}/products`}
+              className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center gap-2"
+            >
+              <i className="material-symbols-outlined !text-[18px]">restaurant_menu</i>
+              المنتجات
+            </Link>
+            <Link
+              href={`/${locale}/dashboard/menus/${id}/settings`}
+              className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center gap-2"
+            >
+              <i className="material-symbols-outlined !text-[18px]">settings</i>
+              {t("settings")}
+            </Link>
+            {menuSlug && (
+              <a
+                href={getMenuPublicUrl(menuSlug)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors flex items-center gap-2"
+              >
+                <i className="material-symbols-outlined !text-[18px]">
+                  open_in_new
+                </i>
+                {t("viewPublic")}
+              </a>
+            )}
+          </div>
         </div>
       </div>
 

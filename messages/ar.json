@@ -108,6 +108,7 @@
     "openDashboard": "فتح لوحة التحكم",
     "edit": "تعديل",
     "activate": "تفعيل",
+    "pause": "إيقاف مؤقت",
     "deactivate": "إلغاء التفعيل",
     "delete": "حذف",
     "viewPublic": "عرض الصفحة العامة",
@@ -494,9 +495,9 @@
       "isActiveHint": "عند التفعيل، ستكون القائمة مرئية للعامة"
     },
     "themes": {
-      "classic": "كلاسيكي",
-      "modern": "عصري",
-      "elegant": "أنيق"
+      "default": "الافتراضي",
+      "template2": "القالب الثاني",
+      "template3": "القالب الثالث"
     },
     "buttons": {
       "save": "حفظ التغييرات",

@@ -95,10 +95,19 @@ class ApiClient {
         data,
         error: undefined,
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error('API Request Error:', error);
+      
+      // Check if it's a blocked request (ad blocker, etc.)
+      if (error.message?.includes('Failed to fetch') || error.name === 'TypeError') {
+        return {
+          error: 'Unable to connect to server. Please check if the backend is running and CORS is configured correctly.',
+          data: null,
+        };
+      }
+      
       return {
-        error: 'Network error. Please check your connection.',
+        error: error.message || 'Network error. Please check your connection.',
         data: null,
       };
     }

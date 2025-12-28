@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, use } from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations, useLocale, useMessages } from "next-intl";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 import MenuItemForm from "@/components/MenuItems/MenuItemForm";
@@ -20,16 +20,21 @@ interface MenuItem {
   translations?: any;
 }
 
-export default function MenuItemsPage({ params }: { params: Promise<{ id: string }> }) {
+export default function MenuItemsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   // Unwrap params Promise using React.use()
   const { id } = use(params);
-  
+
   const t = useTranslations("MenuItems");
+  const messages = useMessages();
   const locale = useLocale();
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const { data: menu, isLoading: menuLoading } = useMenu(parseInt(id));
-  
+
   const [items, setItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -56,7 +61,7 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
   const fetchMenuItems = async () => {
     try {
       const token = localStorage.getItem("accessToken"); // تم التصحيح: استخدام accessToken بدلاً من token
-      
+
       // Fetch menu details
       const menuResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}?locale=${locale}`,
@@ -150,10 +155,32 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
       starters: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300",
       main: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
       desserts: "bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300",
-      drinks: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300",
+      drinks:
+        "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300",
       other: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300",
     };
     return colors[category] || colors.other;
+  };
+
+  const getCategoryName = (category: string): string => {
+    // Check if the translation key exists in messages
+    const translationKey = `categories.${category}`;
+    const menuItemsMessages = messages?.MenuItems as any;
+    const categoryTranslation = menuItemsMessages?.categories?.[category];
+
+    // If translation exists, use it; otherwise use the category name
+    if (categoryTranslation) {
+      return categoryTranslation;
+    }
+
+    // Fallback: try to get translation using t() (will use getMessageFallback if not found)
+    try {
+      const translation = t(translationKey);
+      // If translation is the same as the key, return category name
+      return translation === translationKey ? category : translation;
+    } catch {
+      return category;
+    }
   };
 
   if (loading) {
@@ -274,7 +301,7 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
                       item.category
                     )}`}
                   >
-                    {t(`categories.${item.category}`)}
+                    {getCategoryName(item.category)}
                   </span>
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -316,4 +343,3 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
     </div>
   );
 }
-

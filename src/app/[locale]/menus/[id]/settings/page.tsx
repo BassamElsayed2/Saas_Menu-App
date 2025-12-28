@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { toast } from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMenu } from "@/hooks/useApi";
+import { templates } from "@/components/defaultTemplate";
 
 export default function MenuSettingsPage({
   params,
@@ -27,7 +28,16 @@ export default function MenuSettingsPage({
     descriptionEn: "",
     descriptionAr: "",
     slug: "",
-    theme: "classic",
+    theme: "default",
+    isActive: true,
+  });
+  const [originalData, setOriginalData] = useState({
+    nameEn: "",
+    nameAr: "",
+    descriptionEn: "",
+    descriptionAr: "",
+    slug: "",
+    theme: "default",
     isActive: true,
   });
 
@@ -68,15 +78,17 @@ export default function MenuSettingsPage({
         const data = await response.json();
         const menu = data.data?.menu;
         if (menu) {
-          setFormData({
+          const initialData = {
             nameEn: menu.nameEn || menu.name || "",
             nameAr: menu.nameAr || "",
             descriptionEn: menu.descriptionEn || menu.description || "",
             descriptionAr: menu.descriptionAr || "",
             slug: menu.slug || "",
-            theme: menu.theme || "classic",
+            theme: menu.theme || "default",
             isActive: menu.isActive || false,
-          });
+          };
+          setFormData(initialData);
+          setOriginalData(initialData);
         }
       }
     } catch (error) {
@@ -89,6 +101,35 @@ export default function MenuSettingsPage({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Build update object with only changed fields
+    const updates: any = {};
+    
+    if (formData.nameEn !== originalData.nameEn) {
+      updates.nameEn = formData.nameEn;
+    }
+    if (formData.nameAr !== originalData.nameAr) {
+      updates.nameAr = formData.nameAr;
+    }
+    if (formData.descriptionEn !== originalData.descriptionEn) {
+      updates.descriptionEn = formData.descriptionEn;
+    }
+    if (formData.descriptionAr !== originalData.descriptionAr) {
+      updates.descriptionAr = formData.descriptionAr;
+    }
+    if (formData.theme !== originalData.theme) {
+      updates.theme = formData.theme;
+    }
+    if (formData.isActive !== originalData.isActive) {
+      updates.isActive = formData.isActive;
+    }
+
+    // Only send request if there are changes
+    if (Object.keys(updates).length === 0) {
+      toast("لا توجد تغييرات لحفظها", { icon: "ℹ️" });
+      return;
+    }
+
     setSaving(true);
 
     try {
@@ -101,13 +142,15 @@ export default function MenuSettingsPage({
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(updates),
         }
       );
 
       if (!response.ok) throw new Error("Failed to update menu");
 
       toast.success(t("saveSuccess"));
+      // Update original data to reflect saved changes
+      setOriginalData({ ...formData });
       router.push(`/${locale}/menus/${id}`);
     } catch (error) {
       console.error("Error saving menu settings:", error);
@@ -184,7 +227,7 @@ export default function MenuSettingsPage({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t("fields.nameEn")} *
+                  {t("fields.nameEn")}
                 </label>
                 <input
                   type="text"
@@ -193,13 +236,12 @@ export default function MenuSettingsPage({
                     setFormData({ ...formData, nameEn: e.target.value })
                   }
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
-                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t("fields.nameAr")} *
+                  {t("fields.nameAr")}
                 </label>
                 <input
                   type="text"
@@ -209,7 +251,6 @@ export default function MenuSettingsPage({
                   }
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
                   dir="rtl"
-                  required
                 />
               </div>
             </div>
@@ -245,7 +286,7 @@ export default function MenuSettingsPage({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {t("fields.slug")} *
+                {t("fields.slug")}
               </label>
               <input
                 type="text"
@@ -259,10 +300,13 @@ export default function MenuSettingsPage({
                   })
                 }
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white font-mono"
-                required
+                disabled
               />
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 {t("fields.slugHint")}
+              </p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                (لا يمكن تغيير الرابط بعد الإنشاء)
               </p>
             </div>
           </div>
@@ -288,9 +332,11 @@ export default function MenuSettingsPage({
               }
               className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
             >
-              <option value="classic">{t("themes.classic")}</option>
-              <option value="modern">{t("themes.modern")}</option>
-              <option value="elegant">{t("themes.elegant")}</option>
+              {templates.map((template) => (
+                <option key={template.id} value={template.id}>
+                  {locale === "ar" ? template.nameAr : template.name}
+                </option>
+              ))}
             </select>
           </div>
         </div>

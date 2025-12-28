@@ -108,6 +108,7 @@
     "openDashboard": "Open Dashboard",
     "edit": "Edit",
     "activate": "Activate",
+    "pause": "Pause",
     "deactivate": "Deactivate",
     "delete": "Delete",
     "viewPublic": "View Public Page",
@@ -494,9 +495,9 @@
       "isActiveHint": "When active, the menu will be visible to the public"
     },
     "themes": {
-      "classic": "Classic",
-      "modern": "Modern",
-      "elegant": "Elegant"
+      "default": "Default",
+      "template2": "Template 2",
+      "template3": "Template 3"
     },
     "buttons": {
       "save": "Save Changes",
