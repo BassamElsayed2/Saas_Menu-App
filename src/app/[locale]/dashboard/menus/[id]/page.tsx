@@ -50,14 +50,20 @@ export default function MenuDashboard({
 
       if (response.ok) {
         const data = await response.json();
-        setMenuName(data.data?.menu?.name || "");
-        setMenuSlug(data.data?.menu?.slug || null);
+        const menu = data.menu;
+        // استخدام الترجمة المناسبة حسب اللغة
+        const displayName =
+          locale === "ar"
+            ? menu?.nameAr || menu?.name || ""
+            : menu?.nameEn || menu?.name || "";
+        setMenuName(displayName);
+        setMenuSlug(menu?.slug || null);
         // TODO: Fetch real stats from backend
         setStats({
-          totalItems: data.data?.itemsCount || 0,
-          activeItems: data.data?.activeItemsCount || 0,
-          categories: data.data?.categoriesCount || 0,
-          views: data.data?.views || 0,
+          totalItems: data.itemsCount || 0,
+          activeItems: data.activeItemsCount || 0,
+          categories: data.categoriesCount || 0,
+          views: data.views || 0,
         });
       }
     } catch (error) {

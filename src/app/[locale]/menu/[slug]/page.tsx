@@ -301,42 +301,6 @@ export default function PublicMenuPage({
         onCategoryChange={setSelectedCategory}
         onShowRatingModal={() => setShowRatingModal(true)}
       />
-
-      {/* Rating Modal */}
-      {showRatingModal && (
-        <RatingModal
-          slug={slug}
-          onClose={() => setShowRatingModal(false)}
-          onSuccess={() => {
-            setShowRatingModal(false);
-            fetchMenuData();
-          }}
-        />
-      )}
     </>
-  );
-}
-
-interface RatingModalProps {
-  slug: string;
-  onClose: () => void;
-  onSuccess: () => void;
-}
-
-function RatingModal({ slug, onClose, onSuccess }: RatingModalProps) {
-  const t = useTranslations("PublicMenu.rating");
-  const [stars, setStars] = useState(0);
-  const [comment, setComment] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-          {t("title")}
-        </h2>
-      </div>
-    </div>
   );
 }
