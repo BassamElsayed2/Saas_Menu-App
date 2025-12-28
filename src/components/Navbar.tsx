@@ -13,16 +13,17 @@ const Navbar: React.FC = () => {
   const t = useTranslations("navbar");
 
   const NAV_ITEMS = [
-    { key: "home", path: "/" },
-    { key: "features", path: "/front-pages/features/" },
-    { key: "team", path: "/front-pages/team/" },
-    { key: "faq", path: "/front-pages/faq/" },
-    { key: "contact", path: "/front-pages/contact/" },
+    { key: "home", path: "#hero" },
+    { key: "features", path: "#features" },
+    { key: "team", path: "#how-it-works" },
+    { key: "faq", path: "#packages" },
+    { key: "contact", path: "#contact" },
   ];
 
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const [activeSection, setActiveSection] = useState("#hero");
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
@@ -43,9 +44,45 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = NAV_ITEMS.map(item => item.path.replace("#", ""));
+      const scrollPosition = window.scrollY + 150;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveSection(`#${sections[i]}`);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Check on mount
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const switchLanguage = () => {
     const basePath = pathname.replace(/^\/(ar|en)/, "") || "/";
     window.location.href = `/${locale === "ar" ? "en" : "ar"}${basePath}`;
+  };
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    if (path.startsWith("#")) {
+      e.preventDefault();
+      const element = document.querySelector(path);
+      if (element) {
+        const navbarHeight = 100; // Approximate navbar height
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - navbarHeight;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    }
   };
 
   return (
@@ -75,21 +112,22 @@ const Navbar: React.FC = () => {
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-10">
             {NAV_ITEMS.map((item) => (
-              <Link
+              <a
                 key={item.key}
                 href={item.path}
-                className={`relative font-medium transition-colors
+                onClick={(e) => handleNavClick(e, item.path)}
+                className={`relative font-medium transition-colors cursor-pointer
                 ${
-                  pathname === item.path
+                  activeSection === item.path
                     ? "text-purple-600 dark:text-purple-400"
                     : "text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400"
                 }`}
               >
                 {t(item.key)}
-                {pathname === item.path && (
+                {activeSection === item.path && (
                   <span className="absolute -bottom-2 left-0 w-full h-[2px] rounded-full bg-purple-500" />
                 )}
-              </Link>
+              </a>
             ))}
           </nav>
 
@@ -147,19 +185,22 @@ const Navbar: React.FC = () => {
           >
             <nav className="flex flex-col gap-5">
               {NAV_ITEMS.map((item) => (
-                <Link
+                <a
                   key={item.key}
                   href={item.path}
-                  onClick={() => setMobileOpen(false)}
-                  className={`font-medium transition-colors
+                  onClick={(e) => {
+                    handleNavClick(e, item.path);
+                    setMobileOpen(false);
+                  }}
+                  className={`font-medium transition-colors cursor-pointer
                   ${
-                    pathname === item.path
+                    activeSection === item.path
                       ? "text-purple-600 dark:text-purple-400"
                       : "text-gray-700 dark:text-gray-300"
                   }`}
                 >
                   {t(item.key)}
-                </Link>
+                </a>
               ))}
 
               <Link
