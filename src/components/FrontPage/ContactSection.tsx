@@ -9,7 +9,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 const ContactSection = () => {
   const t = useTranslations("Landing.contact");
   const { isRTL } = useLanguage();
-  
+
   const [formData, setFormData] = useState({
     restaurantName: "",
     phone: "",
@@ -24,106 +24,157 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-32 bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: "1s" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/3 rounded-full blur-3xl animate-spin-slow" />
-        
-        {/* Floating particles */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-purple-400/40 rounded-full animate-float" />
-        <div className="absolute top-3/4 right-1/4 w-3 h-3 bg-purple-400/30 rounded-full animate-float" style={{ animationDelay: "1s" }} />
-        <div className="absolute top-1/2 right-1/3 w-2 h-2 bg-purple-400/50 rounded-full animate-float" style={{ animationDelay: "2s" }} />
+    <section
+      id="contact"
+      className="relative py-20 md:py-32 overflow-hidden
+      bg-[#0d1117]"
+    >
+      {/* Ambient background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-24 left-1/4 w-[480px] h-[480px]
+          bg-purple-500/20 rounded-full blur-[160px]" />
+        <div className="absolute bottom-0 right-1/4 w-[480px] h-[480px]
+          bg-purple-500/20 rounded-full blur-[160px]" />
+        <div className="absolute inset-x-0 top-1/2 h-px
+          bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Text Content */}
-            <div className={`text-center ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 animate-slide-up">
-                <span suppressHydrationWarning>{t("title1")}</span>
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+            {/* Text */}
+            <div className={`${isRTL ? "lg:text-right" : "lg:text-left"} text-center`}>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-50 mb-6">
+                {t("title1")}
                 <br />
-                <span className="text-purple-400 animate-pulse" suppressHydrationWarning>{t("title2")}</span>
+                <span className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
+                  {t("title2")}
+                </span>
               </h2>
-              <p className="text-lg opacity-80 mb-8 animate-slide-up" style={{ animationDelay: "0.1s" }} suppressHydrationWarning>
+
+              <p className="text-lg md:text-xl text-gray-300 mb-10 leading-relaxed">
                 {t("description")}
               </p>
-              
-              {/* WhatsApp Button */}
+
+              {/* WhatsApp */}
               <a
                 href="https://wa.me/01000000000"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-6 py-3 bg-green-500 hover:bg-green-600 rounded-xl transition-all duration-300 font-semibold hover:scale-105 shadow-lg hover:shadow-green-500/30 animate-slide-up"
-                style={{ animationDelay: "0.2s" }}
-                suppressHydrationWarning
+                className="inline-flex items-center gap-3 px-7 py-3 rounded-xl
+                bg-green-500 hover:bg-green-600
+                text-white font-bold
+                transition-all duration-300
+                hover:scale-105 shadow-lg hover:shadow-green-500/30"
               >
-                <MessageCircle className="w-5 h-5 animate-bounce" />
+                <MessageCircle className="w-5 h-5" />
                 {t("whatsapp")}
               </a>
             </div>
 
-            {/* Contact Form */}
-            <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white p-8 rounded-3xl shadow-2xl animate-scale-in hover:shadow-purple-500/10 transition-shadow duration-500">
+            {/* Form */}
+            <div
+              className="relative rounded-3xl p-8
+              bg-white/80 dark:bg-[#0d1117]/80
+              backdrop-blur-xl
+              border border-purple-200/40 dark:border-purple-500/20
+              shadow-2xl shadow-purple-500/20"
+            >
               {isSubmitted ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <div className="text-center py-10">
+                  <div className="mx-auto mb-6 w-16 h-16 rounded-full
+                    bg-green-100 dark:bg-green-500/20
+                    flex items-center justify-center"
+                  >
+                    <svg
+                      className="w-8 h-8 text-green-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-2" suppressHydrationWarning>{t("successTitle")}</h3>
-                  <p className="text-gray-600 dark:text-gray-400" suppressHydrationWarning>{t("successDescription")}</p>
+
+                  <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-gray-50">
+                    {t("successTitle")}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {t("successDescription")}
+                  </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
-                    <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" suppressHydrationWarning>
+                  {/* Restaurant */}
+                  <div>
+                    <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                       {t("restaurantName")} *
                     </label>
                     <input
                       type="text"
-                      placeholder={t("restaurantPlaceholder")}
                       value={formData.restaurantName}
                       onChange={(e) =>
                         setFormData({ ...formData, restaurantName: e.target.value })
                       }
+                      placeholder={t("restaurantPlaceholder")}
                       required
-                      className="h-12 rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 block w-full outline-0 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 text-gray-800 dark:text-white"
-                      suppressHydrationWarning
+                      className="w-full h-12 px-4 rounded-lg
+                      bg-white dark:bg-[#161b22]
+                      border border-gray-300 dark:border-gray-600
+                      text-gray-900 dark:text-gray-50
+                      focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20
+                      outline-none transition"
                     />
                   </div>
 
-                  <div className="animate-fade-in" style={{ animationDelay: "0.2s" }}>
-                    <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" suppressHydrationWarning>
+                  {/* Phone */}
+                  <div>
+                    <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                       {t("phone")} *
                     </label>
                     <input
                       type="tel"
-                      placeholder={t("phonePlaceholder")}
+                      dir="ltr"
                       value={formData.phone}
                       onChange={(e) =>
                         setFormData({ ...formData, phone: e.target.value })
                       }
+                      placeholder={t("phonePlaceholder")}
                       required
-                      className="h-12 rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 block w-full outline-0 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 text-gray-800 dark:text-white"
-                      dir="ltr"
-                      suppressHydrationWarning
+                      className="w-full h-12 px-4 rounded-lg
+                      bg-white dark:bg-[#161b22]
+                      border border-gray-300 dark:border-gray-600
+                      text-gray-900 dark:text-gray-50
+                      focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20
+                      outline-none transition"
                     />
                   </div>
 
-                  <Button 
-                    variant="hero" 
-                    size="xl" 
-                    className="w-full group hover:scale-105 transition-all duration-300 shadow-lg animate-fade-in" 
+                  {/* Submit */}
+                  <Button
+                    variant="hero"
+                    size="lg"
                     type="submit"
-                    style={{ animationDelay: "0.3s" }}
-                    suppressHydrationWarning
+                    className="w-full group
+                    bg-gradient-to-r from-purple-600 to-purple-700
+                    text-white font-semibold
+                    hover:scale-105 transition-all duration-300
+                    shadow-lg shadow-purple-500/40"
                   >
                     {t("submit")}
-                    <Send className={`w-5 h-5 transition-transform duration-300 ${isRTL ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} />
+                    <Send
+                      className={`w-5 h-5 transition-transform duration-300
+                      ${
+                        isRTL
+                          ? "group-hover:-translate-x-1 rotate-180"
+                          : "group-hover:translate-x-1"
+                      }`}
+                    />
                   </Button>
                 </form>
               )}

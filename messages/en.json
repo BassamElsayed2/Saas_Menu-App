@@ -1,5 +1,5 @@
 {
-  "nav": {
+  "nav*": {
     "templates": "Templates",
     "features": "Features",
     "packages": "Packages",
@@ -8,9 +8,24 @@
     "login": "Already have an account? Login",
     "startNow": "Start Now"
   },
+"navbar": {
+  "home": "Home",
+  "features": "Features",
+  "useCases": "Use Cases",
+  "pricing": "Pricing",
+  "team": "Our Team",
+  "faq": "FAQ's",
+  "contact": "Contact",
+  "login": "Login",
+  "language": "العربية",
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode"
+  }
+},
   "heroSection": {
-    "title1": "Digital Menu for Ordering",
-    "title2": "and Payment via QR Code",
+    "title1": "Digital Menu for Ordering and Payment",
+    "title2": " via QR Code",
     "description": "ENS provides you with the best digital menu solutions for restaurants and cafes through QR codes to receive orders and payments from your customers for a seamless and convenient experience, contributing to increasing customer satisfaction and boosting sales.",
     "cta": "Start Now",
     "subtitle": "Transform your restaurant menu into a beautiful, easy-to-use digital experience",
@@ -24,6 +39,11 @@
     "title": "Hello world!"
   },
   "Landing": {
+    "whatsapp": {
+      "title": "Contact Us via WhatsApp",
+      "description": "Call us at 01xxxxxxxxx to get help",
+      "button": "Contact Us"
+    },
     "hero": {
       "title": "Create Your Digital Menu",
       "subtitle": "In Minutes",
@@ -75,6 +95,7 @@
   },
   "whyUs": {
     "title": "Why Choose ENS?",
+    "badge": "Why Choose us?",
     "items": [
       "No commissions on orders",
       "Suitable for all restaurants and cafes",

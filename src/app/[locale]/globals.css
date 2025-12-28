@@ -3,6 +3,15 @@
 @custom-variant dark (&:where([class=dark], [class=dark] *));
 
 @theme {
+  /* ENS Custom Colors - Matching Original Project */
+  --color-ens-purple: 263 84% 60%;
+  --color-ens-purple-light: 263 84% 70%;
+  --color-ens-purple-dark: 263 84% 45%;
+  --color-ens-charcoal: 240 10% 25%;
+  --color-ens-charcoal-light: 240 10% 35%;
+  --color-ens-gray: 240 10% 96%;
+  --color-ens-dark-section: 240 15% 12%;
+  
   --font-body: "Tajawal", sans-serif;
   --font-tajawal: "Tajawal", sans-serif;
   --text-xs: 12px;
@@ -16,8 +25,8 @@
   --text-4xl: 36px;
   --text-5xl: 40px;
   --color-white: #ffffff;
-  --color-black: #3a4252;
-  --color-dark: #000000;
+  --color-black: #e5e7eb;
+  --color-dark: #f5f5f5;
   --color-primary-50: #ecf0ff;
   --color-primary-100: #dde4ff;
   --color-primary-200: #c2cdff;
@@ -111,6 +120,127 @@
   --shadow-3xl: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 25%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 25%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 25%;
+
+  /* Primary: Vibrant Purple from logo */
+  --primary: 263 84% 60%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary: Charcoal/Dark from logo */
+  --secondary: 240 10% 25%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 240 10% 96%;
+  --muted-foreground: 240 10% 45%;
+
+  /* Accent: Light purple */
+  --accent: 263 84% 95%;
+  --accent-foreground: 263 84% 40%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 240 10% 90%;
+  --input: 240 10% 90%;
+  --ring: 263 84% 60%;
+
+  --radius: 0.75rem;
+
+  /* Custom ENS colors */
+  --ens-purple: 263 84% 60%;
+  --ens-purple-light: 263 84% 70%;
+  --ens-purple-dark: 263 84% 45%;
+  --ens-charcoal: 240 10% 25%;
+  --ens-charcoal-light: 240 10% 35%;
+  --ens-gray: 240 10% 96%;
+  --ens-dark-section: 240 15% 12%;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(
+    135deg,
+    hsl(263 84% 60%),
+    hsl(263 84% 45%)
+  );
+  --gradient-hero: linear-gradient(
+    180deg,
+    hsl(0 0% 100%) 0%,
+    hsl(263 84% 98%) 100%
+  );
+  --gradient-card: linear-gradient(
+    145deg,
+    hsl(0 0% 100%) 0%,
+    hsl(263 84% 99%) 100%
+  );
+  --gradient-dark: linear-gradient(
+    180deg,
+    hsl(240 15% 12%) 0%,
+    hsl(240 15% 8%) 100%
+  );
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px -2px hsl(263 84% 60% / 0.1);
+  --shadow-md: 0 8px 24px -4px hsl(263 84% 60% / 0.15);
+  --shadow-lg: 0 16px 48px -8px hsl(263 84% 60% / 0.2);
+  --shadow-glow: 0 0 40px hsl(263 84% 60% / 0.3);
+
+  /* Sidebar */
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 263 84% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 263 84% 95%;
+  --sidebar-accent-foreground: 263 84% 40%;
+  --sidebar-border: 240 10% 90%;
+  --sidebar-ring: 263 84% 60%;
+}
+
+.dark {
+  --background: 240 15% 8%;
+  --foreground: 0 0% 98%;
+
+  --card: 240 15% 12%;
+  --card-foreground: 0 0% 98%;
+
+  --popover: 240 15% 12%;
+  --popover-foreground: 0 0% 98%;
+
+  --primary: 263 84% 70%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 240 10% 25%;
+  --secondary-foreground: 0 0% 98%;
+
+  --muted: 240 10% 22%;
+  --muted-foreground: 240 5% 75%;
+
+  --accent: 263 60% 25%;
+  --accent-foreground: 263 84% 80%;
+
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 240 10% 25%;
+  --input: 240 10% 25%;
+  --ring: 263 84% 70%;
+
+  --sidebar-background: 240 15% 10%;
+  --sidebar-foreground: 0 0% 95%;
+  --sidebar-primary: 263 84% 70%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 263 60% 25%;
+  --sidebar-accent-foreground: 263 84% 80%;
+  --sidebar-border: 240 10% 25%;
+  --sidebar-ring: 263 84% 70%;
+}
+
 /** Body */
 html,
 body {
@@ -127,26 +257,7 @@ p {
 }
 
 /** Heading */
-h6,
-.h6,
-h5,
-.h5,
-h4,
-.h4,
-h3,
-.h3,
-h2,
-.h2,
-h1,
-.h1,
-.display-6,
-.display-5,
-.display-4,
-.display-3,
-.display-2,
-.display-1 {
-  @apply text-black font-bold leading-tight mb-[10px] dark:text-white;
-}
+
 .h6,
 h6,
 .display-6 {
@@ -2069,7 +2180,127 @@ html[dir="rtl"] {
   perspective: 1000px;
 }
 
+.text-gradient {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, hsl(263, 84%, 60%), hsl(263, 84%, 45%));
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, hsl(263, 84%, 60%), hsl(263, 84%, 45%));
+}
+
+.bg-gradient-hero {
+  background: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(263, 84%, 98%) 100%);
+}
+
+.bg-gradient-dark {
+  background: linear-gradient(180deg, hsl(240, 15%, 12%) 0%, hsl(240, 15%, 8%) 100%);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 40px hsl(263, 84%, 60% / 0.3);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply antialiased;
+}
+
 /* ENS Form Input */
 .ens-input {
-  @apply h-12 rounded-md border border-gray-200 bg-white px-4 block w-full outline-0 transition-all placeholder:text-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white;
+  @apply h-12 rounded-md border border-gray-200 bg-white px-4 block w-full outline-0 transition-all placeholder:text-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder:text-gray-400;
+}
+
+/* Enhanced Text Contrast for Dark Mode */
+.dark {
+  /* Better text visibility on dark backgrounds */
+  --text-on-dark: 0 0% 95%;
+  --text-muted-on-dark: 0 0% 75%;
+  --text-dimmed-on-dark: 0 0% 60%;
+}
+
+/* Improved animations with better performance */
+@keyframes ens-glow-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.8;
+    filter: brightness(1.2);
+  }
+}
+
+.animate-glow-pulse {
+  animation: ens-glow-pulse 3s ease-in-out infinite;
+}
+
+/* Smooth hover scale with better performance */
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+/* Text gradient with better contrast */
+.text-gradient-enhanced {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, hsl(263, 84%, 65%), hsl(263, 84%, 50%));
+}
+
+.dark .text-gradient-enhanced {
+  background-image: linear-gradient(135deg, hsl(263, 84%, 75%), hsl(263, 84%, 60%));
+}
+
+/* Better card shadows */
+.card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark .card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.card-shadow-hover {
+  transition: box-shadow 0.3s ease;
+}
+
+.card-shadow-hover:hover {
+  box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.15), 0 10px 10px -5px rgba(139, 92, 246, 0.1);
+}
+
+.dark .card-shadow-hover:hover {
+  box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.25), 0 10px 10px -5px rgba(139, 92, 246, 0.15);
+}
+
+/* Enhanced scroll behavior */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* Better focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid hsl(263, 84%, 60%);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.dark *:focus-visible {
+  outline-color: hsl(263, 84%, 70%);
+}
+
+/* Improved selection colors */
+::selection {
+  background-color: hsl(263, 84%, 60% / 0.3);
+  color: inherit;
+}
+
+.dark ::selection {
+  background-color: hsl(263, 84%, 70% / 0.4);
 }

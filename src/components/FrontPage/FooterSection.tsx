@@ -5,22 +5,23 @@ import { Mail, Phone, MapPin, Heart } from "lucide-react";
 
 const FooterSection = () => {
   const t = useTranslations("Landing.footer");
-  const navT = useTranslations("nav");
+  const navT = useTranslations("navbar");
   const currentYear = new Date().getFullYear();
 
   const navLinks = [
-    { href: "#features", label: navT("features") },
-    { href: "#packages", label: navT("packages") },
-    { href: "#how-it-works", label: navT("howItWorks") },
-    { href: "#contact", label: navT("contact") },
+    { name: navT("home"), path: "/" },
+    { name: navT("features"), path: "/front-pages/features/" },
+    { name: navT("team"), path: "/front-pages/team/" },
+    { name: navT("faq"), path: "/front-pages/faq/" },
+    { name: navT("contact"), path: "/front-pages/contact/" }
   ];
 
   return (
-    <footer className="bg-gray-900 dark:bg-gray-950 text-gray-300 py-8 relative overflow-hidden">
+    <footer className="bg-gray-900 dark:bg-[#0a0e1a] text-gray-300 py-8 relative overflow-hidden border-t border-gray-800 dark:border-gray-900">
       {/* Background Animation */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -36,12 +37,12 @@ const FooterSection = () => {
                   e.currentTarget.style.display = 'none';
                 }}
               />
-              <span className="text-3xl font-bold text-white transition-colors duration-300 group-hover:text-purple-400">
+              <span className="text-3xl font-bold text-gray-50 transition-colors duration-300 group-hover:text-purple-400">
                 ENS
               </span>
             </div>
             <p
-              className="text-gray-400 max-w-md mb-6 leading-relaxed"
+              className="text-gray-400 dark:text-gray-500 max-w-md mb-6 leading-relaxed text-base"
               suppressHydrationWarning
             >
               {t("description")}
@@ -50,18 +51,18 @@ const FooterSection = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-bold mb-6 text-white" suppressHydrationWarning>
+            <h4 className="text-lg font-bold mb-6 text-purple-400" suppressHydrationWarning>
               {t("quickLinks")}
             </h4>
             <ul className="space-y-3">
               {navLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.path}>
                   <a
-                    href={link.href}
-                    className="text-gray-400 hover:text-purple-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    href={link.path}
+                    className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-400 transition-all duration-300 hover:translate-x-1 inline-block text-base"
                     suppressHydrationWarning
                   >
-                    {link.label}
+                    {link.name}
                   </a>
                 </li>
               ))}
@@ -70,7 +71,7 @@ const FooterSection = () => {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-bold mb-6 text-white" suppressHydrationWarning>
+            <h4 className="text-lg font-bold mb-6 text-purple-400" suppressHydrationWarning>
               {t("contactUs")}
             </h4>
             <ul className="space-y-4">
@@ -78,7 +79,7 @@ const FooterSection = () => {
                 <Phone className="w-5 h-5 text-purple-400 transition-transform duration-300 group-hover:scale-110" />
                 <a
                   href="tel:+201000000000"
-                  className="text-gray-400 hover:text-purple-400 transition-colors"
+                  className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-400 transition-colors text-base"
                   dir="ltr"
                 >
                   +20 100 000 0000
@@ -88,7 +89,7 @@ const FooterSection = () => {
                 <Mail className="w-5 h-5 text-purple-400 transition-transform duration-300 group-hover:scale-110" />
                 <a
                   href="mailto:info@ens.com"
-                  className="text-gray-400 hover:text-purple-400 transition-colors"
+                  className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-400 transition-colors text-base"
                 >
                   info@ens.com
                 </a>
@@ -96,7 +97,7 @@ const FooterSection = () => {
               <li className="flex items-start gap-3 group">
                 <MapPin className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5 transition-transform duration-300 group-hover:scale-110" />
                 <span
-                  className="text-gray-400"
+                  className="text-gray-400 dark:text-gray-500 text-base"
                   suppressHydrationWarning
                 >
                   {t("location")}
@@ -107,17 +108,17 @@ const FooterSection = () => {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-gray-800 pt-5">
+        <div className="border-t border-gray-800 dark:border-gray-900 pt-5">
           <div className="flex flex-col items-center gap-6">
             {/* Copyright - Center & Larger */}
             <p
-              className="text-gray-500 text-base md:text-lg flex items-center gap-2 font-bold"
+              className="text-gray-500 dark:text-gray-600 text-base md:text-lg flex items-center gap-2 font-bold"
               suppressHydrationWarning
             >
               © {currentYear}{" "}
               <a
                 href="https://www.facebook.com/ENSEGYPTEG"
-                className="text-purple-400 hover:underline"
+                className="text-purple-400 hover:text-purple-300 transition-colors hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -131,14 +132,14 @@ const FooterSection = () => {
             <div className="flex gap-8">
               <a
                 href="#"
-                className="text-gray-500 hover:text-purple-400 text-sm transition-colors duration-300"
+                className="text-gray-500 dark:text-gray-600 hover:text-purple-400 dark:hover:text-purple-400 text-sm transition-colors duration-300"
                 suppressHydrationWarning
               >
                 {t("privacy")}
               </a>
               <a
                 href="#"
-                className="text-gray-500 hover:text-purple-400 text-sm transition-colors duration-300"
+                className="text-gray-500 dark:text-gray-600 hover:text-purple-400 dark:hover:text-purple-400 text-sm transition-colors duration-300"
                 suppressHydrationWarning
               >
                 {t("terms")}
