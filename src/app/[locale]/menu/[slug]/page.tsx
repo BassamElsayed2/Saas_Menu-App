@@ -330,128 +330,12 @@ function RatingModal({ slug, onClose, onSuccess }: RatingModalProps) {
   const [customerName, setCustomerName] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (stars === 0) {
-      toast.error(t("selectStars"));
-      return;
-    }
-
-    setSubmitting(true);
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/public/menu/${slug}/rate`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            stars,
-            comment,
-            customerName,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || t("submitError"));
-      }
-
-      toast.success(t("submitSuccess"));
-      onSuccess();
-    } catch (error: any) {
-      console.error("Error submitting rating:", error);
-      toast.error(error.message || t("submitError"));
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
           {t("title")}
         </h2>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Stars */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              {t("rating")} *
-            </label>
-            <div className="flex gap-2 justify-center">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  onClick={() => setStars(star)}
-                  className="transition-transform hover:scale-110"
-                >
-                  <i
-                    className={`material-symbols-outlined !text-[40px] ${
-                      star <= stars ? "text-yellow-400" : "text-gray-300"
-                    }`}
-                  >
-                    star
-                  </i>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              {t("name")}
-            </label>
-            <input
-              type="text"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-              placeholder={t("namePlaceholder")}
-            />
-          </div>
-
-          {/* Comment */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              {t("comment")}
-            </label>
-            <textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-              placeholder={t("commentPlaceholder")}
-            />
-          </div>
-
-          {/* Buttons */}
-          <div className="flex items-center gap-3 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              disabled={submitting}
-            >
-              {t("cancel")}
-            </button>
-            <button
-              type="submit"
-              className="flex-1 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50"
-              disabled={submitting}
-            >
-              {submitting ? t("submitting") : t("submit")}
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );

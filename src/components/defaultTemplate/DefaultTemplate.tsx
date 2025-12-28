@@ -120,33 +120,6 @@ export default function DefaultTemplate({
                 )}
               </div>
             </div>
-
-            {/* Rating */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <i
-                    key={star}
-                    className={`material-symbols-outlined !text-[20px] ${
-                      star <= menuData.rating.average
-                        ? "text-yellow-400"
-                        : "text-gray-300"
-                    }`}
-                  >
-                    star
-                  </i>
-                ))}
-              </div>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                {menuData.rating.average.toFixed(1)} ({menuData.rating.total})
-              </span>
-              <button
-                onClick={onShowRatingModal}
-                className="ltr:ml-2 rtl:mr-2 px-3 py-1 text-sm bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
-              >
-                {t("rateUs")}
-              </button>
-            </div>
           </div>
         </div>
       </header>

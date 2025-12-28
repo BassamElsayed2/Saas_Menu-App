@@ -7,12 +7,19 @@ import { useLocale, useTranslations } from "next-intl";
 import { useAuth } from "@/contexts/AuthContext";
 import UserAvatar from "@/components/UserAvatar";
 
-const ProfileMenu: React.FC = () => {
+interface ProfileMenuProps {
+  context?: "menus" | "dashboard";
+}
+
+const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
   const pathname = usePathname();
   const locale = useLocale();
   const router = useRouter();
   const t = useTranslations("Header");
   const { user, logout } = useAuth();
+
+  // Determine base path based on context
+  const basePath = context === "menus" ? "menus" : "dashboard";
 
   const [active, setActive] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref for the dropdown container
@@ -98,9 +105,9 @@ const ProfileMenu: React.FC = () => {
           <ul>
             <li>
               <Link
-                href={`/${locale}/dashboard/profile/user-profile`}
+                href={`/${locale}/${basePath}/profile/user-profile`}
                 className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname.includes("/dashboard/profile")
+                  pathname.includes(`/${basePath}/profile`)
                     ? "text-primary-500"
                     : ""
                 }`}
@@ -115,9 +122,9 @@ const ProfileMenu: React.FC = () => {
 
             <li>
               <Link
-                href={`/${locale}/dashboard/profile/edit`}
+                href={`/${locale}/${basePath}/profile/edit`}
                 className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname.includes("/profile/edit") ? "text-primary-500" : ""
+                  pathname.includes(`/${basePath}/profile/edit`) ? "text-primary-500" : ""
                 }`}
                 onClick={() => setActive(false)}
               >

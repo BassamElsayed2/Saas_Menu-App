@@ -120,33 +120,6 @@ export default function Template3({
                 )}
               </div>
             </div>
-
-            {/* Rating */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <i
-                    key={star}
-                    className={`material-symbols-outlined !text-[18px] ${
-                      star <= menuData.rating.average
-                        ? "text-yellow-400"
-                        : "text-gray-300"
-                    }`}
-                  >
-                    star
-                  </i>
-                ))}
-              </div>
-              <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                {menuData.rating.average.toFixed(1)}
-              </span>
-              <button
-                onClick={onShowRatingModal}
-                className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              >
-                {t("rateUs")}
-              </button>
-            </div>
           </div>
         </div>
       </header>
@@ -197,9 +170,11 @@ export default function Template3({
               {/* Image */}
               <div className="flex-shrink-0 w-48 h-48">
                 {item.image ? (
-                  <div className={`relative w-full h-full overflow-hidden ${
-                    index % 2 === 0 ? "rounded-l-lg" : "rounded-r-lg"
-                  }`}>
+                  <div
+                    className={`relative w-full h-full overflow-hidden ${
+                      index % 2 === 0 ? "rounded-l-lg" : "rounded-r-lg"
+                    }`}
+                  >
                     <Image
                       src={item.image}
                       alt={item.name}
@@ -208,9 +183,11 @@ export default function Template3({
                     />
                   </div>
                 ) : (
-                  <div className={`w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center ${
-                    index % 2 === 0 ? "rounded-l-lg" : "rounded-r-lg"
-                  }`}>
+                  <div
+                    className={`w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center ${
+                      index % 2 === 0 ? "rounded-l-lg" : "rounded-r-lg"
+                    }`}
+                  >
                     <i className="material-symbols-outlined text-gray-400 !text-[48px]">
                       fastfood
                     </i>
@@ -226,11 +203,12 @@ export default function Template3({
                       {item.name}
                     </h3>
                     <div className="text-right ml-4">
-                      {item.originalPrice && item.originalPrice > item.price && (
-                        <div className="text-sm text-gray-400 line-through mb-1">
-                          ${item.originalPrice}
-                        </div>
-                      )}
+                      {item.originalPrice &&
+                        item.originalPrice > item.price && (
+                          <div className="text-sm text-gray-400 line-through mb-1">
+                            ${item.originalPrice}
+                          </div>
+                        )}
                       <span className="text-2xl font-bold text-gray-900 dark:text-white">
                         ${item.price}
                       </span>
@@ -311,4 +289,3 @@ export default function Template3({
     </div>
   );
 }
-

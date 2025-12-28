@@ -120,33 +120,6 @@ export default function Template2({
                 )}
               </div>
             </div>
-
-            {/* Rating */}
-            <div className="flex flex-col items-center md:items-end gap-2 bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4">
-              <div className="flex items-center gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <i
-                    key={star}
-                    className={`material-symbols-outlined !text-[24px] ${
-                      star <= menuData.rating.average
-                        ? "text-yellow-300"
-                        : "text-white/30"
-                    }`}
-                  >
-                    star
-                  </i>
-                ))}
-              </div>
-              <span className="text-sm font-semibold">
-                {menuData.rating.average.toFixed(1)} ({menuData.rating.total})
-              </span>
-              <button
-                onClick={onShowRatingModal}
-                className="mt-2 px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-gray-100 transition-colors font-semibold"
-              >
-                {t("rateUs")}
-              </button>
-            </div>
           </div>
         </div>
       </header>
@@ -297,4 +270,3 @@ export default function Template2({
     </div>
   );
 }
-

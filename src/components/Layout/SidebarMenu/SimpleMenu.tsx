@@ -20,51 +20,53 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
   const menuId = menuIdMatch ? menuIdMatch[1] : null;
 
   // Determine menu items based on context
-  const menuItems = menuId ? [
-    {
-      title: t("overview"),
-      icon: "dashboard",
-      href: `/${locale}/menus/${menuId}`,
-      badge: null,
-    },
-    {
-      title: t("categories"), // التصنيفات
-      icon: "category",
-      href: `/${locale}/menus/${menuId}/categories`,
-      badge: null,
-    },
-    {
-      title: t("products"), // المنتجات
-      icon: "restaurant_menu",
-      href: `/${locale}/menus/${menuId}/items`,
-      badge: null,
-    },
-    {
-      title: t("settings"),
-      icon: "settings",
-      href: `/${locale}/menus/${menuId}/settings`,
-      badge: null,
-    },
-  ] : [
-    {
-      title: t("dashboard"),
-      icon: "dashboard",
-      href: `/${locale}/dashboard`,
-      badge: null,
-    },
-    {
-      title: t("menus"),
-      icon: "restaurant_menu",
-      href: `/${locale}/menus`,
-      badge: null,
-    },
-    {
-      title: t("profile"),
-      icon: "account_circle",
-      href: `/${locale}/dashboard/profile/user-profile`,
-      badge: null,
-    },
-  ];
+  const menuItems = menuId
+    ? [
+        {
+          title: t("overview"),
+          icon: "dashboard",
+          href: `/${locale}/dashboard/menus/${menuId}`,
+          badge: null,
+        },
+        {
+          title: t("categories"), // التصنيفات
+          icon: "category",
+          href: `/${locale}/dashboard/menus/${menuId}/categories`,
+          badge: null,
+        },
+        {
+          title: t("products"), // المنتجات
+          icon: "restaurant_menu",
+          href: `/${locale}/dashboard/menus/${menuId}/items`,
+          badge: null,
+        },
+        {
+          title: t("settings"),
+          icon: "settings",
+          href: `/${locale}/dashboard/menus/${menuId}/settings`,
+          badge: null,
+        },
+      ]
+    : [
+        {
+          title: t("dashboard"),
+          icon: "dashboard",
+          href: `/${locale}/dashboard`,
+          badge: null,
+        },
+        {
+          title: t("menus"),
+          icon: "restaurant_menu",
+          href: `/${locale}/dashboard/  menus`,
+          badge: null,
+        },
+        {
+          title: t("profile"),
+          icon: "account_circle",
+          href: `/${locale}/dashboard/profile/user-profile`,
+          badge: null,
+        },
+      ];
 
   return (
     <>
@@ -102,8 +104,10 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
 
             <ul className="space-y-1">
               {menuItems.map((item, index) => {
-                const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-                
+                const isActive =
+                  pathname === item.href ||
+                  pathname.startsWith(item.href + "/");
+
                 return (
                   <li key={index}>
                     <Link
@@ -114,9 +118,13 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                           : "text-gray-700 dark:text-gray-300"
                       }`}
                     >
-                      <i className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
-                        isActive ? "text-primary-500" : "text-gray-500 dark:text-gray-400"
-                      }`}>
+                      <i
+                        className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                          isActive
+                            ? "text-primary-500"
+                            : "text-gray-500 dark:text-gray-400"
+                        }`}
+                      >
                         {item.icon}
                       </i>
                       <span className="title leading-none">{item.title}</span>
@@ -149,14 +157,18 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                         : "text-gray-700 dark:text-gray-300"
                     }`}
                   >
-                    <i className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
-                      pathname === `/${locale}/dashboard/profile/edit`
-                        ? "text-primary-500"
-                        : "text-gray-500 dark:text-gray-400"
-                    }`}>
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname === `/${locale}/dashboard/profile/edit`
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
                       settings
                     </i>
-                    <span className="title leading-none">{t("accountSettings")}</span>
+                    <span className="title leading-none">
+                      {t("accountSettings")}
+                    </span>
                   </Link>
                 </li>
               </ul>
@@ -192,4 +204,3 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
 };
 
 export default SidebarMenu;
-

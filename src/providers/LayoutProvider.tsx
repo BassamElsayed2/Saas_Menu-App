@@ -14,7 +14,7 @@ interface LayoutProviderProps {
 const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
   const pathname = usePathname();
 
-  const [active, setActive] = useState<boolean>(true);
+  const [active, setActive] = useState<boolean>(false);
 
   const toggleActive = () => {
     setActive(!active);
@@ -35,10 +35,7 @@ const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
   // Check if current page should hide sidebar (but keep header)
   const shouldHideSidebar =
     pathnameWithoutLocale === "/menus" || // Menu selection page (OUTSIDE dashboard)
-    pathnameWithoutLocale === "/dashboard/menus" || // Menu selection page (old location)
-    pathnameWithoutLocale === "/dashboard/profile/user-profile" || // Profile view
-    pathnameWithoutLocale === "/dashboard/profile/edit" || // Profile edit
-    pathnameWithoutLocale === "/dashboard"; // Main dashboard (if needed)
+    pathnameWithoutLocale === "/dashboard/menus";
 
   // Check if we're in a menu dashboard context (show sidebar)
   const isInMenuContext =
