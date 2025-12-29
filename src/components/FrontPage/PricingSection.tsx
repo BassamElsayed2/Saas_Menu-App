@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { Check, Star, Sparkles } from "lucide-react";
+import { Check, Star, Sparkles } from "@/components/icons/Icons";
 
 const PricingSection = () => {
   const t = useTranslations("Landing.pricing");

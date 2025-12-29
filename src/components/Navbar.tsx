@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { Globe, Moon, Sun, Menu } from "lucide-react";
+import { Globe, Moon, Sun, Menu } from "@/components/icons/Icons";
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();

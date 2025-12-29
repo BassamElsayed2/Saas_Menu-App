@@ -10,7 +10,7 @@ import {
   TrendingUp,
   Settings,
   Languages,
-} from "lucide-react";
+} from "@/components/icons/Icons";
 
 const icons = [
   Palette,

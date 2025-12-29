@@ -1,7 +1,7 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "@/components/icons/Icons";
 import { useLanguage } from "@/hooks/useLanguage";
 
 const HeroSection = () => {

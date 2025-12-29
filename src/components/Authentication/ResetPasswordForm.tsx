@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useLocale, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useLocale } from "next-intl";
 import api from "@/lib/api";
 import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from "next/navigation";

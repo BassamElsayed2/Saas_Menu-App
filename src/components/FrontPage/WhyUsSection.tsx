@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles } from "@/components/icons/Icons";
 import { useLanguage } from "@/hooks/useLanguage";
 
 interface WhyUsItemProps {

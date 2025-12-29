@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Mail, Phone, MapPin, Heart } from "lucide-react";
+import { Mail, Phone, MapPin, Heart } from "@/components/icons/Icons";
 
 const FooterSection = () => {
   const t = useTranslations("Landing.footer");
@@ -9,12 +9,29 @@ const FooterSection = () => {
   const currentYear = new Date().getFullYear();
 
   const navLinks = [
-    { name: navT("home"), path: "/" },
-    { name: navT("features"), path: "/front-pages/features/" },
-    { name: navT("team"), path: "/front-pages/team/" },
-    { name: navT("faq"), path: "/front-pages/faq/" },
-    { name: navT("contact"), path: "/front-pages/contact/" }
+    { name: navT("home"), path: "#hero" },
+    { name: navT("features"), path: "#features" },
+    { name: navT("team"), path: "#how-it-works" },
+    { name: navT("faq"), path: "#packages" },
+    { name: navT("contact"), path: "#contact" }
   ];
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    if (path.startsWith("#")) {
+      e.preventDefault();
+      const element = document.querySelector(path);
+      if (element) {
+        const navbarHeight = 100;
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - navbarHeight;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    }
+  };
 
   return (
     <footer className="bg-gray-900 dark:bg-[#0a0e1a] text-gray-300 py-8 relative overflow-hidden border-t border-gray-800 dark:border-gray-900">
@@ -59,7 +76,8 @@ const FooterSection = () => {
                 <li key={link.path}>
                   <a
                     href={link.path}
-                    className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-400 transition-all duration-300 hover:translate-x-1 inline-block text-base"
+                    onClick={(e) => handleNavClick(e, link.path)}
+                    className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-400 transition-all duration-300 hover:translate-x-1 inline-block text-base cursor-pointer"
                     suppressHydrationWarning
                   >
                     {link.name}

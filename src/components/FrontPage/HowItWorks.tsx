@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Package, ListPlus, Share2 } from "lucide-react";
+import { Package, ListPlus, Share2 } from "@/components/icons/Icons";
 import { useLanguage } from "@/hooks/useLanguage";
 
 const icons = [Package, ListPlus, Share2];

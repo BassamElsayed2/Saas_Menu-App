@@ -120,7 +120,7 @@ export default function CategoriesPage({ params }: { params: Promise<{ id: strin
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category) => (
+          {categories.map((category: Category) => (
             <div
               key={category.id}
               className="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow p-6"

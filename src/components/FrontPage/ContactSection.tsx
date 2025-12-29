@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Send } from "lucide-react";
+import { MessageCircle, Send } from "@/components/icons/Icons";
 import { useLanguage } from "@/hooks/useLanguage";
 
 const ContactSection = () => {

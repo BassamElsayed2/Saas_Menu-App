@@ -245,11 +245,11 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
         const result = await api.checkSlugAvailability(formData.slug);
         if (result.error) {
           setSlugStatus({ checking: false, available: false, suggestions: [] });
-        } else if (result.data) {
+        } else if (result.data && typeof result.data === 'object') {
           setSlugStatus({
             checking: false,
-            available: result.data.available ?? false,
-            suggestions: result.data.suggestions ?? [],
+            available: (result.data as any).available ?? false,
+            suggestions: (result.data as any).suggestions ?? [],
           });
         } else {
           setSlugStatus({ checking: false, available: null, suggestions: [] });
