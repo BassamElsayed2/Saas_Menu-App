@@ -37,7 +37,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
         {
           title: t("products"), // المنتجات
           icon: "restaurant_menu",
-          href: `/${locale}/dashboard/menus/${menuId}/items`,
+          href: `/${locale}/dashboard/menus/${menuId}/products`,
           badge: null,
         },
         {
@@ -57,7 +57,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
         {
           title: t("menus"),
           icon: "restaurant_menu",
-          href: `/${locale}/dashboard/  menus`,
+          href: `/${locale}/dashboard/menus`,
           badge: null,
         },
         {
@@ -73,7 +73,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
       <div className="sidebar-area bg-white dark:bg-[#0c1427] fixed z-[7] top-0 h-screen transition-all rounded-r-md">
         <div className="logo bg-white dark:bg-[#0c1427] border-b border-gray-100 dark:border-[#172036] px-[25px] pt-[19px] pb-[15px] absolute z-[2] right-0 top-0 left-0">
           <Link
-            href={`/${locale}/dashboard`}
+            href={`/${locale}/dashboard/menus/${menuId}`}
             className="transition-none relative flex items-center outline-none"
           >
             <Image

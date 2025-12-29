@@ -71,10 +71,22 @@ const CategoriesTable: React.FC = () => {
   // Create category mutation
   const createCategoryMutation = useMutation({
     mutationFn: async (data: CategoryFormData) => {
+      let imageUrl = "";
+
+      // Upload image if selected
+      if (data.image) {
+        const uploadResponse = await api.uploadImage(data.image, "categories");
+
+        if (uploadResponse.error) {
+          throw new Error(uploadResponse.error);
+        }
+        imageUrl = uploadResponse.data?.url || "";
+      }
+
       const response = await api.post(`/menus/${menuId}/categories`, {
         nameAr: data.nameAr,
         nameEn: data.nameEn,
-        image: data.image ? null : null, // TODO: Handle image upload
+        image: imageUrl || null,
         sortOrder: 0,
       });
 
@@ -104,12 +116,36 @@ const CategoriesTable: React.FC = () => {
   // Update category mutation
   const updateCategoryMutation = useMutation({
     mutationFn: async (data: { id: number; formData: CategoryFormData }) => {
-      const response = await api.put(`/menus/${menuId}/categories/${data.id}`, {
+      let imageUrl: string | undefined = undefined;
+
+      // Upload image if selected
+      if (data.formData.image) {
+        const uploadResponse = await api.uploadImage(
+          data.formData.image,
+          "categories"
+        );
+
+        if (uploadResponse.error) {
+          throw new Error(uploadResponse.error);
+        }
+        imageUrl = uploadResponse.data?.url || "";
+      }
+
+      const requestBody: any = {
         nameAr: data.formData.nameAr,
         nameEn: data.formData.nameEn,
         isActive: data.formData.isActive,
-        image: data.formData.image ? null : null, // TODO: Handle image upload
-      });
+      };
+
+      // Only include image if a new one was uploaded
+      if (imageUrl !== undefined) {
+        requestBody.image = imageUrl;
+      }
+
+      const response = await api.put(
+        `/menus/${menuId}/categories/${data.id}`,
+        requestBody
+      );
 
       if (response.error) {
         throw new Error(response.error);
@@ -238,8 +274,11 @@ const CategoriesTable: React.FC = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
+
       setFormData((prev) => ({ ...prev, image: file }));
       setSelectedImages([file]);
+    } else {
+      console.log("❌ No file selected");
     }
   };
 
@@ -263,6 +302,7 @@ const CategoriesTable: React.FC = () => {
   // Handle form submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!formData.nameAr.trim() || !formData.nameEn.trim()) {
       toast.error(
         t("Categories.requiredFields") ||
@@ -634,6 +674,9 @@ const CategoriesTable: React.FC = () => {
                             <input
                               type="file"
                               id="fileInput"
+                              key={
+                                open ? "file-input-open" : "file-input-closed"
+                              }
                               accept="image/*"
                               onChange={handleFileChange}
                               className="absolute top-0 left-0 right-0 bottom-0 rounded-md z-[1] opacity-0 cursor-pointer"
