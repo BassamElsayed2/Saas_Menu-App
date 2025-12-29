@@ -107,7 +107,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
               <Link
                 href={`/${locale}/${basePath}/profile/user-profile`}
                 className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname.includes(`/${basePath}/profile`)
+                  pathname.includes(`/${basePath}/profile/user-profile`)
                     ? "text-primary-500"
                     : ""
                 }`}
@@ -124,7 +124,9 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
               <Link
                 href={`/${locale}/${basePath}/profile/edit`}
                 className={`block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500 ${
-                  pathname.includes(`/${basePath}/profile/edit`) ? "text-primary-500" : ""
+                  pathname.includes(`/${basePath}/profile/edit`)
+                    ? "text-primary-500"
+                    : ""
                 }`}
                 onClick={() => setActive(false)}
               >

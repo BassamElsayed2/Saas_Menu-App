@@ -5,10 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import api from "@/lib/api";
-import {
-  getTemplateById,
-  getDefaultTemplate,
-} from "@/components/defaultTemplate";
+import { getTemplateById, getDefaultTemplate } from "@/components/Templates";
 
 // Force dynamic rendering for this page
 export const dynamic = "force-dynamic";

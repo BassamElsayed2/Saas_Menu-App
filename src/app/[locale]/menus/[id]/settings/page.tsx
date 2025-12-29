@@ -6,7 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { toast } from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMenu } from "@/hooks/useApi";
-import { templates } from "@/components/defaultTemplate";
+import { templates } from "@/components/Templates";
 
 export default function MenuSettingsPage({
   params,
@@ -19,7 +19,7 @@ export default function MenuSettingsPage({
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const { data: menu, isLoading: menuLoading } = useMenu(parseInt(id));
-  
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
@@ -101,10 +101,10 @@ export default function MenuSettingsPage({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Build update object with only changed fields
     const updates: any = {};
-    
+
     if (formData.nameEn !== originalData.nameEn) {
       updates.nameEn = formData.nameEn;
     }
@@ -422,4 +422,3 @@ export default function MenuSettingsPage({
     </div>
   );
 }
-

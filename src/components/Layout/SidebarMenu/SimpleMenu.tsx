@@ -104,9 +104,12 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
 
             <ul className="space-y-1">
               {menuItems.map((item, index) => {
-                const isActive =
-                  pathname === item.href ||
-                  pathname.startsWith(item.href + "/");
+                // For menu context, only highlight exact matches
+                // For general context, allow parent path highlighting
+                const isActive = menuId
+                  ? pathname === item.href
+                  : pathname === item.href ||
+                    pathname.startsWith(item.href + "/");
 
                 return (
                   <li key={index}>

@@ -46,8 +46,6 @@ const Header: React.FC<HeaderProps> = ({ toggleActive }) => {
   const shouldHideSidebarToggle =
     pathnameWithoutLocale === "/menus" ||
     pathnameWithoutLocale === "/dashboard/menus" ||
-    pathnameWithoutLocale === "/dashboard/profile/user-profile" ||
-    pathnameWithoutLocale === "/dashboard/profile/edit" ||
     pathnameWithoutLocale === "/dashboard";
 
   return (
