@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useAuth } from "@/contexts/AuthContext";
+import { api } from "@/lib/api";
+import toast from "react-hot-toast";
 
 interface Ad {
   id: number;
@@ -27,6 +29,21 @@ export default function AdsManagement() {
   const locale = useLocale();
   const [ads, setAds] = useState<Ad[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    titleAr: "",
+    content: "",
+    contentAr: "",
+    imageUrl: "",
+    linkUrl: "",
+    position: "banner",
+    isActive: true,
+    displayOrder: 0,
+  });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => {
     // Wait for auth to load
@@ -118,6 +135,117 @@ export default function AdsManagement() {
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Check file size (5MB max)
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        toast.error("حجم الصورة يجب أن لا يتجاوز 5 ميجابايت");
+        e.target.value = ""; // Reset input
+        return;
+      }
+
+      // Check file type
+      if (!file.type.startsWith("image/")) {
+        toast.error("يجب اختيار ملف صورة صالح");
+        e.target.value = "";
+        return;
+      }
+
+      setImageFile(file);
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadImageFile = async (): Promise<string | null> => {
+    if (!imageFile) return null;
+
+    try {
+      setUploadingImage(true);
+      const uploadResponse = await api.uploadImage(imageFile, "ads");
+
+      if (uploadResponse.error) {
+        toast.error(uploadResponse.error);
+        return null;
+      }
+
+      return uploadResponse.data?.imageUrl || uploadResponse.data?.url || null;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("حدث خطأ أثناء رفع الصورة");
+      return null;
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleCreateAd = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      // Upload image first if exists
+      let uploadedImageUrl = formData.imageUrl;
+      if (imageFile) {
+        const url = await uploadImageFile();
+        if (!url) {
+          toast.error("فشل رفع الصورة");
+          return;
+        }
+        uploadedImageUrl = url;
+      }
+
+      const token =
+        localStorage.getItem("auth_token") ||
+        localStorage.getItem("accessToken");
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/ads`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+            imageUrl: uploadedImageUrl,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setShowAddForm(false);
+        setFormData({
+          title: "",
+          titleAr: "",
+          content: "",
+          contentAr: "",
+          imageUrl: "",
+          linkUrl: "",
+          position: "banner",
+          isActive: true,
+          displayOrder: 0,
+        });
+        setImageFile(null);
+        setImagePreview("");
+        fetchAds(); // Refresh list
+        toast.success("تم إنشاء الإعلان بنجاح ✨");
+      } else {
+        const error = await response.json();
+        toast.error(error.error || "فشل إنشاء الإعلان");
+      }
+    } catch (error) {
+      console.error("Error creating ad:", error);
+      toast.error("حدث خطأ أثناء إنشاء الإعلان");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -179,10 +307,207 @@ export default function AdsManagement() {
 
         {/* Add New Ad Button */}
         <div className="mb-6">
-          <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
-            + إضافة إعلان جديد
+          <button
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+          >
+            {showAddForm ? "✕ إلغاء" : "+ إضافة إعلان جديد"}
           </button>
         </div>
+
+        {/* Add Ad Form */}
+        {showAddForm && (
+          <div className="mb-6 trezo-card bg-white dark:bg-[#0c1427] p-6 rounded-md">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              إضافة إعلان جديد
+            </h2>
+            <form onSubmit={handleCreateAd} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* English Title */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    العنوان بالإنجليزية
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.title}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                {/* Arabic Title */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    العنوان بالعربية *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.titleAr}
+                    onChange={(e) =>
+                      setFormData({ ...formData, titleAr: e.target.value })
+                    }
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                {/* English Content */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    المحتوى بالإنجليزية
+                  </label>
+                  <textarea
+                    value={formData.content}
+                    onChange={(e) =>
+                      setFormData({ ...formData, content: e.target.value })
+                    }
+                    rows={3}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                {/* Arabic Content */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    المحتوى بالعربية
+                  </label>
+                  <textarea
+                    value={formData.contentAr}
+                    onChange={(e) =>
+                      setFormData({ ...formData, contentAr: e.target.value })
+                    }
+                    rows={3}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                {/* Image Upload */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    صورة الإعلان
+                    <span className="text-xs text-gray-500 mr-2">
+                      (حد أقصى 5 ميجابايت)
+                    </span>
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-gray-700 dark:file:text-gray-300"
+                  />
+                  {imagePreview && (
+                    <div className="mt-3">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                        معاينة الصورة:
+                      </p>
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full max-w-md h-48 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Link URL */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    رابط الإعلان
+                  </label>
+                  <input
+                    type="url"
+                    value={formData.linkUrl}
+                    onChange={(e) =>
+                      setFormData({ ...formData, linkUrl: e.target.value })
+                    }
+                    placeholder="https://example.com"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                {/* Position */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    موضع الإعلان
+                  </label>
+                  <select
+                    value={formData.position}
+                    onChange={(e) =>
+                      setFormData({ ...formData, position: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  >
+                    <option value="banner">بانر</option>
+                    <option value="header">رأس الصفحة</option>
+                    <option value="sidebar">الشريط الجانبي</option>
+                    <option value="footer">تذييل الصفحة</option>
+                  </select>
+                </div>
+
+                {/* Display Order */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    ترتيب العرض
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.displayOrder}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        displayOrder: parseInt(e.target.value) || 0,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                {/* Is Active */}
+                <div className="flex items-center pt-8">
+                  <input
+                    type="checkbox"
+                    id="isActive"
+                    checked={formData.isActive}
+                    onChange={(e) =>
+                      setFormData({ ...formData, isActive: e.target.checked })
+                    }
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <label
+                    htmlFor="isActive"
+                    className="mr-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    تفعيل الإعلان
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-4">
+                <button
+                  type="submit"
+                  disabled={uploadingImage}
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {uploadingImage ? "جاري رفع الصورة..." : "إنشاء الإعلان"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAddForm(false);
+                    setImageFile(null);
+                    setImagePreview("");
+                  }}
+                  className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                >
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
 
         {/* Ads List */}
         <div className="space-y-4">
@@ -294,4 +619,3 @@ export default function AdsManagement() {
     </div>
   );
 }
-

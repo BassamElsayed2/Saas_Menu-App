@@ -195,15 +195,8 @@ export default function PublicMenuPage({
         }
       }
 
-      // Set first category as default
-      if (menuData.categories && menuData.categories.length > 0) {
-        setSelectedCategory(`category_${menuData.categories[0].id}`);
-      } else {
-        const categoryKeys = Object.keys(menuData.itemsByCategory || {});
-        if (categoryKeys.length > 0) {
-          setSelectedCategory(categoryKeys[0]);
-        }
-      }
+      // Keep "all" as default - don't change it
+      // This ensures all items are shown when the page loads
     } catch (error: any) {
       console.error("Error fetching menu:", error);
       toast.error(error.message || t("fetchError"));

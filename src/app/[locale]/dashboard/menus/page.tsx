@@ -240,10 +240,11 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
         if (result.error) {
           setSlugStatus({ checking: false, available: false, suggestions: [] });
         } else if (result.data) {
+          const data = result.data as any;
           setSlugStatus({
             checking: false,
-            available: result.data.available ?? false,
-            suggestions: result.data.suggestions ?? [],
+            available: data.available ?? false,
+            suggestions: data.suggestions ?? [],
           });
         } else {
           setSlugStatus({ checking: false, available: null, suggestions: [] });

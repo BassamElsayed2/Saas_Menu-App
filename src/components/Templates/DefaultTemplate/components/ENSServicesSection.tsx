@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useLanguage } from "../context";
-import { ensAdsData } from "../data";
+
 import { Icon } from "./Icon";
 
 // ============================
@@ -57,54 +57,6 @@ export const ENSServicesSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-          {ensAdsData.map((service) => (
-            <div
-              key={service.id}
-              className="
-            group relative
-            rounded-2xl p-6
-            bg-white/[0.07] backdrop-blur-md
-            border border-white/[0.15]
-            transition-all duration-300
-            hover:-translate-y-2
-            hover:bg-white/[0.12]
-            hover:border-white/[0.25]
-          "
-            >
-              {/* Card Glow */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-br from-blue-500/10 to-purple-600/10 blur-xl" />
-
-              <div className="relative z-10">
-                <div
-                  className="
-                w-12 h-12 mb-4
-                bg-gradient-to-br from-blue-400 via-blue-500 to-purple-600
-                rounded-xl
-                flex items-center justify-center
-                shadow-lg shadow-blue-500/30
-                group-hover:scale-110
-                transition-transform duration-300
-              "
-                >
-                  <Icon name={service.icon} className="text-2xl text-white" />
-                </div>
-
-                <h3 className="text-lg font-bold text-white mb-2">
-                  {locale === "ar" ? service.titleAr : service.titleEn}
-                </h3>
-
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  {locale === "ar"
-                    ? service.descriptionAr
-                    : service.descriptionEn}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* CTA */}
         <div className="text-center">
           <a
@@ -138,4 +90,3 @@ export const ENSServicesSection: React.FC = () => {
     </section>
   );
 };
-

@@ -13,4 +13,3 @@ export { MenuSection } from "./MenuSection";
 export { ENSServicesSection } from "./ENSServicesSection";
 export { ENSFixedBanner } from "./ENSFixedBanner";
 export { Footer } from "./Footer";
-

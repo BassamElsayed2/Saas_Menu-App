@@ -144,7 +144,7 @@ h1,
 .display-3,
 .display-2,
 .display-1 {
-  @apply text-white font-bold leading-tight mb-[10px] dark:text-white;
+  @apply font-bold leading-tight mb-[10px] text-black dark:text-white;
 }
 .h6,
 h6,

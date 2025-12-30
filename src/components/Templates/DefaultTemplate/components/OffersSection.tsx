@@ -2,18 +2,41 @@
 
 import React from "react";
 import { useLanguage } from "../context";
-import { adsData } from "../data";
 import { Button } from "./Button";
 import { Icon } from "./Icon";
 import { SmallAdCard } from "./SmallAdCard";
+import { MenuItem } from "../../types";
 
 // ============================
 // Offers Section Component
 // ============================
 
-export const OffersSection: React.FC = () => {
+interface OffersSectionProps {
+  items: MenuItem[];
+}
+
+export const OffersSection: React.FC<OffersSectionProps> = ({ items }) => {
   const { locale, direction } = useLanguage();
   const rtl = direction === "rtl";
+
+  // Convert menu items to ad format for SmallAdCard
+  const adsFromItems = items.map((item) => ({
+    id: item.id.toString(),
+    titleAr: item.name,
+    titleEn: item.name,
+    descriptionAr: item.description,
+    descriptionEn: item.description,
+    image: item.image,
+    discount: item.discountPercent ? `${item.discountPercent}%` : undefined,
+    badge: item.discountPercent
+      ? { ar: "عرض خاص", en: "Special Offer" }
+      : undefined,
+  }));
+
+  // If no offers, don't show the section
+  if (adsFromItems.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -103,7 +126,7 @@ export const OffersSection: React.FC = () => {
       gap-3 sm:gap-5
     "
         >
-          {adsData.map((ad) => (
+          {adsFromItems.map((ad) => (
             <SmallAdCard key={ad.id} ad={ad} />
           ))}
         </div>

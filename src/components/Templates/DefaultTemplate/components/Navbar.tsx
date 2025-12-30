@@ -9,7 +9,12 @@ import { LanguageToggle } from "./LanguageToggle";
 // Navbar Component
 // ============================
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  menuName: string;
+  logo?: string;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ menuName, logo }) => {
   const { t, direction } = useLanguage();
   const rtl = direction === "rtl";
 
@@ -25,13 +30,21 @@ export const Navbar: React.FC = () => {
           <a href="#" className="group flex items-center gap-2">
             <div className="relative">
               <div className="absolute inset-0 bg-[var(--accent)]/30 blur-xl rounded-full animate-pulse" />
-              <Icon
-                name="restaurant-2-line"
-                className="relative text-[var(--text-3xl)] text-[var(--accent)] transition-transform duration-300 group-hover:scale-110"
-              />
+              {logo ? (
+                <img
+                  src={logo}
+                  alt={menuName}
+                  className="relative w-10 h-10 rounded-full object-cover transition-transform duration-300 group-hover:scale-110"
+                />
+              ) : (
+                <Icon
+                  name="restaurant-2-line"
+                  className="relative text-[var(--text-3xl)] text-[var(--accent)] transition-transform duration-300 group-hover:scale-110"
+                />
+              )}
             </div>
             <span className="text-[var(--text-2xl)] font-bold bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] bg-clip-text text-transparent">
-              {t.brand}
+              {menuName}
             </span>
           </a>
 

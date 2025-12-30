@@ -1,28 +1,39 @@
 "use client";
 
 import React, { useState, useCallback, useMemo } from "react";
-import { Category, MenuItem } from "../types";
+import { Category as LocalCategory } from "../types";
 import { useLanguage } from "../context";
-import { menuItems } from "../data";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { Icon } from "./Icon";
 import { Modal } from "./Modal";
 import { MenuCard } from "./MenuCard";
+import { Category, MenuItem } from "../../types";
 
 // ============================
 // Menu Section Component
 // ============================
 
-export const MenuSection: React.FC = () => {
-  const { t, direction } = useLanguage();
-  const [activeCategory, setActiveCategory] = useState<Category>("all");
+interface MenuSectionProps {
+  categories: Category[];
+  items: MenuItem[];
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+}
+
+export const MenuSection: React.FC<MenuSectionProps> = ({
+  categories: apiCategories,
+  items: apiItems,
+  selectedCategory,
+  onCategoryChange,
+}) => {
+  const { t, direction, locale } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const rtl = direction === "rtl";
 
-  const openModal = useCallback((item: MenuItem) => {
+  const openModal = useCallback((item: any) => {
     setSelectedItem(item);
     setIsModalOpen(true);
   }, []);
@@ -32,50 +43,71 @@ export const MenuSection: React.FC = () => {
     setTimeout(() => setSelectedItem(null), 300);
   }, []);
 
-  const categories = useMemo(
-    () => [
-      { id: "all" as Category, icon: "grid-line", label: t.categories.all },
-      {
-        id: "appetizers" as Category,
-        icon: "bowl-line",
-        label: t.categories.appetizers,
-      },
-      {
-        id: "mains" as Category,
-        icon: "restaurant-line",
-        label: t.categories.mains,
-      },
-      {
-        id: "drinks" as Category,
-        icon: "cup-line",
-        label: t.categories.drinks,
-      },
-      {
-        id: "desserts" as Category,
-        icon: "cake-3-line",
-        label: t.categories.desserts,
-      },
-    ],
-    [t]
-  );
+  // Map API categories to local format with icons
+  const categoryIcons: Record<string, string> = {
+    all: "grid-line",
+    appetizers: "bowl-line",
+    مقبلات: "bowl-line",
+    mains: "restaurant-line",
+    "أطباق رئيسية": "restaurant-line",
+    drinks: "cup-line",
+    مشروبات: "cup-line",
+    desserts: "cake-3-line",
+    حلويات: "cake-3-line",
+  };
+
+  const categories = useMemo(() => {
+    const cats = [
+      { id: "all", icon: "grid-line", label: t.categories.all },
+      ...apiCategories.map((cat) => ({
+        id: cat.id.toString(),
+        icon: categoryIcons[cat.name.toLowerCase()] || "restaurant-line",
+        label: cat.name,
+      })),
+    ];
+    return cats;
+  }, [apiCategories, t]);
+
+  // Convert API items to local format
+  const convertedItems = useMemo(() => {
+    return apiItems.map((item) => ({
+      id: item.id.toString(),
+      nameAr: item.name,
+      nameEn: item.name,
+      descriptionAr: item.description,
+      descriptionEn: item.description,
+      price: item.price,
+      image: item.image,
+      category: item.categoryId?.toString() || "",
+      categoryId: item.categoryId,
+      isPopular: !!(item.discountPercent && item.discountPercent > 0),
+      originalPrice: item.originalPrice,
+      discountPercent: item.discountPercent,
+    }));
+  }, [apiItems]);
 
   const filteredItems = useMemo(() => {
+    // Filter by category
+    // Important: "all" should show ALL items
     const categoryFiltered =
-      activeCategory === "all"
-        ? menuItems
-        : menuItems.filter((item) => item.category === activeCategory);
+      !selectedCategory || selectedCategory === "all"
+        ? convertedItems // Show all items when "all" is selected or undefined
+        : convertedItems.filter(
+            (item) => item.categoryId?.toString() === selectedCategory
+          );
 
+    // Filter by search query
     if (!searchQuery.trim()) return categoryFiltered;
 
     const searchLower = searchQuery.toLowerCase();
     return categoryFiltered.filter(
       (item) =>
         item.nameEn.toLowerCase().includes(searchLower) ||
-        item.nameAr.includes(searchQuery) ||
+        item.nameAr.toLowerCase().includes(searchLower) ||
         item.descriptionEn.toLowerCase().includes(searchLower) ||
-        item.descriptionAr.includes(searchQuery)
+        item.descriptionAr.toLowerCase().includes(searchLower)
     );
-  }, [activeCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, convertedItems]);
 
   return (
     <section
@@ -173,8 +205,8 @@ export const MenuSection: React.FC = () => {
           {categories.map((category, index) => (
             <Button
               key={category.id}
-              variant={activeCategory === category.id ? "glow" : "category"}
-              onClick={() => setActiveCategory(category.id)}
+              variant={selectedCategory === category.id ? "glow" : "category"}
+              onClick={() => onCategoryChange(category.id)}
               style={{ animationDelay: `${index * 80}ms` }}
               className="text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5"
             >
@@ -197,7 +229,7 @@ export const MenuSection: React.FC = () => {
         {/* Grid */}
         {filteredItems.length > 0 ? (
           <div
-            key={`${activeCategory}-${searchQuery}`}
+            key={`${selectedCategory}-${searchQuery}`}
             className="
           grid grid-cols-2
           lg:grid-cols-3
@@ -235,4 +267,3 @@ export const MenuSection: React.FC = () => {
     </section>
   );
 };
-

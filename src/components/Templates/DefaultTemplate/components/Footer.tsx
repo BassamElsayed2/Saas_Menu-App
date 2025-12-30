@@ -3,12 +3,18 @@
 import React, { useMemo } from "react";
 import { useLanguage } from "../context";
 import { Icon } from "./Icon";
+import { Branch } from "../../types";
 
 // ============================
 // Footer Component
 // ============================
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  menuName: string;
+  branches: Branch[];
+}
+
+export const Footer: React.FC<FooterProps> = ({ menuName, branches }) => {
   const { t, direction } = useLanguage();
 
   const socialLinks = useMemo(

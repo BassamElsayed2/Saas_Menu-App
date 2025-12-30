@@ -13,8 +13,11 @@ export interface MenuItem {
   descriptionEn: string;
   price: number;
   image: string;
-  category: "appetizers" | "mains" | "drinks" | "desserts";
+  category: string;
+  categoryId?: number;
   isPopular?: boolean;
+  originalPrice?: number;
+  discountPercent?: number;
 }
 
 export interface AdItem {
