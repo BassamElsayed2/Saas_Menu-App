@@ -67,9 +67,9 @@ class ApiClient {
     // Sync token from localStorage before each request
     this.syncToken();
     
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string>),
     };
 
     if (this.token) {
@@ -87,7 +87,7 @@ class ApiClient {
       if (!response.ok) {
         return {
           error: data.error || 'Something went wrong',
-          data: null,
+          data: undefined,
         };
       }
 
@@ -99,7 +99,7 @@ class ApiClient {
       console.error('API Request Error:', error);
       return {
         error: 'Network error. Please check your connection.',
-        data: null,
+        data: undefined,
       };
     }
   }

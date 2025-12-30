@@ -11,12 +11,16 @@ import PricingSection from "@/components/FrontPage/PricingSection";
 import ContactSection from "@/components/FrontPage/ContactSection";
 import FooterSection from "@/components/FrontPage/FooterSection";
 import WhatsAppButton from "@/components/FrontPage/WhatsAppButton";
+import SignInModal from "@/components/Authentication/SignInModal";
 
 export default function Home() {
   const [isReady, setIsReady] = useState(false);
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 
   useEffect(() => {
     setIsReady(true);
+    // فتح الـ Modal تلقائياً عند تحميل الصفحة
+    setIsSignInModalOpen(true);
   }, []);
 
   if (!isReady) {
@@ -31,7 +35,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      <Navbar />
+      <Navbar onOpenSignIn={() => setIsSignInModalOpen(true)} />
       <HeroSection />
       <WhyUsSection />
       <TrustedBy />
@@ -41,6 +45,12 @@ export default function Home() {
       <ContactSection />
       <FooterSection />
       <WhatsAppButton />
+      
+      {/* Sign In Modal */}
+      <SignInModal 
+        isOpen={isSignInModalOpen} 
+        onClose={() => setIsSignInModalOpen(false)} 
+      />
     </main>
   );
 }

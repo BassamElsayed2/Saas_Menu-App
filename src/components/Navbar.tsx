@@ -7,7 +7,11 @@ import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Globe, Moon, Sun, Menu } from "@/components/icons/Icons";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onOpenSignIn?: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onOpenSignIn }) => {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("navbar");
@@ -155,14 +159,14 @@ const Navbar: React.FC = () => {
             </button>
 
             {/* Login */}
-            <Link
-              href={`/${locale}/authentication/sign-in`}
+            <button
+              onClick={onOpenSignIn}
               className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl
               bg-purple-600 hover:bg-purple-700 text-white font-semibold
               transition shadow-glow"
             >
               {t("login")}
-            </Link>
+            </button>
 
             {/* Mobile Toggle */}
             <button
@@ -203,13 +207,16 @@ const Navbar: React.FC = () => {
                 </a>
               ))}
 
-              <Link
-                href={`/${locale}/authentication/sign-in`}
+              <button
+                onClick={() => {
+                  setMobileOpen(false);
+                  onOpenSignIn?.();
+                }}
                 className="mt-4 inline-flex justify-center items-center px-5 py-3 rounded-xl
                 bg-purple-600 hover:bg-purple-700 text-white font-semibold transition"
               >
                 {t("login")}
-              </Link>
+              </button>
             </nav>
           </div>
         )}
