@@ -141,18 +141,35 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
           <div className="border-t border-gray-100 dark:border-[#172036] mx-[20px] my-[9px]"></div>
 
           <ul>
-            <li>
-              <Link
-                href={`/${locale}/menus`}
-                className="w-full text-left block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500  "
-                onClick={() => setActive(false)}
-              >
-                <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
-                  restaurant_menu
-                </i>
-                {t("manageMenus")}
-              </Link>
-            </li>
+            {user?.role === "admin" && (
+              <li>
+                <Link
+                  href={`/${locale}/admin`}
+                  className="w-full text-left block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-blue-600 dark:text-blue-400 transition-all hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                  onClick={() => setActive(false)}
+                >
+                  <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
+                    admin_panel_settings
+                  </i>
+                  {t("adminPanel")}
+                </Link>
+              </li>
+            )}
+            {/* Hide menus link for admin users */}
+            {user?.role !== "admin" && (
+              <li>
+                <Link
+                  href={`/${locale}/menus`}
+                  className="w-full text-left block relative py-[7px] ltr:pl-[50px] ltr:pr-[20px] rtl:pr-[50px] rtl:pl-[20px] text-black dark:text-white transition-all hover:text-primary-500  "
+                  onClick={() => setActive(false)}
+                >
+                  <i className="material-symbols-outlined top-1/2 -translate-y-1/2 !text-[22px] absolute ltr:left-[20px] rtl:right-[20px]">
+                    restaurant_menu
+                  </i>
+                  {t("manageMenus")}
+                </Link>
+              </li>
+            )}
             <li>
               <button
                 onClick={handleLogout}

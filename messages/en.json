@@ -280,7 +280,9 @@
     "signingIn": "Signing in...",
     "noAccount": "Don't have an account?",
     "createAccount": "Create Account",
-    "fillAllFields": "Please fill in all fields"
+    "fillAllFields": "Please fill in all fields",
+    "accountSuspended": "This account has been suspended. Please contact support.",
+    "contactSupport": "Contact Support"
   },
   "SignUp": {
     "title": "Create Account",
@@ -314,11 +316,13 @@
     "billing": "Billing",
     "manageMenus": "Manage Menus",
     "settings": "Settings",
+    "adminPanel": "Admin Panel",
     "logout": "Logout"
   },
   "Sidebar": {
     "main": "Main",
     "other": "Other",
+    "admin": "Administration",
     "dashboard": "Dashboard",
     "menus": "My Menus",
     "overview": "Overview",
@@ -327,6 +331,12 @@
     "profile": "Profile",
     "settings": "Settings",
     "accountSettings": "Account Settings",
+    "adminPanel": "Admin Panel",
+    "adminDashboard": "Dashboard",
+    "adminUsers": "Users",
+    "adminPlans": "Plans",
+    "adminAds": "Advertisements",
+    "adminAdmins": "Administrators",
     "needHelp": "Need Help?",
     "helpDescription": "Check our documentation or contact support",
     "contactSupport": "Contact Support"
@@ -460,11 +470,15 @@
     "manageItems": "Manage Items",
     "settings": "Settings",
     "viewPublic": "View Public Menu",
+    "navigation": {
+      "overview": "Overview",
+      "categories": "Categories",
+      "products": "Products"
+    },
     "stats": {
       "totalItems": "Total Items",
       "activeItems": "Active Items",
-      "categories": "Categories",
-      "views": "Views"
+      "categories": "Categories"
     },
     "quickLinks": {
       "items": "Menu Items",
@@ -476,7 +490,11 @@
     },
     "recentActivity": {
       "title": "Recent Activity",
-      "noActivity": "No recent activity"
+      "noActivity": "No recent activity",
+      "product": "Product",
+      "category": "Category",
+      "added": "Added on",
+      "view": "View"
     }
   },
   "MenuSettings": {

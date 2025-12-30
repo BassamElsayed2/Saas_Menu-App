@@ -275,6 +275,19 @@ const CategoriesTable: React.FC = () => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
 
+      // Check file size (1MB = 1 * 1024 * 1024 bytes)
+      const maxSize = 1 * 1024 * 1024; // 1MB
+      if (file.size > maxSize) {
+        toast.error(
+          locale === "ar"
+            ? "حجم الصورة يجب أن لا يتجاوز 1 ميجابايت"
+            : "Image size must not exceed 1MB"
+        );
+        // Reset the input
+        event.target.value = "";
+        return;
+      }
+
       setFormData((prev) => ({ ...prev, image: file }));
       setSelectedImages([file]);
     } else {

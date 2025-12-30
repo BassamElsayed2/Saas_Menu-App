@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 const SignInForm: React.FC = () => {
   const locale = useLocale();
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, user: contextUser } = useAuth();
   const t = useTranslations("SignIn");
 
   const [email, setEmail] = useState("");
@@ -31,18 +31,20 @@ const SignInForm: React.FC = () => {
     console.log("📝 Form submitted, attempting login...");
 
     try {
-      await login(email, password);
-      console.log("✅ Login completed successfully");
+      const result = await login(email, password);
 
       // Login successful
       toast.success("Login successful!");
 
-      // Small delay to ensure cache is updated
-      await new Promise(resolve => setTimeout(resolve, 200));
+      // Small delay for better UX
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-      // Navigate to menus page (menu selection)
-      console.log("🔄 Navigating to menus page...");
-      router.push(`/${locale}/menus`);
+      // Navigate based on user role from login response
+      if (result?.user?.role === "admin") {
+        router.push(`/${locale}/admin`);
+      } else {
+        router.push(`/${locale}/menus`);
+      }
     } catch (error) {
       console.error("❌ Login failed:", error);
       // Error already handled by React Query hook with toast
@@ -53,7 +55,7 @@ const SignInForm: React.FC = () => {
 
   return (
     <>
-      <div className="auth-main-content bg-white dark:bg-[#0a0e19] py-[60px] md:py-[80px] lg:py-[135px]">
+      <div className="auth-main-content bg-white dark:bg-[#0a0e19] py-[60px]">
         <div className="mx-auto px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-center">
             <div className="xl:ltr:-mr-[25px] xl:rtl:-ml-[25px] 2xl:ltr:-mr-[45px] 2xl:rtl:-ml-[45px] rounded-[25px] order-2 lg:order-1">
@@ -66,26 +68,24 @@ const SignInForm: React.FC = () => {
               />
             </div>
 
-            <div className="xl:ltr:pl-[90px] xl:rtl:pr-[90px] 2xl:ltr:pl-[120px] 2xl:rtl:pr-[120px] order-1 lg:order-2">
-              <Image
-                src="/images/logo-big.svg"
-                alt="logo"
-                className="inline-block dark:hidden"
-                width={142}
-                height={38}
-              />
-              <Image
-                src="/images/white-logo-big.svg"
-                alt="logo"
-                className="hidden dark:inline-block"
-                width={142}
-                height={38}
-              />
+            <div className=" xl:ltr:pl-[90px] xl:rtl:pr-[90px] 2xl:ltr:pl-[120px] 2xl:rtl:pr-[120px] order-1 lg:order-2">
+              <div className="flex justify-between flex-row-reverse gap-2 items-center">
+                {/* Logo */}
+                <div className="mb-[17px] md:mb-[25px]">
+                  <Image
+                    src="/images/ENS-copy.png"
+                    alt="شعار الموقع"
+                    className="inline-block "
+                    width={142}
+                    height={38}
+                  />
+                </div>
 
-              <div className="my-[17px] md:my-[25px]">
-                <h1 className="!font-semibold !text-[22px] md:!text-xl lg:!text-2xl !mb-[5px] md:!mb-[7px]">
-                  {t("title")}
-                </h1>
+                <div className="my-[17px] md:my-[25px]">
+                  <h1 className="!font-semibold !text-[22px] md:!text-xl lg:!text-2xl !mb-[5px] md:!mb-[7px]">
+                    {t("title")}
+                  </h1>
+                </div>
               </div>
 
               <form onSubmit={handleSubmit}>

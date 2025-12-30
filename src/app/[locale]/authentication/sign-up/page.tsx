@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocale } from "next-intl";
-import DarkMode from "@/components/Authentication/DarkMode"; 
+import DarkMode from "@/components/Authentication/DarkMode";
 import SignUpForm from "@/components/Authentication/SignUpForm";
 
 export default function Page() {
@@ -13,10 +13,13 @@ export default function Page() {
   const locale = useLocale();
 
   useEffect(() => {
-    // إذا المستخدم مسجل دخول بالفعل، نحوله لصفحة Menus
+    // إذا المستخدم مسجل دخول بالفعل، نحوله حسب role
     if (!loading && user) {
-      console.log("✅ User already logged in, redirecting to menus...");
-      router.push(`/${locale}/menus`);
+      if (user.role === "admin") {
+        router.push(`/${locale}/admin`);
+      } else {
+        router.push(`/${locale}/menus`);
+      }
     }
   }, [user, loading, router, locale]);
 
@@ -40,7 +43,7 @@ export default function Page() {
   return (
     <>
       <DarkMode />
-      
+
       <SignUpForm />
     </>
   );

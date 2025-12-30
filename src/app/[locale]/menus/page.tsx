@@ -367,15 +367,15 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      toast.error("يجب اختيار ملف صورة");
+    // Validate file type (only .ico files)
+    if (!file.type.includes("icon") && !file.name.endsWith(".ico")) {
+      toast.error("يجب اختيار ملف favicon بصيغة .ico فقط");
       return;
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("حجم الصورة يجب أن يكون أقل من 5 ميجابايت");
+    // Validate file size (max 1MB)
+    if (file.size > 1 * 1024 * 1024) {
+      toast.error("حجم الملف يجب أن يكون أقل من 1 ميجابايت");
       return;
     }
 
@@ -526,13 +526,13 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                         اسحب الصورة هنا
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-500">
-                        PNG, JPG, WEBP (حد أقصى 5 ميجابايت)
+                        ICO فقط (حد أقصى 1 ميجابايت)
                       </p>
                     </div>
                     <input
                       type="file"
                       className="hidden"
-                      accept="image/*"
+                      accept=".ico,image/x-icon"
                       onChange={handleLogoChange}
                       disabled={uploadingLogo}
                     />
@@ -541,19 +541,19 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
               )}
 
               {uploadingLogo && (
-                <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                <div className="mt-3 text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-500"></div>
                   جاري رفع الصورة...
-                </p>
+                </div>
               )}
 
-              <p className="mt-3 text-xs text-gray-500 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800/50">
-                <i className="material-symbols-outlined !text-[16px] align-middle ltr:mr-1 rtl:ml-1">
-                  info
-                </i>
-                {t("logoHint") ||
-                  "سيتم استخدام هذه الصورة كـ favicon للصفحة العامة للمنيو"}
-              </p>
+              <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800/50 flex items-center gap-1">
+                <i className="material-symbols-outlined !text-[16px]">info</i>
+                <span>
+                  {t("logoHint") ||
+                    "سيتم استخدام هذه الصورة كـ favicon للصفحة العامة للمنيو"}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -666,26 +666,26 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
 
               {/* Status Message */}
               {slugStatus.checking && (
-                <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                <div className="mt-3 text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-500"></div>
                   جاري التحقق من الرابط...
-                </p>
+                </div>
               )}
               {!slugStatus.checking && slugStatus.available === true && (
-                <p className="mt-3 text-sm text-green-600 dark:text-green-400 flex items-center gap-2 bg-green-50 dark:bg-green-900/20 p-2 rounded-lg border border-green-200 dark:border-green-800/50">
+                <div className="mt-3 text-sm text-green-600 dark:text-green-400 flex items-center gap-2 bg-green-50 dark:bg-green-900/20 p-2 rounded-lg border border-green-200 dark:border-green-800/50">
                   <i className="material-symbols-outlined !text-[18px]">
                     check_circle
                   </i>
                   هذا الرابط متاح
-                </p>
+                </div>
               )}
               {!slugStatus.checking && slugStatus.available === false && (
-                <p className="mt-3 text-sm text-red-600 dark:text-red-400 flex items-center gap-2 bg-red-50 dark:bg-red-900/20 p-2 rounded-lg border border-red-200 dark:border-red-800/50">
+                <div className="mt-3 text-sm text-red-600 dark:text-red-400 flex items-center gap-2 bg-red-50 dark:bg-red-900/20 p-2 rounded-lg border border-red-200 dark:border-red-800/50">
                   <i className="material-symbols-outlined !text-[18px]">
                     cancel
                   </i>
                   هذا الرابط مستخدم بالفعل
-                </p>
+                </div>
               )}
 
               {/* Suggestions */}
@@ -693,12 +693,12 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                 slugStatus.available === false &&
                 slugStatus.suggestions.length > 0 && (
                   <div className="mt-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
-                    <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                    <div className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
                       <i className="material-symbols-outlined !text-[16px]">
                         lightbulb
                       </i>
                       اقتراحات مشابهة:
-                    </p>
+                    </div>
                     <div className="flex flex-wrap gap-2">
                       {slugStatus.suggestions.map((suggestion, index) => (
                         <button

@@ -280,7 +280,9 @@
     "signingIn": "جاري تسجيل الدخول...",
     "noAccount": "ليس لديك حساب؟",
     "createAccount": "إنشاء حساب",
-    "fillAllFields": "يرجى ملء جميع الحقول"
+    "fillAllFields": "يرجى ملء جميع الحقول",
+    "accountSuspended": "تم إيقاف هذا الحساب. برجاء التواصل مع الدعم.",
+    "contactSupport": "تواصل مع الدعم"
   },
   "SignUp": {
     "title": "إنشاء حساب",
@@ -314,11 +316,13 @@
     "billing": "الفواتير",
     "manageMenus": "إدارة القوائم",
     "settings": "الإعدادات",
+    "adminPanel": "لوحة الأدمن",
     "logout": "تسجيل الخروج"
   },
   "Sidebar": {
     "main": "الرئيسية",
     "other": "أخرى",
+    "admin": "إدارة النظام",
     "dashboard": "لوحة التحكم",
     "menus": "قوائمي",
     "overview": "نظرة عامة",
@@ -327,6 +331,12 @@
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",
     "accountSettings": "إعدادات الحساب",
+    "adminPanel": "لوحة الأدمن",
+    "adminDashboard": "لوحة التحكم",
+    "adminUsers": "المستخدمين",
+    "adminPlans": "الخطط",
+    "adminAds": "الإعلانات",
+    "adminAdmins": "المشرفين",
     "needHelp": "تحتاج مساعدة؟",
     "helpDescription": "تحقق من الوثائق أو تواصل مع الدعم",
     "contactSupport": "تواصل مع الدعم"
@@ -460,11 +470,15 @@
     "manageItems": "إدارة العناصر",
     "settings": "الإعدادات",
     "viewPublic": "عرض القائمة العامة",
+    "navigation": {
+      "overview": "نظرة عامة",
+      "categories": "التصنيفات",
+      "products": "المنتجات"
+    },
     "stats": {
       "totalItems": "إجمالي العناصر",
       "activeItems": "العناصر النشطة",
-      "categories": "الفئات",
-      "views": "المشاهدات"
+      "categories": "الفئات"
     },
     "quickLinks": {
       "items": "عناصر القائمة",
@@ -476,7 +490,11 @@
     },
     "recentActivity": {
       "title": "النشاط الأخير",
-      "noActivity": "لا يوجد نشاط حديث"
+      "noActivity": "لا يوجد نشاط حديث",
+      "product": "منتج",
+      "category": "تصنيف",
+      "added": "تمت الإضافة في",
+      "view": "عرض"
     }
   },
   "MenuSettings": {

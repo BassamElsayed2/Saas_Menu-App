@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface SidebarMenuProps {
   toggleActive: () => void;
@@ -14,10 +15,33 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("Sidebar");
+  const { user } = useAuth();
 
   // Extract menu ID from pathname if in menu context
   const menuIdMatch = pathname.match(/\/menus\/(\d+)/);
-  const menuId = menuIdMatch ? menuIdMatch[1] : null;
+  const currentMenuId = menuIdMatch ? menuIdMatch[1] : null;
+
+  // Save menuId to localStorage when in menu context
+  React.useEffect(() => {
+    if (currentMenuId && typeof window !== "undefined") {
+      localStorage.setItem("lastMenuId", currentMenuId);
+    }
+  }, [currentMenuId]);
+
+  // Get last menu ID from localStorage for profile pages
+  const [lastMenuId, setLastMenuId] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("lastMenuId");
+      setLastMenuId(stored);
+    }
+  }, []);
+
+  // Use current menu ID if available, otherwise use last menu ID for profile pages
+  const isProfilePage = pathname.includes("/profile/");
+  const menuId =
+    currentMenuId || (isProfilePage && lastMenuId ? lastMenuId : null);
 
   // Determine menu items based on context
   const menuItems = menuId
@@ -46,6 +70,22 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
           href: `/${locale}/dashboard/menus/${menuId}/settings`,
           badge: null,
         },
+        {
+          title: t("profile"),
+          icon: "account_circle",
+          href: `/${locale}/dashboard/profile/user-profile`,
+          badge: null,
+        },
+      ]
+    : user?.role === "admin"
+    ? [
+        // Admin users only see profile, not menus
+        {
+          title: t("profile"),
+          icon: "account_circle",
+          href: `/${locale}/dashboard/profile/user-profile`,
+          badge: null,
+        },
       ]
     : [
         {
@@ -72,10 +112,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
     <>
       <div className="sidebar-area bg-white dark:bg-[#0c1427] fixed z-[7] top-0 h-screen transition-all rounded-r-md">
         <div className="logo bg-white dark:bg-[#0c1427] border-b border-gray-100 dark:border-[#172036] px-[25px] pt-[19px] pb-[15px] absolute z-[2] right-0 top-0 left-0">
-          <Link
-            href={`/${locale}/dashboard/menus/${menuId}`}
-            className="transition-none relative flex items-center outline-none"
-          >
+          <div className="transition-none relative flex items-center outline-none">
             <Image
               src="/images/logo-icon.svg"
               alt="logo-icon"
@@ -85,7 +122,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <span className="font-bold text-black dark:text-white relative ltr:ml-[8px] rtl:mr-[8px] top-px text-xl">
               SaaS Menu
             </span>
-          </Link>
+          </div>
 
           <button
             type="button"
@@ -142,6 +179,139 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
               })}
             </ul>
           </div>
+
+          {/* Admin Section - only show for admin users */}
+          {!menuId && user?.role === "admin" && (
+            <div className="menu-section mt-8 pt-6 border-t border-gray-100 dark:border-[#172036]">
+              <span className="block relative font-medium uppercase text-gray-400 mb-[8px] text-xs">
+                {t("admin")}
+              </span>
+
+              <ul className="space-y-1">
+                <li>
+                  <Link
+                    href={`/${locale}/admin`}
+                    className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
+                      pathname === `/${locale}/admin` &&
+                      !pathname.includes("/admin/users") &&
+                      !pathname.includes("/admin/plans") &&
+                      !pathname.includes("/admin/ads") &&
+                      !pathname.includes("/admin/admins")
+                        ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname === `/${locale}/admin` &&
+                        !pathname.includes("/admin/users") &&
+                        !pathname.includes("/admin/plans") &&
+                        !pathname.includes("/admin/ads") &&
+                        !pathname.includes("/admin/admins")
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      dashboard
+                    </i>
+                    <span className="title leading-none">
+                      {t("adminDashboard")}
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/admin/users`}
+                    className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
+                      pathname.includes("/admin/users")
+                        ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname.includes("/admin/users")
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      group
+                    </i>
+                    <span className="title leading-none">
+                      {t("adminUsers")}
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/admin/plans`}
+                    className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
+                      pathname.includes("/admin/plans")
+                        ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname.includes("/admin/plans")
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      credit_card
+                    </i>
+                    <span className="title leading-none">
+                      {t("adminPlans")}
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/admin/ads`}
+                    className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
+                      pathname.includes("/admin/ads")
+                        ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname.includes("/admin/ads")
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      campaign
+                    </i>
+                    <span className="title leading-none">{t("adminAds")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/admin/admins`}
+                    className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
+                      pathname.includes("/admin/admins")
+                        ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname.includes("/admin/admins")
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      admin_panel_settings
+                    </i>
+                    <span className="title leading-none">
+                      {t("adminAdmins")}
+                    </span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
 
           {/* Settings Section - only show when NOT in menu context */}
           {!menuId && (

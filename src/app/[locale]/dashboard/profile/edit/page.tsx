@@ -31,6 +31,12 @@ export default function EditProfilePage() {
     confirmPassword: "",
   });
 
+  const [passwordErrors, setPasswordErrors] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
   const [selectedPlan, setSelectedPlan] = useState<string>("free");
   const [upgradingPlan, setUpgradingPlan] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -40,7 +46,11 @@ export default function EditProfilePage() {
 
   // React Query hooks
   const updateProfile = useUpdateProfile();
-  const changePassword = useChangePassword();
+  const changePassword = useChangePassword((field, message) => {
+    if (field === 'currentPassword' || field === 'newPassword') {
+      setPasswordErrors(prev => ({ ...prev, [field]: message }));
+    }
+  });
 
   useEffect(() => {
     if (!loading && !user) {
@@ -193,28 +203,92 @@ export default function EditProfilePage() {
     });
   };
 
-  const handleChangePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Validation functions for password fields
+  const validateCurrentPassword = () => {
+    if (!passwordData.currentPassword) {
+      setPasswordErrors(prev => ({ ...prev, currentPassword: "" }));
+      return true;
+    }
+    if (passwordData.currentPassword.length < 1) {
+      setPasswordErrors(prev => ({ ...prev, currentPassword: "كلمة المرور الحالية مطلوبة" }));
+      return false;
+    }
+    setPasswordErrors(prev => ({ ...prev, currentPassword: "" }));
+    return true;
+  };
 
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      return;
+  const validateNewPassword = () => {
+    if (!passwordData.newPassword) {
+      setPasswordErrors(prev => ({ ...prev, newPassword: "" }));
+      return true;
     }
 
     if (passwordData.newPassword.length < 8) {
+      setPasswordErrors(prev => ({ ...prev, newPassword: "كلمة المرور يجب أن تكون 8 أحرف على الأقل" }));
+      return false;
+    }
+
+    const hasUpperCase = /[A-Z]/.test(passwordData.newPassword);
+    const hasLowerCase = /[a-z]/.test(passwordData.newPassword);
+    const hasNumber = /\d/.test(passwordData.newPassword);
+
+    if (!hasUpperCase || !hasLowerCase || !hasNumber) {
+      setPasswordErrors(prev => ({ ...prev, newPassword: "كلمة المرور يجب أن تحتوي على أحرف كبيرة وصغيرة وأرقام" }));
+      return false;
+    }
+
+    setPasswordErrors(prev => ({ ...prev, newPassword: "" }));
+    return true;
+  };
+
+  const validateConfirmPassword = () => {
+    if (!passwordData.confirmPassword) {
+      setPasswordErrors(prev => ({ ...prev, confirmPassword: "" }));
+      return true;
+    }
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setPasswordErrors(prev => ({ ...prev, confirmPassword: "كلمة المرور غير متطابقة" }));
+      return false;
+    }
+
+    setPasswordErrors(prev => ({ ...prev, confirmPassword: "" }));
+    return true;
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate all fields
+    const isCurrentValid = validateCurrentPassword();
+    const isNewValid = validateNewPassword();
+    const isConfirmValid = validateConfirmPassword();
+
+    if (!isCurrentValid || !isNewValid || !isConfirmValid) {
       return;
     }
 
-    await changePassword.mutateAsync({
-      currentPassword: passwordData.currentPassword,
-      newPassword: passwordData.newPassword,
-    });
+    try {
+      await changePassword.mutateAsync({
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      });
 
-    // Reset form on success
-    setPasswordData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
+      // Reset form on success
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+      setPasswordErrors({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      // Error is handled by the mutation's onError callback
+      console.log('Password change error:', error);
+    }
   };
 
   const handleChangePlan = async () => {
@@ -568,15 +642,25 @@ export default function EditProfilePage() {
               <input
                 type="password"
                 value={passwordData.currentPassword}
-                onChange={(e) =>
+                onChange={(e) => {
                   setPasswordData({
                     ...passwordData,
                     currentPassword: e.target.value,
-                  })
-                }
-                className="form-input"
+                  });
+                  if (passwordErrors.currentPassword) {
+                    setPasswordErrors(prev => ({ ...prev, currentPassword: "" }));
+                  }
+                }}
+                onBlur={validateCurrentPassword}
+                className={`form-input ${passwordErrors.currentPassword ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
                 required
               />
+              {passwordErrors.currentPassword && (
+                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                  <i className="material-symbols-outlined !text-[16px]">error</i>
+                  {passwordErrors.currentPassword}
+                </p>
+              )}
             </div>
 
             <div>
@@ -586,19 +670,30 @@ export default function EditProfilePage() {
               <input
                 type="password"
                 value={passwordData.newPassword}
-                onChange={(e) =>
+                onChange={(e) => {
                   setPasswordData({
                     ...passwordData,
                     newPassword: e.target.value,
-                  })
-                }
-                className="form-input"
+                  });
+                  if (passwordErrors.newPassword) {
+                    setPasswordErrors(prev => ({ ...prev, newPassword: "" }));
+                  }
+                }}
+                onBlur={validateNewPassword}
+                className={`form-input ${passwordErrors.newPassword ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
                 minLength={8}
                 required
               />
-              <p className="text-xs text-gray-500 dark:text-gray-300 mt-1">
-                {t("passwordMinLength")}
-              </p>
+              {passwordErrors.newPassword ? (
+                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                  <i className="material-symbols-outlined !text-[16px]">error</i>
+                  {passwordErrors.newPassword}
+                </p>
+              ) : (
+                <p className="text-xs text-gray-500 dark:text-gray-300 mt-1">
+                  {t("passwordMinLength")}
+                </p>
+              )}
             </div>
 
             <div>
@@ -608,16 +703,26 @@ export default function EditProfilePage() {
               <input
                 type="password"
                 value={passwordData.confirmPassword}
-                onChange={(e) =>
+                onChange={(e) => {
                   setPasswordData({
                     ...passwordData,
                     confirmPassword: e.target.value,
-                  })
-                }
-                className="form-input"
+                  });
+                  if (passwordErrors.confirmPassword) {
+                    setPasswordErrors(prev => ({ ...prev, confirmPassword: "" }));
+                  }
+                }}
+                onBlur={validateConfirmPassword}
+                className={`form-input ${passwordErrors.confirmPassword ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
                 minLength={8}
                 required
               />
+              {passwordErrors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                  <i className="material-symbols-outlined !text-[16px]">error</i>
+                  {passwordErrors.confirmPassword}
+                </p>
+              )}
             </div>
 
             <div className="flex gap-4 pt-4">

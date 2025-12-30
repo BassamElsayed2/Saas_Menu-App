@@ -94,7 +94,9 @@ export default function UserProfilePage() {
                 />
               </div>
               <div className="ml-4 mb-5">
-                <h2 className="text-2xl font-bold !text-white">{user.name}</h2>
+                <h2 className="text-2xl font-bold !text-white mr-5">
+                  {user.name}
+                </h2>
                 <p className="text-gray-600 dark:text-gray-300">{user.email}</p>
               </div>
             </div>
@@ -221,31 +223,6 @@ export default function UserProfilePage() {
                   {t("accountStatus")}
                 </h3>
                 <div className="space-y-3">
-                  {/* Role */}
-                  <div className="flex items-center">
-                    <svg
-                      className="w-5 h-5 text-gray-400 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                    <div className="mr-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-300 !mb-0">
-                        {t("role")}
-                      </p>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white capitalize">
-                        {user.role}
-                      </p>
-                    </div>
-                  </div>
-
                   {/* Member Since */}
                   <div className="flex items-center">
                     <svg
@@ -331,7 +308,7 @@ export default function UserProfilePage() {
               </div>
             </div>
             {/* Email Verification */}
-            <div className="flex mt-10 items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex mt-10 mb-2 items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
               <span className="text-sm text-gray-600 dark:text-gray-300">
                 {t("emailVerification")}
               </span>
@@ -429,9 +406,7 @@ export default function UserProfilePage() {
                   </p>
                   <button
                     onClick={() =>
-                      router.push(
-                        `/${locale}/menus/profile/edit#subscription`
-                      )
+                      router.push(`/${locale}/menus/profile/edit#subscription`)
                     }
                     className="px-6 py-2  text-black dark:text-white rounded-md hover:bg-blue-700 hover:text-white transition-colors"
                   >
@@ -446,4 +421,3 @@ export default function UserProfilePage() {
     </div>
   );
 }
-

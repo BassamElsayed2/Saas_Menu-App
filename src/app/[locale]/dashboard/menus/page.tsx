@@ -40,6 +40,10 @@ export default function MenusPage() {
     if (!loading && !user) {
       router.push(`/${locale}/authentication/sign-in`);
     }
+    // Redirect admin users to admin panel
+    if (!loading && user?.role === "admin") {
+      router.push(`/${locale}/admin`);
+    }
   }, [user, loading, router, locale]);
 
   const handleToggleStatus = async (menuId: number, currentStatus: boolean) => {
