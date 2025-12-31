@@ -2237,6 +2237,41 @@ body {
   animation: ens-glow-pulse 3s ease-in-out infinite;
 }
 
+/* Guide pulse animation for sidebar menu items */
+@keyframes guide-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(96, 93, 255, 0.4);
+    background-color: rgba(96, 93, 255, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 20px 4px rgba(96, 93, 255, 0.3);
+    background-color: rgba(96, 93, 255, 0.1);
+  }
+}
+
+@keyframes ping-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+.animate-guide-pulse {
+  animation: guide-pulse 5s ease-in-out infinite;
+}
+
+.animate-ping-slow {
+  animation: ping-slow 5s ease-in-out infinite;
+}
+
 /* Smooth hover scale with better performance */
 .hover-lift {
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);

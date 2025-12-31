@@ -27,6 +27,15 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Initialize dark mode from localStorage
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme === "dark") {
+      setIsDarkMode(true);
+    }
+  }, []);
 
   // Reset form when modal closes
   useEffect(() => {
@@ -110,13 +119,30 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => {
 
                 {/* Card */}
                 <div className="relative bg-white/95 dark:bg-[#0c1427]/95 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/20 rounded-2xl shadow-2xl dark:shadow-primary-500/10 p-8 md:p-10">
-                  {/* Close Button */}
-                  <button
-                    onClick={onClose}
-                    className="absolute top-4 ltr:right-4 rtl:left-4 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-200 transition-all"
-                  >
-                    <i className="ri-close-line text-xl"></i>
-                  </button>
+                  {/* Top Actions - Dark Mode & Close */}
+                  <div className="absolute top-4 ltr:right-4 rtl:left-4 flex items-center gap-2">
+                    {/* Dark Mode Toggle */}
+                    <button
+                      onClick={() => {
+                        const newMode = !isDarkMode;
+                        setIsDarkMode(newMode);
+                        localStorage.setItem("theme", newMode ? "dark" : "light");
+                        document.documentElement.classList.toggle("dark", newMode);
+                      }}
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-primary-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary-500 transition-all"
+                      title={isDarkMode ? "Light Mode" : "Dark Mode"}
+                    >
+                      <i className={`${isDarkMode ? "ri-sun-line" : "ri-moon-line"} text-xl`}></i>
+                    </button>
+
+                    {/* Close Button */}
+                    <button
+                      onClick={onClose}
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-200 transition-all"
+                    >
+                      <i className="ri-close-line text-xl"></i>
+                    </button>
+                  </div>
 
                   {/* Logo */}
                   <div className="flex justify-center mb-6">

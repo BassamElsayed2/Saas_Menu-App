@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,6 +15,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenSignIn }) => {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("navbar");
+  const navRef = useRef<HTMLDivElement>(null);
 
   const NAV_ITEMS = [
     { key: "home", path: "#hero" },
@@ -36,6 +37,23 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenSignIn }) => {
       document.documentElement.classList.add("dark");
     }
   }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setMobileOpen(false);
+      }
+    };
+
+    if (mobileOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [mobileOpen]);
 
   useEffect(() => {
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
@@ -95,7 +113,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenSignIn }) => {
         isSticky ? "py-3" : "py-5 md:py-6"
       }`}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4" ref={navRef}>
         <div
           className={`flex items-center justify-between rounded-2xl px-6 py-4 backdrop-blur-xl transition-all
           bg-white/70 dark:bg-[#0d1117]/70

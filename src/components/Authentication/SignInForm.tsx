@@ -85,7 +85,21 @@ const SignInForm: React.FC = () => {
           >
             <i className={`ri-arrow-${isRTL ? 'right' : 'left'}-line text-xl transition-transform ${isRTL ? 'group-hover:translate-x-1' : 'group-hover:-translate-x-1'}`}></i>
             {t("backToHome")}
-          </Link>    
+          </Link>
+
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={() => {
+              const newMode = !isDarkMode;
+              setIsDarkMode(newMode);
+              localStorage.setItem("theme", newMode ? "dark" : "light");
+              document.documentElement.classList.toggle("dark", newMode);
+            }}
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-sm border border-gray-200/50 dark:border-primary-500/20 text-gray-600 dark:text-primary-400 hover:bg-gray-100 dark:hover:bg-[#15203c] hover:text-primary-500 transition-all shadow-sm"
+            title={isDarkMode ? "Light Mode" : "Dark Mode"}
+          >
+            <i className={`${isDarkMode ? "ri-sun-line" : "ri-moon-line"} text-xl`}></i>
+          </button>
         </div>
 
         {/* Card with Animation */}
