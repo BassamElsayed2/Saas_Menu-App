@@ -1,8 +1,5 @@
 import { TemplateInfo } from "./types";
-import DelightfulMenus from "./DelightfulMenusWrapper";
 import DefaultTemplate from "./DefaultTemplate";
-import Template2 from "./Template2";
-import Template3 from "./Template3";
 
 /**
  * Template Registry
@@ -14,36 +11,12 @@ import Template3 from "./Template3";
  */
 export const templates: TemplateInfo[] = [
   {
-    id: "delightful-menus",
-    name: "Delightful Menus",
-    nameAr: "قوائم مبهجة",
-    component: DelightfulMenus,
-    description: "Modern bilingual menu with hero section and smooth animations",
-    descriptionAr: "قائمة عصرية ثنائية اللغة مع قسم بطولي ورسوم متحركة سلسة",
-  },
-  {
     id: "default",
     name: "Default",
-    nameAr: "الافتراضي القديم",
+    nameAr: "الافتراضي",
     component: DefaultTemplate,
-    description: "Classic grid layout with 3 columns",
-    descriptionAr: "تصميم كلاسيكي بشبكة من 3 أعمدة",
-  },
-  {
-    id: "template2",
-    name: "Template 2",
-    nameAr: "القالب الثاني",
-    component: Template2,
-    description: "Hero header with large 2-column grid",
-    descriptionAr: "رأس بطولي مع شبكة كبيرة من عمودين",
-  },
-  {
-    id: "template3",
-    name: "Template 3",
-    nameAr: "القالب الثالث",
-    component: Template3,
-    description: "Vertical list with alternating image positions",
-    descriptionAr: "قائمة عمودية مع صور متناوبة",
+    description: "Modern bilingual menu with hero section and smooth animations",
+    descriptionAr: "قائمة عصرية ثنائية اللغة مع قسم بطولي ورسوم متحركة سلسة",
   },
 ];
 

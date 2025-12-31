@@ -8,19 +8,31 @@ interface LayoutProps {
   params: Promise<{ slug: string }>;
 }
 
+const defaultMetadata: Metadata = {
+  title: "Menu",
+  description: "Restaurant menu",
+};
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const locale = await getLocale();
+  // Check if API URL is configured
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!apiUrl) {
+    return defaultMetadata;
+  }
 
   try {
+    const { slug } = await params;
+    const locale = await getLocale();
+
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/public/menu/${slug}?locale=${locale}`,
+      `${apiUrl}/public/menu/${slug}?locale=${locale}`,
       {
-        cache: "no-store", // Always fetch fresh data for metadata
+        cache: "no-store",
+        signal: AbortSignal.timeout(5000), // 5 second timeout
       }
     );
 
@@ -55,12 +67,9 @@ export async function generateMetadata({
     }
 
     return metadata;
-  } catch (error) {
-    console.error("Error generating metadata:", error);
-    return {
-      title: "Menu",
-      description: "Restaurant menu",
-    };
+  } catch {
+    // Silently return default metadata on error
+    return defaultMetadata;
   }
 }
 
