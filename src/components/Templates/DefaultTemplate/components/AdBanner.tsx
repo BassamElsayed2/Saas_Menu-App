@@ -12,6 +12,8 @@ import { MenuItem } from "../../types";
 
 interface AdBannerProps {
   items: MenuItem[];
+  ownerPlanType?: string; // Add owner plan type
+  menuId?: number; // Add menu ID to fetch custom ads
 }
 
 interface GlobalAd {
@@ -32,17 +34,32 @@ function isGlobalAd(item: BannerItem): item is GlobalAd {
   return "titleAr" in item;
 }
 
-export const AdBanner: React.FC<AdBannerProps> = ({ items }) => {
+export const AdBanner: React.FC<AdBannerProps> = ({
+  items,
+  ownerPlanType,
+  menuId,
+}) => {
   const { locale, direction } = useLanguage();
   const [currentAd, setCurrentAd] = useState(0);
-  const [globalAds, setGlobalAds] = useState<GlobalAd[]>([]);
+  const [ads, setAds] = useState<GlobalAd[]>([]);
   const [loadingAds, setLoadingAds] = useState(true);
   const rtl = direction === "rtl";
 
-  // Fetch global ads
+  // Check if owner is on free plan (show global ads only for free users)
+  const isOwnerFreePlan = ownerPlanType === "free" || !ownerPlanType;
+
+  // Fetch ads based on owner plan type
   useEffect(() => {
-    fetchGlobalAds();
-  }, []);
+    if (isOwnerFreePlan) {
+      // Free users: fetch global ads
+      fetchGlobalAds();
+    } else if (menuId) {
+      // Pro users: fetch menu-specific custom ads
+      fetchCustomAds();
+    } else {
+      setLoadingAds(false);
+    }
+  }, [isOwnerFreePlan, menuId]);
 
   const fetchGlobalAds = async () => {
     try {
@@ -51,10 +68,26 @@ export const AdBanner: React.FC<AdBannerProps> = ({ items }) => {
       );
       if (response.ok) {
         const data = await response.json();
-        setGlobalAds(data.data?.ads || []);
+        setAds(data.data?.ads || []);
       }
     } catch (error) {
       console.error("Error fetching global ads:", error);
+    } finally {
+      setLoadingAds(false);
+    }
+  };
+
+  const fetchCustomAds = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/public/menu/${menuId}/ads?position=banner&limit=5`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setAds(data.data?.ads || []);
+      }
+    } catch (error) {
+      console.error("Error fetching custom ads:", error);
     } finally {
       setLoadingAds(false);
     }
@@ -65,8 +98,8 @@ export const AdBanner: React.FC<AdBannerProps> = ({ items }) => {
     (item) => item.discountPercent && item.discountPercent > 0
   );
 
-  // Combine global ads and discounted items
-  const allBannerItems: BannerItem[] = [...globalAds, ...discountedItems];
+  // Combine ads and discounted items
+  const allBannerItems: BannerItem[] = [...ads, ...discountedItems];
 
   // Auto-rotate ads
   useEffect(() => {

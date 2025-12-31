@@ -65,6 +65,13 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
           badge: null,
         },
         {
+          title: t("ads"), // الإعلانات
+          icon: "ads_click",
+          href: `/${locale}/dashboard/menus/${menuId}/ads`,
+          badge: "✨",
+          isSpecial: true,
+        },
+        {
           title: t("settings"),
           icon: "settings",
           href: `/${locale}/dashboard/menus/${menuId}/settings`,
@@ -148,19 +155,29 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                   : pathname === item.href ||
                     pathname.startsWith(item.href + "/");
 
+                const isSpecialItem = (item as any).isSpecial;
+
                 return (
                   <li key={index}>
                     <Link
                       href={item.href}
-                      className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
-                        isActive
-                          ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
-                          : "text-gray-700 dark:text-gray-300"
+                      className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative ${
+                        isSpecialItem
+                          ? isActive
+                            ? "bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 text-amber-600 dark:text-amber-400 hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/30 dark:hover:to-orange-900/30"
+                            : "hover:bg-gradient-to-r hover:from-amber-50/50 hover:to-orange-50/50 dark:hover:from-amber-900/10 dark:hover:to-orange-900/10 text-gray-700 dark:text-gray-300"
+                          : isActive
+                          ? "bg-primary-50 dark:bg-[#15203c] text-primary-500 hover:bg-gray-50 dark:hover:bg-[#15203c]"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#15203c]"
                       }`}
                     >
                       <i
                         className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
-                          isActive
+                          isSpecialItem
+                            ? isActive
+                              ? "text-amber-600 dark:text-amber-400"
+                              : "text-amber-500 dark:text-amber-500/70"
+                            : isActive
                             ? "text-primary-500"
                             : "text-gray-500 dark:text-gray-400"
                         }`}
@@ -169,7 +186,11 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                       </i>
                       <span className="title leading-none">{item.title}</span>
                       {item.badge && (
-                        <span className="rounded-full font-medium inline-block text-center min-w-[20px] h-[20px] px-[6px] text-[11px] leading-[20px] text-orange-500 bg-orange-50 dark:bg-[#ffffff14] ltr:ml-auto rtl:mr-auto">
+                        <span className={`rounded-full font-medium inline-block text-center min-w-[20px] h-[20px] px-[6px] text-[11px] leading-[20px] ltr:ml-auto rtl:mr-auto ${
+                          isSpecialItem
+                            ? "text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30 animate-pulse"
+                            : "text-orange-500 bg-orange-50 dark:bg-[#ffffff14]"
+                        }`}>
                           {item.badge}
                         </span>
                       )}

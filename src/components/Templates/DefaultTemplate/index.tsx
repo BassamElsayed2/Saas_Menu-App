@@ -46,7 +46,11 @@ export default function DefaultTemplate({
           logo={menuData.menu.logo}
           rating={menuData.rating}
         />
-        <AdBanner items={discountedItems} />
+        <AdBanner 
+          items={discountedItems} 
+          ownerPlanType={menuData.menu.ownerPlanType}
+          menuId={menuData.menu.id}
+        />
         <MenuSection
           categories={menuData.categories || []}
           items={menuData.items}

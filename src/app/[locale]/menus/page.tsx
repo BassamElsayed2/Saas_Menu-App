@@ -26,6 +26,7 @@ export default function MenusPage() {
   const locale = useLocale();
   const t = useTranslations("Menus");
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [menuToDelete, setMenuToDelete] = useState<Menu | null>(null);
 
   // React Query hooks
   const { data: menus = [], isLoading: loadingMenus } = useMenus();
@@ -56,9 +57,14 @@ export default function MenusPage() {
     }
   };
 
-  const handleDelete = async (menuId: number) => {
-    if (!confirm(t("deleteConfirm"))) return;
-    await deleteMenu.mutateAsync(menuId);
+  const handleDelete = (menu: Menu) => {
+    setMenuToDelete(menu);
+  };
+
+  const confirmDelete = async () => {
+    if (!menuToDelete) return;
+    await deleteMenu.mutateAsync(menuToDelete.id);
+    setMenuToDelete(null);
   };
 
   if (loading || !user) {
@@ -209,7 +215,7 @@ export default function MenusPage() {
                     </i>
                   </button>
                   <button
-                    onClick={() => handleDelete(menu.id)}
+                    onClick={() => handleDelete(menu)}
                     className="px-4 py-2.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/50 transition-all text-sm"
                     title={t("delete")}
                   >
@@ -237,10 +243,179 @@ export default function MenusPage() {
         )}
       </main>
 
+      {/* Delete Confirmation Modal */}
+      {menuToDelete && (
+        <DeleteConfirmModal
+          menu={menuToDelete}
+          onClose={() => setMenuToDelete(null)}
+          onConfirm={confirmDelete}
+          isDeleting={deleteMenu.isPending}
+        />
+      )}
+
       {/* Create Menu Modal */}
       {showCreateModal && (
         <CreateMenuModal onClose={() => setShowCreateModal(false)} />
       )}
+    </div>
+  );
+}
+
+interface DeleteConfirmModalProps {
+  menu: Menu;
+  onClose: () => void;
+  onConfirm: () => void;
+  isDeleting: boolean;
+}
+
+function DeleteConfirmModal({
+  menu,
+  onClose,
+  onConfirm,
+  isDeleting,
+}: DeleteConfirmModalProps) {
+  const t = useTranslations("Menus.deleteModal");
+  const [confirmText, setConfirmText] = useState("");
+  const isConfirmValid = confirmText === "DELETE";
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isConfirmValid && !isDeleting) {
+      onConfirm();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+      <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
+        {/* Warning Icon */}
+        <div className="flex justify-center mb-4">
+          <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+            <i className="material-symbols-outlined text-red-600 dark:text-red-400 !text-[40px]">
+              warning
+            </i>
+          </div>
+        </div>
+
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            {t("title")}
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
+            {t("subtitle")}
+          </p>
+        </div>
+
+        {/* Menu Info */}
+        <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-200 dark:border-red-800/50">
+          <div className="flex items-center gap-3 mb-2">
+            {menu.logoUrl ? (
+              <div className="relative w-12 h-12 rounded-lg overflow-hidden border-2 border-red-200 dark:border-red-800 flex-shrink-0">
+                <Image
+                  src={menu.logoUrl}
+                  alt={menu.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            ) : (
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900/50 dark:to-red-800/50 flex items-center justify-center flex-shrink-0">
+                <i className="material-symbols-outlined text-red-600 dark:text-red-400 !text-[24px]">
+                  restaurant_menu
+                </i>
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-gray-900 dark:text-white truncate">
+                {menu.name}
+              </p>
+              <p className="text-xs text-gray-600 dark:text-gray-400 font-mono truncate">
+                {menu.slug}
+              </p>
+            </div>
+          </div>
+          <p className="text-sm text-red-700 dark:text-red-300 font-medium flex items-start gap-2">
+            <i className="material-symbols-outlined !text-[18px] mt-0.5 flex-shrink-0">
+              info
+            </i>
+            <span>{t("warning")}</span>
+          </p>
+        </div>
+
+        {/* Confirmation Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              {t("confirmPrompt")}{" "}
+              <span className="font-mono text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 px-2 py-0.5 rounded">
+                {t("confirmKeyword")}
+              </span>{" "}
+              {t("confirmText")}
+            </label>
+            <input
+              type="text"
+              value={confirmText}
+              onChange={(e) => setConfirmText(e.target.value)}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 dark:bg-gray-700 dark:text-white transition-all font-mono text-center text-lg ${
+                confirmText && !isConfirmValid
+                  ? "border-red-300 dark:border-red-600 focus:ring-red-500"
+                  : confirmText && isConfirmValid
+                  ? "border-green-300 dark:border-green-600 focus:ring-green-500"
+                  : "border-gray-300 dark:border-gray-600 focus:ring-primary-500"
+              }`}
+              placeholder={t("placeholder")}
+              disabled={isDeleting}
+              autoFocus
+            />
+            {confirmText && !isConfirmValid && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                <i className="material-symbols-outlined !text-[16px]">error</i>
+                {t("errorInvalid")}
+              </p>
+            )}
+            {isConfirmValid && (
+              <p className="mt-2 text-sm text-green-600 dark:text-green-400 flex items-center gap-1">
+                <i className="material-symbols-outlined !text-[16px]">
+                  check_circle
+                </i>
+                {t("successConfirmed")}
+              </p>
+            )}
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isDeleting}
+            >
+              {t("cancel")}
+            </button>
+            <button
+              type="submit"
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              disabled={!isConfirmValid || isDeleting}
+            >
+              {isDeleting ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  {t("deleting")}
+                </>
+              ) : (
+                <>
+                  <i className="material-symbols-outlined !text-[20px]">
+                    delete_forever
+                  </i>
+                  {t("delete")}
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
@@ -263,6 +438,12 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
   });
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({
+    nameEn: false,
+    descriptionEn: false,
+    nameAr: false,
+    descriptionAr: false,
+  });
   const [slugStatus, setSlugStatus] = useState<{
     checking: boolean;
     available: boolean | null;
@@ -308,6 +489,17 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Check for validation errors
+    if (
+      validationErrors.nameEn ||
+      validationErrors.descriptionEn ||
+      validationErrors.nameAr ||
+      validationErrors.descriptionAr
+    ) {
+      toast.error(t("validationError"));
+      return;
+    }
 
     // Check slug availability before submitting
     if (formData.slug && slugStatus.available === false) {
@@ -442,14 +634,44 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                   <input
                     type="text"
                     value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      // Check if contains non-English characters
+                      const hasInvalidChars = /[^a-zA-Z0-9\s.,'-]/.test(
+                        inputValue
+                      );
+
+                      if (hasInvalidChars) {
+                        setValidationErrors({
+                          ...validationErrors,
+                          nameEn: true,
+                        });
+                      } else {
+                        setValidationErrors({
+                          ...validationErrors,
+                          nameEn: false,
+                        });
+                      }
+
+                      setFormData({ ...formData, name: inputValue });
+                    }}
+                    className={`form-input ${
+                      validationErrors.nameEn
+                        ? "border-red-300 dark:border-red-600 focus:ring-red-500"
+                        : ""
+                    }`}
                     placeholder="e.g., My Restaurant Menu"
                     required
                   />
                 </div>
+                {validationErrors.nameEn && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                    <i className="material-symbols-outlined !text-[16px]">
+                      error
+                    </i>
+                    {t("englishOnlyError")}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -460,15 +682,49 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                   <input
                     type="text"
                     value={formData.nameAr}
-                    onChange={(e) =>
-                      setFormData({ ...formData, nameAr: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      // Check if contains non-Arabic characters
+                      const hasInvalidChars =
+                        /[^ا-ي\u0600-\u06FF\s\u0660-\u0669\u06F0-\u06F90-9.,'-]/.test(
+                          inputValue
+                        );
+
+                      if (hasInvalidChars) {
+                        setValidationErrors({
+                          ...validationErrors,
+                          nameAr: true,
+                        });
+                      } else {
+                        setValidationErrors({
+                          ...validationErrors,
+                          nameAr: false,
+                        });
+                      }
+
+                      setFormData({ ...formData, nameAr: inputValue });
+                    }}
+                    className={`form-input ${
+                      validationErrors.nameAr
+                        ? "border-red-300 dark:border-red-600 focus:ring-red-500"
+                        : ""
+                    }`}
                     placeholder="مثال: قائمة مطعمي"
                     dir="rtl"
                     required
                   />
                 </div>
+                {validationErrors.nameAr && (
+                  <p
+                    className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+                    dir="rtl"
+                  >
+                    <i className="material-symbols-outlined !text-[16px]">
+                      error
+                    </i>
+                    {t("arabicOnlyError")}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -577,13 +833,43 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                 </label>
                 <textarea
                   value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const inputValue = e.target.value;
+                    // Check if contains non-English characters
+                    const hasInvalidChars = /[^a-zA-Z0-9\s.,!?'-]/.test(
+                      inputValue
+                    );
+
+                    if (hasInvalidChars) {
+                      setValidationErrors({
+                        ...validationErrors,
+                        descriptionEn: true,
+                      });
+                    } else {
+                      setValidationErrors({
+                        ...validationErrors,
+                        descriptionEn: false,
+                      });
+                    }
+
+                    setFormData({ ...formData, description: inputValue });
+                  }}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none"
+                  className={`w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none ${
+                    validationErrors.descriptionEn
+                      ? "border-red-300 dark:border-red-600 focus:ring-red-500"
+                      : ""
+                  }`}
                   placeholder="Describe your menu in English..."
                 />
+                {validationErrors.descriptionEn && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                    <i className="material-symbols-outlined !text-[16px]">
+                      error
+                    </i>
+                    {t("englishOnlyError")}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -592,14 +878,48 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                 </label>
                 <textarea
                   value={formData.descriptionAr}
-                  onChange={(e) =>
-                    setFormData({ ...formData, descriptionAr: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const inputValue = e.target.value;
+                    // Check if contains non-Arabic characters
+                    const hasInvalidChars =
+                      /[^ا-ي\u0600-\u06FF\s\u0660-\u0669\u06F0-\u06F90-9.,!?'-]/.test(
+                        inputValue
+                      );
+
+                    if (hasInvalidChars) {
+                      setValidationErrors({
+                        ...validationErrors,
+                        descriptionAr: true,
+                      });
+                    } else {
+                      setValidationErrors({
+                        ...validationErrors,
+                        descriptionAr: false,
+                      });
+                    }
+
+                    setFormData({ ...formData, descriptionAr: inputValue });
+                  }}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none"
+                  className={`w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none ${
+                    validationErrors.descriptionAr
+                      ? "border-red-300 dark:border-red-600 focus:ring-red-500"
+                      : ""
+                  }`}
                   placeholder="اكتب وصف القائمة بالعربية..."
                   dir="rtl"
                 />
+                {validationErrors.descriptionAr && (
+                  <p
+                    className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+                    dir="rtl"
+                  >
+                    <i className="material-symbols-outlined !text-[16px]">
+                      error
+                    </i>
+                    {t("arabicOnlyError")}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -633,7 +953,7 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                         .replace(/[^a-z0-9-]/g, "-"),
                     })
                   }
-                  className={`w-full px-4 py-3 pr-10 border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all font-mono ${
+                  className={`form-input pr-10 ${
                     slugStatus.available === false
                       ? "border-red-300 dark:border-red-600 focus:ring-red-500"
                       : slugStatus.available === true
@@ -644,12 +964,12 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                   required
                 />
                 {slugStatus.checking && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-500"></div>
                   </div>
                 )}
                 {!slugStatus.checking && slugStatus.available === true && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
                     <i className="material-symbols-outlined text-green-500 !text-[20px]">
                       check_circle
                     </i>

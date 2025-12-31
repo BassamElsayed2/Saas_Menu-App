@@ -116,6 +116,20 @@
     "menuPaused": "Menu paused successfully",
     "menuActivated": "Menu activated successfully",
     "toggleError": "Error toggling menu status",
+    "deleteModal": {
+      "title": "Confirm Permanent Deletion",
+      "subtitle": "This action cannot be undone",
+      "warning": "The menu and all related products and categories will be permanently deleted",
+      "confirmPrompt": "To confirm, type",
+      "confirmKeyword": "DELETE",
+      "confirmText": "in capital letters:",
+      "placeholder": "DELETE",
+      "errorInvalid": "You must type DELETE in capital letters exactly",
+      "successConfirmed": "Confirmed, you can now delete",
+      "cancel": "Cancel",
+      "delete": "Delete Permanently",
+      "deleting": "Deleting..."
+    },
     "createModal": {
       "title": "Create New Menu",
       "menuNames": "Menu Names",
@@ -130,6 +144,9 @@
       "logo": "Menu Logo",
       "logoUpload": "Upload Logo",
       "logoHint": "This image will be used as the favicon for the public menu page",
+      "englishOnlyError": "Only English letters and numbers are allowed",
+      "arabicOnlyError": "Only Arabic letters and numbers are allowed",
+      "validationError": "Please ensure you use the correct characters in each field (Arabic or English)",
       "cancel": "Cancel",
       "create": "Create Menu",
       "creating": "Creating..."
@@ -328,6 +345,7 @@
     "overview": "Overview",
     "categories": "Categories",
     "products": "Products",
+    "ads": "Advertisements",
     "profile": "Profile",
     "settings": "Settings",
     "accountSettings": "Account Settings",

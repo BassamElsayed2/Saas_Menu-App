@@ -24,6 +24,13 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
   const [active, setActive] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref for the dropdown container
 
+  // Check if user is on free plan
+  const isFreePlan = user?.planType === "free" || !user?.planType;
+  const planBadgeText = isFreePlan ? "Free" : "Pro";
+  const planBadgeColor = isFreePlan
+    ? "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+    : "bg-gradient-to-r from-amber-500 to-amber-600 text-white";
+
   const handleDropdownToggle = () => {
     setActive((prevState) => !prevState);
   };
@@ -69,13 +76,20 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
           active ? "active" : ""
         }`}
       >
-        <UserAvatar
-          src={user?.profileImage}
-          name={user?.name || "User"}
-          size="md"
-          showBorder
-          className="ltr:md:mr-[2px] ltr:lg:mr-[8px] rtl:md:ml-[2px] rtl:lg:ml-[8px]"
-        />
+        <div className="relative ltr:md:mr-[2px] ltr:lg:mr-[8px] rtl:md:ml-[2px] rtl:lg:ml-[8px]">
+          <UserAvatar
+            src={user?.profileImage}
+            name={user?.name || "User"}
+            size="md"
+            showBorder
+          />
+          {/* Plan Badge */}
+          <div
+            className={`absolute -bottom-3 right-1 px-1.5 py-0.5 rounded-full text-[7px] font-bold shadow-lg border-2 border-white dark:border-gray-900 ${planBadgeColor}`}
+          >
+            {planBadgeText}
+          </div>
+        </div>
         <span className="block font-semibold text-[0px] lg:text-base">
           {user?.name || "User"}
         </span>
@@ -93,9 +107,16 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
               className="ltr:mr-[9px] rtl:ml-[9px]"
             />
             <div className="flex-1 min-w-0">
-              <span className="block text-black dark:text-white font-medium truncate">
-                {user?.name || "User"}
-              </span>
+              <div className="flex items-center gap-1">
+                <span className="block text-black dark:text-white font-medium truncate">
+                  {user?.name || "User"}
+                </span>
+                {!isFreePlan && (
+                  <i className="material-symbols-outlined text-amber-500 !text-[14px] flex-shrink-0">
+                    workspace_premium
+                  </i>
+                )}
+              </div>
               <span className="block text-xs text-gray-500 dark:text-gray-400 truncate">
                 {user?.email || ""}
               </span>

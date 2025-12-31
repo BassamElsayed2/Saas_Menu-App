@@ -116,6 +116,20 @@
     "menuPaused": "تم إيقاف القائمة مؤقتاً",
     "menuActivated": "تم تفعيل القائمة",
     "toggleError": "حدث خطأ أثناء تغيير حالة القائمة",
+    "deleteModal": {
+      "title": "تأكيد الحذف النهائي",
+      "subtitle": "هذا الإجراء لا يمكن التراجع عنه",
+      "warning": "سيتم حذف القائمة وجميع المنتجات والفئات المرتبطة بها نهائياً",
+      "confirmPrompt": "للتأكيد، اكتب",
+      "confirmKeyword": "DELETE",
+      "confirmText": "بالأحرف الكبيرة:",
+      "placeholder": "DELETE",
+      "errorInvalid": "يجب كتابة DELETE بالأحرف الكبيرة بالضبط",
+      "successConfirmed": "تم التأكيد، يمكنك الآن الحذف",
+      "cancel": "إلغاء",
+      "delete": "حذف نهائي",
+      "deleting": "جاري الحذف..."
+    },
     "createModal": {
       "title": "إنشاء قائمة جديدة",
       "menuNames": "أسماء القائمة",
@@ -130,6 +144,9 @@
       "logo": "شعار القائمة",
       "logoUpload": "رفع الشعار",
       "logoHint": "سيتم استخدام هذه الصورة كـ favicon للصفحة العامة للمنيو",
+      "englishOnlyError": "يجب استخدام حروف وأرقام إنجليزية فقط",
+      "arabicOnlyError": "يجب استخدام حروف وأرقام عربية فقط",
+      "validationError": "يرجى التأكد من استخدام الحروف الصحيحة في كل حقل (عربية أو إنجليزية)",
       "cancel": "إلغاء",
       "create": "إنشاء القائمة",
       "creating": "جاري الإنشاء..."
@@ -328,6 +345,7 @@
     "overview": "نظرة عامة",
     "categories": "التصنيفات",
     "products": "المنتجات",
+    "ads": "الإعلانات",
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",
     "accountSettings": "إعدادات الحساب",
