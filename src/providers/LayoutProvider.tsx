@@ -37,18 +37,23 @@ const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
         {!isAuthPage && (
           <>
             {/* Overlay when sidebar is open on mobile */}
-            {sidebarOpen && (
-              <div
-                className="fixed inset-0 bg-black/50 z-30 lg:hidden backdrop-blur-sm"
-                onClick={toggleSidebar}
-              />
-            )}
-
-            {/* Sidebar - Fixed on desktop, toggleable on mobile */}
             <div
-              className={`fixed top-0 z-40 h-screen transition-transform duration-300
+              className={`fixed inset-0 z-[55] lg:hidden backdrop-blur-sm transition-all duration-300 ${
+                sidebarOpen 
+                  ? "bg-black/50 opacity-100 pointer-events-auto" 
+                  : "bg-transparent opacity-0 pointer-events-none"
+              }`}
+              onClick={toggleSidebar}
+            />
+
+            {/* Sidebar - Fixed on desktop, toggleable on mobile (z-60 to be above header z-50 on mobile) */}
+            <div
+              className={`fixed top-0 ltr:left-0 rtl:right-0 z-[60] lg:z-40 h-screen transition-all duration-300 ease-out
                 lg:ltr:translate-x-0 lg:rtl:translate-x-0
-                ${sidebarOpen ? "ltr:translate-x-0 rtl:translate-x-0" : "ltr:-translate-x-full rtl:translate-x-full lg:ltr:translate-x-0 lg:rtl:translate-x-0"}`}
+                ${sidebarOpen 
+                  ? "ltr:translate-x-0 rtl:translate-x-0 opacity-100" 
+                  : "ltr:-translate-x-full rtl:translate-x-full opacity-0 lg:opacity-100 lg:ltr:translate-x-0 lg:rtl:translate-x-0"
+                }`}
             >
               <SidebarMenu toggleActive={toggleSidebar} />
             </div>

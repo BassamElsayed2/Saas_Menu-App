@@ -97,14 +97,14 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
   return (
     <>
       {/* Sidebar */}
-      <aside className="sidebar-area h-screen w-[260px]  dark:bg-[#0c1427]/95 backdrop-blur-xl ltr:border-r rtl:border-l border-gray-200/50 dark:border-primary-500/10 shadow-xl dark:shadow-primary-500/5">
+      <aside className="sidebar-area h-screen w-[280px] max-w-[85vw] bg-white dark:bg-[#0c1427]/95 backdrop-blur-xl ltr:border-r rtl:border-l border-gray-200/50 dark:border-primary-500/10 shadow-2xl dark:shadow-primary-500/5">
         {/* Logo Section */}
-        <div className="h-[70px] flex items-center justify-between px-5 border-b border-gray-100 dark:border-[#1e293b]">
+        <div className="h-[70px] flex items-center justify-between px-4 sm:px-5 border-b border-gray-100 dark:border-[#1e293b] safe-area-inset-top">
           <Link
             href={`/${locale}/dashboard`}
             className="flex items-center gap-2.5 group"
           >
-            <div className="w-9 h-9  rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25 group-hover:shadow-primary-500/40 transition-all">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25 group-hover:shadow-primary-500/40 transition-all">
               <Image
                 src="/images/ENSd.png"
                 alt="logo"
@@ -120,15 +120,15 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
           {/* Close button - Only visible on mobile */}
           <button
             type="button"
-            className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-[#1e293b] flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-500 transition-all lg:hidden"
+            className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-[#1e293b] flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 active:scale-95 transition-all lg:hidden"
             onClick={toggleActive}
           >
-            <i className="ri-close-line text-lg"></i>
+            <i className="ri-close-line text-xl"></i>
           </button>
         </div>
 
         {/* Navigation */}
-        <div className="h-[calc(100vh-70px)] overflow-y-auto px-4 py-5 sidebar-custom-scrollbar">
+        <div className="h-[calc(100vh-70px)] overflow-y-auto px-3 sm:px-4 py-4 sm:py-5 sidebar-custom-scrollbar overscroll-contain">
           {/* Main Menu */}
           <div className="mb-6">
             <span className="block text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3 px-3">
@@ -145,7 +145,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     key={index}
                     href={item.href}
                     onClick={item.showPulse ? handleGuideClick : undefined}
-                    className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
+                    className={`relative flex items-center gap-3 px-3 py-3 sm:py-2.5 rounded-xl font-medium text-sm transition-all duration-200 active:scale-[0.98] ${
                       isActive
                         ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/25"
                         : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1e293b] hover:text-gray-900 dark:hover:text-white"
@@ -179,7 +179,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
               <nav className="space-y-1">
                 <Link
                   href={`/${locale}/dashboard/profile/edit`}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
+                  className={`flex items-center gap-3 px-3 py-3 sm:py-2.5 rounded-xl font-medium text-sm transition-all duration-200 active:scale-[0.98] ${
                     pathname === `/${locale}/dashboard/profile/edit`
                       ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/25"
                       : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1e293b] hover:text-gray-900 dark:hover:text-white"
@@ -197,7 +197,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <div className="mb-6 pt-4 border-t border-gray-100 dark:border-[#1e293b]">
               <Link
                 href={`/${locale}/menus`}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1e293b] hover:text-gray-900 dark:hover:text-white transition-all duration-200"
+                className="flex items-center gap-3 px-3 py-3 sm:py-2.5 rounded-xl font-medium text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1e293b] hover:text-gray-900 dark:hover:text-white transition-all duration-200 active:scale-[0.98]"
               >
                 <i className={`ri-arrow-${isRTL ? 'right' : 'left'}-line text-xl`}></i>
                 <span>{t("backToMenus")}</span>
@@ -206,7 +206,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
           )}
 
           {/* Help & Support Card */}
-          <div className="mt-auto">
+          <div className="mt-6 pb-4 sm:pb-0">
             <div className="bg-gradient-to-br from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/20 border border-primary-100 dark:border-primary-500/10 rounded-2xl p-4">
               <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center mb-3 shadow-lg shadow-primary-500/25">
                 <i className="ri-question-line text-white text-xl"></i>
@@ -219,7 +219,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
               </p>
               <Link
                 href={`/${locale}/support`}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 transition-colors py-1"
               >
                 {t("contactSupport")}
                 <i className={`ri-arrow-${isRTL ? 'left' : 'right'}-line`}></i>
