@@ -36,16 +36,25 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, item }) => {
   const description = locale === "ar" ? item.descriptionAr : item.descriptionEn;
   const popularText = locale === "ar" ? "الأكثر طلباً" : "Popular";
   const priceLabel = locale === "ar" ? "السعر" : "Price";
+  
+  // Get category label if available
   const categoryLabels: Record<string, { ar: string; en: string }> = {
     appetizers: { ar: "المقبلات", en: "Appetizers" },
     mains: { ar: "الأطباق الرئيسية", en: "Main Courses" },
     drinks: { ar: "المشروبات", en: "Beverages" },
     desserts: { ar: "الحلويات", en: "Desserts" },
   };
-  const categoryLabel =
-    locale === "ar"
+  
+  const getCategoryLabel = () => {
+    if (!item.category || !categoryLabels[item.category]) {
+      return locale === "ar" ? "منتج" : "Item";
+    }
+    return locale === "ar"
       ? categoryLabels[item.category].ar
       : categoryLabels[item.category].en;
+  };
+  
+  const categoryLabel = getCategoryLabel();
 
   return (
     <div
@@ -120,11 +129,32 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, item }) => {
             <span className="text-[var(--text-muted)] text-sm">
               {priceLabel}
             </span>
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold text-[var(--accent)]">
-                {item.price}
-              </span>
-              <span className="text-lg text-[var(--text-muted)]">ج.م</span>
+            <div className="flex flex-col items-end gap-1">
+              {item.originalPrice && item.discountPercent ? (
+                <>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-sm text-[var(--text-muted)] line-through">
+                      {item.originalPrice} ج.م
+                    </span>
+                    <span className="text-xs font-bold bg-[var(--accent)] text-white px-2 py-0.5 rounded">
+                      -{item.discountPercent}%
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-bold text-[var(--accent)]">
+                      {item.price}
+                    </span>
+                    <span className="text-lg text-[var(--text-muted)]">ج.م</span>
+                  </div>
+                </>
+              ) : (
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-bold text-[var(--accent)]">
+                    {item.price}
+                  </span>
+                  <span className="text-lg text-[var(--text-muted)]">ج.م</span>
+                </div>
+              )}
             </div>
           </div>
         </div>

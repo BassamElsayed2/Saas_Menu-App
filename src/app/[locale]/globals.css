@@ -256,7 +256,26 @@ p {
 }
 
 /** Heading */
-
+h6,
+.h6,
+h5,
+.h5,
+h4,
+.h4,
+h3,
+.h3,
+h2,
+.h2,
+h1,
+.h1,
+.display-6,
+.display-5,
+.display-4,
+.display-3,
+.display-2,
+.display-1 {
+  @apply font-bold leading-tight mb-[10px] text-black dark:text-white;
+}
 .h6,
 h6,
 .display-6 {
@@ -2337,4 +2356,8 @@ html {
 
 .dark ::selection {
   background-color: hsl(263, 84%, 70% / 0.4);
+}
+
+.menu-template::-webkit-scrollbar-thumb:hover {
+  background: var(--menu-accent);
 }

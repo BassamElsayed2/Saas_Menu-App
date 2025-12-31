@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface SidebarMenuProps {
   toggleActive: () => void;
@@ -15,11 +16,34 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("Sidebar");
+  const { user } = useAuth();
   const isRTL = locale === "ar";
 
   // Extract menu ID from pathname if in menu context
   const menuIdMatch = pathname.match(/\/menus\/(\d+)/);
-  const menuId = menuIdMatch ? menuIdMatch[1] : null;
+  const currentMenuId = menuIdMatch ? menuIdMatch[1] : null;
+
+  // Save menuId to localStorage when in menu context
+  React.useEffect(() => {
+    if (currentMenuId && typeof window !== "undefined") {
+      localStorage.setItem("lastMenuId", currentMenuId);
+    }
+  }, [currentMenuId]);
+
+  // Get last menu ID from localStorage for profile pages
+  const [lastMenuId, setLastMenuId] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("lastMenuId");
+      setLastMenuId(stored);
+    }
+  }, []);
+
+  // Use current menu ID if available, otherwise use last menu ID for profile pages
+  const isProfilePage = pathname.includes("/profile/");
+  const menuId =
+    currentMenuId || (isProfilePage && lastMenuId ? lastMenuId : null);
 
   // Show guide animation on menu pages
   const [showGuide, setShowGuide] = useState(false);
@@ -48,51 +72,78 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
   };
 
   // Determine menu items based on context
-  const menuItems = menuId ? [
-    {
-      title: t("overview"),
-      icon: "ri-dashboard-line",
-      href: `/${locale}/menus/${menuId}`,
-      showPulse: false,
-    },
-    {
-      title: t("categories"),
-      icon: "ri-folder-line",
-      href: `/${locale}/menus/${menuId}/categories`,
-      showPulse: true, // Guide user to categories
-    },
-    {
-      title: t("products"),
-      icon: "ri-restaurant-line",
-      href: `/${locale}/menus/${menuId}/items`,
-      showPulse: true, // Guide user to products
-    },
-    {
-      title: t("settings"),
-      icon: "ri-settings-3-line",
-      href: `/${locale}/menus/${menuId}/settings`,
-      showPulse: false,
-    },
-  ] : [
-    {
-      title: t("dashboard"),
-      icon: "ri-dashboard-line",
-      href: `/${locale}/dashboard`,
-      showPulse: false,
-    },
-    {
-      title: t("menus"),
-      icon: "ri-restaurant-line",
-      href: `/${locale}/menus`,
-      showPulse: false,
-    },
-    {
-      title: t("profile"),
-      icon: "ri-user-line",
-      href: `/${locale}/dashboard/profile/user-profile`,
-      showPulse: false,
-    },
-  ];
+  const menuItems = menuId
+    ? [
+        {
+          title: t("overview"),
+          icon: "ri-dashboard-line",
+          href: `/${locale}/menus/${menuId}`,
+          showPulse: false,
+          badge: null,
+        },
+        {
+          title: t("categories"),
+          icon: "ri-folder-line",
+          href: `/${locale}/menus/${menuId}/categories`,
+          showPulse: true,
+          badge: null,
+        },
+        {
+          title: t("products"),
+          icon: "ri-restaurant-line",
+          href: `/${locale}/menus/${menuId}/items`,
+          showPulse: true,
+          badge: null,
+        },
+        {
+          title: t("ads"),
+          icon: "ri-advertisement-line",
+          href: `/${locale}/menus/${menuId}/ads`,
+          showPulse: false,
+          badge: "✨",
+          isSpecial: true,
+        },
+        {
+          title: t("settings"),
+          icon: "ri-settings-3-line",
+          href: `/${locale}/menus/${menuId}/settings`,
+          showPulse: false,
+          badge: null,
+        },
+      ]
+    : user?.role === "admin"
+    ? [
+        {
+          title: t("profile"),
+          icon: "ri-user-line",
+          href: `/${locale}/dashboard/profile/user-profile`,
+          showPulse: false,
+          badge: null,
+        },
+      ]
+    : [
+        {
+          title: t("dashboard"),
+          icon: "ri-dashboard-line",
+          href: `/${locale}/dashboard`,
+          showPulse: false,
+          badge: null,
+        },
+        {
+          title: t("menus"),
+          icon: "ri-restaurant-line",
+          href: `/${locale}/menus`,
+          showPulse: false,
+          badge: null,
+        },
+        {
+          title: t("profile"),
+          icon: "ri-user-line",
+          href: `/${locale}/dashboard/profile/user-profile`,
+          showPulse: false,
+          badge: null,
+        },
+      ];
 
   return (
     <>
@@ -115,7 +166,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <span className="font-bold text-gray-900 dark:text-white text-lg">
               ENS Menu
             </span>
-          </Link>
+          </div>
 
           {/* Close button - Only visible on mobile */}
           <button
@@ -139,6 +190,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
               {menuItems.map((item, index) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
                 const shouldPulse = showGuide && item.showPulse && !isActive;
+                const isSpecialItem = (item as any).isSpecial;
                 
                 return (
                   <Link
@@ -146,7 +198,11 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     href={item.href}
                     onClick={item.showPulse ? handleGuideClick : undefined}
                     className={`relative flex items-center gap-3 px-3 py-3 sm:py-2.5 rounded-xl font-medium text-sm transition-all duration-200 active:scale-[0.98] ${
-                      isActive
+                      isSpecialItem
+                        ? isActive
+                          ? "bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 text-amber-600 dark:text-amber-400"
+                          : "hover:bg-gradient-to-r hover:from-amber-50/50 hover:to-orange-50/50 dark:hover:from-amber-900/10 dark:hover:to-orange-900/10 text-gray-700 dark:text-gray-300"
+                        : isActive
                         ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/25"
                         : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1e293b] hover:text-gray-900 dark:hover:text-white"
                     } ${shouldPulse ? "animate-guide-pulse" : ""}`}
@@ -155,7 +211,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     {shouldPulse && (
                       <span className="absolute inset-0 rounded-xl bg-primary-500/20 animate-ping-slow"></span>
                     )}
-                    <i className={`${item.icon} text-xl ${isActive ? "text-white" : ""} ${shouldPulse ? "text-primary-500" : ""} relative z-10`}></i>
+                    <i className={`${item.icon} text-xl ${isActive && !isSpecialItem ? "text-white" : ""} ${shouldPulse ? "text-primary-500" : ""} ${isSpecialItem ? (isActive ? "text-amber-600 dark:text-amber-400" : "text-amber-500") : ""} relative z-10`}></i>
                     <span className="relative z-10">{item.title}</span>
                     {/* Guide badge */}
                     {shouldPulse && (
@@ -163,11 +219,153 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                         {locale === "ar" ? "ابدأ هنا" : "Start"}
                       </span>
                     )}
+                    {item.badge && !shouldPulse && (
+                      <span className={`ltr:ml-auto rtl:mr-auto relative z-10 px-2 py-0.5 text-[10px] font-bold rounded-full ${
+                        isSpecialItem
+                          ? "text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30 animate-pulse"
+                          : "text-orange-500 bg-orange-50 dark:bg-[#ffffff14]"
+                      }`}>
+                        {item.badge}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
             </nav>
           </div>
+
+          {/* Admin Section - only show for admin users */}
+          {!menuId && user?.role === "admin" && (
+            <div className="menu-section mt-8 pt-6 border-t border-gray-100 dark:border-[#172036]">
+              <span className="block relative font-medium uppercase text-gray-400 mb-[8px] text-xs">
+                {t("admin")}
+              </span>
+
+              <ul className="space-y-1">
+                <li>
+                  <Link
+                    href={`/${locale}/admin`}
+                    className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
+                      pathname === `/${locale}/admin` &&
+                      !pathname.includes("/admin/users") &&
+                      !pathname.includes("/admin/plans") &&
+                      !pathname.includes("/admin/ads") &&
+                      !pathname.includes("/admin/admins")
+                        ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname === `/${locale}/admin` &&
+                        !pathname.includes("/admin/users") &&
+                        !pathname.includes("/admin/plans") &&
+                        !pathname.includes("/admin/ads") &&
+                        !pathname.includes("/admin/admins")
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      dashboard
+                    </i>
+                    <span className="title leading-none">
+                      {t("adminDashboard")}
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/admin/users`}
+                    className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
+                      pathname.includes("/admin/users")
+                        ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname.includes("/admin/users")
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      group
+                    </i>
+                    <span className="title leading-none">
+                      {t("adminUsers")}
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/admin/plans`}
+                    className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
+                      pathname.includes("/admin/plans")
+                        ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname.includes("/admin/plans")
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      credit_card
+                    </i>
+                    <span className="title leading-none">
+                      {t("adminPlans")}
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/admin/ads`}
+                    className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
+                      pathname.includes("/admin/ads")
+                        ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname.includes("/admin/ads")
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      campaign
+                    </i>
+                    <span className="title leading-none">{t("adminAds")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/admin/admins`}
+                    className={`flex items-center transition-all py-[10px] px-[14px] rounded-md font-medium w-full relative hover:bg-gray-50 dark:hover:bg-[#15203c] ${
+                      pathname.includes("/admin/admins")
+                        ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    <i
+                      className={`material-symbols-outlined transition-all ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none relative -top-px ${
+                        pathname.includes("/admin/admins")
+                          ? "text-primary-500"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      admin_panel_settings
+                    </i>
+                    <span className="title leading-none">
+                      {t("adminAdmins")}
+                    </span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
 
           {/* Settings Section - only show when NOT in menu context */}
           {!menuId && (

@@ -162,19 +162,40 @@ export const MenuCard = memo<MenuCardProps>(({ item, index, onClick }) => {
         border-t border-[var(--border-main)]/50
       "
         >
-          <span
-            className="
-          text-[var(--accent)]
-          font-extrabold
-          text-lg sm:text-xl
-          flex items-baseline gap-1
-        "
-          >
-            {item.price}
-            <span className="text-xs sm:text-sm font-medium text-[var(--text-muted)]">
-              ج.م
-            </span>
-          </span>
+          <div className="flex flex-col gap-1">
+            {item.originalPrice && item.discountPercent ? (
+              <>
+                <span className="text-xs text-[var(--text-muted)] line-through">
+                  {item.originalPrice} ج.م
+                </span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-[var(--accent)] font-extrabold text-lg sm:text-xl">
+                    {item.price}
+                  </span>
+                  <span className="text-xs sm:text-sm font-medium text-[var(--text-muted)]">
+                    ج.م
+                  </span>
+                  <span className="text-[10px] font-bold bg-[var(--accent)] text-white px-1.5 py-0.5 rounded ml-1">
+                    -{item.discountPercent}%
+                  </span>
+                </div>
+              </>
+            ) : (
+              <span
+                className="
+              text-[var(--accent)]
+              font-extrabold
+              text-lg sm:text-xl
+              flex items-baseline gap-1
+            "
+              >
+                {item.price}
+                <span className="text-xs sm:text-sm font-medium text-[var(--text-muted)]">
+                  ج.م
+                </span>
+              </span>
+            )}
+          </div>
 
           <div
             className="

@@ -89,8 +89,8 @@ export function useLogin() {
 
 export function useSignup() {
   return useMutation({
-    mutationFn: async ({ email, password, name }: { email: string; password: string; name: string }) => {
-      const result = await api.signup(email, password, name);
+    mutationFn: async ({ email, password, name, phoneNumber }: { email: string; password: string; name: string; phoneNumber: string }) => {
+      const result = await api.signup(email, password, name, phoneNumber);
       if (result.error) throw new Error(result.error);
       return result.data;
     },
@@ -251,18 +251,44 @@ export function useUpdateProfile() {
   });
 }
 
-export function useChangePassword() {
+export function useChangePassword(onValidationError?: (field: string, message: string) => void) {
   return useMutation({
     mutationFn: async (data: { currentPassword: string; newPassword: string }) => {
-      const result = await api.put('/user/password', data);
-      if (result.error) throw new Error(result.error);
+      const result = await api.post('/user/change-password', data);
+      if (result.error) {
+        // Translate common error messages to Arabic
+        let errorMessage = result.error;
+        let errorField = 'general';
+        
+        if (result.error.includes('Current password is incorrect') || 
+            result.error.toLowerCase().includes('current password') ||
+            result.error.includes('incorrect')) {
+          errorMessage = 'كلمة المرور الحالية غير صحيحة';
+          errorField = 'currentPassword';
+        } else if (result.error.includes('Password must contain')) {
+          errorMessage = 'كلمة المرور يجب أن تحتوي على أحرف كبيرة وصغيرة وأرقام';
+          errorField = 'newPassword';
+        } else if (result.error.toLowerCase().includes('password')) {
+          errorMessage = 'خطأ في كلمة المرور';
+        }
+        
+        const error = new Error(errorMessage) as any;
+        error.field = errorField;
+        throw error;
+      }
       return result.data;
     },
     onSuccess: () => {
-      toast.success('Password changed successfully!');
+      toast.success('تم تغيير كلمة المرور بنجاح!');
     },
-    onError: (error: Error) => {
-      toast.error(error.message || 'Failed to change password');
+    onError: (error: any) => {
+      console.log('Change password error:', error);
+      if (error.field && error.field !== 'general' && onValidationError) {
+        // Show error under the field
+        onValidationError(error.field, error.message);
+      }
+      // Always show toast as well for visibility
+      toast.error(error.message || 'فشل تغيير كلمة المرور');
     },
   });
 }

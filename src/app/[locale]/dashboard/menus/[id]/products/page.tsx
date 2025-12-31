@@ -535,6 +535,19 @@ function CreateProductModal({
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Check file size (1MB = 1 * 1024 * 1024 bytes)
+      const maxSize = 1 * 1024 * 1024; // 1MB
+      if (file.size > maxSize) {
+        toast.error(
+          locale === "ar"
+            ? "حجم الصورة يجب أن لا يتجاوز 1 ميجابايت"
+            : "Image size must not exceed 1MB"
+        );
+        // Reset the input
+        e.target.value = "";
+        return;
+      }
+
       setImage(file);
       setImagePreview(URL.createObjectURL(file));
     }
@@ -781,7 +794,7 @@ function CreateProductModal({
                             {t("Products.clickToUpload") || "Click to upload"}
                           </p>
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            PNG, JPG, WEBP (MAX. 5MB)
+                            PNG, JPG, WEBP (MAX. 1MB)
                           </p>
                         </div>
                       </div>
@@ -932,6 +945,19 @@ function EditProductModal({
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Check file size (1MB = 1 * 1024 * 1024 bytes)
+      const maxSize = 1 * 1024 * 1024; // 1MB
+      if (file.size > maxSize) {
+        toast.error(
+          locale === "ar"
+            ? "حجم الصورة يجب أن لا يتجاوز 1 ميجابايت"
+            : "Image size must not exceed 1MB"
+        );
+        // Reset the input
+        e.target.value = "";
+        return;
+      }
+
       setImage(file);
       setImagePreview(URL.createObjectURL(file));
     }
@@ -1180,7 +1206,7 @@ function EditProductModal({
                             {t("Products.clickToUpload") || "Click to upload"}
                           </p>
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            PNG, JPG, WEBP (MAX. 5MB)
+                            PNG, JPG, WEBP (MAX. 1MB)
                           </p>
                         </div>
                       </div>

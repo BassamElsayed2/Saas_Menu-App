@@ -267,6 +267,20 @@
     "menuActivated": "تم تفعيل القائمة",
     "toggleError": "حدث خطأ أثناء تغيير حالة القائمة",
     "loading": "جاري تحميل القوائم...",
+    "deleteModal": {
+      "title": "تأكيد الحذف النهائي",
+      "subtitle": "هذا الإجراء لا يمكن التراجع عنه",
+      "warning": "سيتم حذف القائمة وجميع المنتجات والفئات المرتبطة بها نهائياً",
+      "confirmPrompt": "للتأكيد، اكتب",
+      "confirmKeyword": "DELETE",
+      "confirmText": "بالأحرف الكبيرة:",
+      "placeholder": "DELETE",
+      "errorInvalid": "يجب كتابة DELETE بالأحرف الكبيرة بالضبط",
+      "successConfirmed": "تم التأكيد، يمكنك الآن الحذف",
+      "cancel": "إلغاء",
+      "delete": "حذف نهائي",
+      "deleting": "جاري الحذف..."
+    },
     "createModal": {
       "title": "إنشاء قائمة جديدة",
       "menuNames": "أسماء القائمة",
@@ -281,6 +295,9 @@
       "logo": "شعار القائمة",
       "logoUpload": "رفع الشعار",
       "logoHint": "سيتم استخدام هذه الصورة كـ favicon للصفحة العامة للمنيو",
+      "englishOnlyError": "يجب استخدام حروف وأرقام إنجليزية فقط",
+      "arabicOnlyError": "يجب استخدام حروف وأرقام عربية فقط",
+      "validationError": "يرجى التأكد من استخدام الحروف الصحيحة في كل حقل (عربية أو إنجليزية)",
       "cancel": "إلغاء",
       "create": "إنشاء القائمة",
       "creating": "جاري الإنشاء..."
@@ -438,7 +455,9 @@
     "fillAllFields": "يرجى ملء جميع الحقول",
     "backToHome": "العودة للصفحة الرئيسية",
     "showPassword": "إظهار كلمة المرور",
-    "hidePassword": "إخفاء كلمة المرور"
+    "hidePassword": "إخفاء كلمة المرور",
+    "accountSuspended": "تم إيقاف هذا الحساب. برجاء التواصل مع الدعم.",
+    "contactSupport": "تواصل مع الدعم"
   },
   "SignUp": {
     "title": "إنشاء حساب جديد",
@@ -486,20 +505,29 @@
     "billing": "الفواتير",
     "manageMenus": "إدارة القوائم",
     "settings": "الإعدادات",
+    "adminPanel": "لوحة الأدمن",
     "logout": "تسجيل الخروج"
   },
   "Sidebar": {
     "main": "الرئيسية",
     "other": "أخرى",
+    "admin": "إدارة النظام",
     "dashboard": "لوحة التحكم",
     "menus": "قوائمي",
     "overview": "نظرة عامة",
     "categories": "التصنيفات",
     "products": "المنتجات",
+    "ads": "الإعلانات",
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",
     "accountSettings": "إعدادات الحساب",
     "backToMenus": "العودة للقوائم",
+    "adminPanel": "لوحة الأدمن",
+    "adminDashboard": "لوحة التحكم",
+    "adminUsers": "المستخدمين",
+    "adminPlans": "الخطط",
+    "adminAds": "الإعلانات",
+    "adminAdmins": "المشرفين",
     "needHelp": "تحتاج مساعدة؟",
     "helpDescription": "تحقق من الوثائق أو تواصل مع الدعم",
     "contactSupport": "تواصل مع الدعم"
@@ -623,11 +651,15 @@
     "manageItems": "إدارة العناصر",
     "settings": "الإعدادات",
     "viewPublic": "عرض القائمة العامة",
+    "navigation": {
+      "overview": "نظرة عامة",
+      "categories": "التصنيفات",
+      "products": "المنتجات"
+    },
     "stats": {
       "totalItems": "إجمالي العناصر",
       "activeItems": "العناصر النشطة",
-      "categories": "الفئات",
-      "views": "المشاهدات"
+      "categories": "الفئات"
     },
     "quickLinks": {
       "items": "عناصر القائمة",
@@ -639,7 +671,11 @@
     },
     "recentActivity": {
       "title": "النشاط الأخير",
-      "noActivity": "لا يوجد نشاط حديث"
+      "noActivity": "لا يوجد نشاط حديث",
+      "product": "منتج",
+      "category": "تصنيف",
+      "added": "تمت الإضافة في",
+      "view": "عرض"
     }
   },
   "MenuSettings": {

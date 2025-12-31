@@ -270,6 +270,20 @@
     "menuActivated": "Menu activated successfully",
     "toggleError": "Error toggling menu status",
     "loading": "Loading menus...",
+    "deleteModal": {
+      "title": "Confirm Permanent Deletion",
+      "subtitle": "This action cannot be undone",
+      "warning": "The menu and all related products and categories will be permanently deleted",
+      "confirmPrompt": "To confirm, type",
+      "confirmKeyword": "DELETE",
+      "confirmText": "in capital letters:",
+      "placeholder": "DELETE",
+      "errorInvalid": "You must type DELETE in capital letters exactly",
+      "successConfirmed": "Confirmed, you can now delete",
+      "cancel": "Cancel",
+      "delete": "Delete Permanently",
+      "deleting": "Deleting..."
+    },
     "createModal": {
       "title": "Create New Menu",
       "menuNames": "Menu Names",
@@ -284,6 +298,9 @@
       "logo": "Menu Logo",
       "logoUpload": "Upload Logo",
       "logoHint": "This image will be used as the favicon for the public menu page",
+      "englishOnlyError": "Only English letters and numbers are allowed",
+      "arabicOnlyError": "Only Arabic letters and numbers are allowed",
+      "validationError": "Please ensure you use the correct characters in each field (Arabic or English)",
       "cancel": "Cancel",
       "create": "Create Menu",
       "creating": "Creating..."
@@ -441,7 +458,9 @@
     "fillAllFields": "Please fill in all fields",
     "backToHome": "Back to Home",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "accountSuspended": "This account has been suspended. Please contact support.",
+    "contactSupport": "Contact Support"
   },
   "SignUp": {
     "title": "Create Account",
@@ -489,20 +508,29 @@
     "billing": "Billing",
     "manageMenus": "Manage Menus",
     "settings": "Settings",
+    "adminPanel": "Admin Panel",
     "logout": "Logout"
   },
   "Sidebar": {
     "main": "Main",
     "other": "Other",
+    "admin": "Administration",
     "dashboard": "Dashboard",
     "menus": "My Menus",
     "overview": "Overview",
     "categories": "Categories",
     "products": "Products",
+    "ads": "Advertisements",
     "profile": "Profile",
     "settings": "Settings",
     "accountSettings": "Account Settings",
     "backToMenus": "Back to Menus",
+    "adminPanel": "Admin Panel",
+    "adminDashboard": "Dashboard",
+    "adminUsers": "Users",
+    "adminPlans": "Plans",
+    "adminAds": "Advertisements",
+    "adminAdmins": "Administrators",
     "needHelp": "Need Help?",
     "helpDescription": "Check our documentation or contact support",
     "contactSupport": "Contact Support"
@@ -626,11 +654,15 @@
     "manageItems": "Manage Items",
     "settings": "Settings",
     "viewPublic": "View Public Menu",
+    "navigation": {
+      "overview": "Overview",
+      "categories": "Categories",
+      "products": "Products"
+    },
     "stats": {
       "totalItems": "Total Items",
       "activeItems": "Active Items",
-      "categories": "Categories",
-      "views": "Views"
+      "categories": "Categories"
     },
     "quickLinks": {
       "items": "Menu Items",
@@ -642,7 +674,11 @@
     },
     "recentActivity": {
       "title": "Recent Activity",
-      "noActivity": "No recent activity"
+      "noActivity": "No recent activity",
+      "product": "Product",
+      "category": "Category",
+      "added": "Added on",
+      "view": "View"
     }
   },
   "MenuSettings": {

@@ -7,14 +7,13 @@ import "swiper/css/bundle";
 // globals
 import "./globals.css";
 
-import LayoutProvider from "@/providers/LayoutProvider";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import type { Metadata } from "next";
 import { Tajawal } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import NotFound from "./not-found";
+import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Toaster } from "react-hot-toast";
 
@@ -29,9 +28,6 @@ export const metadata: Metadata = {
   description: "Tailwind Nextjs Admin Dashboard Templat",
 };
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
-
 export async function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -44,7 +40,7 @@ type Props = {
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
-    NotFound();
+    notFound();
   }
 
   // Set the request locale for static rendering

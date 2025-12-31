@@ -28,7 +28,8 @@
     "react-svg-worldmap": "^2.0.0-alpha.16",
     "remixicon": "^4.6.0",
     "swiper": "^11.2.6",
-    "tailwind-scrollbar": "^4.0.2"
+    "tailwind-scrollbar": "^4.0.2",
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

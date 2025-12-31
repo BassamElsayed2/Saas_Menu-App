@@ -9,7 +9,22 @@ import { Icon } from "./Icon";
 // Hero Section Component
 // ============================
 
-export const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  menuName: string;
+  description?: string;
+  logo?: string;
+  rating: {
+    average: number;
+    total: number;
+  };
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  menuName,
+  description,
+  logo,
+  rating,
+}) => {
   const { t, direction } = useLanguage();
   const rtl = direction === "rtl";
 
@@ -128,7 +143,7 @@ export const HeroSection: React.FC = () => {
         drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]
       "
           >
-            {t.hero.highlight}
+            {menuName}
           </span>
 
           <span className="text-[var(--text-main)] block">
@@ -147,7 +162,7 @@ export const HeroSection: React.FC = () => {
       px-2
     "
         >
-          {t.hero.description}
+          {description || t.hero.description}
         </p>
 
         {/* CTA */}
