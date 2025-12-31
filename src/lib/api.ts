@@ -133,9 +133,9 @@ class ApiClient {
     // Sync token from localStorage before each request
     this.syncToken();
     
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string>),
     };
 
     if (this.token) {
@@ -180,7 +180,7 @@ class ApiClient {
           this.clearToken();
           return {
             error: data.error || 'Session expired. Please login again.',
-            data: null,
+            data: undefined,
           };
         }
       }
@@ -188,7 +188,7 @@ class ApiClient {
       if (!response.ok) {
         return {
           error: data.error || 'Something went wrong',
-          data: null,
+          data: undefined,
         };
       }
 
@@ -203,13 +203,13 @@ class ApiClient {
       if (error.message?.includes('Failed to fetch') || error.name === 'TypeError') {
         return {
           error: 'Unable to connect to server. Please check if the backend is running and CORS is configured correctly.',
-          data: null,
+          data: undefined,
         };
       }
       
       return {
         error: error.message || 'Network error. Please check your connection.',
-        data: null,
+        data: undefined,
       };
     }
   }

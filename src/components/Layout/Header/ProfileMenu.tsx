@@ -83,7 +83,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
       </button>
 
       {active && (
-        <div className="profile-menu-dropdown bg-white dark:bg-[#0c1427] transition-all shadow-3xl dark:shadow-none py-[22px] absolute mt-[13px] md:mt-[14px] w-[220px] z-[1] top-full ltr:right-0 rtl:left-0 rounded-md">
+        <div className="profile-menu-dropdown bg-white dark:bg-[#0c1427] transition-all shadow-3xl dark:shadow-none py-[22px] absolute mt-[13px] md:mt-[14px] w-[220px] z-[100] top-full ltr:right-0 rtl:left-0 rounded-md">
           <div className="flex items-center border-b border-gray-100 dark:border-[#172036] pb-[12px] mx-[20px] mb-[10px]">
             <UserAvatar
               src={user?.profileImage}

@@ -24,7 +24,8 @@ export function useCurrentUser() {
         throw new Error(result.error);
       }
       
-      const user = result.data?.user || null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const user = (result.data as any)?.user || null;
       
       // Merge with localStorage for profile image only (temporary solution until backend integration)
       if (user && typeof window !== 'undefined') {
@@ -61,9 +62,11 @@ export function useLogin() {
       // Immediately fetch complete user data from /auth/me to get all fields
       try {
         const meResult = await api.getCurrentUser();
-        if (meResult.data?.user) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const meData = meResult.data as any;
+        if (meData?.user) {
           // Merge with localStorage for profile image
-          const user = meResult.data.user;
+          const user = meData.user;
           if (typeof window !== 'undefined') {
             const savedImage = localStorage.getItem(`profileImage_${user.id}`);
             if (savedImage) {

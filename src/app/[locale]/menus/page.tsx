@@ -25,6 +25,7 @@ export default function MenusPage() {
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("Menus");
+  const isRTL = locale === "ar";
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   // React Query hooks
@@ -63,60 +64,68 @@ export default function MenusPage() {
 
   if (loading || !user) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-gray-500 dark:text-gray-400">{t("loading") || "Loading..."}</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen pt-20 bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] relative overflow-hidden transition-colors duration-300">
+      {/* Ambient Background Effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 ltr:right-10 rtl:left-10 w-72 h-72 bg-gradient-to-tr from-primary-400/20 to-primary-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 ltr:left-10 rtl:right-10 w-96 h-96 bg-gradient-to-tr from-primary-500/5 to-primary-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-200/30 dark:bg-purple-900/20 rounded-full blur-3xl" />
+      </div>
+
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         {/* Page Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
                 {t("title")}
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base">
+              <p className="text-gray-500 dark:text-gray-400 mt-1 text-lg">
                 {t("subtitle")}
               </p>
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl font-medium"
+              className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500 text-white rounded-xl hover:shadow-xl hover:scale-[1.02] transition-all flex items-center gap-2 shadow-lg shadow-primary-500/25 font-medium"
             >
-              <i className="material-symbols-outlined !text-[20px]">add</i>
+              <i className="ri-add-line text-xl"></i>
               {t("createMenu")}
             </button>
           </div>
         </div>
+
         {loadingMenus ? (
           <div className="text-center py-16">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600 dark:text-gray-400">
-              جاري التحميل...
-            </p>
+            <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <p className="text-gray-500 dark:text-gray-400 mt-4">{t("loading") || "Loading menus..."}</p>
           </div>
         ) : menus.length === 0 ? (
-          <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center border border-gray-100 dark:border-gray-700">
-            <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30 rounded-full flex items-center justify-center mx-auto mb-6">
-              <i className="material-symbols-outlined text-primary-500 dark:text-primary-400 !text-[48px]">
-                restaurant_menu
-              </i>
+          <div className="bg-white/90 dark:bg-[#0c1427]/90 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-xl p-12 text-center">
+            <div className="w-20 h-20 bg-gradient-to-br from-primary-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <i className="ri-restaurant-line text-4xl text-primary-500 dark:text-primary-400"></i>
             </div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               {t("noMenus")}
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+            <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md mx-auto">
               {t("getStarted")}
             </p>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all font-medium shadow-lg hover:shadow-xl"
+              className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500 text-white rounded-xl hover:shadow-xl hover:scale-[1.02] transition-all shadow-lg shadow-primary-500/25 font-medium inline-flex items-center gap-2"
             >
+              <i className="ri-add-line text-xl"></i>
               {t("createFirst")}
             </button>
           </div>
@@ -125,97 +134,65 @@ export default function MenusPage() {
             {menus.map((menu: Menu) => (
               <div
                 key={menu.id}
-                className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 dark:border-gray-700 group"
+                className="group bg-white/90 dark:bg-[#0c1427]/90 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.01] p-6"
               >
-                {/* Logo and Header */}
-                <div className="flex items-start gap-4 mb-4">
-                  {menu.logoUrl ? (
-                    <div className="relative w-16 h-16 rounded-xl overflow-hidden border-2 border-gray-100 dark:border-gray-700 flex-shrink-0">
-                      <Image
-                        src={menu.logoUrl}
-                        alt={menu.name}
-                        fill
-                        className="object-cover"
-                      />
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25">
+                      <i className="ri-restaurant-line text-white text-lg"></i>
                     </div>
-                  ) : (
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30 flex items-center justify-center flex-shrink-0">
-                      <i className="material-symbols-outlined text-primary-500 dark:text-primary-400 !text-[32px]">
-                        restaurant_menu
-                      </i>
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate">
-                        {menu.name}
-                      </h3>
-                      <span
-                        className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap flex-shrink-0 ${
-                          menu.isActive
-                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                            : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
-                        }`}
-                      >
-                        {menu.isActive ? t("active") : t("inactive")}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                      {menu.description || t("noDescription")}
-                    </p>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                      {menu.name}
+                    </h3>
                   </div>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      menu.isActive
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                        : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
+                    }`}
+                  >
+                    {menu.isActive ? t("active") : t("inactive")}
+                  </span>
                 </div>
 
-                {/* Menu Info */}
-                <div className="mb-4 space-y-2 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
-                  <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-                    <i className="material-symbols-outlined !text-[16px]">
-                      link
-                    </i>
-                    <span className="font-mono truncate">{menu.slug}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-                    <i className="material-symbols-outlined !text-[16px]">
-                      calendar_today
-                    </i>
-                    <span>{new Date(menu.createdAt).toLocaleDateString()}</span>
-                  </div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2 min-h-[40px]">
+                  {menu.description || t("noDescription")}
+                </p>
+
+                <div className="mb-4 p-3 bg-gray-50 dark:bg-[#0a0e19] rounded-xl space-y-1">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                    <i className="ri-link text-primary-500"></i>
+                    <span className="font-mono text-gray-700 dark:text-gray-300">{menu.slug}</span>
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                    <i className="ri-calendar-line text-primary-500"></i>
+                    {new Date(menu.createdAt).toLocaleDateString(locale === "ar" ? "ar-SA" : "en-US")}
+                  </p>
                 </div>
 
                 {/* Action Buttons */}
                 <div className="flex gap-2 mb-3">
                   <button
-                    onClick={() =>
-                      router.push(`/${locale}/dashboard/menus/${menu.id}`)
-                    }
-                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all text-sm font-medium shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                    onClick={() => router.push(`/${locale}/menus/${menu.id}`)}
+                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:shadow-lg transition-all text-sm font-medium flex items-center justify-center gap-2"
                   >
-                    <i className="material-symbols-outlined !text-[18px]">
-                      dashboard
-                    </i>
+                    <i className="ri-dashboard-line"></i>
                     {t("openDashboard")}
                   </button>
                   <button
                     onClick={() => handleToggleStatus(menu.id, menu.isActive)}
-                    className="px-4 py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-all text-sm"
-                    title={menu.isActive ? t("pause") : t("activate")}
+                    className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-[#0a0e19] text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
+                    title={menu.isActive ? t("deactivate") : t("activate")}
                   >
-                    <i
-                      className={`material-symbols-outlined !text-[18px] ${
-                        menu.isActive ? "text-yellow-600" : "text-green-600"
-                      }`}
-                    >
-                      {menu.isActive ? "pause" : "play_arrow"}
-                    </i>
+                    <i className={`ri-${menu.isActive ? "pause" : "play"}-line text-lg`}></i>
                   </button>
                   <button
                     onClick={() => handleDelete(menu.id)}
-                    className="px-4 py-2.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/50 transition-all text-sm"
+                    className="w-10 h-10 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors"
                     title={t("delete")}
                   >
-                    <i className="material-symbols-outlined !text-[18px]">
-                      delete
-                    </i>
+                    <i className="ri-delete-bin-line text-lg"></i>
                   </button>
                 </div>
 
@@ -224,11 +201,9 @@ export default function MenusPage() {
                   href={getMenuPublicUrl(menu.slug)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/30 transition-all text-sm font-medium border border-green-200 dark:border-green-800/50 hover:border-green-300 dark:hover:border-green-700"
+                  className="flex items-center justify-center gap-2 mt-3 px-4 py-2.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors text-sm font-medium"
                 >
-                  <i className="material-symbols-outlined !text-[18px]">
-                    open_in_new
-                  </i>
+                  <i className="ri-external-link-line"></i>
                   {t("viewPublic")}
                 </a>
               </div>
@@ -288,7 +263,7 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
         const result = await api.checkSlugAvailability(formData.slug);
         if (result.error) {
           setSlugStatus({ checking: false, available: false, suggestions: [] });
-        } else if (result.data && typeof result.data === "object") {
+        } else if (result.data && typeof result.data === 'object') {
           setSlugStatus({
             checking: false,
             available: (result.data as any).available ?? false,
@@ -395,99 +370,86 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-      <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white/95 dark:bg-[#0c1427]/95 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/20 rounded-2xl shadow-2xl max-w-3xl w-full p-8 max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200/50 dark:border-primary-500/10">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
-              <i className="material-symbols-outlined text-white !text-[28px]">
-                restaurant_menu
-              </i>
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25">
+              <i className="ri-restaurant-line text-white text-2xl"></i>
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white !mb-0">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               {t("title")}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all hover:scale-110"
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
           >
-            <i className="material-symbols-outlined text-gray-500 dark:text-gray-400">
-              close
-            </i>
+            <i className="ri-close-line text-xl text-gray-500 dark:text-gray-400"></i>
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Names Section */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-                <i className="material-symbols-outlined text-primary-500 dark:text-primary-400 !text-[20px]">
-                  label
-                </i>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white !mb-0">
+            <div className="flex items-center gap-2 mb-3">
+              <i className="ri-price-tag-3-line text-xl text-primary-500 dark:text-primary-400"></i>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t("menuNames")}
               </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  {t("nameEn")} <span className="text-red-500">*</span>
+              <div className="space-y-2">
+                <label className="flex gap-2 items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                  <i className="ri-global-line text-primary-500 dark:text-primary-400"></i>
+                  {t("nameEn")} *
                 </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
-                    placeholder="e.g., My Restaurant Menu"
-                    required
-                  />
-                </div>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  className="h-12 w-full rounded-xl bg-gray-50 dark:bg-[#0a0e19] border border-gray-200 dark:border-[#1e293b] px-4 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-500 dark:focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:focus:ring-primary-400/20 outline-none transition-all"
+                  placeholder="e.g., My Restaurant Menu"
+                  required
+                />
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  {t("nameAr")} <span className="text-red-500">*</span>
+              <div className="space-y-2">
+                <label className="flex gap-2 items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                  <i className="ri-translate-2 text-primary-500 dark:text-primary-400"></i>
+                  {t("nameAr")} *
                 </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={formData.nameAr}
-                    onChange={(e) =>
-                      setFormData({ ...formData, nameAr: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
-                    placeholder="مثال: قائمة مطعمي"
-                    dir="rtl"
-                    required
-                  />
-                </div>
+                <input
+                  type="text"
+                  value={formData.nameAr}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nameAr: e.target.value })
+                  }
+                  className="h-12 w-full rounded-xl bg-gray-50 dark:bg-[#0a0e19] border border-gray-200 dark:border-[#1e293b] px-4 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-500 dark:focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:focus:ring-primary-400/20 outline-none transition-all"
+                  placeholder="مثال: قائمة مطعمي"
+                  dir="rtl"
+                  required
+                />
               </div>
             </div>
           </div>
 
           {/* Logo Section */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-                <i className="material-symbols-outlined text-primary-500 dark:text-primary-400 !text-[20px]">
-                  image
-                </i>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white !mb-0">
+            <div className="flex items-center gap-2 mb-3">
+              <i className="ri-image-line text-xl text-primary-500 dark:text-primary-400"></i>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t("logo") || "شعار القائمة"}
               </h3>
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            <div className="space-y-2">
+              <label className="flex gap-2 items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                <i className="ri-upload-cloud-line text-primary-500 dark:text-primary-400"></i>
                 {t("logoUpload") || "رفع الشعار"}{" "}
                 <span className="text-gray-400 text-xs font-normal">
                   (اختياري)
@@ -496,7 +458,7 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
 
               {logoPreview ? (
                 <div className="relative inline-block">
-                  <div className="relative w-32 h-32 rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-700 shadow-md">
+                  <div className="relative w-32 h-32 rounded-xl overflow-hidden border-2 border-gray-200 dark:border-[#1e293b] shadow-lg">
                     <Image
                       src={logoPreview}
                       alt="Logo preview"
@@ -507,25 +469,21 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                   <button
                     type="button"
                     onClick={handleRemoveLogo}
-                    className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-all shadow-lg hover:scale-110"
+                    className="absolute -top-2 ltr:-right-2 rtl:-left-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors shadow-lg"
                   >
-                    <i className="material-symbols-outlined !text-[16px]">
-                      close
-                    </i>
+                    <i className="ri-close-line text-sm"></i>
                   </button>
                 </div>
               ) : (
                 <div className="relative">
-                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl cursor-pointer hover:border-primary-500 dark:hover:border-primary-500 transition-all bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 dark:border-[#1e293b] rounded-xl cursor-pointer hover:border-primary-500 dark:hover:border-primary-400 transition-colors bg-gray-50 dark:bg-[#0a0e19]">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <i className="material-symbols-outlined text-gray-400 dark:text-gray-500 !text-[48px] mb-2">
-                        cloud_upload
-                      </i>
-                      <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
+                      <i className="ri-upload-cloud-2-line text-4xl text-gray-400 dark:text-gray-500 mb-2"></i>
+                      <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                         <span className="font-semibold">انقر للرفع</span> أو
                         اسحب الصورة هنا
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-500">
+                      <p className="text-xs text-gray-400 dark:text-gray-500">
                         PNG, JPG, WEBP (حد أقصى 5 ميجابايت)
                       </p>
                     </div>
@@ -541,16 +499,13 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
               )}
 
               {uploadingLogo && (
-                <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-500"></div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                  <i className="ri-loader-4-line animate-spin"></i>
                   جاري رفع الصورة...
                 </p>
               )}
 
-              <p className="mt-3 text-xs text-gray-500 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800/50">
-                <i className="material-symbols-outlined !text-[16px] align-middle ltr:mr-1 rtl:ml-1">
-                  info
-                </i>
+              <p className="text-xs text-gray-400 dark:text-gray-500">
                 {t("logoHint") ||
                   "سيتم استخدام هذه الصورة كـ favicon للصفحة العامة للمنيو"}
               </p>
@@ -559,20 +514,17 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
 
           {/* Descriptions Section */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-                <i className="material-symbols-outlined text-primary-500 dark:text-primary-400 !text-[20px]">
-                  description
-                </i>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white !mb-0">
+            <div className="flex items-center gap-2 mb-3">
+              <i className="ri-file-text-line text-xl text-primary-500 dark:text-primary-400"></i>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t("descriptions")}
               </h3>
             </div>
 
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              <div className="space-y-2">
+                <label className="flex gap-2 items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                  <i className="ri-global-line text-primary-500 dark:text-primary-400"></i>
                   {t("descriptionEn")}
                 </label>
                 <textarea
@@ -581,13 +533,14 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                     setFormData({ ...formData, description: e.target.value })
                   }
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none"
+                  className="w-full rounded-xl bg-gray-50 dark:bg-[#0a0e19] border border-gray-200 dark:border-[#1e293b] px-4 py-3 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-500 dark:focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:focus:ring-primary-400/20 outline-none transition-all resize-none"
                   placeholder="Describe your menu in English..."
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              <div className="space-y-2">
+                <label className="flex gap-2 items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                  <i className="ri-translate-2 text-primary-500 dark:text-primary-400"></i>
                   {t("descriptionAr")}
                 </label>
                 <textarea
@@ -596,7 +549,7 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                     setFormData({ ...formData, descriptionAr: e.target.value })
                   }
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none"
+                  className="w-full rounded-xl bg-gray-50 dark:bg-[#0a0e19] border border-gray-200 dark:border-[#1e293b] px-4 py-3 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-500 dark:focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:focus:ring-primary-400/20 outline-none transition-all resize-none"
                   placeholder="اكتب وصف القائمة بالعربية..."
                   dir="rtl"
                 />
@@ -606,20 +559,17 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
 
           {/* Slug Section */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-                <i className="material-symbols-outlined text-primary-500 dark:text-primary-400 !text-[20px]">
-                  link
-                </i>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white !mb-0">
+            <div className="flex items-center gap-2 mb-3">
+              <i className="ri-link text-xl text-primary-500 dark:text-primary-400"></i>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t("urlSettings")}
               </h3>
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                {t("slug")} <span className="text-red-500">*</span>
+            <div className="space-y-2">
+              <label className="flex gap-2 items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                <i className="ri-link text-primary-500 dark:text-primary-400"></i>
+                {t("slug")} *
               </label>
               <div className="relative">
                 <input
@@ -633,57 +583,49 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                         .replace(/[^a-z0-9-]/g, "-"),
                     })
                   }
-                  className={`w-full px-4 py-3 pr-10 border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all font-mono ${
+                  className={`h-12 w-full rounded-xl bg-gray-50 dark:bg-[#0a0e19] border px-4 ltr:pr-12 rtl:pl-12 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 outline-none transition-all font-mono ${
                     slugStatus.available === false
-                      ? "border-red-300 dark:border-red-600 focus:ring-red-500"
+                      ? "border-red-300 dark:border-red-600 focus:ring-red-500/20"
                       : slugStatus.available === true
-                      ? "border-green-300 dark:border-green-600 focus:ring-green-500"
-                      : "border-gray-300 dark:border-gray-600 focus:ring-primary-500"
+                      ? "border-green-300 dark:border-green-600 focus:ring-green-500/20"
+                      : "border-gray-200 dark:border-[#1e293b] focus:border-primary-500 dark:focus:border-primary-400 focus:ring-primary-500/20"
                   }`}
                   placeholder="my-restaurant-menu"
                   required
                 />
                 {slugStatus.checking && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-500"></div>
+                  <div className="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2">
+                    <div className="w-5 h-5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
                   </div>
                 )}
                 {!slugStatus.checking && slugStatus.available === true && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    <i className="material-symbols-outlined text-green-500 !text-[20px]">
-                      check_circle
-                    </i>
+                  <div className="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2">
+                    <i className="ri-checkbox-circle-fill text-xl text-green-500"></i>
                   </div>
                 )}
                 {!slugStatus.checking && slugStatus.available === false && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    <i className="material-symbols-outlined text-red-500 !text-[20px]">
-                      cancel
-                    </i>
+                  <div className="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2">
+                    <i className="ri-close-circle-fill text-xl text-red-500"></i>
                   </div>
                 )}
               </div>
 
               {/* Status Message */}
               {slugStatus.checking && (
-                <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-500"></div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                  <i className="ri-loader-4-line animate-spin"></i>
                   جاري التحقق من الرابط...
                 </p>
               )}
               {!slugStatus.checking && slugStatus.available === true && (
-                <p className="mt-3 text-sm text-green-600 dark:text-green-400 flex items-center gap-2 bg-green-50 dark:bg-green-900/20 p-2 rounded-lg border border-green-200 dark:border-green-800/50">
-                  <i className="material-symbols-outlined !text-[18px]">
-                    check_circle
-                  </i>
+                <p className="text-sm text-green-600 dark:text-green-400 flex items-center gap-2">
+                  <i className="ri-checkbox-circle-line"></i>
                   هذا الرابط متاح
                 </p>
               )}
               {!slugStatus.checking && slugStatus.available === false && (
-                <p className="mt-3 text-sm text-red-600 dark:text-red-400 flex items-center gap-2 bg-red-50 dark:bg-red-900/20 p-2 rounded-lg border border-red-200 dark:border-red-800/50">
-                  <i className="material-symbols-outlined !text-[18px]">
-                    cancel
-                  </i>
+                <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
+                  <i className="ri-close-circle-line"></i>
                   هذا الرابط مستخدم بالفعل
                 </p>
               )}
@@ -692,11 +634,9 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
               {!slugStatus.checking &&
                 slugStatus.available === false &&
                 slugStatus.suggestions.length > 0 && (
-                  <div className="mt-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
-                    <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                      <i className="material-symbols-outlined !text-[16px]">
-                        lightbulb
-                      </i>
+                  <div className="p-3 bg-gray-50 dark:bg-[#0a0e19] rounded-xl border border-gray-200 dark:border-[#1e293b]">
+                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                      <i className="ri-lightbulb-line text-primary-500"></i>
                       اقتراحات مشابهة:
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -705,7 +645,7 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                           key={index}
                           type="button"
                           onClick={() => handleSuggestionClick(suggestion)}
-                          className="px-3 py-1.5 text-xs font-mono bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:border-primary-300 dark:hover:border-primary-600 text-gray-700 dark:text-gray-300 transition-all hover:scale-105"
+                          className="px-3 py-1.5 text-xs font-mono bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:border-primary-300 dark:hover:border-primary-600 text-gray-700 dark:text-gray-300 transition-all"
                         >
                           {suggestion}
                         </button>
@@ -714,11 +654,9 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                   </div>
                 )}
 
-              <div className="mt-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800/50">
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800/30">
                 <div className="flex items-start gap-2">
-                  <i className="material-symbols-outlined text-blue-500 dark:text-blue-400 !text-[20px] mt-0.5 flex-shrink-0">
-                    info
-                  </i>
+                  <i className="ri-information-line text-blue-500 dark:text-blue-400 text-lg mt-0.5"></i>
                   <div className="flex-1">
                     <p className="text-xs text-blue-700 dark:text-blue-300 font-semibold mb-1">
                       {t("slugHint")}
@@ -735,30 +673,29 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
           </div>
 
           {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex gap-3 pt-6 border-t border-gray-200/50 dark:border-primary-500/10">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 h-12 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               disabled={createMenu.isPending || uploadingLogo}
             >
+              <i className="ri-close-line text-xl"></i>
               {t("cancel")}
             </button>
             <button
               type="submit"
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 h-12 bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500 text-white rounded-xl hover:shadow-xl hover:scale-[1.01] transition-all font-medium shadow-lg shadow-primary-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
               disabled={createMenu.isPending || uploadingLogo}
             >
               {createMenu.isPending || uploadingLogo ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <i className="ri-loader-4-line animate-spin text-xl"></i>
                   {uploadingLogo ? "جاري الرفع..." : t("creating")}
                 </>
               ) : (
                 <>
-                  <i className="material-symbols-outlined !text-[20px]">
-                    add_circle
-                  </i>
+                  <i className="ri-add-circle-line text-xl"></i>
                   {t("create")}
                 </>
               )}

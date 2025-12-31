@@ -230,7 +230,7 @@ const MenuItemForm: React.FC<MenuItemFormProps> = ({
             required
           >
             <option value="">{t("selectCategory")}</option>
-            {categories.map((cat) => (
+            {categories.map((cat: { id: number; name: string }) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
               </option>

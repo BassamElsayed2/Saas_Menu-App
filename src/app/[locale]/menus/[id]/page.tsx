@@ -25,6 +25,7 @@ export default function MenuDashboard({
   const t = useTranslations("MenuDashboard");
   const locale = useLocale();
   const router = useRouter();
+  const isRTL = locale === "ar";
   const { user, loading: authLoading } = useAuth();
   const { data: menu, isLoading: menuLoading, error } = useMenu(parseInt(id));
   
@@ -37,7 +38,6 @@ export default function MenuDashboard({
     views: 0,
   });
 
-  // التحقق من ملكية القائمة
   useEffect(() => {
     if (!authLoading && !menuLoading) {
       if (!user) {
@@ -73,7 +73,6 @@ export default function MenuDashboard({
       if (response.ok) {
         const data = await response.json();
         setMenuName(data.data?.menu?.name || "");
-        // TODO: Fetch real stats from backend
         setStats({
           totalItems: data.data?.itemsCount || 0,
           activeItems: data.data?.activeItemsCount || 0,
@@ -90,235 +89,240 @@ export default function MenuDashboard({
 
   if (loading || authLoading || menuLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+      <div className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-gray-500 dark:text-gray-400 animate-pulse">جاري التحميل...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
+    <main className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] relative overflow-hidden transition-colors duration-300">
+      {/* Ambient Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 ltr:right-10 rtl:left-10 w-72 h-72 bg-primary-500/10 dark:bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 ltr:left-10 rtl:right-10 w-96 h-96 bg-primary-500/5 dark:bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-200/30 dark:bg-purple-900/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-4 py-8 relative z-10">
+        {/* Top Bar */}
+        <div className="flex items-center justify-between mb-8">
           <button
             onClick={() => router.push(`/${locale}/menus`)}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition group"
           >
-            <i className="material-symbols-outlined">arrow_back</i>
+            <i className={`ri-arrow-${isRTL ? 'right' : 'left'}-line text-xl transition-transform ${isRTL ? 'group-hover:translate-x-1' : 'group-hover:-translate-x-1'}`}></i>
+            العودة للقوائم
           </button>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              {menuName}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
-              {t("subtitle")}
-            </p>
+        </div>
+
+        {/* Header Card */}
+        <div className="bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-xl dark:shadow-primary-500/5 p-6 md:p-8 mb-8">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                {menuName}
+              </h1>
+              <p className="text-gray-500 dark:text-gray-400">
+                {t("subtitle")}
+              </p>
+            </div>
+            
+            {/* Quick Actions */}
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href={`/${locale}/menus/${id}/items`}
+                className="px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500 text-white rounded-xl hover:shadow-lg hover:shadow-primary-500/30 transition-all flex items-center gap-2 font-medium"
+              >
+                <i className="ri-restaurant-line text-lg"></i>
+                {t("manageItems")}
+              </Link>
+              <Link
+                href={`/${locale}/menus/${id}/categories`}
+                className="px-5 py-2.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center gap-2 font-medium border border-gray-200 dark:border-gray-700"
+              >
+                <i className="ri-folder-line text-lg"></i>
+                التصنيفات
+              </Link>
+              <Link
+                href={`/${locale}/menus/${id}/settings`}
+                className="px-5 py-2.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center gap-2 font-medium border border-gray-200 dark:border-gray-700"
+              >
+                <i className="ri-settings-3-line text-lg"></i>
+                {t("settings")}
+              </Link>
+              {menu?.slug && (
+                <a
+                  href={getMenuPublicUrl(menu.slug)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-5 py-2.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/30 transition-all flex items-center gap-2 font-medium"
+                >
+                  <i className="ri-external-link-line text-lg"></i>
+                  {t("viewPublic")}
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="flex gap-3 mt-4">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Total Items */}
+          <div className="bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-lg dark:shadow-primary-500/5 p-6 hover:shadow-xl transition-all">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                  {t("stats.totalItems")}
+                </p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                  {stats.totalItems}
+                </p>
+              </div>
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+                <i className="ri-restaurant-line text-white text-2xl"></i>
+              </div>
+            </div>
+          </div>
+
+          {/* Active Items */}
+          <div className="bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-lg dark:shadow-primary-500/5 p-6 hover:shadow-xl transition-all">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                  {t("stats.activeItems")}
+                </p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                  {stats.activeItems}
+                </p>
+              </div>
+              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/30">
+                <i className="ri-checkbox-circle-line text-white text-2xl"></i>
+              </div>
+            </div>
+          </div>
+
+          {/* Categories */}
+          <div className="bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-lg dark:shadow-primary-500/5 p-6 hover:shadow-xl transition-all">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                  {t("stats.categories")}
+                </p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                  {stats.categories}
+                </p>
+              </div>
+              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <i className="ri-folder-line text-white text-2xl"></i>
+              </div>
+            </div>
+          </div>
+
+          {/* Views */}
+          <div className="bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-lg dark:shadow-primary-500/5 p-6 hover:shadow-xl transition-all">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                  {t("stats.views")}
+                </p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                  {stats.views}
+                </p>
+              </div>
+              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
+                <i className="ri-eye-line text-white text-2xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Links Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Link
             href={`/${locale}/menus/${id}/items`}
-            className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center gap-2"
+            className="group bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-lg dark:shadow-primary-500/5 p-6 hover:shadow-xl hover:-translate-y-1 transition-all"
           >
-            <i className="material-symbols-outlined !text-[20px]">
-              restaurant_menu
-            </i>
-            {t("manageItems")}
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
+                <i className="ri-restaurant-line text-white text-3xl"></i>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
+                  {t("quickLinks.items")}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {t("quickLinks.itemsDesc")}
+                </p>
+              </div>
+              <i className={`ri-arrow-${isRTL ? 'left' : 'right'}-line text-gray-400 group-hover:text-primary-500 text-xl transition-colors`}></i>
+            </div>
           </Link>
+
           <Link
             href={`/${locale}/menus/${id}/settings`}
-            className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+            className="group bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-lg dark:shadow-primary-500/5 p-6 hover:shadow-xl hover:-translate-y-1 transition-all"
           >
-            <i className="material-symbols-outlined !text-[20px]">settings</i>
-            {t("settings")}
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
+                <i className="ri-settings-3-line text-white text-3xl"></i>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
+                  {t("quickLinks.settings")}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {t("quickLinks.settingsDesc")}
+                </p>
+              </div>
+              <i className={`ri-arrow-${isRTL ? 'left' : 'right'}-line text-gray-400 group-hover:text-primary-500 text-xl transition-colors`}></i>
+            </div>
           </Link>
+
           {menu?.slug && (
             <a
               href={getMenuPublicUrl(menu.slug)}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors flex items-center gap-2"
+              className="group bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-lg dark:shadow-primary-500/5 p-6 hover:shadow-xl hover:-translate-y-1 transition-all"
             >
-              <i className="material-symbols-outlined !text-[20px]">
-                open_in_new
-              </i>
-              {t("viewPublic")}
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
+                  <i className="ri-global-line text-white text-3xl"></i>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
+                    {t("quickLinks.preview")}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {t("quickLinks.previewDesc")}
+                  </p>
+                </div>
+                <i className="ri-external-link-line text-gray-400 group-hover:text-primary-500 text-xl transition-colors"></i>
+              </div>
             </a>
           )}
         </div>
-      </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                {t("stats.totalItems")}
-              </p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                {stats.totalItems}
-              </p>
+        {/* Recent Activity */}
+        <div className="bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-lg dark:shadow-primary-500/5 p-6 md:p-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+            <i className="ri-history-line text-primary-500"></i>
+            {t("recentActivity.title")}
+          </h2>
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
+              <i className="ri-history-line text-4xl text-gray-400"></i>
             </div>
-            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-              <i className="material-symbols-outlined text-blue-600 dark:text-blue-400 !text-[28px]">
-                restaurant_menu
-              </i>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                {t("stats.activeItems")}
-              </p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                {stats.activeItems}
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-              <i className="material-symbols-outlined text-green-600 dark:text-green-400 !text-[28px]">
-                check_circle
-              </i>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                {t("stats.categories")}
-              </p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                {stats.categories}
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-              <i className="material-symbols-outlined text-purple-600 dark:text-purple-400 !text-[28px]">
-                category
-              </i>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                {t("stats.views")}
-              </p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                {stats.views}
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
-              <i className="material-symbols-outlined text-orange-600 dark:text-orange-400 !text-[28px]">
-                visibility
-              </i>
-            </div>
+            <p className="text-gray-500 dark:text-gray-400">
+              {t("recentActivity.noActivity")}
+            </p>
           </div>
         </div>
       </div>
-
-      {/* Quick Links */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Link
-          href={`/${locale}/menus/${id}/items`}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all group"
-        >
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <i className="material-symbols-outlined text-white !text-[32px]">
-                restaurant_menu
-              </i>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                {t("quickLinks.items")}
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {t("quickLinks.itemsDesc")}
-              </p>
-            </div>
-            <i className="material-symbols-outlined text-gray-400 group-hover:text-primary-500 transition-colors">
-              arrow_forward
-            </i>
-          </div>
-        </Link>
-
-        <Link
-          href={`/${locale}/menus/${id}/settings`}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all group"
-        >
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <i className="material-symbols-outlined text-white !text-[32px]">
-                settings
-              </i>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                {t("quickLinks.settings")}
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {t("quickLinks.settingsDesc")}
-              </p>
-            </div>
-            <i className="material-symbols-outlined text-gray-400 group-hover:text-primary-500 transition-colors">
-              arrow_forward
-            </i>
-          </div>
-        </Link>
-
-        {menu?.slug && (
-          <a
-            href={getMenuPublicUrl(menu.slug)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all group"
-          >
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <i className="material-symbols-outlined text-white !text-[32px]">
-                public
-              </i>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                {t("quickLinks.preview")}
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {t("quickLinks.previewDesc")}
-              </p>
-            </div>
-            <i className="material-symbols-outlined text-gray-400 group-hover:text-primary-500 transition-colors">
-              open_in_new
-            </i>
-          </div>
-        </a>
-        )}
-      </div>
-
-      {/* Recent Activity (Placeholder) */}
-      <div className="mt-8">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-          {t("recentActivity.title")}
-        </h2>
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 border border-gray-200 dark:border-gray-700 text-center">
-          <i className="material-symbols-outlined text-gray-400 !text-[48px] mb-3">
-            history
-          </i>
-          <p className="text-gray-600 dark:text-gray-400">
-            {t("recentActivity.noActivity")}
-          </p>
-        </div>
-      </div>
-    </div>
+    </main>
   );
 }

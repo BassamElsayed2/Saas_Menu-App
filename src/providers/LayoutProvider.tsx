@@ -13,11 +13,10 @@ interface LayoutProviderProps {
 
 const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
   const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
-  const [active, setActive] = useState<boolean>(false);
-
-  const toggleActive = () => {
-    setActive(!active);
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
   };
 
   // Remove locale prefix from pathname to check against routes
@@ -32,34 +31,39 @@ const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
     pathnameWithoutLocale.startsWith("/coming-soon") ||
     pathnameWithoutLocale.startsWith("/front-pages/");
 
-  // Check if current page should hide sidebar (but keep header)
-  const shouldHideSidebar =
-    pathnameWithoutLocale === "/menus" || // Menu selection page (OUTSIDE dashboard)
-    pathnameWithoutLocale === "/dashboard/menus";
-
-  // Check if we're in a menu dashboard context (show sidebar)
-  const isInMenuContext =
-    pathnameWithoutLocale.startsWith("/menus/") &&
-    pathnameWithoutLocale !== "/menus";
-
   return (
     <>
-      <div
-        className={`main-content-wrap transition-all ${active ? "active" : ""}`}
-      >
+      <div className="main-content-wrap transition-all">
         {!isAuthPage && (
           <>
-            {/* Show Sidebar only if not in sidebar-hidden pages OR if in menu context */}
-            {(!shouldHideSidebar || isInMenuContext) && (
-              <SidebarMenu toggleActive={toggleActive} />
-            )}
+            {/* Overlay when sidebar is open on mobile */}
+            <div
+              className={`fixed inset-0 z-[55] lg:hidden backdrop-blur-sm transition-all duration-300 ${
+                sidebarOpen 
+                  ? "bg-black/50 opacity-100 pointer-events-auto" 
+                  : "bg-transparent opacity-0 pointer-events-none"
+              }`}
+              onClick={toggleSidebar}
+            />
 
-            {/* Always show Header for authenticated pages */}
-            <Header toggleActive={toggleActive} />
+            {/* Sidebar - Fixed on desktop, toggleable on mobile (z-60 to be above header z-50 on mobile) */}
+            <div
+              className={`fixed top-0 ltr:left-0 rtl:right-0 z-[60] lg:z-40 h-screen transition-all duration-300 ease-out
+                lg:ltr:translate-x-0 lg:rtl:translate-x-0
+                ${sidebarOpen 
+                  ? "ltr:translate-x-0 rtl:translate-x-0 opacity-100" 
+                  : "ltr:-translate-x-full rtl:translate-x-full opacity-0 lg:opacity-100 lg:ltr:translate-x-0 lg:rtl:translate-x-0"
+                }`}
+            >
+              <SidebarMenu toggleActive={toggleSidebar} />
+            </div>
+
+            {/* Header - Always show for authenticated pages */}
+            <Header toggleActive={toggleSidebar} />
           </>
         )}
 
-        <div className="main-content transition-all flex flex-col overflow-hidden min-h-screen">
+        <div className={`transition-all flex flex-col overflow-hidden min-h-screen ${isAuthPage ? "" : "main-content lg:ltr:ml-[30px] lg:rtl:mr-[30px]"}`}>
           {children}
 
           {!isAuthPage && <Footer />}

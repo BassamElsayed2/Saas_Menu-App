@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Trezo - Tailwind Nextjs Admin Dashboard Template",
+  description: "Tailwind Nextjs Admin Dashboard Template",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -5,9 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning>
-      <body suppressHydrationWarning>
-        {children}
-      </body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

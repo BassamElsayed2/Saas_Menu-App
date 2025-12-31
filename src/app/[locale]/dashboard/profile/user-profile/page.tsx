@@ -54,22 +54,23 @@ export default function UserProfilePage() {
   const plan = planInfo[currentPlan as keyof typeof planInfo] || planInfo.free;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pt-20 bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] relative overflow-hidden transition-colors duration-300">
+ 
       {/* Main Content */}
-      <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
+      <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl relative z-10">
         {/* Action Buttons */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
               {t("title")}
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-gray-600 dark:text-gray-400 mt-2">
               {t("subtitle")}
             </p>
           </div>
           <button
             onClick={() => router.push(`/${locale}/dashboard/profile/edit`)}
-            className="px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center gap-2"
+            className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500 text-white rounded-xl hover:shadow-xl hover:shadow-primary-500/30 hover:scale-[1.02] transition-all flex items-center gap-2 font-semibold"
           >
             <i className="material-symbols-outlined !text-[20px]">edit</i>
             {t("editProfile")}
@@ -77,78 +78,64 @@ export default function UserProfilePage() {
         </div>
 
         {/* Profile Card */}
-        <div className="rounded-lg shadow overflow-hidden mb-6 bg-white dark:bg-gray-800">
-          {/* Cover */}
-          <div className="h-32 bg-gradient-to-r from-blue-500 to-purple-600"></div>
-
-          {/* Profile Info */}
-          <div className="px-6 pb-6">
-            {/* Avatar */}
-            <div className="flex items-end -mt-16 mb-4">
-              <div className="w-32 h-32  rounded-full border-4 border-white shadow-lg flex items-center justify-center overflow-hidden">
-                <UserAvatar
-                  src={user.profileImage}
-                  name={user.name}
-                  size="xl"
-                  className="!w-full !h-full"
-                />
-              </div>
-              <div className="ml-4 mb-5">
-                <h2 className="text-2xl font-bold !text-white">{user.name}</h2>
-                <p className="text-gray-600 dark:text-gray-300">{user.email}</p>
+        <div className="bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-xl dark:shadow-primary-500/5 overflow-hidden mb-8">
+          {/* Cover with Avatar */}
+          <div className="h-48 md:h-56 bg-gradient-to-r from-primary-500 via-purple-500 to-primary-600 relative">
+            <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10"></div>
+            
+            {/* Avatar & Name on Cover */}
+            <div className="absolute bottom-0 left-0 right-0 px-6 md:px-8 pb-6 flex justify-center items-center">
+              <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4">
+                <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl  flex items-center justify-center overflow-hidden  backdrop-blur-sm">
+                  <UserAvatar
+                    src={user.profileImage}
+                    name={user.name}
+                    size="xl"
+                    className="!w-full !h-full"
+                  />
+                </div>
+                <div className="text-center sm:text-start sm:mb-2">
+                  <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">{user.name}</h2>
+                  <p className="text-white/80">{user.email}</p>
+                </div>
               </div>
             </div>
+          </div>
+
+          {/* Profile Info */}
+          <div className="px-6 md:px-8 py-6">
 
             {/* User Details */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
               {/* Left Column - Contact & Personal Info */}
-              <div>
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-300 mb-3">
+              <div className="bg-gray-50/50 dark:bg-gray-800/30 rounded-xl p-5 border border-gray-100 dark:border-gray-700/50">
+                <h3 className="text-sm font-semibold text-primary-600 dark:text-primary-400 mb-4 flex items-center gap-2">
+                  <i className="material-symbols-outlined !text-[18px]">person</i>
                   {t("personalInfo")}
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {/* Email */}
-                  <div className="flex items-center">
-                    <svg
-                      className="w-5 h-5 text-gray-400 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <div className="mr-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-300 !mb-0">
+                  <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800/50 rounded-lg">
+                    <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                      <i className="material-symbols-outlined text-primary-600 dark:text-primary-400 !text-[20px]">mail</i>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 !mb-0">
                         {t("email")}
                       </p>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                         {user.email}
                       </p>
                     </div>
                   </div>
 
                   {/* Phone */}
-                  <div className="flex items-center">
-                    <svg
-                      className="w-5 h-5 text-gray-400 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                      />
-                    </svg>
-                    <div className="mr-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-300 !mb-0">
+                  <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800/50 rounded-lg">
+                    <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                      <i className="material-symbols-outlined text-green-600 dark:text-green-400 !text-[20px]">phone</i>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 !mb-0">
                         {t("phone")}
                       </p>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -158,22 +145,12 @@ export default function UserProfilePage() {
                   </div>
 
                   {/* Country */}
-                  <div className="flex items-center">
-                    <svg
-                      className="w-5 h-5 text-gray-400 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <div className="mr-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-300 !mb-0">
+                  <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800/50 rounded-lg">
+                    <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                      <i className="material-symbols-outlined text-blue-600 dark:text-blue-400 !text-[20px]">public</i>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 !mb-0">
                         {t("country")}
                       </p>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -183,28 +160,12 @@ export default function UserProfilePage() {
                   </div>
 
                   {/* Address */}
-                  <div className="flex items-center">
-                    <svg
-                      className="w-5 h-5 text-gray-400 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-300 !mb-0">
+                  <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800/50 rounded-lg">
+                    <div className="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                      <i className="material-symbols-outlined text-orange-600 dark:text-orange-400 !text-[20px]">location_on</i>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 !mb-0">
                         {t("address")}
                       </p>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -216,28 +177,19 @@ export default function UserProfilePage() {
               </div>
 
               {/* Right Column - Account & Demographics Info */}
-              <div>
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-300 mb-3">
+              <div className="bg-gray-50/50 dark:bg-gray-800/30 rounded-xl p-5 border border-gray-100 dark:border-gray-700/50">
+                <h3 className="text-sm font-semibold text-primary-600 dark:text-primary-400 mb-4 flex items-center gap-2">
+                  <i className="material-symbols-outlined !text-[18px]">verified_user</i>
                   {t("accountStatus")}
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {/* Role */}
-                  <div className="flex items-center">
-                    <svg
-                      className="w-5 h-5 text-gray-400 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                    <div className="mr-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-300 !mb-0">
+                  <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800/50 rounded-lg">
+                    <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                      <i className="material-symbols-outlined text-purple-600 dark:text-purple-400 !text-[20px]">shield</i>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 !mb-0">
                         {t("role")}
                       </p>
                       <p className="text-sm font-medium text-gray-900 dark:text-white capitalize">
@@ -247,22 +199,12 @@ export default function UserProfilePage() {
                   </div>
 
                   {/* Member Since */}
-                  <div className="flex items-center">
-                    <svg
-                      className="w-5 h-5 text-gray-400 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <div className="mr-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-300 !mb-0">
+                  <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800/50 rounded-lg">
+                    <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                      <i className="material-symbols-outlined text-indigo-600 dark:text-indigo-400 !text-[20px]">calendar_month</i>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 !mb-0">
                         {t("memberSince")}
                       </p>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -277,22 +219,12 @@ export default function UserProfilePage() {
                   </div>
 
                   {/* Date of Birth */}
-                  <div className="flex items-center">
-                    <svg
-                      className="w-5 h-5 text-gray-400 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <div className="mr-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-300 !mb-0">
+                  <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800/50 rounded-lg">
+                    <div className="w-10 h-10 rounded-lg bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
+                      <i className="material-symbols-outlined text-pink-600 dark:text-pink-400 !text-[20px]">cake</i>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 !mb-0">
                         {t("dateOfBirth")}
                       </p>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -304,22 +236,12 @@ export default function UserProfilePage() {
                   </div>
 
                   {/* Gender */}
-                  <div className="flex items-center">
-                    <svg
-                      className="w-5 h-5 text-gray-400 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                    <div className="mr-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-300 !mb-0 ">
+                  <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800/50 rounded-lg">
+                    <div className="w-10 h-10 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+                      <i className="material-symbols-outlined text-teal-600 dark:text-teal-400 !text-[20px]">wc</i>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 !mb-0">
                         {t("gender")}
                       </p>
                       <p className="text-sm font-medium text-gray-900 dark:text-white capitalize">
@@ -330,89 +252,102 @@ export default function UserProfilePage() {
                 </div>
               </div>
             </div>
-            {/* Email Verification */}
-            <div className="flex mt-10 items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
-              <span className="text-sm text-gray-600 dark:text-gray-300">
-                {t("emailVerification")}
-              </span>
-              <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">
-                {t("verified")}
-              </span>
-            </div>
+            {/* Status Badges */}
+            <div className="flex flex-wrap gap-3 mt-8 pt-6 border-t border-gray-200/50 dark:border-gray-700/50">
+              {/* Email Verification */}
+              <div className="flex items-center gap-2 px-4 py-2 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200/50 dark:border-green-700/30">
+                <i className="material-symbols-outlined text-green-600 dark:text-green-400 !text-[18px]">verified</i>
+                <span className="text-sm font-medium text-green-700 dark:text-green-400">
+                  {t("emailVerification")}: {t("verified")}
+                </span>
+              </div>
 
-            {/* Account Active */}
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600 dark:text-gray-300">
-                {t("accountActive")}
-              </span>
-              <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">
-                {t("active")}
-              </span>
+              {/* Account Active */}
+              <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200/50 dark:border-blue-700/30">
+                <i className="material-symbols-outlined text-blue-600 dark:text-blue-400 !text-[18px]">check_circle</i>
+                <span className="text-sm font-medium text-blue-700 dark:text-blue-400">
+                  {t("accountActive")}: {t("active")}
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Subscription Card */}
-        <div className="rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              {t("subscription")}
-            </h3>
+        <div className="bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-xl dark:shadow-primary-500/5 p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
+                <i className="material-symbols-outlined text-white !text-[24px]">workspace_premium</i>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                {t("subscription")}
+              </h3>
+            </div>
             <button
               onClick={() =>
                 router.push(`/${locale}/dashboard/profile/edit#subscription`)
               }
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold flex items-center gap-1 transition-colors"
             >
-              {t("manageSubscription")} →
+              {t("manageSubscription")}
+              <i className="material-symbols-outlined !text-[18px]">arrow_forward</i>
             </button>
           </div>
 
           {loadingSubscription ? (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500 mx-auto"></div>
             </div>
           ) : (
             <div>
               {/* Current Plan */}
-              <div className={`border-2  rounded-lg p-6 mb-4`}>
-                <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-br from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/20 border border-primary-200/50 dark:border-primary-500/20 rounded-xl p-6 mb-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
                   <div>
-                    <h4 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h4 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                       {plan.name}
                     </h4>
-                    <p className="text-gray-600 dark:text-gray-300 mt-1">
+                    <p className="text-primary-600 dark:text-primary-400 mt-1 text-lg font-semibold">
                       {plan.price}
                     </p>
                   </div>
-                  <div
-                    className={`px-4 py-2  text-black dark:text-white rounded-lg font-semibold`}
-                  >
+                  <div className="px-4 py-2 bg-primary-500 text-white rounded-lg font-semibold text-sm shadow-lg shadow-primary-500/30">
                     {t("currentPlan")}
                   </div>
                 </div>
 
                 {subscription && (
-                  <div className="space-y-2 text-sm">
-                    <p className="text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">{t("status")}:</span>{" "}
-                      <span className="capitalize">{subscription.status}</span>
-                    </p>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">{t("billingCycle")}:</span>{" "}
-                      <span className="capitalize">
-                        {subscription.billingCycle}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm mt-4 pt-4 border-t border-primary-200/50 dark:border-primary-500/20">
+                    <div className="flex items-center gap-2">
+                      <i className="material-symbols-outlined text-primary-500 !text-[18px]">info</i>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        <span className="font-medium">{t("status")}:</span>{" "}
+                        <span className="capitalize text-green-600 dark:text-green-400">{subscription.status}</span>
                       </span>
-                    </p>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">{t("started")}:</span>{" "}
-                      {new Date(subscription.startDate).toLocaleDateString()}
-                    </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <i className="material-symbols-outlined text-primary-500 !text-[18px]">sync</i>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        <span className="font-medium">{t("billingCycle")}:</span>{" "}
+                        <span className="capitalize">{subscription.billingCycle}</span>
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <i className="material-symbols-outlined text-primary-500 !text-[18px]">event</i>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        <span className="font-medium">{t("started")}:</span>{" "}
+                        {new Date(subscription.startDate).toLocaleDateString()}
+                      </span>
+                    </div>
                     {subscription.endDate && (
-                      <p className="text-gray-600 dark:text-gray-300">
-                        <span className="font-medium">{t("renews")}:</span>{" "}
-                        {new Date(subscription.endDate).toLocaleDateString()}
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <i className="material-symbols-outlined text-primary-500 !text-[18px]">update</i>
+                        <span className="text-gray-600 dark:text-gray-300">
+                          <span className="font-medium">{t("renews")}:</span>{" "}
+                          {new Date(subscription.endDate).toLocaleDateString()}
+                        </span>
+                      </div>
                     )}
                   </div>
                 )}
@@ -420,23 +355,30 @@ export default function UserProfilePage() {
 
               {/* Upgrade Options */}
               {currentPlan === "free" && (
-                <div className=" border border-blue-200 rounded-lg p-6">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                    {t("upgradeTitle")}
-                  </h4>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    {t("upgradeDescription")}
-                  </p>
-                  <button
-                    onClick={() =>
-                      router.push(
-                        `/${locale}/dashboard/profile/edit#subscription`
-                      )
-                    }
-                    className="px-6 py-2  text-black dark:text-white rounded-md hover:bg-blue-700 hover:text-white transition-colors"
-                  >
-                    {t("viewPlans")}
-                  </button>
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200/50 dark:border-blue-500/20 rounded-xl p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+                      <i className="material-symbols-outlined text-white !text-[24px]">rocket_launch</i>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                        {t("upgradeTitle")}
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">
+                        {t("upgradeDescription")}
+                      </p>
+                      <button
+                        onClick={() =>
+                          router.push(
+                            `/${locale}/dashboard/profile/edit#subscription`
+                          )
+                        }
+                        className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-xl hover:shadow-xl hover:shadow-blue-500/30 hover:scale-[1.02] transition-all font-semibold"
+                      >
+                        {t("viewPlans")}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
