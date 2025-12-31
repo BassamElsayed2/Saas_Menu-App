@@ -20,7 +20,7 @@ export default function MenuSettingsPage({
   const isRTL = locale === "ar";
   const { user, loading: authLoading } = useAuth();
   const { data: menu, isLoading: menuLoading } = useMenu(parseInt(id));
-
+  
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
@@ -29,16 +29,7 @@ export default function MenuSettingsPage({
     descriptionEn: "",
     descriptionAr: "",
     slug: "",
-    theme: "default",
-    isActive: true,
-  });
-  const [originalData, setOriginalData] = useState({
-    nameEn: "",
-    nameAr: "",
-    descriptionEn: "",
-    descriptionAr: "",
-    slug: "",
-    theme: "default",
+    theme: "classic",
     isActive: true,
   });
 
@@ -78,17 +69,15 @@ export default function MenuSettingsPage({
         const data = await response.json();
         const menu = data.data?.menu;
         if (menu) {
-          const initialData = {
+          setFormData({
             nameEn: menu.nameEn || menu.name || "",
             nameAr: menu.nameAr || "",
             descriptionEn: menu.descriptionEn || menu.description || "",
             descriptionAr: menu.descriptionAr || "",
             slug: menu.slug || "",
-            theme: menu.theme || "default",
+            theme: menu.theme || "classic",
             isActive: menu.isActive || false,
-          };
-          setFormData(initialData);
-          setOriginalData(initialData);
+          });
         }
       }
     } catch (error) {
@@ -101,35 +90,6 @@ export default function MenuSettingsPage({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Build update object with only changed fields
-    const updates: any = {};
-
-    if (formData.nameEn !== originalData.nameEn) {
-      updates.nameEn = formData.nameEn;
-    }
-    if (formData.nameAr !== originalData.nameAr) {
-      updates.nameAr = formData.nameAr;
-    }
-    if (formData.descriptionEn !== originalData.descriptionEn) {
-      updates.descriptionEn = formData.descriptionEn;
-    }
-    if (formData.descriptionAr !== originalData.descriptionAr) {
-      updates.descriptionAr = formData.descriptionAr;
-    }
-    if (formData.theme !== originalData.theme) {
-      updates.theme = formData.theme;
-    }
-    if (formData.isActive !== originalData.isActive) {
-      updates.isActive = formData.isActive;
-    }
-
-    // Only send request if there are changes
-    if (Object.keys(updates).length === 0) {
-      toast("لا توجد تغييرات لحفظها", { icon: "ℹ️" });
-      return;
-    }
-
     setSaving(true);
 
     try {
@@ -142,15 +102,13 @@ export default function MenuSettingsPage({
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(updates),
+          body: JSON.stringify(formData),
         }
       );
 
       if (!response.ok) throw new Error("Failed to update menu");
 
       toast.success(t("saveSuccess"));
-      // Update original data to reflect saved changes
-      setOriginalData({ ...formData });
       router.push(`/${locale}/menus/${id}`);
     } catch (error) {
       console.error("Error saving menu settings:", error);

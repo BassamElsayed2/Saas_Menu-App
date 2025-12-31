@@ -171,8 +171,7 @@ export default function MenusPage() {
                   </p>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-2 mb-3">
+                <div className="flex gap-2">
                   <button
                     onClick={() => router.push(`/${locale}/menus/${menu.id}`)}
                     className="flex-1 px-4 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:shadow-lg transition-all text-sm font-medium flex items-center justify-center gap-2"
@@ -196,7 +195,6 @@ export default function MenusPage() {
                   </button>
                 </div>
 
-                {/* View Public Link */}
                 <a
                   href={getMenuPublicUrl(menu.slug)}
                   target="_blank"
@@ -226,8 +224,6 @@ interface CreateMenuModalProps {
 
 function CreateMenuModal({ onClose }: CreateMenuModalProps) {
   const t = useTranslations("Menus.createModal");
-  const locale = useLocale();
-  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     nameAr: "",
@@ -321,13 +317,8 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
         logo: logoUrl,
       };
 
-      const result = await createMenu.mutateAsync(menuData);
+      await createMenu.mutateAsync(menuData);
       onClose();
-
-      // Redirect to dashboard after creation
-      if (result?.menuId) {
-        router.push(`/${locale}/dashboard/menus/${result.menuId}`);
-      }
     } catch (error) {
       // Error handled by React Query hook
       setUploadingLogo(false);
@@ -451,9 +442,7 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
               <label className="flex gap-2 items-center text-sm font-medium text-gray-700 dark:text-gray-200">
                 <i className="ri-upload-cloud-line text-primary-500 dark:text-primary-400"></i>
                 {t("logoUpload") || "رفع الشعار"}{" "}
-                <span className="text-gray-400 text-xs font-normal">
-                  (اختياري)
-                </span>
+                <span className="text-gray-400 text-xs">(اختياري)</span>
               </label>
 
               {logoPreview ? (
@@ -658,10 +647,10 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                 <div className="flex items-start gap-2">
                   <i className="ri-information-line text-blue-500 dark:text-blue-400 text-lg mt-0.5"></i>
                   <div className="flex-1">
-                    <p className="text-xs text-blue-700 dark:text-blue-300 font-semibold mb-1">
+                    <p className="text-xs text-blue-700 dark:text-blue-300 font-medium mb-1">
                       {t("slugHint")}
                     </p>
-                    <p className="text-xs text-blue-600 dark:text-blue-400 font-mono bg-white dark:bg-gray-800 px-2 py-1 rounded border border-blue-200 dark:border-blue-800/50 inline-block">
+                    <p className="text-xs text-blue-600 dark:text-blue-400 font-mono">
                       {formData.slug
                         ? `${formData.slug}.yoursite.com`
                         : "your-slug.yoursite.com"}
@@ -678,7 +667,7 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
               type="button"
               onClick={onClose}
               className="flex-1 h-12 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              disabled={createMenu.isPending || uploadingLogo}
+              disabled={createMenu.isPending}
             >
               <i className="ri-close-line text-xl"></i>
               {t("cancel")}
@@ -688,10 +677,10 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
               className="flex-1 h-12 bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500 text-white rounded-xl hover:shadow-xl hover:scale-[1.01] transition-all font-medium shadow-lg shadow-primary-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
               disabled={createMenu.isPending || uploadingLogo}
             >
-              {createMenu.isPending || uploadingLogo ? (
+              {createMenu.isPending ? (
                 <>
                   <i className="ri-loader-4-line animate-spin text-xl"></i>
-                  {uploadingLogo ? "جاري الرفع..." : t("creating")}
+                  {t("creating")}
                 </>
               ) : (
                 <>

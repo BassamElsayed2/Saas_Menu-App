@@ -67,7 +67,7 @@ const Navbar: React.FC = () => {
 
             <Fullscreen />
 
-            <ProfileMenu context="menus" />
+            <ProfileMenu />
           </div>
         </div>
       </div>

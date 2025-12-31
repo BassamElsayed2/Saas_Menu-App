@@ -18,18 +18,14 @@ interface ApiResponse<T = any> {
 class ApiClient {
   private baseURL: string;
   private token: string | null = null;
-  private refreshToken: string | null = null;
-  private isRefreshing: boolean = false;
-  private refreshSubscribers: Array<(token: string) => void> = [];
 
   constructor(baseURL: string) {
     this.baseURL = baseURL;
     
-    // Load tokens from localStorage on initialization (client-side only)
+    // Load token from localStorage on initialization (client-side only)
     if (typeof window !== 'undefined') {
       // Try both 'auth_token' and 'accessToken' for backward compatibility
       this.token = localStorage.getItem('auth_token') || localStorage.getItem('accessToken');
-      this.refreshToken = localStorage.getItem('refresh_token');
     }
   }
 
@@ -40,34 +36,23 @@ class ApiClient {
       if (storedToken !== this.token) {
         this.token = storedToken;
       }
-      const storedRefreshToken = localStorage.getItem('refresh_token');
-      if (storedRefreshToken !== this.refreshToken) {
-        this.refreshToken = storedRefreshToken;
-      }
     }
   }
 
-  setToken(token: string, refreshToken?: string) {
+  setToken(token: string) {
     this.token = token;
     if (typeof window !== 'undefined') {
       // Save to both keys for compatibility
       localStorage.setItem('auth_token', token);
       localStorage.setItem('accessToken', token);
-      
-      if (refreshToken) {
-        this.refreshToken = refreshToken;
-        localStorage.setItem('refresh_token', refreshToken);
-      }
     }
   }
 
   clearToken() {
     this.token = null;
-    this.refreshToken = null;
     if (typeof window !== 'undefined') {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('accessToken');
-      localStorage.removeItem('refresh_token');
     }
   }
 
@@ -75,60 +60,9 @@ class ApiClient {
     return this.token;
   }
 
-  getRefreshToken(): string | null {
-    return this.refreshToken;
-  }
-
-  // Add subscriber for token refresh
-  private onTokenRefreshed(callback: (token: string) => void) {
-    this.refreshSubscribers.push(callback);
-  }
-
-  // Notify all subscribers with new token
-  private notifySubscribers(token: string) {
-    this.refreshSubscribers.forEach(callback => callback(token));
-    this.refreshSubscribers = [];
-  }
-
-  // Refresh access token using refresh token
-  private async refreshAccessToken(): Promise<string | null> {
-    if (!this.refreshToken) {
-      return null;
-    }
-
-    try {
-      const response = await fetch(`${this.baseURL}/auth/refresh`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ refreshToken: this.refreshToken }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // Refresh token is invalid or expired
-        this.clearToken();
-        return null;
-      }
-
-      if (data.accessToken) {
-        this.setToken(data.accessToken, data.refreshToken);
-        return data.accessToken;
-      }
-
-      return null;
-    } catch (error) {
-      console.error('Failed to refresh token:', error);
-      return null;
-    }
-  }
-
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {},
-    retry: boolean = true
+    options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     // Sync token from localStorage before each request
     this.syncToken();
@@ -150,41 +84,6 @@ class ApiClient {
 
       const data = await response.json();
 
-      // Handle 401 Unauthorized - try to refresh token
-      if (response.status === 401 && retry && !endpoint.includes('/auth/refresh')) {
-        console.log('🔄 Token expired, attempting to refresh...');
-        
-        if (this.isRefreshing) {
-          // Wait for ongoing refresh to complete
-          return new Promise((resolve) => {
-            this.onTokenRefreshed((newToken) => {
-              // Retry the original request with new token
-              headers['Authorization'] = `Bearer ${newToken}`;
-              this.request<T>(endpoint, options, false).then(resolve);
-            });
-          });
-        }
-
-        this.isRefreshing = true;
-        const newToken = await this.refreshAccessToken();
-        this.isRefreshing = false;
-
-        if (newToken) {
-          console.log('✅ Token refreshed successfully, retrying request');
-          this.notifySubscribers(newToken);
-          // Retry the original request with new token
-          return this.request<T>(endpoint, options, false);
-        } else {
-          console.log('❌ Token refresh failed, clearing session');
-          // Refresh failed, clear tokens and return error
-          this.clearToken();
-          return {
-            error: data.error || 'Session expired. Please login again.',
-            data: undefined,
-          };
-        }
-      }
-
       if (!response.ok) {
         return {
           error: data.error || 'Something went wrong',
@@ -196,19 +95,10 @@ class ApiClient {
         data,
         error: undefined,
       };
-    } catch (error: any) {
+    } catch (error) {
       console.error('API Request Error:', error);
-      
-      // Check if it's a blocked request (ad blocker, etc.)
-      if (error.message?.includes('Failed to fetch') || error.name === 'TypeError') {
-        return {
-          error: 'Unable to connect to server. Please check if the backend is running and CORS is configured correctly.',
-          data: undefined,
-        };
-      }
-      
       return {
-        error: error.message || 'Network error. Please check your connection.',
+        error: 'Network error. Please check your connection.',
         data: undefined,
       };
     }
@@ -265,16 +155,14 @@ class ApiClient {
     }>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
-    }, false); // Don't retry on login
+    });
 
-    // Save both accessToken and refreshToken to localStorage
-    if (result.data?.accessToken && result.data?.refreshToken) {
-      this.setToken(result.data.accessToken, result.data.refreshToken);
-      console.log('🔑 Tokens saved to localStorage');
-      console.log('  Access Token:', result.data.accessToken.substring(0, 20) + '...');
-      console.log('  Refresh Token:', result.data.refreshToken.substring(0, 20) + '...');
+    // Save accessToken to localStorage
+    if (result.data?.accessToken) {
+      this.setToken(result.data.accessToken);
+      console.log('🔑 Token saved to localStorage:', result.data.accessToken.substring(0, 20) + '...');
     } else {
-      console.error('❌ No tokens in response:', result);
+      console.error('❌ No accessToken in response:', result);
     }
 
     return result;
