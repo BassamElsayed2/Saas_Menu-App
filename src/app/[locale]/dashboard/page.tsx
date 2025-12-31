@@ -31,7 +31,7 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-500 dark:text-gray-400 animate-pulse">جاري التحميل...</p>
+          <p className="text-gray-500 dark:text-gray-400 animate-pulse">{t("loading")}</p>
         </div>
       </div>
     );
@@ -195,7 +195,7 @@ export default function DashboardPage() {
             {/* Analytics - Coming Soon */}
             <div className="p-6 bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-900/20 dark:to-purple-800/10 border-2 border-purple-200/50 dark:border-purple-500/20 rounded-2xl text-center opacity-60 cursor-not-allowed relative overflow-hidden">
               <div className="absolute top-2 ltr:right-2 rtl:left-2 px-2 py-1 bg-purple-500 text-white text-xs font-medium rounded-full">
-                قريباً
+                {t("comingSoon")}
               </div>
               <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/20">
                 <i className="ri-bar-chart-box-line text-white text-3xl"></i>
@@ -208,7 +208,7 @@ export default function DashboardPage() {
             {/* Settings - Coming Soon */}
             <div className="p-6 bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-900/20 dark:to-orange-800/10 border-2 border-orange-200/50 dark:border-orange-500/20 rounded-2xl text-center opacity-60 cursor-not-allowed relative overflow-hidden">
               <div className="absolute top-2 ltr:right-2 rtl:left-2 px-2 py-1 bg-orange-500 text-white text-xs font-medium rounded-full">
-                قريباً
+                {t("comingSoon")}
               </div>
               <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-orange-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20">
                 <i className="ri-settings-3-line text-white text-3xl"></i>
@@ -232,10 +232,10 @@ export default function DashboardPage() {
               </div>
               <div className="flex-1">
                 <h4 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary-500 transition-colors">
-                  إدارة القوائم
+                  {t("quickLinks.manageMenus")}
                 </h4>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  عرض وإدارة جميع قوائمك
+                  {t("quickLinks.manageMenusDesc")}
                 </p>
               </div>
               <i className={`ri-arrow-${isRTL ? 'left' : 'right'}-line text-xl text-gray-400 group-hover:text-primary-500 transition-colors`}></i>
@@ -252,10 +252,10 @@ export default function DashboardPage() {
               </div>
               <div className="flex-1">
                 <h4 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary-500 transition-colors">
-                  الملف الشخصي
+                  {t("quickLinks.profile")}
                 </h4>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  تعديل معلوماتك الشخصية
+                  {t("quickLinks.profileDesc")}
                 </p>
               </div>
               <i className={`ri-arrow-${isRTL ? 'left' : 'right'}-line text-xl text-gray-400 group-hover:text-primary-500 transition-colors`}></i>

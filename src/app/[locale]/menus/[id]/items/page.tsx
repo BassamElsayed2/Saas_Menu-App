@@ -9,6 +9,7 @@ import MenuItemForm from "@/components/MenuItems/MenuItemForm";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMenu } from "@/hooks/useApi";
 import { useRouter } from "next/navigation";
+import api from "@/lib/api";
 
 interface MenuItem {
   id: number;
@@ -39,48 +40,25 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
 
   const fetchMenuItems = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
-      
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-      
-      const menuResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}?locale=${locale}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (menuResponse.ok) {
-        const menuData = await menuResponse.json();
-        setMenuName(menuData.data?.menu?.name || "");
+      // Set menu name from the menu hook data
+      if (menu?.name) {
+        setMenuName(menu.name);
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}/items?locale=${locale}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
+      // Use API client which handles token automatically
+      const result = await api.getMenuItems(parseInt(id), locale);
+      
+      if (result.error) {
         // Handle unauthorized silently - auth check will redirect
-        if (response.status === 401 || response.status === 403) {
+        if (result.error.includes("401") || result.error.includes("403") || result.error.includes("token")) {
           setLoading(false);
           return;
         }
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to fetch menu items");
+        throw new Error(result.error);
       }
 
-      const data = await response.json();
-      const itemsList = data.items || data.data?.items || [];
+      const data = result.data as any;
+      const itemsList = data?.items || [];
       setItems(itemsList);
     } catch (error: any) {
       console.error("Error fetching menu items:", error);
@@ -93,13 +71,13 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
   useEffect(() => {
     if (!authLoading && !menuLoading) {
       if (!user) {
-        toast.error("يجب تسجيل الدخول أولاً");
+        toast.error(t("loginRequired"));
         router.push(`/${locale}/authentication/sign-in`);
         return;
       }
 
       if (menu && menu.userId !== user.id) {
-        toast.error("ليس لديك صلاحية للوصول لهذه القائمة");
+        toast.error(t("noPermission"));
         router.push(`/${locale}/menus`);
         return;
       }
@@ -107,6 +85,7 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
       // Only fetch menu items after auth is confirmed
       fetchMenuItems();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, menu, authLoading, menuLoading, router, locale, id]);
 
   const handleEdit = (item: MenuItem) => {
@@ -118,18 +97,11 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
     if (!confirm(t("deleteConfirm"))) return;
 
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}/items/${itemId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const result = await api.deleteMenuItem(parseInt(id), itemId);
 
-      if (!response.ok) throw new Error("Failed to delete menu item");
+      if (result.error) {
+        throw new Error(result.error);
+      }
 
       toast.success(t("deleteSuccess"));
       fetchMenuItems();
@@ -150,6 +122,18 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
     setEditingItem(null);
   };
 
+  // Hide sidebar and header when modal is open
+  useEffect(() => {
+    if (showForm) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [showForm]);
+
   const getCategoryBadgeColor = (category: string) => {
     const colors: Record<string, string> = {
       starters: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
@@ -166,7 +150,7 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
       <div className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-500 dark:text-gray-400 animate-pulse">جاري التحميل...</p>
+          <p className="text-gray-500 dark:text-gray-400 animate-pulse">{t("loading")}</p>
         </div>
       </div>
     );
@@ -188,7 +172,7 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
             className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition group"
           >
             <i className={`ri-arrow-${isRTL ? 'right' : 'left'}-line text-xl transition-transform ${isRTL ? 'group-hover:translate-x-1' : 'group-hover:-translate-x-1'}`}></i>
-            العودة للوحة التحكم
+            {t("backToDashboard")}
           </button>
         </div>
 
@@ -215,8 +199,14 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
 
         {/* Form Modal */}
         {showForm && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white/95 dark:bg-[#0c1427]/95 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/20 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+            onClick={handleFormCancel}
+          >
+            <div 
+              className="bg-white/95 dark:bg-[#0c1427]/95 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/20 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="sticky top-0 bg-white/95 dark:bg-[#0c1427]/95 backdrop-blur-xl z-10 px-6 py-4 border-b border-gray-200/50 dark:border-primary-500/10 flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
@@ -306,7 +296,7 @@ export default function MenuItemsPage({ params }: { params: Promise<{ id: string
 
                   <div className="flex items-center gap-2 mb-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${getCategoryBadgeColor(item.category)}`}>
-                      {t(`categories.${item.category}`)}
+                      {item.category}
                     </span>
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                       item.available

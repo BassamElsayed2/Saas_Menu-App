@@ -1,6 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 export default function NotFound() {
+  const t = useTranslations("NotFound");
   return (
     <div
       style={{
@@ -38,7 +41,7 @@ export default function NotFound() {
             fontWeight: "800",
           }}
         >
-          المنيو غير موجود
+          {t("menuNotFound")}
         </h1>
 
         <p
@@ -49,7 +52,7 @@ export default function NotFound() {
             lineHeight: "1.6",
           }}
         >
-          عذراً، لم نتمكن من العثور على هذا المنيو. ربما تم حذفه أو تغيير رابطه.
+          {t("menuNotFoundDescription")}
         </p>
 
         {/* Decorative Elements */}
@@ -96,7 +99,7 @@ export default function NotFound() {
           }}
         >
           <i className="ri-home-line" style={{ fontSize: "20px" }} />
-          العودة للرئيسية
+          {t("backToHome")}
         </a>
       </div>
     </div>

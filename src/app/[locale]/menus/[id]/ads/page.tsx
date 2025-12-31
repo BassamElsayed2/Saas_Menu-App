@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, use } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import api from "@/lib/api";
@@ -148,8 +148,17 @@ export default function AdsPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19]">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back Button */}
+        <button
+          onClick={() => router.push(`/${locale}/menus/${id}`)}
+          className="mb-6 flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
+        >
+          <i className="material-symbols-outlined !text-[20px]">arrow_back</i>
+          {locale === "ar" ? "العودة للقائمة" : "Back to Menu"}
+        </button>
+
         {/* Page Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -242,7 +251,7 @@ export default function AdsPage({
             </p>
           </div>
         ) : error ? null : ads.length === 0 ? (
-          <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center border border-gray-100 dark:border-gray-700">
+          <div className="bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl rounded-2xl shadow-lg p-12 text-center border border-gray-200/50 dark:border-primary-500/20">
             <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30 rounded-full flex items-center justify-center mx-auto mb-6">
               <i className="material-symbols-outlined text-primary-500 dark:text-primary-400 !text-[48px]">
                 ads_click
@@ -269,7 +278,7 @@ export default function AdsPage({
             {!isFreePlan && (
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all font-medium shadow-lg hover:shadow-xl flex items-center gap-2"
+                className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all font-medium shadow-lg hover:shadow-xl flex items-center gap-2 mx-auto"
               >
                 <i className="material-symbols-outlined !text-[20px]">add</i>
                 {locale === "ar" ? "إضافة إعلان مخصص" : "Add Custom Ad"}
@@ -281,7 +290,7 @@ export default function AdsPage({
             {ads.map((ad) => (
               <div
                 key={ad.id}
-                className={`trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 dark:border-gray-700 ${
+                className={`bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-xl rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-200/50 dark:border-primary-500/20 ${
                   isFreePlan ? "opacity-75" : ""
                 }`}
               >
@@ -423,7 +432,7 @@ export default function AdsPage({
           onClick={() => !deleting && setAdToDelete(null)}
         >
           <div 
-            className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200"
+            className="bg-white/95 dark:bg-[#0c1427]/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-200/50 dark:border-primary-500/20 animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Warning Icon */}
@@ -651,13 +660,15 @@ function CreateAdModal({ menuId, onClose, onSuccess }: CreateAdModalProps) {
     }
   };
 
+  const inputBaseStyles = "w-full px-4 py-3 bg-white/50 dark:bg-[#0a0e19]/50 border border-gray-200/50 dark:border-primary-500/20 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 dark:focus:ring-primary-400/50 dark:focus:border-primary-400/50 transition-all duration-200";
+
   return (
     <div 
       className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div 
-        className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200"
+        className="bg-white/95 dark:bg-[#0c1427]/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-200/50 dark:border-primary-500/20 animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -708,7 +719,7 @@ function CreateAdModal({ menuId, onClose, onSuccess }: CreateAdModalProps) {
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
                   }
-                  className="form-input"
+                  className={inputBaseStyles}
                   placeholder="e.g., Special Offer!"
                   required
                 />
@@ -725,7 +736,7 @@ function CreateAdModal({ menuId, onClose, onSuccess }: CreateAdModalProps) {
                   onChange={(e) =>
                     setFormData({ ...formData, titleAr: e.target.value })
                   }
-                  className="form-input"
+                  className={inputBaseStyles}
                   placeholder="مثال: عرض خاص!"
                   dir="rtl"
                   required
@@ -759,7 +770,7 @@ function CreateAdModal({ menuId, onClose, onSuccess }: CreateAdModalProps) {
                     setFormData({ ...formData, content: e.target.value })
                   }
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none"
+                  className={`${inputBaseStyles} resize-none`}
                   placeholder="Describe your advertisement..."
                   required
                 />
@@ -776,7 +787,7 @@ function CreateAdModal({ menuId, onClose, onSuccess }: CreateAdModalProps) {
                     setFormData({ ...formData, contentAr: e.target.value })
                   }
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none"
+                  className={`${inputBaseStyles} resize-none`}
                   placeholder="اكتب وصف الإعلان..."
                   dir="rtl"
                   required
@@ -870,7 +881,7 @@ function CreateAdModal({ menuId, onClose, onSuccess }: CreateAdModalProps) {
               onChange={(e) =>
                 setFormData({ ...formData, linkUrl: e.target.value })
               }
-              className="form-input"
+              className={inputBaseStyles}
               placeholder="https://example.com"
             />
           </div>
@@ -885,7 +896,7 @@ function CreateAdModal({ menuId, onClose, onSuccess }: CreateAdModalProps) {
               onChange={(e) =>
                 setFormData({ ...formData, position: e.target.value })
               }
-              className="form-input"
+              className={inputBaseStyles}
             >
               <option value="banner">
                 {locale === "ar" ? "بانر" : "Banner"}
@@ -1058,13 +1069,15 @@ function EditAdModal({ ad, onClose, onSuccess }: EditAdModalProps) {
     }
   };
 
+  const inputBaseStyles = "w-full px-4 py-3 bg-white/50 dark:bg-[#0a0e19]/50 border border-gray-200/50 dark:border-primary-500/20 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 dark:focus:ring-primary-400/50 dark:focus:border-primary-400/50 transition-all duration-200";
+
   return (
     <div 
       className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div 
-        className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200"
+        className="bg-white/95 dark:bg-[#0c1427]/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-200/50 dark:border-primary-500/20 animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -1115,7 +1128,7 @@ function EditAdModal({ ad, onClose, onSuccess }: EditAdModalProps) {
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
                   }
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+                  className={inputBaseStyles}
                   placeholder="e.g., Special Offer!"
                   required
                 />
@@ -1132,7 +1145,7 @@ function EditAdModal({ ad, onClose, onSuccess }: EditAdModalProps) {
                   onChange={(e) =>
                     setFormData({ ...formData, titleAr: e.target.value })
                   }
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+                  className={inputBaseStyles}
                   placeholder="مثال: عرض خاص!"
                   dir="rtl"
                   required
@@ -1166,7 +1179,7 @@ function EditAdModal({ ad, onClose, onSuccess }: EditAdModalProps) {
                     setFormData({ ...formData, content: e.target.value })
                   }
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none"
+                  className={`${inputBaseStyles} resize-none`}
                   placeholder="Describe your advertisement..."
                   required
                 />
@@ -1183,7 +1196,7 @@ function EditAdModal({ ad, onClose, onSuccess }: EditAdModalProps) {
                     setFormData({ ...formData, contentAr: e.target.value })
                   }
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none"
+                  className={`${inputBaseStyles} resize-none`}
                   placeholder="اكتب وصف الإعلان..."
                   dir="rtl"
                   required
@@ -1270,7 +1283,7 @@ function EditAdModal({ ad, onClose, onSuccess }: EditAdModalProps) {
               onChange={(e) =>
                 setFormData({ ...formData, linkUrl: e.target.value })
               }
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+              className={inputBaseStyles}
               placeholder="https://example.com"
             />
           </div>
@@ -1285,7 +1298,7 @@ function EditAdModal({ ad, onClose, onSuccess }: EditAdModalProps) {
               onChange={(e) =>
                 setFormData({ ...formData, position: e.target.value })
               }
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+              className={inputBaseStyles}
             >
               <option value="banner">
                 {locale === "ar" ? "بانر" : "Banner"}
@@ -1335,3 +1348,4 @@ function EditAdModal({ ad, onClose, onSuccess }: EditAdModalProps) {
     </div>
   );
 }
+

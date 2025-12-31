@@ -166,7 +166,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <span className="font-bold text-gray-900 dark:text-white text-lg">
               ENS Menu
             </span>
-          </div>
+          </Link>
 
           {/* Close button - Only visible on mobile */}
           <button

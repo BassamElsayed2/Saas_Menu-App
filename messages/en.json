@@ -232,6 +232,8 @@
     "email": "Email",
     "role": "Role",
     "logout": "Logout",
+    "loading": "Loading...",
+    "comingSoon": "Coming Soon",
     "stats": {
       "totalMenus": "Total Menus",
       "activeMenus": "Active Menus",
@@ -241,8 +243,14 @@
       "title": "Quick Actions",
       "manageMenus": "Manage Menus",
       "viewProfile": "View Profile",
-      "analytics": "Analytics (Coming Soon)",
-      "settings": "Settings (Coming Soon)"
+      "analytics": "Analytics",
+      "settings": "Settings"
+    },
+    "quickLinks": {
+      "manageMenus": "Manage Menus",
+      "manageMenusDesc": "View and manage all your menus",
+      "profile": "Profile",
+      "profileDesc": "Edit your personal information"
     }
   },
   "Menus": {
@@ -263,6 +271,7 @@
     "edit": "Edit",
     "activate": "Activate",
     "deactivate": "Deactivate",
+    "pause": "Pause",
     "delete": "Delete",
     "viewPublic": "View Public Page",
     "deleteConfirm": "Are you sure you want to delete this menu?",
@@ -347,6 +356,7 @@
     "edit": {
       "title": "Edit Profile",
       "subtitle": "Update your account settings",
+      "loading": "Loading...",
       "backToProfile": "Back to Profile",
       "profilePicture": "Profile Picture",
       "clickToChange": "Click on the image to change it",
@@ -383,6 +393,9 @@
       "confirmNewPassword": "Confirm New Password *",
       "passwordHint": "At least 8 characters",
       "passwordMinLength": "At least 8 characters",
+      "currentPasswordRequired": "Current password is required",
+      "passwordRequirements": "Password must contain uppercase, lowercase letters and numbers",
+      "passwordMismatch": "Passwords do not match",
       "changePasswordBtn": "Change Password",
       "changePasswordButton": "Change Password",
       "changing": "Changing...",
@@ -469,6 +482,8 @@
     "namePlaceholder": "John Doe",
     "email": "Email Address",
     "emailPlaceholder": "example@domain.com",
+    "phoneNumber": "Phone Number",
+    "phoneNumberPlaceholder": "+1 234 567 8900",
     "password": "Password",
     "passwordPlaceholder": "At least 8 characters",
     "confirmPassword": "Confirm Password",
@@ -488,7 +503,19 @@
     "accountCreated": "Account created successfully!",
     "backToHome": "Back to Home",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "checking": "Checking...",
+    "emailAvailable": "Email is available ✓",
+    "emailTaken": "Email is already taken",
+    "phoneAvailable": "Phone number is available ✓",
+    "phoneTaken": "Phone number is already taken",
+    "waitingValidation": "Please wait until validation is complete",
+    "signupError": "An error occurred while creating the account",
+    "passwordMinLengthRule": "At least 8 characters",
+    "passwordUppercaseRule": "Uppercase letter (A-Z)",
+    "passwordLowercaseRule": "Lowercase letter (a-z)",
+    "passwordNumberRule": "One number (0-9)",
+    "passwordSpecialRule": "Special character (@$!%*?&#...)"
   },
   "Common": {
     "loading": "Loading...",
@@ -552,9 +579,17 @@
     "descriptionPlaceholder": "Describe this item...",
     "price": "Price",
     "category": "Category",
-    "imageUrl": "Image URL",
-    "imagePlaceholder": "https://example.com/image.jpg",
-    "imageHint": "Optional: Enter image URL or leave empty",
+    "image": "Product Image",
+    "clickToUpload": "Click to upload image",
+    "maxFileSize": "Maximum size: 1MB",
+    "imageHintUpload": "Supports: JPG, PNG, GIF, WebP - Max 1MB",
+    "uploading": "Uploading...",
+    "imageUploaded": "Image uploaded successfully",
+    "imageUploadError": "Failed to upload image",
+    "invalidImageType": "File must be an image",
+    "imageTooLarge": "Image size must be less than 1MB",
+    "changeImage": "Change",
+    "removeImage": "Remove",
     "available": "Available",
     "notAvailable": "Not Available",
     "categories": {
@@ -565,6 +600,7 @@
       "other": "Other"
     },
     "selectCategory": "Select Category",
+    "loadingCategories": "Loading categories...",
     "noCategoriesHint": "No categories available. Please create a category first from the Categories page.",
     "pricing": "Pricing",
     "originalPrice": "Original Price",
@@ -585,11 +621,16 @@
     "deleteSuccess": "Item deleted successfully!",
     "saveError": "Failed to save item",
     "fetchError": "Failed to load items",
-    "deleteError": "Failed to delete item"
+    "deleteError": "Failed to delete item",
+    "loading": "Loading...",
+    "backToDashboard": "Back to Dashboard",
+    "loginRequired": "Please login first",
+    "noPermission": "You don't have permission to access this menu"
   },
   "Categories": {
     "title": "Categories",
     "subtitle": "Manage menu categories",
+    "backToDashboard": "Back to Dashboard",
     "addCategory": "Add Category",
     "editCategory": "Edit Category",
     "createFirst": "Create First Category",
@@ -651,7 +692,10 @@
   },
   "MenuDashboard": {
     "subtitle": "Manage your entire menu",
+    "loading": "Loading...",
+    "backToMenus": "Back to Menus",
     "manageItems": "Manage Items",
+    "categories": "Categories",
     "settings": "Settings",
     "viewPublic": "View Public Menu",
     "navigation": {
@@ -662,7 +706,8 @@
     "stats": {
       "totalItems": "Total Items",
       "activeItems": "Active Items",
-      "categories": "Categories"
+      "categories": "Categories",
+      "views": "Views"
     },
     "quickLinks": {
       "items": "Menu Items",
@@ -684,6 +729,8 @@
   "MenuSettings": {
     "title": "Menu Settings",
     "subtitle": "Customize your menu settings and appearance",
+    "loading": "Loading...",
+    "backToDashboard": "Back to Dashboard",
     "fetchError": "Failed to load settings",
     "saveSuccess": "Changes saved successfully!",
     "saveError": "Failed to save changes",
@@ -708,8 +755,11 @@
     },
     "themes": {
       "classic": "Classic",
+      "classicDescription": "Simple and clean design suitable for all restaurants",
       "modern": "Modern",
-      "elegant": "Elegant"
+      "modernDescription": "Modern and sleek design with attractive visual effects",
+      "elegant": "Elegant",
+      "elegantDescription": "Luxurious and sophisticated design for upscale restaurants"
     },
     "buttons": {
       "save": "Save Changes",

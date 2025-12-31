@@ -8,6 +8,7 @@ import "swiper/css/bundle";
 import "./globals.css";
 
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import LayoutProvider from "@/providers/LayoutProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import type { Metadata } from "next";
 import { Tajawal } from "next/font/google";

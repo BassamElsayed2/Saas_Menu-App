@@ -274,7 +274,7 @@ h1,
 .display-3,
 .display-2,
 .display-1 {
-  @apply font-bold leading-tight mb-[10px] text-black dark:text-white;
+  @apply font-bold leading-tight mb-[10px]  dark:text-white;
 }
 .h6,
 h6,
@@ -313,6 +313,26 @@ button {
 }
 
 /* Sidebar */
+/* Modal open state - hide sidebar and header */
+body.modal-open {
+  overflow: hidden;
+  
+  .sidebar-area,
+  .main-content-wrap > div:first-child > div:first-child,
+  header,
+  .header-area {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  
+  .main-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
 .sidebar-area {
   @apply w-[260px] ltr:-left-full ltr:xl:left-0 rtl:-right-full rtl:xl:right-0;
 
@@ -609,7 +629,7 @@ button {
 
 /** Main Content */
 .main-content {
-  @apply pt-[143px] px-[15px] md:pt-[95px] md:pl-[25px] md:pr-[25px] ltr:xl:pl-[285px] rtl:xl:pr-[285px];
+  @apply pt-[80px] px-[15px] md:pt-[95px] md:pl-[25px] md:pr-[25px] ltr:xl:pl-[285px] rtl:xl:pr-[285px];
 }
 .main-content-wrap {
   &.active {

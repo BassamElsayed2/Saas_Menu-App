@@ -229,6 +229,8 @@
     "email": "البريد الإلكتروني",
     "role": "الدور",
     "logout": "تسجيل الخروج",
+    "loading": "جاري التحميل...",
+    "comingSoon": "قريباً",
     "stats": {
       "totalMenus": "إجمالي القوائم",
       "activeMenus": "القوائم النشطة",
@@ -238,8 +240,14 @@
       "title": "إجراءات سريعة",
       "manageMenus": "إدارة القوائم",
       "viewProfile": "عرض الملف الشخصي",
-      "analytics": "التحليلات (قريباً)",
-      "settings": "الإعدادات (قريباً)"
+      "analytics": "التحليلات",
+      "settings": "الإعدادات"
+    },
+    "quickLinks": {
+      "manageMenus": "إدارة القوائم",
+      "manageMenusDesc": "عرض وإدارة جميع قوائمك",
+      "profile": "الملف الشخصي",
+      "profileDesc": "تعديل معلوماتك الشخصية"
     }
   },
   "Menus": {
@@ -260,6 +268,7 @@
     "edit": "تعديل",
     "activate": "تفعيل",
     "deactivate": "إلغاء التفعيل",
+    "pause": "إيقاف مؤقت",
     "delete": "حذف",
     "viewPublic": "عرض الصفحة العامة",
     "deleteConfirm": "هل أنت متأكد من حذف هذه القائمة؟",
@@ -344,6 +353,7 @@
     "edit": {
       "title": "تعديل الملف الشخصي",
       "subtitle": "تحديث إعدادات حسابك",
+      "loading": "جاري التحميل...",
       "backToProfile": "العودة للملف الشخصي",
       "profilePicture": "صورة الملف الشخصي",
       "clickToChange": "انقر على الصورة لتغييرها",
@@ -380,6 +390,9 @@
       "confirmNewPassword": "تأكيد كلمة المرور الجديدة *",
       "passwordHint": "8 أحرف على الأقل",
       "passwordMinLength": "8 أحرف على الأقل",
+      "currentPasswordRequired": "كلمة المرور الحالية مطلوبة",
+      "passwordRequirements": "كلمة المرور يجب أن تحتوي على أحرف كبيرة وصغيرة وأرقام",
+      "passwordMismatch": "كلمة المرور غير متطابقة",
       "changePasswordBtn": "تغيير كلمة المرور",
       "changePasswordButton": "تغيير كلمة المرور",
       "changing": "جاري التغيير...",
@@ -466,6 +479,8 @@
     "namePlaceholder": "محمد أحمد",
     "email": "البريد الإلكتروني",
     "emailPlaceholder": "example@domain.com",
+    "phoneNumber": "رقم الهاتف",
+    "phoneNumberPlaceholder": "+20 10 **** ****",
     "password": "كلمة المرور",
     "passwordPlaceholder": "8 أحرف على الأقل",
     "confirmPassword": "تأكيد كلمة المرور",
@@ -485,7 +500,19 @@
     "accountCreated": "تم إنشاء الحساب بنجاح!",
     "backToHome": "العودة للصفحة الرئيسية",
     "showPassword": "إظهار كلمة المرور",
-    "hidePassword": "إخفاء كلمة المرور"
+    "hidePassword": "إخفاء كلمة المرور",
+    "checking": "جاري التحقق...",
+    "emailAvailable": "البريد الإلكتروني متاح ✓",
+    "emailTaken": "البريد الإلكتروني مستخدم بالفعل",
+    "phoneAvailable": "رقم الهاتف متاح ✓",
+    "phoneTaken": "رقم الهاتف مستخدم بالفعل",
+    "waitingValidation": "الرجاء الانتظار حتى يتم التحقق من البيانات",
+    "signupError": "حدث خطأ أثناء إنشاء الحساب",
+    "passwordMinLengthRule": "8 أحرف على الأقل",
+    "passwordUppercaseRule": "حرف كبير (A-Z)",
+    "passwordLowercaseRule": "حرف صغير (a-z)",
+    "passwordNumberRule": "رقم واحد (0-9)",
+    "passwordSpecialRule": "رمز خاص (@$!%*?&#...)"
   },
   "Common": {
     "loading": "جاري التحميل...",
@@ -549,9 +576,17 @@
     "descriptionPlaceholder": "اكتب وصف العنصر...",
     "price": "السعر",
     "category": "الفئة",
-    "imageUrl": "رابط الصورة",
-    "imagePlaceholder": "https://example.com/image.jpg",
-    "imageHint": "اختياري: أدخل رابط الصورة أو اتركه فارغاً",
+    "image": "صورة المنتج",
+    "clickToUpload": "اضغط لرفع صورة",
+    "maxFileSize": "الحد الأقصى: 1 ميجابايت",
+    "imageHintUpload": "يدعم: JPG, PNG, GIF, WebP - الحد الأقصى 1 ميجابايت",
+    "uploading": "جاري الرفع...",
+    "imageUploaded": "تم رفع الصورة بنجاح",
+    "imageUploadError": "فشل رفع الصورة",
+    "invalidImageType": "يجب أن يكون الملف صورة",
+    "imageTooLarge": "حجم الصورة يجب أن يكون أقل من 1 ميجابايت",
+    "changeImage": "تغيير",
+    "removeImage": "حذف",
     "available": "متوفر",
     "notAvailable": "غير متوفر",
     "categories": {
@@ -562,6 +597,7 @@
       "other": "أخرى"
     },
     "selectCategory": "اختر تصنيف",
+    "loadingCategories": "جاري تحميل التصنيفات...",
     "noCategoriesHint": "لا توجد تصنيفات. يرجى إنشاء تصنيف أولاً من صفحة التصنيفات.",
     "pricing": "التسعير",
     "originalPrice": "السعر الأصلي",
@@ -582,11 +618,16 @@
     "deleteSuccess": "تم حذف العنصر بنجاح!",
     "saveError": "فشل حفظ العنصر",
     "fetchError": "فشل تحميل العناصر",
-    "deleteError": "فشل حذف العنصر"
+    "deleteError": "فشل حذف العنصر",
+    "loading": "جاري التحميل...",
+    "backToDashboard": "العودة للوحة التحكم",
+    "loginRequired": "يجب تسجيل الدخول أولاً",
+    "noPermission": "ليس لديك صلاحية للوصول لهذه القائمة"
   },
   "Categories": {
     "title": "التصنيفات",
     "subtitle": "إدارة تصنيفات القائمة",
+    "backToDashboard": "العودة للوحة التحكم",
     "addCategory": "إضافة تصنيف",
     "editCategory": "تعديل التصنيف",
     "createFirst": "أنشئ أول تصنيف",
@@ -648,7 +689,10 @@
   },
   "MenuDashboard": {
     "subtitle": "إدارة القائمة بالكامل",
+    "loading": "جاري التحميل...",
+    "backToMenus": "العودة للقوائم",
     "manageItems": "إدارة العناصر",
+    "categories": "التصنيفات",
     "settings": "الإعدادات",
     "viewPublic": "عرض القائمة العامة",
     "navigation": {
@@ -659,7 +703,8 @@
     "stats": {
       "totalItems": "إجمالي العناصر",
       "activeItems": "العناصر النشطة",
-      "categories": "الفئات"
+      "categories": "الفئات",
+      "views": "المشاهدات"
     },
     "quickLinks": {
       "items": "عناصر القائمة",
@@ -681,6 +726,8 @@
   "MenuSettings": {
     "title": "إعدادات القائمة",
     "subtitle": "تخصيص إعدادات القائمة والمظهر",
+    "loading": "جاري التحميل...",
+    "backToDashboard": "العودة للوحة التحكم",
     "fetchError": "فشل تحميل الإعدادات",
     "saveSuccess": "تم حفظ التغييرات بنجاح!",
     "saveError": "فشل حفظ التغييرات",
@@ -705,8 +752,11 @@
     },
     "themes": {
       "classic": "كلاسيكي",
+      "classicDescription": "تصميم بسيط ونظيف مناسب لجميع المطاعم",
       "modern": "عصري",
-      "elegant": "أنيق"
+      "modernDescription": "تصميم حديث وأنيق مع تأثيرات بصرية جذابة",
+      "elegant": "أنيق",
+      "elegantDescription": "تصميم فاخر وراقي للمطاعم الراقية"
     },
     "buttons": {
       "save": "حفظ التغييرات",

@@ -41,13 +41,13 @@ export default function MenuDashboard({
   useEffect(() => {
     if (!authLoading && !menuLoading) {
       if (!user) {
-        toast.error("يجب تسجيل الدخول أولاً");
+        toast.error(t("loginRequired"));
         router.push(`/${locale}/authentication/sign-in`);
         return;
       }
 
       if (menu && menu.userId !== user.id) {
-        toast.error("ليس لديك صلاحية للوصول لهذه القائمة");
+        toast.error(t("noPermission"));
         router.push(`/${locale}/menus`);
         return;
       }
@@ -92,7 +92,7 @@ export default function MenuDashboard({
       <div className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-500 dark:text-gray-400 animate-pulse">جاري التحميل...</p>
+            <p className="text-gray-500 dark:text-gray-400 animate-pulse">{t("loading")}</p>
         </div>
       </div>
     );
@@ -115,7 +115,7 @@ export default function MenuDashboard({
             className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition group"
           >
             <i className={`ri-arrow-${isRTL ? 'right' : 'left'}-line text-xl transition-transform ${isRTL ? 'group-hover:translate-x-1' : 'group-hover:-translate-x-1'}`}></i>
-            العودة للقوائم
+            {t("backToMenus")}
           </button>
         </div>
 
@@ -145,7 +145,7 @@ export default function MenuDashboard({
                 className="px-5 py-2.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center gap-2 font-medium border border-gray-200 dark:border-gray-700"
               >
                 <i className="ri-folder-line text-lg"></i>
-                التصنيفات
+                {t("categories")}
               </Link>
               <Link
                 href={`/${locale}/menus/${id}/settings`}

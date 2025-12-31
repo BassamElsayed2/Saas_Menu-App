@@ -87,7 +87,7 @@ export default function CategoriesPage({ params }: { params: Promise<{ id: strin
             className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition group"
           >
             <i className={`ri-arrow-${isRTL ? 'right' : 'left'}-line text-xl transition-transform ${isRTL ? 'group-hover:translate-x-1' : 'group-hover:-translate-x-1'}`}></i>
-            العودة للوحة التحكم
+            {t("backToDashboard")}
           </button>
         </div>
 
