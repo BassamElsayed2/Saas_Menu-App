@@ -15,6 +15,23 @@ interface Menu {
   itemsCount?: number;
 }
 
+interface Plan {
+  id: number;
+  name: string;
+  priceMonthly: number;
+  priceYearly: number;
+  maxMenus: number;
+  maxProductsPerMenu: number;
+}
+
+interface Subscription {
+  planName: string;
+  billingCycle: string;
+  startDate: string;
+  endDate?: string;
+  status: string;
+}
+
 interface UserDetails {
   id: number;
   email: string;
@@ -29,6 +46,11 @@ interface UserDetails {
   emailVerified: boolean;
   menusCount?: number;
   menus?: Menu[];
+  planName?: string;
+  subscriptionStatus?: string;
+  startDate?: string;
+  endDate?: string;
+  billingCycle?: string;
 }
 
 export default function UserDetailsPage({
@@ -42,6 +64,15 @@ export default function UserDetailsPage({
   const locale = useLocale();
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [subscriptionForm, setSubscriptionForm] = useState({
+    planId: 1,
+    billingCycle: "free" as "free" | "monthly" | "yearly",
+    startDate: new Date().toISOString().split('T')[0],
+    endDate: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     // Wait for auth to load
@@ -54,6 +85,7 @@ export default function UserDetailsPage({
     }
 
     fetchUserDetails();
+    fetchPlans();
   }, [user, authLoading, router, resolvedParams.id]);
 
   const fetchUserDetails = async () => {
@@ -84,6 +116,72 @@ export default function UserDetailsPage({
       console.error("Error fetching user details:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchPlans = async () => {
+    try {
+      const token =
+        localStorage.getItem("auth_token") ||
+        localStorage.getItem("accessToken");
+
+      if (!token) return;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/plans/subscription`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setPlans(data.plans || []);
+      }
+    } catch (error) {
+      console.error("Error fetching plans:", error);
+    }
+  };
+
+  const handleUpdateSubscription = async () => {
+    try {
+      setSubmitting(true);
+      const token =
+        localStorage.getItem("auth_token") ||
+        localStorage.getItem("accessToken");
+
+      if (!token) return;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/users/${resolvedParams.id}/subscription`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            planId: subscriptionForm.planId,
+            billingCycle: subscriptionForm.billingCycle,
+            startDate: subscriptionForm.startDate,
+            endDate: subscriptionForm.endDate || null,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        alert("تم تحديث الاشتراك بنجاح!");
+        setShowSubscriptionModal(false);
+        fetchUserDetails(); // Refresh user details
+      } else {
+        const error = await response.json();
+        alert(error.error || "فشل تحديث الاشتراك");
+      }
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+      alert("حدث خطأ أثناء تحديث الاشتراك");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -172,6 +270,63 @@ export default function UserDetailsPage({
             >
               ← رجوع
             </button>
+          </div>
+        </div>
+
+        {/* Subscription Card */}
+        <div className="trezo-card bg-white dark:bg-[#0c1427] p-6 rounded-md mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              معلومات الاشتراك
+            </h2>
+            <button
+              onClick={() => setShowSubscriptionModal(true)}
+              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              تغيير الاشتراك
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className="text-sm text-gray-600 dark:text-gray-400">
+                الخطة الحالية
+              </label>
+              <p className="text-base font-medium text-gray-900 dark:text-white">
+                {userDetails.planName || "غير محدد"}
+              </p>
+            </div>
+            <div>
+              <label className="text-sm text-gray-600 dark:text-gray-400">
+                نوع الدفع
+              </label>
+              <p className="text-base font-medium text-gray-900 dark:text-white">
+                {userDetails.billingCycle === "monthly"
+                  ? "شهري"
+                  : userDetails.billingCycle === "yearly"
+                  ? "سنوي"
+                  : "مجاني"}
+              </p>
+            </div>
+            <div>
+              <label className="text-sm text-gray-600 dark:text-gray-400">
+                تاريخ البدء
+              </label>
+              <p className="text-base font-medium text-gray-900 dark:text-white">
+                {userDetails.startDate
+                  ? new Date(userDetails.startDate).toLocaleDateString("ar-EG")
+                  : "-"}
+              </p>
+            </div>
+            <div>
+              <label className="text-sm text-gray-600 dark:text-gray-400">
+                تاريخ الانتهاء
+              </label>
+              <p className="text-base font-medium text-gray-900 dark:text-white">
+                {userDetails.endDate
+                  ? new Date(userDetails.endDate).toLocaleDateString("ar-EG")
+                  : "غير محدد"}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -418,6 +573,133 @@ export default function UserDetailsPage({
           )}
         </div>
       </div>
+
+      {/* Subscription Modal */}
+      {showSubscriptionModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-[#0c1427] rounded-lg max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                تغيير اشتراك المستخدم
+              </h3>
+              <button
+                onClick={() => setShowSubscriptionModal(false)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* Plan Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  اختر الخطة
+                </label>
+                <select
+                  value={subscriptionForm.planId}
+                  onChange={(e) => {
+                    const selectedPlan = plans.find(p => p.id === Number(e.target.value));
+                    setSubscriptionForm({
+                      ...subscriptionForm,
+                      planId: Number(e.target.value),
+                      billingCycle: selectedPlan?.name === "Free" ? "free" : "monthly",
+                    });
+                  }}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#15203c] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                >
+                  {plans.map((plan) => (
+                    <option key={plan.id} value={plan.id}>
+                      {plan.name} - {plan.maxMenus} قوائم
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Billing Cycle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  دورة الفوترة
+                </label>
+                <select
+                  value={subscriptionForm.billingCycle}
+                  onChange={(e) =>
+                    setSubscriptionForm({
+                      ...subscriptionForm,
+                      billingCycle: e.target.value as "free" | "monthly" | "yearly",
+                    })
+                  }
+                  disabled={plans.find(p => p.id === subscriptionForm.planId)?.name === "Free"}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#15203c] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <option value="free">مجاني</option>
+                  <option value="monthly">شهري</option>
+                  <option value="yearly">سنوي</option>
+                </select>
+              </div>
+
+              {/* Start Date */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  تاريخ البدء
+                </label>
+                <input
+                  type="date"
+                  value={subscriptionForm.startDate}
+                  onChange={(e) =>
+                    setSubscriptionForm({
+                      ...subscriptionForm,
+                      startDate: e.target.value,
+                    })
+                  }
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#15203c] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* End Date */}
+              {subscriptionForm.billingCycle !== "free" && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    تاريخ الانتهاء (اختياري)
+                  </label>
+                  <input
+                    type="date"
+                    value={subscriptionForm.endDate}
+                    onChange={(e) =>
+                      setSubscriptionForm({
+                        ...subscriptionForm,
+                        endDate: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#15203c] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    إذا تُرك فارغاً، سيتم حساب التاريخ تلقائياً (شهر/سنة من تاريخ البدء)
+                  </p>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={handleUpdateSubscription}
+                  disabled={submitting}
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {submitting ? "جاري التحديث..." : "تحديث الاشتراك"}
+                </button>
+                <button
+                  onClick={() => setShowSubscriptionModal(false)}
+                  disabled={submitting}
+                  className="flex-1 px-4 py-2 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  إلغاء
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

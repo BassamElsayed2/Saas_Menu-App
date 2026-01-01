@@ -10,7 +10,8 @@ interface User {
   email: string;
   name: string;
   role: string;
-  planType: string;
+  planName: string;
+  billingCycle: string;
   isSuspended: boolean;
   createdAt: string;
   lastLoginAt: string;
@@ -47,7 +48,7 @@ export default function UsersManagement() {
       if (!token) return;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/users`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/users?limit=1000`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -228,18 +229,18 @@ export default function UsersManagement() {
                       <td className="px-4 py-3 text-sm">
                         <span
                           className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
-                            u.planType === "yearly"
+                            u.planName === "Yearly"
                               ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                              : u.planType === "monthly"
+                              : u.planName === "Monthly"
                               ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
                               : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
                           }`}
                         >
-                          {u.planType === "yearly"
+                          {u.planName === "Yearly"
                             ? "سنوي"
-                            : u.planType === "monthly"
+                            : u.planName === "Monthly"
                             ? "شهري"
-                            : "مجاني"}
+                            : u.planName || "مجاني"}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm">

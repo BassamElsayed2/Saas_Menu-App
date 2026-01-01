@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import api from "@/lib/api";
 import { toast } from "react-hot-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface MenuItem {
   id: number;
@@ -43,6 +44,11 @@ export default function ProductsPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<MenuItem | null>(null);
   const productsPerPage = 10;
+
+  // Get user data and check subscription
+  const { user } = useAuth();
+  const currentPlan = user?.planType?.toLowerCase() || "free";
+  const isFreeUser = currentPlan === "free";
 
   // Fetch products
   const fetchProducts = async () => {
@@ -337,9 +343,49 @@ export default function ProductsPage() {
                                   {product.name}
                                 </div>
                                 {product.description && (
-                                  <span className="block text-sm text-gray-500 dark:text-gray-400 truncate max-w-[200px]">
-                                    {product.description}
-                                  </span>
+                                  <div className="relative group inline-block">
+                                    <span
+                                      className={`block text-sm text-gray-500 dark:text-gray-400 truncate max-w-[200px] ${
+                                        isFreeUser ? "cursor-help" : ""
+                                      }`}
+                                    >
+                                      {isFreeUser
+                                        ? "••••••••••"
+                                        : product.description}
+                                    </span>
+                                    {isFreeUser && (
+                                      <div className="absolute hidden group-hover:block hover:block bg-gray-900 dark:bg-gray-800 text-white rounded-lg shadow-xl p-4 z-50 w-[280px] ltr:left-0 rtl:right-0 top-full mt-2 transition-all before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3">
+                                        <div className="flex items-center gap-3 mb-2">
+                                          <div className="w-10 h-10 bg-primary-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i className="material-symbols-outlined text-primary-500 text-[20px]">
+                                              lock
+                                            </i>
+                                          </div>
+                                          <div className="flex-1">
+                                            <p className="font-semibold text-sm mb-1">
+                                              {locale === "ar"
+                                                ? "ميزة متاحة للمشتركين"
+                                                : "Premium Feature"}
+                                            </p>
+                                            <p className="text-xs text-gray-300">
+                                              {locale === "ar"
+                                                ? "اشترك لرؤية الوصف الكامل"
+                                                : "Subscribe to view full descriptions"}
+                                            </p>
+                                          </div>
+                                        </div>
+                                        <Link
+                                          href={`/${locale}/dashboard/profile/user-profile`}
+                                          className="block w-full text-center bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-md text-xs transition-colors"
+                                        >
+                                          {locale === "ar"
+                                            ? "اشترك الآن"
+                                            : "Subscribe Now"}
+                                        </Link>
+                                        <div className="absolute -top-2 ltr:left-4 rtl:right-4 w-4 h-4 bg-gray-900 dark:bg-gray-800 transform rotate-45"></div>
+                                      </div>
+                                    )}
+                                  </div>
                                 )}
                               </div>
                             </div>
@@ -512,6 +558,11 @@ function CreateProductModal({
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
 
+  // Get user data and check subscription
+  const { user } = useAuth();
+  const currentPlan = user?.planType?.toLowerCase() || "free";
+  const isFreeUser = currentPlan === "free";
+
   useEffect(() => {
     // Fetch categories
     const fetchCategories = async () => {
@@ -667,41 +718,129 @@ function CreateProductModal({
 
               {/* Product Descriptions */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                <div className="relative">
                   <label className="block text-sm font-semibold text-black dark:text-white mb-2">
                     {t("Products.descriptionAr") || "Description (Arabic)"}
+                    {isFreeUser && (
+                      <i className="material-symbols-outlined text-[16px] text-orange-500 ltr:ml-1 rtl:mr-1 align-text-bottom">
+                        lock
+                      </i>
+                    )}
                   </label>
-                  <textarea
-                    value={formData.descriptionAr}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        descriptionAr: e.target.value,
-                      })
-                    }
-                    dir="rtl"
-                    rows={3}
-                    placeholder="وصف المنتج بالعربية..."
-                    className="w-full rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 py-3 text-black dark:text-white outline-0 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 resize-none"
-                  />
+                  <div className="relative group">
+                    <textarea
+                      value={formData.descriptionAr}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          descriptionAr: e.target.value,
+                        })
+                      }
+                      disabled={isFreeUser}
+                      dir="rtl"
+                      rows={3}
+                      placeholder={
+                        isFreeUser
+                          ? "متاح للمشتركين فقط"
+                          : "وصف المنتج بالعربية..."
+                      }
+                      className={`w-full rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 py-3 text-black dark:text-white outline-0 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 resize-none ${
+                        isFreeUser ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                    />
+                    {isFreeUser && (
+                      <div className="absolute hidden group-hover:block hover:block bg-gray-900 dark:bg-gray-800 text-white rounded-lg shadow-xl p-4 z-50 w-[280px] ltr:left-0 rtl:right-0 top-full mt-2 before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-10 h-10 bg-primary-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i className="material-symbols-outlined text-primary-500 text-[20px]">
+                              lock
+                            </i>
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-semibold text-sm mb-1">
+                              {locale === "ar"
+                                ? "ميزة متاحة للمشتركين"
+                                : "Premium Feature"}
+                            </p>
+                            <p className="text-xs text-gray-300">
+                              {locale === "ar"
+                                ? "اشترك لإضافة وصف للمنتجات"
+                                : "Subscribe to add product descriptions"}
+                            </p>
+                          </div>
+                        </div>
+                        <Link
+                          href={`/${locale}/dashboard/profile/user-profile`}
+                          className="block w-full text-center bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-md text-xs transition-colors"
+                        >
+                          {locale === "ar" ? "اشترك الآن" : "Subscribe Now"}
+                        </Link>
+                        <div className="absolute -top-2 ltr:left-4 rtl:right-4 w-4 h-4 bg-gray-900 dark:bg-gray-800 transform rotate-45"></div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                <div>
+                <div className="relative">
                   <label className="block text-sm font-semibold text-black dark:text-white mb-2">
                     {t("Products.descriptionEn") || "Description (English)"}
+                    {isFreeUser && (
+                      <i className="material-symbols-outlined text-[16px] text-orange-500 ltr:ml-1 rtl:mr-1 align-text-bottom">
+                        lock
+                      </i>
+                    )}
                   </label>
-                  <textarea
-                    value={formData.descriptionEn}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        descriptionEn: e.target.value,
-                      })
-                    }
-                    rows={3}
-                    placeholder="Product description in English..."
-                    className="w-full rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 py-3 text-black dark:text-white outline-0 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 resize-none"
-                  />
+                  <div className="relative group">
+                    <textarea
+                      value={formData.descriptionEn}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          descriptionEn: e.target.value,
+                        })
+                      }
+                      disabled={isFreeUser}
+                      rows={3}
+                      placeholder={
+                        isFreeUser
+                          ? "Available for subscribers only"
+                          : "Product description in English..."
+                      }
+                      className={`w-full rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 py-3 text-black dark:text-white outline-0 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 resize-none ${
+                        isFreeUser ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                    />
+                    {isFreeUser && (
+                      <div className="absolute hidden group-hover:block hover:block bg-gray-900 dark:bg-gray-800 text-white rounded-lg shadow-xl p-4 z-50 w-[280px] ltr:left-0 rtl:right-0 top-full mt-2 before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-10 h-10 bg-primary-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i className="material-symbols-outlined text-primary-500 text-[20px]">
+                              lock
+                            </i>
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-semibold text-sm mb-1">
+                              {locale === "ar"
+                                ? "ميزة متاحة للمشتركين"
+                                : "Premium Feature"}
+                            </p>
+                            <p className="text-xs text-gray-300">
+                              {locale === "ar"
+                                ? "اشترك لإضافة وصف للمنتجات"
+                                : "Subscribe to add product descriptions"}
+                            </p>
+                          </div>
+                        </div>
+                        <Link
+                          href={`/${locale}/dashboard/profile/user-profile`}
+                          className="block w-full text-center bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-md text-xs transition-colors"
+                        >
+                          {locale === "ar" ? "اشترك الآن" : "Subscribe Now"}
+                        </Link>
+                        <div className="absolute -top-2 ltr:left-4 rtl:right-4 w-4 h-4 bg-gray-900 dark:bg-gray-800 transform rotate-45"></div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -907,6 +1046,11 @@ function EditProductModal({
 }) {
   const t = useTranslations();
 
+  // Get user data and check subscription
+  const { user } = useAuth();
+  const currentPlan = user?.planType?.toLowerCase() || "free";
+  const isFreeUser = currentPlan === "free";
+
   // We need to fetch the full product data with both languages
   const [formData, setFormData] = useState({
     nameAr: product.nameAr || product.name || "",
@@ -1079,41 +1223,129 @@ function EditProductModal({
 
               {/* Product Descriptions */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                <div className="relative">
                   <label className="block text-sm font-semibold text-black dark:text-white mb-2">
                     {t("Products.descriptionAr") || "Description (Arabic)"}
+                    {isFreeUser && (
+                      <i className="material-symbols-outlined text-[16px] text-orange-500 ltr:ml-1 rtl:mr-1 align-text-bottom">
+                        lock
+                      </i>
+                    )}
                   </label>
-                  <textarea
-                    value={formData.descriptionAr}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        descriptionAr: e.target.value,
-                      })
-                    }
-                    dir="rtl"
-                    rows={3}
-                    placeholder="وصف المنتج بالعربية..."
-                    className="w-full rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 py-3 text-black dark:text-white outline-0 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 resize-none"
-                  />
+                  <div className="relative group">
+                    <textarea
+                      value={formData.descriptionAr}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          descriptionAr: e.target.value,
+                        })
+                      }
+                      disabled={isFreeUser}
+                      dir="rtl"
+                      rows={3}
+                      placeholder={
+                        isFreeUser
+                          ? "متاح للمشتركين فقط"
+                          : "وصف المنتج بالعربية..."
+                      }
+                      className={`w-full rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 py-3 text-black dark:text-white outline-0 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 resize-none ${
+                        isFreeUser ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                    />
+                    {isFreeUser && (
+                      <div className="absolute hidden group-hover:block hover:block bg-gray-900 dark:bg-gray-800 text-white rounded-lg shadow-xl p-4 z-50 w-[280px] ltr:left-0 rtl:right-0 top-full mt-2 before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-10 h-10 bg-primary-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i className="material-symbols-outlined text-primary-500 text-[20px]">
+                              lock
+                            </i>
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-semibold text-sm mb-1">
+                              {locale === "ar"
+                                ? "ميزة متاحة للمشتركين"
+                                : "Premium Feature"}
+                            </p>
+                            <p className="text-xs text-gray-300">
+                              {locale === "ar"
+                                ? "اشترك لإضافة وصف للمنتجات"
+                                : "Subscribe to add product descriptions"}
+                            </p>
+                          </div>
+                        </div>
+                        <Link
+                          href={`/${locale}/dashboard/profile/user-profile`}
+                          className="block w-full text-center bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-md text-xs transition-colors"
+                        >
+                          {locale === "ar" ? "اشترك الآن" : "Subscribe Now"}
+                        </Link>
+                        <div className="absolute -top-2 ltr:left-4 rtl:right-4 w-4 h-4 bg-gray-900 dark:bg-gray-800 transform rotate-45"></div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                <div>
+                <div className="relative">
                   <label className="block text-sm font-semibold text-black dark:text-white mb-2">
                     {t("Products.descriptionEn") || "Description (English)"}
+                    {isFreeUser && (
+                      <i className="material-symbols-outlined text-[16px] text-orange-500 ltr:ml-1 rtl:mr-1 align-text-bottom">
+                        lock
+                      </i>
+                    )}
                   </label>
-                  <textarea
-                    value={formData.descriptionEn}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        descriptionEn: e.target.value,
-                      })
-                    }
-                    rows={3}
-                    placeholder="Product description in English..."
-                    className="w-full rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 py-3 text-black dark:text-white outline-0 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 resize-none"
-                  />
+                  <div className="relative group">
+                    <textarea
+                      value={formData.descriptionEn}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          descriptionEn: e.target.value,
+                        })
+                      }
+                      disabled={isFreeUser}
+                      rows={3}
+                      placeholder={
+                        isFreeUser
+                          ? "Available for subscribers only"
+                          : "Product description in English..."
+                      }
+                      className={`w-full rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 py-3 text-black dark:text-white outline-0 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 resize-none ${
+                        isFreeUser ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                    />
+                    {isFreeUser && (
+                      <div className="absolute hidden group-hover:block hover:block bg-gray-900 dark:bg-gray-800 text-white rounded-lg shadow-xl p-4 z-50 w-[280px] ltr:left-0 rtl:right-0 top-full mt-2 before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-10 h-10 bg-primary-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i className="material-symbols-outlined text-primary-500 text-[20px]">
+                              lock
+                            </i>
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-semibold text-sm mb-1">
+                              {locale === "ar"
+                                ? "ميزة متاحة للمشتركين"
+                                : "Premium Feature"}
+                            </p>
+                            <p className="text-xs text-gray-300">
+                              {locale === "ar"
+                                ? "اشترك لإضافة وصف للمنتجات"
+                                : "Subscribe to add product descriptions"}
+                            </p>
+                          </div>
+                        </div>
+                        <Link
+                          href={`/${locale}/dashboard/profile/user-profile`}
+                          className="block w-full text-center bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-md text-xs transition-colors"
+                        >
+                          {locale === "ar" ? "اشترك الآن" : "Subscribe Now"}
+                        </Link>
+                        <div className="absolute -top-2 ltr:left-4 rtl:right-4 w-4 h-4 bg-gray-900 dark:bg-gray-800 transform rotate-45"></div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 

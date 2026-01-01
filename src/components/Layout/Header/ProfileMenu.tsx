@@ -30,6 +30,9 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
   const planBadgeColor = isFreePlan
     ? "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
     : "bg-gradient-to-r from-amber-500 to-amber-600 text-white";
+  
+  // Hide badge for admin users
+  const showPlanBadge = user?.role !== "admin";
 
   const handleDropdownToggle = () => {
     setActive((prevState) => !prevState);
@@ -83,12 +86,14 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
             size="md"
             showBorder
           />
-          {/* Plan Badge */}
-          <div
-            className={`absolute -bottom-3 right-1 px-1.5 py-0.5 rounded-full text-[7px] font-bold shadow-lg border-2 border-white dark:border-gray-900 ${planBadgeColor}`}
-          >
-            {planBadgeText}
-          </div>
+          {/* Plan Badge - Hide for admin users */}
+          {showPlanBadge && (
+            <div
+              className={`absolute -bottom-3 right-1 px-1.5 py-0.5 rounded-full text-[7px] font-bold shadow-lg border-2 border-white dark:border-gray-900 ${planBadgeColor}`}
+            >
+              {planBadgeText}
+            </div>
+          )}
         </div>
         <span className="block font-semibold text-[0px] lg:text-base">
           {user?.name || "User"}
@@ -111,7 +116,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
                 <span className="block text-black dark:text-white font-medium truncate">
                   {user?.name || "User"}
                 </span>
-                {!isFreePlan && (
+                {!isFreePlan && showPlanBadge && (
                   <i className="material-symbols-outlined text-amber-500 !text-[14px] flex-shrink-0">
                     workspace_premium
                   </i>
