@@ -125,12 +125,14 @@ const PricingSection = () => {
                 {/* Features */}
                 <ul className="space-y-4 mb-10">
                   {pkg.features.map((feature, fIndex) => (
-                    <li key={fIndex} className="flex items-start gap-3">
-                      <span className="w-5 h-5 rounded-full
-                        bg-purple-100 dark:bg-purple-500/10
-                        flex items-center justify-center mt-1"
+                    <li key={fIndex} className="flex items-center gap-3">
+                      <span className="w-6 h-6 min-w-[24px] rounded-full
+                        bg-purple-100 dark:bg-purple-500/20
+                        inline-flex items-center justify-center leading-none"
                       >
-                        <Check className="w-3 h-3 text-purple-600 dark:text-purple-400" />
+                        <i className="material-symbols-outlined text-purple-600 dark:text-purple-400 !text-[14px] !leading-none">
+                          check
+                        </i>
                       </span>
                       <span className="text-gray-600 dark:text-gray-300">
                         {feature}
