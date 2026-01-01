@@ -68,7 +68,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenSignIn }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = NAV_ITEMS.map(item => item.path.replace("#", ""));
+      const sections = NAV_ITEMS.map((item) => item.path.replace("#", ""));
       const scrollPosition = window.scrollY + 150;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -90,18 +90,22 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenSignIn }) => {
     window.location.href = `/${locale === "ar" ? "en" : "ar"}${basePath}`;
   };
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    path: string
+  ) => {
     if (path.startsWith("#")) {
       e.preventDefault();
       const element = document.querySelector(path);
       if (element) {
         const navbarHeight = 100; // Approximate navbar height
-        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const elementPosition =
+          element.getBoundingClientRect().top + window.pageYOffset;
         const offsetPosition = elementPosition - navbarHeight;
-        
+
         window.scrollTo({
           top: offsetPosition,
-          behavior: "smooth"
+          behavior: "smooth",
         });
       }
     }
@@ -177,14 +181,14 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenSignIn }) => {
             </button>
 
             {/* Login */}
-            <button
-              onClick={onOpenSignIn}
+            <Link
+              href={`/${locale}/authentication/sign-in`}
               className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl
               bg-purple-600 hover:bg-purple-700 text-white font-semibold
               transition shadow-glow"
             >
               {t("login")}
-            </button>
+            </Link>
 
             {/* Mobile Toggle */}
             <button
@@ -225,16 +229,13 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenSignIn }) => {
                 </a>
               ))}
 
-              <button
-                onClick={() => {
-                  setMobileOpen(false);
-                  onOpenSignIn?.();
-                }}
+              <Link
+                href={`/${locale}/authentication/sign-in`}
                 className="mt-4 inline-flex justify-center items-center px-5 py-3 rounded-xl
                 bg-purple-600 hover:bg-purple-700 text-white font-semibold transition"
               >
                 {t("login")}
-              </button>
+              </Link>
             </nav>
           </div>
         )}
