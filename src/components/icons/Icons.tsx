@@ -190,3 +190,30 @@ export const Share2: React.FC<IconProps> = ({ size = 20, className = "" }) => (
     share
   </i>
 );
+
+export const Star: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    star
+  </i>
+);
+
+export const MessageCircle: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    chat_bubble
+  </i>
+);
+
+export const Send: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    send
+  </i>
+);

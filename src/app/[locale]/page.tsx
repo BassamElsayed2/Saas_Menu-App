@@ -1,6 +1,6 @@
-import ContactUs from "@/components/FrontPage/ContactUs";
+import ContactSection from "@/components/FrontPage/ContactSection";
 import Cta from "@/components/FrontPage/Cta";
-import Faq from "@/components/FrontPage/Faq";
+import PricingSection from "@/components/FrontPage/PricingSection";
 import WhyUsSection from "@/components/FrontPage/WhyUsSection";
 import Footer from "@/components/FrontPage/Footer";
 import HeroBanner from "@/components/FrontPage/HeroBanner";
@@ -31,9 +31,9 @@ export default function Home() {
 
         <HowItWorks />
 
-        <Faq />
+        <PricingSection />
 
-        <ContactUs />
+        <ContactSection />
 
         <Cta />
 
