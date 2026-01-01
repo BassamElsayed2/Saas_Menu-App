@@ -81,7 +81,7 @@ const teamMembers: TeamMember[] = [
 
 const OurTeam: React.FC = () => {
   return (
-    <>
+    <section id="how-it-works">
       <div className="container 2xl:max-w-[1320px] mx-auto px-[12px] relative z-[1]">
         <div className="md:max-w-[500px] lg:max-w-[630px] mb-[35px] md:mb-[50px] lg:mb-[65px] xl:mb-[90px]">
           <div className="inline-block relative mt-[10px] mb-[20px]">
@@ -194,7 +194,7 @@ const OurTeam: React.FC = () => {
           />
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

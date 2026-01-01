@@ -1,290 +1,182 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { Menu, X, Moon, Sun, Globe } from "@/components/icons/Icons";
 
-const NAV_ITEMS = [
-  { name: "Home", path: "/" },
-  { name: "Features", path: "/front-pages/features/" },
-  { name: "Our Team", path: "/front-pages/team/" },
-  { name: "FAQ's", path: "/front-pages/faq/" },
-  { name: "Contact", path: "/front-pages/contact/" },
-  { name: "Admin", path: "/dashboard/ecommerce/", isAdmin: true },
-];
-
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const pathname = usePathname();
   const locale = useLocale();
-  const [isMenuOpen, setMenuOpen] = useState(false);
-  const handleToggle = () => setMenuOpen(!isMenuOpen);
+  const t = useTranslations("navbar");
 
-  // Dark Mode State
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const isRTL = locale === "ar";
 
-  const t = useTranslations("HomePage");
+  const NAV_ITEMS = [
+    { key: "home", path: "/" },
+    { key: "features", path: "/features" },
+    { key: "useCases", path: "/use-cases" },
+    { key: "pricing", path: "/pricing" },
+    { key: "contact", path: "#contact" }
+  ];
 
-  // Initialize Dark Mode
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+
   useEffect(() => {
-    const storedPreference = localStorage.getItem("theme");
-    if (storedPreference === "dark") {
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") {
       setIsDarkMode(true);
+      document.documentElement.classList.add("dark");
     }
   }, []);
 
-  // Update Dark Mode
-  useEffect(() => {
-    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-    const htmlElement = document.querySelector("html");
-    if (htmlElement) {
-      if (isDarkMode) {
-        htmlElement.classList.add("dark");
-      } else {
-        htmlElement.classList.remove("dark");
-      }
-    }
-  }, [isDarkMode]);
-
-  const handleDarkModeToggle = () => {
-    setIsDarkMode(!isDarkMode);
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev) => {
+      const newTheme = !prev;
+      document.documentElement.classList.toggle("dark", newTheme);
+      localStorage.setItem("theme", newTheme ? "dark" : "light");
+      return newTheme;
+    });
   };
 
-  const handleLanguageChange = (newLocale: string) => {
-    // Get pathname without locale prefix
-    const pathnameWithoutLocale = pathname.replace(/^\/(ar|en)/, "") || "/";
-    // Navigate to the same page with the new locale
-    window.location.href = `/${newLocale}${pathnameWithoutLocale}`;
+  useEffect(() => {
+    const onScroll = () => setIsSticky(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const toggleLanguage = () => {
+    const cleanPath = pathname.replace(/^\/(ar|en)/, "") || "/";
+    window.location.href = `/${locale === "ar" ? "en" : "ar"}${cleanPath}`;
   };
 
-  // handleScroll
-  useEffect(() => {
-    const elementId = document.getElementById("navbar");
-    const handleScroll = () => {
-      if (window.scrollY > 100) {
-        elementId?.classList.add("is-sticky");
-      } else {
-        elementId?.classList.remove("is-sticky");
-      }
-    };
-
-    document.addEventListener("scroll", handleScroll);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      document.removeEventListener("scroll", handleScroll);
-    };
-  }, []); // Added empty dependency array to avoid repeated effect calls
+  const withLocale = (path: string) =>
+    path.startsWith("#") ? path : `/${locale}${path}`;
 
   return (
-    <>
-      <div
-        className="fixed top-0 right-0 left-0 transition-all h-auto z-[5] py-[20px]"
-        id="navbar"
-      >
-        <div className=" mx-auto px-10 ">
-          <div className="flex items-center relative flex-wrap lg:flex-nowrap justify-between lg:justify-start">
-            <Link
-              href="/"
-              className="inline-block max-w-[130px] ltr:mr-[15px] rtl:ml-[15px]"
-            >
-              <Image
-                src="/images/ENS-copy.png"
-                alt="logo"
-                className="inline-block "
-                width={126}
-                height={36}
-              />
-            </Link>
+    <header
+      className={`fixed top-0 left-0 w-full z-50 transition-all ${
+        isSticky
+          ? "backdrop-blur-xl bg-white/70 dark:bg-[#0d1117]/70 shadow-lg"
+          : "bg-transparent"
+      }`}
+      dir={isRTL ? "rtl" : "ltr"}
+    >
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-[80px]">
+          {/* Logo */}
+          <Link href={`/${locale}`} className="flex items-center gap-2">
+            <Image
+              src="/images/ENS-copy.png"
+              alt="ENS Logo"
+              width={110}
+              height={32}
+              priority
+            />
+          </Link>
 
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-10">
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.key}
+                href={withLocale(item.path)}
+                className={`text-sm font-medium transition-colors ${
+                  pathname === withLocale(item.path)
+                    ? "text-purple-600"
+                    : "text-gray-700 dark:text-gray-300 hover:text-purple-600"
+                }`}
+              >
+                {t(item.key)}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Actions */}
+          <div className="hidden lg:flex items-center gap-3">
+            {/* Language */}
             <button
-              type="button"
-              className="inline-block relative leading-none lg:hidden"
-              onClick={handleToggle}
+              onClick={toggleLanguage}
+              aria-label="Toggle language"
+              className="w-9 h-9 flex items-center justify-center rounded-md hover:bg-purple-100 dark:hover:bg-purple-500/20 transition"
             >
-              <span className="h-[3px] w-[30px] my-[5px] block bg-black dark:bg-white"></span>
-              <span className="h-[3px] w-[30px] my-[5px] block bg-black dark:bg-white"></span>
-              <span className="h-[3px] w-[30px] my-[5px] block bg-black dark:bg-white"></span>
+              <Globe className="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
 
-            {/* For Big Devices */}
-            <div className="hidden lg:flex items-center grow basis-full">
-              <ul className="flex ltr:ml-[30px] rtl:mr-[30px] ltr:xl:ml-[55px] rtl:xl:mr-[55px] flex-row gap-[30px] xl:gap-[50px]">
-                {NAV_ITEMS.map((item) => (
-                  <li key={item.path}>
-                    <Link
-                      href={item.path}
-                      className={`font-medium transition-all hover:text-primary-600 text-[15px] xl:text-md dark:text-gray-400 ${
-                        pathname === item.path
-                          ? "text-primary-600 dark:text-primary-600"
-                          : ""
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="flex items-center ltr:ml-auto rtl:mr-auto gap-[15px]">
-                {/* Language Switcher */}
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleLanguageChange(locale === "ar" ? "en" : "ar")
-                    }
-                    className="inline-flex items-center justify-center w-[40px] h-[40px] rounded-md transition-all hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                    title={
-                      locale === "ar"
-                        ? "Switch to English"
-                        : "التبديل إلى العربية"
-                    }
-                  >
-                    <i className="material-symbols-outlined !text-[20px] md:!text-[22px]">
-                      translate
-                    </i>
-                  </button>
-                </div>
-
-                {/* Dark Mode Toggle */}
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={handleDarkModeToggle}
-                    className="inline-flex items-center justify-center w-[40px] h-[40px] rounded-md transition-all hover:bg-gray-100 dark:hover:bg-gray-800 text-[#fe7a36]"
-                    title={
-                      isDarkMode
-                        ? "Switch to Light Mode"
-                        : "Switch to Dark Mode"
-                    }
-                  >
-                    <i className="material-symbols-outlined !text-[20px] md:!text-[22px]">
-                      {isDarkMode ? "dark_mode" : "light_mode"}
-                    </i>
-                  </button>
-                </div>
-
-                <Link
-                  href={`/${locale}/authentication/sign-in`}
-                  className="inline-block text-purple-600 lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] rounded-md transition-all font-medium border border-purple-600 hover:text-white hover:bg-purple-500 hover:border-purple-500"
-                >
-                  <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
-                    <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2 !text-[20px] md:!text-[24px]">
-                      login
-                    </i>
-                    Login
-                  </span>
-                </Link>
-
-                <Link
-                  href={`/${locale}/authentication/sign-up`}
-                  className="inline-block lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] bg-purple-600 text-white rounded-md transition-all font-medium border border-purple-600 hover:bg-purple-500 hover:border-purple-500"
-                >
-                  <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
-                    <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2 !text-[20px] md:!text-[24px]">
-                      person
-                    </i>
-                    Register
-                  </span>
-                </Link>
-              </div>
-            </div>
-
-            {/* For Resposive */}
-            <div
-              className={`bg-white dark:bg-black mt-[20px] p-[20px] md:p-[30px] w-full lg:hidden ${
-                isMenuOpen ? "block" : "hidden"
-              }`}
-              id="navbar-collapse"
+            {/* Dark Mode */}
+            <button
+              onClick={toggleDarkMode}
+              aria-label="Toggle theme"
+              className="w-9 h-9 flex items-center justify-center rounded-md hover:bg-purple-100 dark:hover:bg-purple-500/20 transition"
             >
-              <ul>
-                {NAV_ITEMS.map((item) => (
-                  <li
-                    key={item.path}
-                    className="my-[14px] md:my-[16px] first:mt-0 last:mb-0"
-                  >
-                    <Link
-                      href={item.path}
-                      className={`font-medium dark:text-primary-600 transition-all hover:text-primary-600 ${
-                        pathname === item.path ? "text-primary-600" : ""
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {isDarkMode ? (
+                <Sun className="w-5 h-5 text-yellow-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+              )}
+            </button>
 
-              <div className="flex items-center gap-[15px] mt-[14px] md:mt-[16px]">
-                {/* Language Switcher */}
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleLanguageChange(locale === "ar" ? "en" : "ar")
-                    }
-                    className="inline-flex items-center justify-center w-[40px] h-[40px] rounded-md transition-all hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                    title={
-                      locale === "ar"
-                        ? "Switch to English"
-                        : "التبديل إلى العربية"
-                    }
-                  >
-                    <i className="material-symbols-outlined !text-[20px] md:!text-[22px]">
-                      translate
-                    </i>
-                  </button>
-                </div>
-
-                {/* Dark Mode Toggle */}
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={handleDarkModeToggle}
-                    className="inline-flex items-center justify-center w-[40px] h-[40px] rounded-md transition-all hover:bg-gray-100 dark:hover:bg-gray-800 text-[#fe7a36]"
-                    title={
-                      isDarkMode
-                        ? "Switch to Light Mode"
-                        : "Switch to Dark Mode"
-                    }
-                  >
-                    <i className="material-symbols-outlined !text-[20px] md:!text-[22px]">
-                      {isDarkMode ? "dark_mode" : "light_mode"}
-                    </i>
-                  </button>
-                </div>
-
-                <Link
-                  href={`/${locale}/authentication/sign-in`}
-                  className="inline-block text-purple-600 lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] rounded-md transition-all font-medium border border-purple-600 hover:text-white hover:bg-purple-500 hover:border-purple-500"
-                >
-                  <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
-                    <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2 !text-[20px] md:!text-[24px]">
-                      login
-                    </i>
-                    Login
-                  </span>
-                </Link>
-
-                <Link
-                  href={`/${locale}/authentication/sign-up`}
-                  className="inline-block lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] bg-purple-600 text-white rounded-md transition-all font-medium border border-purple-600 hover:bg-purple-500 hover:border-purple-500"
-                >
-                  <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
-                    <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2 !text-[20px] md:!text-[24px]">
-                      person
-                    </i>
-                    Register
-                  </span>
-                </Link>
-              </div>
-            </div>
+            {/* CTA */}
+            <Link
+              href={`/${locale}/authentication/sign-in`}
+              className="ml-2 inline-flex items-center justify-center rounded-lg bg-purple-600 px-5 py-2 text-sm font-semibold text-white hover:bg-purple-700 transition shadow-glow"
+            >
+              {t("login")}
+            </Link>
           </div>
+
+          {/* Mobile Toggle */}
+          <button
+            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-md hover:bg-purple-100 dark:hover:bg-purple-500/20"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X /> : <Menu />}
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="lg:hidden mt-4 rounded-2xl bg-white dark:bg-[#0d1117] shadow-xl p-6 space-y-4">
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.key}
+                href={withLocale(item.path)}
+                onClick={() => setIsOpen(false)}
+                className="block text-gray-800 dark:text-gray-300 font-medium hover:text-purple-600"
+              >
+                {t(item.key)}
+              </Link>
+            ))}
+
+            <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center gap-2 text-sm"
+              >
+                <Globe className="w-5 h-5" />
+                {t("language")}
+              </button>
+
+              <button onClick={toggleDarkMode}>
+                {isDarkMode ? <Sun /> : <Moon />}
+              </button>
+            </div>
+
+            <Link
+              href={`/${locale}/authentication/sign-in`}
+              className="block text-center rounded-lg bg-purple-600 py-2 font-semibold text-white hover:bg-purple-700 transition"
+            >
+              {t("login")}
+            </Link>
+          </div>
+        )}
       </div>
-    </>
+    </header>
   );
 };
 

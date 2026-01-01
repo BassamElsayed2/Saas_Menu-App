@@ -3,7 +3,17 @@
 @custom-variant dark (&:where([class=dark], [class=dark] *));
 
 @theme {
-  --font-body: "Inter", serif;
+  /* ENS Custom Colors - Matching Original Project */
+  --color-ens-purple: 263 84% 60%;
+  --color-ens-purple-light: 263 84% 70%;
+  --color-ens-purple-dark: 263 84% 45%;
+  --color-ens-charcoal: 240 10% 25%;
+  --color-ens-charcoal-light: 240 10% 35%;
+  --color-ens-gray: 240 10% 96%;
+  --color-ens-dark-section: 240 15% 12%;
+  
+  --font-body: "Tajawal", sans-serif;
+  --font-tajawal: "Tajawal", sans-serif;
   --text-xs: 12px;
   --text-sm: 13px;
   --text-base: 14px;
@@ -15,8 +25,7 @@
   --text-4xl: 36px;
   --text-5xl: 40px;
   --color-white: #ffffff;
-  --color-black: #3a4252;
-  --color-dark: #000000;
+  --color-dark: #f5f5f5;
   --color-primary-50: #ecf0ff;
   --color-primary-100: #dde4ff;
   --color-primary-200: #c2cdff;
@@ -110,6 +119,127 @@
   --shadow-3xl: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 25%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 25%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 25%;
+
+  /* Primary: Vibrant Purple from logo */
+  --primary: 263 84% 60%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary: Charcoal/Dark from logo */
+  --secondary: 240 10% 25%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 240 10% 96%;
+  --muted-foreground: 240 10% 45%;
+
+  /* Accent: Light purple */
+  --accent: 263 84% 95%;
+  --accent-foreground: 263 84% 40%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 240 10% 90%;
+  --input: 240 10% 90%;
+  --ring: 263 84% 60%;
+
+  --radius: 0.75rem;
+
+  /* Custom ENS colors */
+  --ens-purple: 263 84% 60%;
+  --ens-purple-light: 263 84% 70%;
+  --ens-purple-dark: 263 84% 45%;
+  --ens-charcoal: 240 10% 25%;
+  --ens-charcoal-light: 240 10% 35%;
+  --ens-gray: 240 10% 96%;
+  --ens-dark-section: 240 15% 12%;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(
+    135deg,
+    hsl(263 84% 60%),
+    hsl(263 84% 45%)
+  );
+  --gradient-hero: linear-gradient(
+    180deg,
+    hsl(0 0% 100%) 0%,
+    hsl(263 84% 98%) 100%
+  );
+  --gradient-card: linear-gradient(
+    145deg,
+    hsl(0 0% 100%) 0%,
+    hsl(263 84% 99%) 100%
+  );
+  --gradient-dark: linear-gradient(
+    180deg,
+    hsl(240 15% 12%) 0%,
+    hsl(240 15% 8%) 100%
+  );
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px -2px hsl(263 84% 60% / 0.1);
+  --shadow-md: 0 8px 24px -4px hsl(263 84% 60% / 0.15);
+  --shadow-lg: 0 16px 48px -8px hsl(263 84% 60% / 0.2);
+  --shadow-glow: 0 0 40px hsl(263 84% 60% / 0.3);
+
+  /* Sidebar */
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 263 84% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 263 84% 95%;
+  --sidebar-accent-foreground: 263 84% 40%;
+  --sidebar-border: 240 10% 90%;
+  --sidebar-ring: 263 84% 60%;
+}
+
+.dark {
+  --background: 240 15% 8%;
+  --foreground: 0 0% 98%;
+
+  --card: 240 15% 12%;
+  --card-foreground: 0 0% 98%;
+
+  --popover: 240 15% 12%;
+  --popover-foreground: 0 0% 98%;
+
+  --primary: 263 84% 70%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 240 10% 25%;
+  --secondary-foreground: 0 0% 98%;
+
+  --muted: 240 10% 22%;
+  --muted-foreground: 240 5% 75%;
+
+  --accent: 263 60% 25%;
+  --accent-foreground: 263 84% 80%;
+
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 240 10% 25%;
+  --input: 240 10% 25%;
+  --ring: 263 84% 70%;
+
+  --sidebar-background: 240 15% 10%;
+  --sidebar-foreground: 0 0% 95%;
+  --sidebar-primary: 263 84% 70%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 263 60% 25%;
+  --sidebar-accent-foreground: 263 84% 80%;
+  --sidebar-border: 240 10% 25%;
+  --sidebar-ring: 263 84% 70%;
+}
+
 /** Body */
 html,
 body {
@@ -144,7 +274,7 @@ h1,
 .display-3,
 .display-2,
 .display-1 {
-  @apply font-bold leading-tight mb-[10px] text-black dark:text-white;
+  @apply font-bold leading-tight mb-[10px]  dark:text-white;
 }
 .h6,
 h6,
@@ -183,6 +313,26 @@ button {
 }
 
 /* Sidebar */
+/* Modal open state - hide sidebar and header */
+body.modal-open {
+  overflow: hidden;
+  
+  .sidebar-area,
+  .main-content-wrap > div:first-child > div:first-child,
+  header,
+  .header-area {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  
+  .main-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
 .sidebar-area {
   @apply w-[260px] ltr:-left-full ltr:xl:left-0 rtl:-right-full rtl:xl:right-0;
 
@@ -479,7 +629,7 @@ button {
 
 /** Main Content */
 .main-content {
-  @apply pt-[143px] px-[15px] md:pt-[95px] md:pl-[25px] md:pr-[25px] ltr:xl:pl-[285px] rtl:xl:pr-[285px];
+  @apply pt-[80px] px-[15px] md:pt-[95px] md:pl-[25px] md:pr-[25px] ltr:xl:pl-[285px] rtl:xl:pr-[285px];
 }
 .main-content-wrap {
   &.active {
@@ -1107,6 +1257,27 @@ html[dir="rtl"] {
   }
   50% {
     height: 20px;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
   }
 }
 
@@ -1822,60 +1993,73 @@ html[dir="rtl"] {
   }
 }
 
-/* ============================
-   Menu Template Design Tokens
-   ============================ */
-.menu-template {
-  /* Colors */
-  --menu-bg-main: hsl(0 0% 5%);
-  --menu-bg-card: hsl(0 0% 8%);
-  --menu-border-main: hsl(0 0% 20%);
-  --menu-text-main: hsl(0 0% 98%);
-  --menu-text-muted: hsl(0 0% 65%);
-  --menu-accent: hsl(322 100% 55%);
-  --menu-accent-2: hsl(280 100% 60%);
+/* ============================================
+   ENS Landing Page Styles
+   ============================================ */
 
-  /* Typography Scale (Responsive with clamp) */
-  --menu-text-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.75rem);
-  --menu-text-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
-  --menu-text-base: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
-  --menu-text-lg: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-  --menu-text-xl: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
-  --menu-text-2xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --menu-text-3xl: clamp(1.5rem, 1.25rem + 1.25vw, 1.875rem);
-  --menu-text-4xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem);
-  --menu-text-5xl: clamp(2.25rem, 1.75rem + 2.5vw, 3rem);
-  --menu-text-6xl: clamp(2.75rem, 2rem + 3.75vw, 3.75rem);
-  --menu-text-7xl: clamp(3.25rem, 2.25rem + 5vw, 4.5rem);
-  --menu-text-8xl: clamp(4rem, 2.5rem + 7.5vw, 6rem);
+/* ENS Design System - Purple & Charcoal Theme */
+:root {
+  /* Primary: Vibrant Purple from ENS logo */
+  --ens-primary: 263 84% 60%;
+  --ens-primary-light: 263 84% 70%;
+  --ens-primary-dark: 263 84% 45%;
+  --ens-charcoal: 240 10% 25%;
+  --ens-charcoal-light: 240 10% 35%;
+  --ens-gray: 240 10% 96%;
+  --ens-dark-section: 240 15% 12%;
 
-  /* Line Heights */
-  --menu-leading-none: 1;
-  --menu-leading-tight: 1.1;
-  --menu-leading-snug: 1.25;
-  --menu-leading-normal: 1.5;
-  --menu-leading-relaxed: 1.625;
-  --menu-leading-loose: 2;
+  /* ENS Gradients */
+  --gradient-primary: linear-gradient(135deg, hsl(263 84% 60%), hsl(263 84% 45%));
+  --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(263 84% 98%) 100%);
+  --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(263 84% 99%) 100%);
+  --gradient-dark: linear-gradient(180deg, hsl(240 15% 12%) 0%, hsl(240 15% 8%) 100%);
 
-  /* Letter Spacing */
-  --menu-tracking-tighter: -0.05em;
-  --menu-tracking-tight: -0.025em;
-  --menu-tracking-normal: 0;
-  --menu-tracking-wide: 0.025em;
-  --menu-tracking-wider: 0.05em;
-
-  /* Spacing */
-  --menu-space-xs: 0.25rem;
-  --menu-space-sm: 0.5rem;
-  --menu-space-md: 1rem;
-  --menu-space-lg: 1.5rem;
-  --menu-space-xl: 2rem;
-  --menu-space-2xl: 3rem;
-  --menu-space-3xl: 4rem;
+  /* ENS Shadows */
+  --shadow-sm: 0 2px 8px -2px hsl(263 84% 60% / 0.1);
+  --shadow-md: 0 8px 24px -4px hsl(263 84% 60% / 0.15);
+  --shadow-lg: 0 16px 48px -8px hsl(263 84% 60% / 0.2);
+  --shadow-glow: 0 0 40px hsl(263 84% 60% / 0.3);
 }
 
-/* Menu Template Animations */
-@keyframes menuFadeInUp {
+/* ENS Front Page Body */
+.front-page-body {
+  @apply font-body antialiased;
+  scroll-behavior: smooth;
+}
+
+/* ENS Utility Classes */
+.text-gradient {
+  @apply bg-clip-text text-transparent;
+  background-image: var(--gradient-primary);
+}
+
+.bg-gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.bg-gradient-hero {
+  background: var(--gradient-hero);
+}
+
+.bg-gradient-dark {
+  background: var(--gradient-dark);
+}
+
+.shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+/* ENS Animations */
+@keyframes ens-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes ens-slide-up {
   from {
     opacity: 0;
     transform: translateY(30px);
@@ -1886,64 +2070,312 @@ html[dir="rtl"] {
   }
 }
 
-@keyframes menuFloat {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
+@keyframes ens-slide-down {
+  from {
+    opacity: 0;
     transform: translateY(-20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes menuShimmer {
+@keyframes ens-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ens-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ens-bounce-in {
   0% {
-    background-position: -200% 0;
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
   }
   100% {
-    background-position: 200% 0;
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
-.menu-animate-float {
-  animation: menuFloat 6s ease-in-out infinite;
+@keyframes ens-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
-.menu-animate-shimmer {
-  animation: menuShimmer 2s linear infinite;
+@keyframes ens-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
-.menu-animate-fade-in-up {
-  animation: menuFadeInUp 0.6s ease-out forwards;
+@keyframes ens-pulse-slow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
-/* Menu Template Line Clamp */
-.menu-line-clamp-1 {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+@keyframes ens-spin-slow {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
-.menu-line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+@keyframes ens-gradient {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
 }
 
-/* Menu Template Scrollbar */
-.menu-template::-webkit-scrollbar {
-  width: 8px;
+/* ENS Animation Classes */
+.animate-float {
+  animation: ens-float 6s ease-in-out infinite;
 }
 
-.menu-template::-webkit-scrollbar-track {
-  background: var(--menu-bg-main);
+.animate-float-delayed {
+  animation: ens-float 6s ease-in-out 2s infinite;
 }
 
-.menu-template::-webkit-scrollbar-thumb {
-  background: var(--menu-border-main);
+.animate-slide-up {
+  animation: ens-slide-up 0.6s ease-out forwards;
+}
+
+.animate-slide-down {
+  animation: ens-slide-down 0.3s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: ens-fade-in 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: ens-scale-in 0.5s ease-out forwards;
+}
+
+.animate-bounce-in {
+  animation: ens-bounce-in 0.6s ease-out forwards;
+}
+
+.animate-marquee {
+  animation: ens-marquee 25s linear infinite;
+}
+
+.animate-pulse-slow {
+  animation: ens-pulse-slow 4s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: ens-spin-slow 20s linear infinite;
+}
+
+.animate-shimmer {
+  animation: ens-shimmer 3s ease-in-out infinite;
+}
+
+.animate-gradient {
+  animation: ens-gradient 3s ease infinite;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, hsl(263, 84%, 60%), hsl(263, 84%, 45%));
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, hsl(263, 84%, 60%), hsl(263, 84%, 45%));
+}
+
+.bg-gradient-hero {
+  background: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(263, 84%, 98%) 100%);
+}
+
+.bg-gradient-dark {
+  background: linear-gradient(180deg, hsl(240, 15%, 12%) 0%, hsl(240, 15%, 8%) 100%);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 40px hsl(263, 84%, 60% / 0.3);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply antialiased;
+}
+
+/* ENS Form Input */
+.ens-input {
+  @apply h-12 rounded-md border border-gray-200 bg-white px-4 block w-full outline-0 transition-all placeholder:text-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder:text-gray-400;
+}
+
+/* Enhanced Text Contrast for Dark Mode */
+.dark {
+  /* Better text visibility on dark backgrounds */
+  --text-on-dark: 0 0% 95%;
+  --text-muted-on-dark: 0 0% 75%;
+  --text-dimmed-on-dark: 0 0% 60%;
+}
+
+/* Improved animations with better performance */
+@keyframes ens-glow-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.8;
+    filter: brightness(1.2);
+  }
+}
+
+.animate-glow-pulse {
+  animation: ens-glow-pulse 3s ease-in-out infinite;
+}
+
+/* Guide pulse animation for sidebar menu items */
+@keyframes guide-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(96, 93, 255, 0.4);
+    background-color: rgba(96, 93, 255, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 20px 4px rgba(96, 93, 255, 0.3);
+    background-color: rgba(96, 93, 255, 0.1);
+  }
+}
+
+@keyframes ping-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+.animate-guide-pulse {
+  animation: guide-pulse 5s ease-in-out infinite;
+}
+
+.animate-ping-slow {
+  animation: ping-slow 5s ease-in-out infinite;
+}
+
+/* Smooth hover scale with better performance */
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+/* Text gradient with better contrast */
+.text-gradient-enhanced {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, hsl(263, 84%, 65%), hsl(263, 84%, 50%));
+}
+
+.dark .text-gradient-enhanced {
+  background-image: linear-gradient(135deg, hsl(263, 84%, 75%), hsl(263, 84%, 60%));
+}
+
+/* Better card shadows */
+.card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark .card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.card-shadow-hover {
+  transition: box-shadow 0.3s ease;
+}
+
+.card-shadow-hover:hover {
+  box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.15), 0 10px 10px -5px rgba(139, 92, 246, 0.1);
+}
+
+.dark .card-shadow-hover:hover {
+  box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.25), 0 10px 10px -5px rgba(139, 92, 246, 0.15);
+}
+
+/* Enhanced scroll behavior */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* Better focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid hsl(263, 84%, 60%);
+  outline-offset: 2px;
   border-radius: 4px;
+}
+
+.dark *:focus-visible {
+  outline-color: hsl(263, 84%, 70%);
+}
+
+/* Improved selection colors */
+::selection {
+  background-color: hsl(263, 84%, 60% / 0.3);
+  color: inherit;
+}
+
+.dark ::selection {
+  background-color: hsl(263, 84%, 70% / 0.4);
 }
 
 .menu-template::-webkit-scrollbar-thumb:hover {

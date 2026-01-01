@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const ContactUs: React.FC = () => {
   return (
-    <>
+    <section id="contact">
       <div className="pt-[60px] md:pt-[80px] lg:pt-[100px] xl:pt-[150px]">
         <div className="container 2xl:max-w-[1320px] mx-auto px-[12px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-center">
@@ -95,7 +95,7 @@ const ContactUs: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
