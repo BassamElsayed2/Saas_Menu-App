@@ -11,7 +11,7 @@ const Faq: React.FC = () => {
   };
 
   return (
-    <>
+    <section id="packages">
       <div className="relative z-[1] pt-[60px] md:pt-[80px] lg:pt-[100px] xl:pt-[150px]">
         <div className="container 2xl:max-w-[1320px] mx-auto px-[12px]">
           <div className="mx-auto text-center lg:max-w-[650px] xl:max-w-[810px] 2xl:max-w-[785px] mb-[35px] md:mb-[50px] lg:mb-[65px] xl:mb-[90px]">
@@ -224,7 +224,7 @@ const Faq: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

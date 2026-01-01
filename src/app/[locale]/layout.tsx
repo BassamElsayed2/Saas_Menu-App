@@ -10,16 +10,17 @@ import "./globals.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Tajawal } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Toaster } from "react-hot-toast";
 
-const inter = Inter({
+const tajawal = Tajawal({
   variable: "--font-body",
-  subsets: ["latin"],
+  subsets: ["arabic", "latin"],
+  weight: ["200", "300", "400", "500", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -53,7 +54,7 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} dir={dir}>
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${tajawal.variable} antialiased`}>
         <ReactQueryProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <AuthProvider>

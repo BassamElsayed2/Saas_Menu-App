@@ -1,84 +1,146 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "@/components/icons/Icons";
+import { useLanguage } from "@/hooks/useLanguage";
 
-const HeroBanner: React.FC = () => {
+const HeroSection = () => {
+  const t = useTranslations("heroSection");
+  const { isRTL } = useLanguage();
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
+
   return (
-    <>
-      <div className="pt-[125px] md:pt-[145px] lg:pt-[185px]">
-        <div className="container 2xl:max-w-[1320px] mx-auto px-[12px] relative z-[1]">
-          <div className="text-center mx-auto xl:max-w-[935px] mb-[30px] md:mb-[45px] lg:mb-[60px]">
-            <h1 className="!text-[32px] md:!text-[40px] lg:!text-[50px] xl:!text-[60px] !mb-[13px] md:!mb-[22px] lg:!mb-[25px] xl:!mb-[30px] -tracking-[.5px] md:-tracking-[1px] xl:-tracking-[1.5px] !leading-[1.2]">
-              Insights On-the-Go: Access Your Dashboard Anywhere, Anytime
+    <section
+      id="hero"
+      className="pt-32 pb-16 md:pt-40 md:pb-24 bg-gradient-to-br from-purple-50 via-white to-purple-50 dark:from-gray-900 dark:via-[#0d1117] dark:to-gray-900 overflow-hidden relative"
+    >
+      {/* Background Effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-10 w-72 h-72 bg-purple-500/10 dark:bg-purple-500/30 rounded-full blur-3xl animate-pulse-slow" />
+        <div
+          className="absolute bottom-20 left-10 w-96 h-96 bg-purple-500/5 dark:bg-purple-500/20 rounded-full blur-3xl animate-pulse-slow"
+          style={{ animationDelay: "1s" }}
+        />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/5 dark:bg-purple-500/15 rounded-full blur-3xl animate-spin-slow" />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div
+          className={`flex flex-col ${
+            isRTL ? "md:flex-row-reverse" : "md:flex-row"
+          } items-center gap-12 md:gap-16`}
+        >
+          {/* Text */}
+          <div
+            className={`flex-1 text-center ${
+              isRTL ? "md:text-right" : "md:text-left"
+            }`}
+          >
+            {/* Title */}
+            <h1 className="mb-8">
+              <span className="block text-lg md:text-xl lg:text-2xl font-medium text-gray-700 dark:text-gray-300 mb-3 animate-slide-up">
+                {t("title1")}
+              </span>
+
+              <span className="block text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-tight tracking-normal animate-slide-up">
+                <span className="relative inline-block text-gray-900 dark:text-gray-50 drop-shadow-[0_8px_30px_rgba(124,58,237,0.25)]">
+                  {t("title2")}
+                  <span
+                    className={`absolute -bottom-2 h-3 w-full bg-purple-500/20 dark:bg-purple-500/30 -z-10 rounded-md ${
+                      isRTL ? "right-0" : "left-0"
+                    }`}
+                  />
+                </span>
+              </span>
             </h1>
 
-            <p className="mx-auto leading-[1.6] md:text-[15px] lg:text-[16px] xl:text-[18px] md:max-w-[600px] lg:max-w-[650px] xl:max-w-[740px] xl:tracking-[.2px]">
-              Our intuitive interface transforms complex data into actionable
-              insights, empowering you to make informed decisions with
-              confidence.
+            {/* Subtitle */}
+            <p
+              className="text-sm md:text-base lg:text-lg font-medium text-purple-700 dark:text-purple-400 mb-6 animate-slide-up opacity-0"
+              style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
+            >
+              {t("subtitle")}
             </p>
 
-            <Link
-              href="/"
-              className="inline-block lg:text-[15px] xl:text-[16px] mt-[5px] md:mt-[12px] lg:mt-[20px] xl:mt-[25px] py-[12px] px-[17px] bg-primary-600 text-white rounded-md transition-all font-medium hover:bg-primary-500"
+            {/* Description */}
+            <p
+              className="text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto md:mx-0 mb-6 animate-slide-up opacity-0 leading-relaxed"
+              style={{ animationDelay: "0.25s", animationFillMode: "forwards" }}
             >
-              <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
-                <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2 !text-[20px] md:!text-[24px]">
-                  person
-                </i>
-                Get started - It is free
-              </span>
-            </Link>
+              {t("description")}
+            </p>
+
+            {/* Trust Chips */}
+            <div
+              className="flex flex-wrap gap-3 justify-center mb-8 animate-slide-up opacity-0"
+              style={{ animationDelay: "0.35s", animationFillMode: "forwards" }}
+            >
+              {t("trust")
+                .split("•")
+                .map((item) => (
+                  <span
+                    key={item}
+                    className="px-4 py-1 text-sm rounded-full bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300"
+                  >
+                    {item.trim()}
+                  </span>
+                ))}
+            </div>
+
+            {/* CTA */}
+            <div
+              className="animate-slide-up opacity-0"
+              style={{ animationDelay: "0.45s", animationFillMode: "forwards" }}
+            >
+              <Button
+                variant="hero"
+                size="xl"
+                asChild
+                className="group relative overflow-hidden hover:scale-105 transition-all duration-300 shadow-glow text-white font-semibold"
+              >
+                <a href="#contact" className="flex items-center gap-2">
+                  <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="relative z-10 text-white drop-shadow-sm">
+                    {t("cta")}
+                  </span>
+                  <ArrowIcon
+                    className={`relative z-10 w-5 h-5 text-white transition-transform duration-300 ${
+                      isRTL
+                        ? "group-hover:-translate-x-1"
+                        : "group-hover:translate-x-1"
+                    }`}
+                  />
+                </a>
+              </Button>
+            </div>
           </div>
 
-          <div className="text-center">
-            <Image
-              src="/images/front-pages/dashboard.png"
-              className="inline-block"
-              alt="dashboard-image"
-              width={848}
-              height={585}
-            />
-          </div>
-
-          <div className="absolute -z-[1] ltr:-right-[30px] rtl:-left-[30px] bottom-[50px] blur-[150px]">
-            <Image
-              src="/images/front-pages/shape3.png"
-              alt="shape3"
-              width={685}
-              height={685}
-            />
-          </div>
-          <div className="absolute -z-[1] ltr:left-[25px] rtl:right-[25px] -top-[210px] blur-[125px]">
-            <Image
-              src="/images/front-pages/shape2.png"
-              alt="shape3"
-              width={437}
-              height={453}
-            />
-          </div>
-          <div className="absolute -z-[1] ltr:right-[260px] rtl:left-[260px] -top-[125px] blur-[75px]">
-            <Image
-              src="/images/front-pages/shape4.png"
-              alt="shape3"
-              width={170}
-              height={170}
-            />
-          </div>
-          <div className="absolute -z-[1] ltr:-left-[50px] rtl:-right-[50px] bottom-0 blur-[75px]">
-            <Image
-              src="/images/front-pages/shape5.png"
-              alt="shape3"
-              width={658}
-              height={656}
-            />
+          {/* Video */}
+          <div className="flex-1 flex justify-center perspective-1000">
+            <div className="relative animate-float">
+              <div className="absolute inset-0 bg-purple-500/20 dark:bg-purple-500/40 blur-3xl rounded-full scale-75 animate-glow-pulse" />
+              <video
+                src="https://cdn.prod.website-files.com/64ef7d0d34ee51e7fdfd939c%2F6782cc6994f4276a731a21f7_f2-transcode.mp4"
+                title="عرض منيو إلكتروني QR Code للمطاعم"
+                className="relative z-10 w-full max-w-md md:max-w-lg lg:max-w-xl drop-shadow-2xl rounded-2xl hover:rotate-x-1 hover:-rotate-y-1 hover:scale-105 transition-transform duration-500"
+                muted
+                autoPlay
+                loop
+                playsInline
+                preload="metadata"
+              />
+              <div className="absolute -top-8 -right-8 w-16 h-16 bg-purple-500/20 dark:bg-purple-500/40 rounded-full blur-xl animate-float-delayed" />
+              <div
+                className="absolute -bottom-4 -left-4 w-12 h-12 bg-purple-500/30 dark:bg-purple-500/50 rounded-full blur-lg animate-float"
+                style={{ animationDelay: "0.5s" }}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
-export default HeroBanner;
+export default HeroSection;

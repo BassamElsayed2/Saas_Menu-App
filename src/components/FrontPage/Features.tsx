@@ -36,7 +36,7 @@ const featuresData: Feature[] = [
 
 const Features: React.FC = () => {
   return (
-    <>
+    <section id="features">
       <div className="relative z-[1] py-[60px] md:py-[80px] lg:py-[100px] xl:py-[150px]">
         <div className="container 2xl:max-w-[1320px] mx-auto px-[12px]">
           <div className="mx-auto text-center md:max-w-[650px] lg:max-w-[810px] xl:max-w-[785px] mb-[35px] md:mb-[50px] lg:mb-[65px] xl:mb-[90px]">
@@ -84,7 +84,7 @@ const Features: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
