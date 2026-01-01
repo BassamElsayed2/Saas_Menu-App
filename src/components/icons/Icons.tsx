@@ -163,3 +163,30 @@ export const Languages: React.FC<IconProps> = ({ size = 20, className = "" }) =>
     language
   </i>
 );
+
+export const Package: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    inventory_2
+  </i>
+);
+
+export const ListPlus: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    playlist_add
+  </i>
+);
+
+export const Share2: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    share
+  </i>
+);

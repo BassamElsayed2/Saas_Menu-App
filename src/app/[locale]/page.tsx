@@ -6,7 +6,7 @@ import Footer from "@/components/FrontPage/Footer";
 import HeroBanner from "@/components/FrontPage/HeroBanner";
 
 import Navbar from "@/components/Navbar";
-import OurTeam from "@/components/FrontPage/OurTeam";
+import HowItWorks from "@/components/FrontPage/HowItWorks";
 import FeaturesSection from "@/components/FrontPage/FeaturesSection";
 import TrustedBy from "@/components/FrontPage/TrustedBy";
 import { routing } from "@/i18n/routing";
@@ -29,7 +29,7 @@ export default function Home() {
 
         <FeaturesSection />
 
-        <OurTeam />
+        <HowItWorks />
 
         <Faq />
 
