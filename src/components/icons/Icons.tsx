@@ -91,3 +91,75 @@ export const Sparkles: React.FC<IconProps> = ({ size = 20, className = "" }) => 
     auto_awesome
   </i>
 );
+
+export const Palette: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    palette
+  </i>
+);
+
+export const BarChart3: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    bar_chart
+  </i>
+);
+
+export const CreditCard: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    credit_card
+  </i>
+);
+
+export const HeadphonesIcon: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    headphones
+  </i>
+);
+
+export const Building2: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    apartment
+  </i>
+);
+
+export const TrendingUp: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    trending_up
+  </i>
+);
+
+export const Settings: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    settings
+  </i>
+);
+
+export const Languages: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    language
+  </i>
+);

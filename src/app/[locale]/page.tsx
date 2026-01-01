@@ -7,7 +7,7 @@ import HeroBanner from "@/components/FrontPage/HeroBanner";
 
 import Navbar from "@/components/Navbar";
 import OurTeam from "@/components/FrontPage/OurTeam";
-import Testimonials from "@/components/FrontPage/Testimonials";
+import FeaturesSection from "@/components/FrontPage/FeaturesSection";
 import TrustedBy from "@/components/FrontPage/TrustedBy";
 import { routing } from "@/i18n/routing";
 
@@ -27,7 +27,7 @@ export default function Home() {
 
         <TrustedBy />
 
-        <Testimonials />
+        <FeaturesSection />
 
         <OurTeam />
 
