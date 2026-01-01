@@ -73,3 +73,21 @@ export const X: React.FC<IconProps> = ({ size = 24, className = "" }) => (
     close
   </i>
 );
+
+export const Check: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    check
+  </i>
+);
+
+export const Sparkles: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    auto_awesome
+  </i>
+);
