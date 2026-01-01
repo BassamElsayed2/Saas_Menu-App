@@ -217,3 +217,39 @@ export const Send: React.FC<IconProps> = ({ size = 20, className = "" }) => (
     send
   </i>
 );
+
+export const Mail: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    mail
+  </i>
+);
+
+export const Phone: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    phone
+  </i>
+);
+
+export const MapPin: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    location_on
+  </i>
+);
+
+export const Heart: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+  <i
+    className={`material-symbols-outlined ${className}`}
+    style={{ fontSize: size }}
+  >
+    favorite
+  </i>
+);

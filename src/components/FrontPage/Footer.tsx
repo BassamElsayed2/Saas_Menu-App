@@ -1,214 +1,173 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Mail, Phone, MapPin, Heart } from "@/components/icons/Icons";
 
-const Footer: React.FC = () => {
+const FooterSection = () => {
+  const t = useTranslations("Landing.footer");
+  const navT = useTranslations("navbar");
+  const currentYear = new Date().getFullYear();
+
+  const navLinks = [
+    { name: navT("home"), path: "#hero" },
+    { name: navT("features"), path: "#features" },
+    { name: navT("team"), path: "#how-it-works" },
+    { name: navT("faq"), path: "#packages" },
+    { name: navT("contact"), path: "#contact" }
+  ];
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    if (path.startsWith("#")) {
+      e.preventDefault();
+      const element = document.querySelector(path);
+      if (element) {
+        const navbarHeight = 100;
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - navbarHeight;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    }
+  };
+
   return (
-    <>
-      <div className="pt-[60px] md:pt-[80px] lg:pt-[100px] xl:pt-[150px] border-t border-gray-100 dark:border-[#172036]">
-        <div className="container 2xl:max-w-[1320px] mx-auto px-[12px]">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[25px]">
-            <div className="ltr:xl:-mr-[35px] rtl:xl:-ml-[35px]">
-              <Link
-                href="/"
-                className="inline-block max-w-[132px] mb-[20px] md:mb-[23px]"
-              >
-                <Image
-                  src="/images/logo-big.svg"
-                  alt="logo"
-                  className="inline-block dark:hidden"
-                  width={132}
-                  height={53}
-                />
-                <Image
-                  src="/images/white-logo-big.svg"
-                  alt="logo"
-                  className="hidden dark:inline-block"
-                  width={132}
-                  height={53}
-                />
-              </Link>
+    <footer className="bg-gray-900 dark:bg-[#0a0e1a] text-gray-300 py-8 relative overflow-hidden border-t border-gray-800 dark:border-gray-900">
+      {/* Background Animation */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl" />
+      </div>
 
-              <p className="leading-[1.6]">
-                With customizable dashboards tailored to your needs, collaborate
-                effortlessly with your team and stay ahead with real-time
-                updates.
-              </p>
-
-              <div className="mt-[20px] md:mt-[35px]">
-                <a
-                  href="https://www.facebook.com/"
-                  target="_blank"
-                  className="inline-block leading-none text-[20px] text-primary-600 transition-all hover:text-primary-500 ltr:mr-[8px] rtl:ml-[8px] ltr:last:mr-0 rtl:last:ml-0"
-                >
-                  <i className="ri-facebook-fill"></i>
-                </a>
-                <a
-                  href="https://x.com/?lang=en"
-                  target="_blank"
-                  className="inline-block leading-none text-[20px] text-primary-600 transition-all hover:text-primary-500 ltr:mr-[8px] rtl:ml-[8px] ltr:last:mr-0 rtl:last:ml-0"
-                >
-                  <i className="ri-twitter-x-fill"></i>
-                </a>
-                <a
-                  href="https://www.linkedin.com/"
-                  target="_blank"
-                  className="inline-block leading-none text-[20px] text-primary-600 transition-all hover:text-primary-500 ltr:mr-[8px] rtl:ml-[8px] ltr:last:mr-0 rtl:last:ml-0"
-                >
-                  <i className="ri-linkedin-fill"></i>
-                </a>
-                <a
-                  href="https://www.dribbble.com/"
-                  target="_blank"
-                  className="inline-block leading-none text-[20px] text-primary-600 transition-all hover:text-primary-500 ltr:mr-[8px] rtl:ml-[8px] ltr:last:mr-0 rtl:last:ml-0"
-                >
-                  <i className="ri-dribbble-fill"></i>
-                </a>
-              </div>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          {/* Logo & Description */}
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-3 mb-6 group">
+              <img
+                src="/images/landing-pages/ens-logo.png"
+                alt="ENS Logo"
+                className="h-12 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+              <span className="text-3xl font-bold text-gray-50 transition-colors duration-300 group-hover:text-purple-400">
+                ENS
+              </span>
             </div>
+            <p
+              className="text-gray-400 dark:text-gray-500 max-w-md mb-6 leading-relaxed text-base"
+              suppressHydrationWarning
+            >
+              {t("description")}
+            </p>
+          </div>
 
-            <div className="ltr:xl:pl-[142px] rtl:xl:pr-[142px]">
-              <h3 className="!leading-[1.2] !text-[16px] md:!text-lg !mb-[18px] !font-semibold">
-                Our Products
-              </h3>
-              <ul>
-                <li className="mb-[10px] last:mb-0">
-                  <Link
-                    href="/"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    Trezo Dashboard
-                  </Link>
-                </li>
-                <li className="mb-[10px] last:mb-0">
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-lg font-bold mb-6 text-purple-400" suppressHydrationWarning>
+              {t("quickLinks")}
+            </h4>
+            <ul className="space-y-3">
+              {navLinks.map((link) => (
+                <li key={link.path}>
                   <a
-                    href="#"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
+                    href={link.path}
+                    onClick={(e) => handleNavClick(e, link.path)}
+                    className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-400 transition-all duration-300 hover:translate-x-1 inline-block text-base cursor-pointer"
+                    suppressHydrationWarning
                   >
-                    Tagus Admin
+                    {link.name}
                   </a>
                 </li>
-                <li className="mb-[10px] last:mb-0">
-                  <a
-                    href="#"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    eCademy LMS
-                  </a>
-                </li>
-                <li className="mb-[10px] last:mb-0">
-                  <a
-                    href="#"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    Admash Template
-                  </a>
-                </li>
-              </ul>
-            </div>
+              ))}
+            </ul>
+          </div>
 
-            <div className="ltr:xl:pl-[130px] rtl:xl:pr-[130px]">
-              <h3 className="!leading-[1.2] !text-[16px] md:!text-lg !mb-[18px] !font-semibold">
-                Quick Links
-              </h3>
-              <ul>
-                <li className="mb-[10px] last:mb-0">
-                  <Link
-                    href="/"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li className="mb-[10px] last:mb-0">
-                  <Link
-                    href="/front-page/features/"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    Features
-                  </Link>
-                </li>
-                <li className="mb-[10px] last:mb-0">
-                  <Link
-                    href="/front-page/team"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    Our Team
-                  </Link>
-                </li>
-                <li className="mb-[10px] last:mb-0">
-                  <Link
-                    href="/front-page/contact"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className="ltr:xl:pl-[80px] rtl:xl:pr-[80px]">
-              <h3 className="!leading-[1.2] !text-[16px] md:!text-lg !mb-[18px] !font-semibold">
-                Privacy Policy
-              </h3>
-              <ul>
-                <li className="mb-[10px] last:mb-0">
-                  <Link
-                    href="/settings/terms-conditions/"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    Terms & Conditions
-                  </Link>
-                </li>
-                <li className="mb-[10px] last:mb-0">
-                  <a
-                    href="#"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    Cookie Policy
-                  </a>
-                </li>
-                <li className="mb-[10px] last:mb-0">
-                  <a
-                    href="#"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    Notice at Collection
-                  </a>
-                </li>
-                <li className="mb-[10px] last:mb-0">
-                  <Link
-                    href="/settings/privacy-policy/"
-                    className="lg:text-[16px] inline-block text-gray-500 dark:text-gray-400 transition-all hover:text-primary-600"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-              </ul>
-            </div>
+          {/* Contact Info */}
+          <div>
+            <h4 className="text-lg font-bold mb-6 text-purple-400" suppressHydrationWarning>
+              {t("contactUs")}
+            </h4>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 group">
+                <Phone className="w-5 h-5 text-purple-400 transition-transform duration-300 group-hover:scale-110" />
+                <a
+                  href="tel:+201000000000"
+                  className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-400 transition-colors text-base"
+                  dir="ltr"
+                >
+                  +20 100 000 0000
+                </a>
+              </li>
+              <li className="flex items-center gap-3 group">
+                <Mail className="w-5 h-5 text-purple-400 transition-transform duration-300 group-hover:scale-110" />
+                <a
+                  href="mailto:info@ens.com"
+                  className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-400 transition-colors text-base"
+                >
+                  info@ens.com
+                </a>
+              </li>
+              <li className="flex items-start gap-3 group">
+                <MapPin className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5 transition-transform duration-300 group-hover:scale-110" />
+                <span
+                  className="text-gray-400 dark:text-gray-500 text-base"
+                  suppressHydrationWarning
+                >
+                  {t("location")}
+                </span>
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="py-[15px] md:py-[20px] mt-[60px] md:mt-[80px] lg:mt-[100px] bg-white dark:bg-[#0c1427] text-center">
-          <div className="container 2xl:max-w-[1320px] mx-auto px-[12px]">
-            <p className="leading-[1.6]">
-              © <span className="text-purple-500">Trezo</span> is Proudly Owned
-              by{" "}
+        {/* Divider */}
+        <div className="border-t border-gray-800 dark:border-gray-900 pt-5">
+          <div className="flex flex-col items-center gap-6">
+            {/* Copyright - Center & Larger */}
+            <p
+              className="text-gray-500 dark:text-gray-600 text-base md:text-lg flex items-center gap-2 font-bold"
+              suppressHydrationWarning
+            >
+              © {currentYear}{" "}
               <a
-                href="https://envytheme.com/"
+                href="https://www.facebook.com/ENSEGYPTEG"
+                className="text-purple-400 hover:text-purple-300 transition-colors hover:underline"
                 target="_blank"
-                className="text-primary-500 transition-all hover:underline"
+                rel="noopener noreferrer"
               >
-                EnvyTheme
+                ENS
               </a>
+              <Heart className="w-5 h-5 text-purple-400 animate-pulse" />
+              {t("copyright")}
             </p>
+
+            {/* Links */}
+            <div className="flex gap-8">
+              <a
+                href="#"
+                className="text-gray-500 dark:text-gray-600 hover:text-purple-400 dark:hover:text-purple-400 text-sm transition-colors duration-300"
+                suppressHydrationWarning
+              >
+                {t("privacy")}
+              </a>
+              <a
+                href="#"
+                className="text-gray-500 dark:text-gray-600 hover:text-purple-400 dark:hover:text-purple-400 text-sm transition-colors duration-300"
+                suppressHydrationWarning
+              >
+                {t("terms")}
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </footer>
   );
 };
 
-export default Footer;
+export default FooterSection;

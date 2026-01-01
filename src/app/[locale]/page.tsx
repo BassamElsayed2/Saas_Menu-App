@@ -1,5 +1,4 @@
 import ContactSection from "@/components/FrontPage/ContactSection";
-import Cta from "@/components/FrontPage/Cta";
 import PricingSection from "@/components/FrontPage/PricingSection";
 import WhyUsSection from "@/components/FrontPage/WhyUsSection";
 import Footer from "@/components/FrontPage/Footer";
@@ -35,7 +34,6 @@ export default function Home() {
 
         <ContactSection />
 
-        <Cta />
 
         <Footer />
       </div>
