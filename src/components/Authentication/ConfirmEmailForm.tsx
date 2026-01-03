@@ -3,13 +3,15 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import api from "@/lib/api";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const ConfirmEmailForm: React.FC = () => {
   const locale = useLocale();
+  const t = useTranslations("ConfirmEmail");
+  const isRTL = locale === "ar";
   const searchParams = useSearchParams();
   
   const [token, setToken] = useState("");
@@ -19,6 +21,13 @@ const ConfirmEmailForm: React.FC = () => {
   const [error, setError] = useState("");
   const [resendLoading, setResendLoading] = useState(false);
   
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
   useEffect(() => {
     const tokenParam = searchParams?.get('token');
     const emailParam = searchParams?.get('email');
@@ -43,7 +52,7 @@ const ConfirmEmailForm: React.FC = () => {
       toast.error(result.error);
     } else {
       setVerified(true);
-      toast.success('تم التحقق من البريد بنجاح!');
+      toast.success(t("verificationSuccess"));
     }
     
     setLoading(false);
@@ -51,7 +60,7 @@ const ConfirmEmailForm: React.FC = () => {
   
   const handleResend = async () => {
     if (!email) {
-      toast.error('يرجى إدخال البريد الإلكتروني');
+      toast.error(t("enterEmail"));
       return;
     }
     
@@ -62,7 +71,7 @@ const ConfirmEmailForm: React.FC = () => {
     if (result.error) {
       toast.error(result.error);
     } else {
-      toast.success('تم إرسال رابط التحقق مرة أخرى');
+      toast.success(t("resendSuccess"));
     }
     
     setResendLoading(false);
@@ -71,187 +80,185 @@ const ConfirmEmailForm: React.FC = () => {
   // Still loading
   if (token && loading) {
     return (
-      <>
-        <Toaster position="top-center" />
-        <div className="auth-main-content bg-white dark:bg-[#0a0e19] py-[60px] md:py-[80px] lg:py-[135px]">
-          <div className="mx-auto px-[12.5px] md:max-w-[720px]">
-            <div className="text-center py-12">
-              <i className="ri-loader-4-line animate-spin text-6xl text-primary-500 mb-4"></i>
-              <h2 className="text-2xl font-semibold mb-2">جاري التحقق...</h2>
-              <p className="text-gray-500">يرجى الانتظار</p>
-            </div>
-          </div>
+      <main className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-20 h-20 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-gray-500 dark:text-gray-400 text-lg animate-pulse">{t("verifying")}</p>
         </div>
-      </>
+      </main>
     );
   }
 
   // Verification successful
   if (verified) {
     return (
-      <>
-        <Toaster position="top-center" />
-        <div className="auth-main-content bg-white dark:bg-[#0a0e19] py-[60px] md:py-[80px] lg:py-[135px]">
-          <div className="mx-auto px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px]">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-center">
-              <div className="xl:ltr:-mr-[25px] xl:rtl:-ml-[25px] 2xl:ltr:-mr-[45px] 2xl:rtl:-ml-[45px] rounded-[25px] order-2 lg:order-1">
-                <Image
-                  src="/images/confirm-email.jpg"
-                  alt="email-verified"
-                  className="rounded-[25px]"
-                  width={646}
-                  height={804}
-                />
+      <main className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] relative overflow-hidden transition-colors duration-300">
+        {/* Ambient Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 right-10 w-72 h-72 bg-green-500/10 dark:bg-green-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 left-10 w-96 h-96 bg-green-500/5 dark:bg-green-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+        </div>
+
+        <div className="container mx-auto px-4 py-10 relative z-10 flex items-center justify-center min-h-screen">
+          <div className="max-w-md mx-auto animate-slide-up w-full">
+            <div className="bg-white/90 dark:bg-[#0c1427]/90 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-2xl dark:shadow-primary-500/5 p-8 md:p-10 text-center">
+              {/* Success Icon */}
+              <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-full flex items-center justify-center">
+                <i className="ri-checkbox-circle-line text-5xl text-green-600 dark:text-green-400"></i>
               </div>
 
-              <div className="xl:ltr:pl-[90px] xl:rtl:pr-[90px] 2xl:ltr:pl-[120px] 2xl:rtl:pr-[120px] order-1 lg:order-2">
-                <div className="text-center lg:text-right">
-                  <div className="inline-block p-4 bg-green-100 dark:bg-green-900/30 rounded-full mb-6">
-                    <i className="ri-checkbox-circle-line text-6xl text-green-600 dark:text-green-400"></i>
-                  </div>
-                  
-                  <h1 className="!font-semibold !text-[22px] md:!text-xl lg:!text-2xl mb-4">
-                    تم التحقق بنجاح!
-                  </h1>
-                  
-                  <p className="text-gray-600 dark:text-gray-400 mb-8">
-                    تم التحقق من بريدك الإلكتروني بنجاح. يمكنك الآن تسجيل الدخول والبدء في استخدام التطبيق.
-                  </p>
-                  
-                  <Link
-                    href={`/${locale}/authentication/sign-in`}
-                    className="inline-block px-8 py-3 bg-primary-500 text-white rounded-md hover:bg-primary-400 transition-all font-semibold"
-                  >
-                    تسجيل الدخول
-                  </Link>
-                </div>
-              </div>
+              <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+                {t("successTitle")}
+              </h1>
+              
+              <p className="text-gray-500 dark:text-gray-400 mb-8">
+                {t("successDescription")}
+              </p>
+              
+              <Link
+                href={`/${locale}/authentication/sign-in`}
+                className="inline-flex items-center justify-center gap-2 w-full h-12 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500 text-white font-semibold shadow-lg shadow-primary-500/25 hover:shadow-xl hover:scale-[1.02] transition-all"
+              >
+                <i className="ri-login-box-line text-xl"></i>
+                {t("loginButton")}
+              </Link>
             </div>
           </div>
         </div>
-      </>
+      </main>
     );
   }
 
-  // Verification failed or no token
+  // Verification failed or no token - show waiting/resend screen
   return (
-    <>
-      <Toaster position="top-center" />
-      
-      <div className="auth-main-content bg-white dark:bg-[#0a0e19] py-[60px] md:py-[80px] lg:py-[135px]">
-        <div className="mx-auto px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-center">
-            <div className="xl:ltr:-mr-[25px] xl:rtl:-ml-[25px] 2xl:ltr:-mr-[45px] 2xl:rtl:-ml-[45px] rounded-[25px] order-2 lg:order-1">
+    <main className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] relative overflow-hidden transition-colors duration-300">
+      {/* Ambient Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 ltr:right-10 rtl:left-10 w-72 h-72 bg-primary-500/10 dark:bg-primary-500/20 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-20 ltr:left-10 rtl:right-10 w-96 h-96 bg-primary-500/5 dark:bg-primary-400/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-200/30 dark:bg-purple-900/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-4 py-10 relative z-10">
+        {/* Top Bar - Back Button */}
+        <div className="flex items-center justify-between mb-8">
+          <Link
+            href={`/${locale}/authentication/sign-in`}
+            className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition group"
+          >
+            <i className={`ri-arrow-${isRTL ? 'right' : 'left'}-line text-xl transition-transform ${isRTL ? 'group-hover:translate-x-1' : 'group-hover:-translate-x-1'}`}></i>
+            {t("backToLogin")}
+          </Link>
+        </div>
+
+        {/* Card with Animation */}
+        <div className="max-w-md mx-auto animate-slide-up">
+          <div className="bg-white/90 dark:bg-[#0c1427]/90 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-2xl dark:shadow-primary-500/5 p-8 md:p-10">
+            {/* Logo */}
+            <div className="flex justify-center mb-6">
               <Image
-                src="/images/confirm-email.jpg"
-                alt="confirm-email"
-                className="rounded-[25px]"
-                width={646}
-                height={804}
+                src="/images/ENS.png"
+                alt="logo"
+                className="h-16 w-auto dark:hidden"
+                width={160}
+                height={64}
+              />
+              <Image
+                src="/images/ENS.png"
+                alt="logo"
+                className="h-16 w-auto hidden dark:block"
+                width={160}
+                height={64}
               />
             </div>
 
-            <div className="xl:ltr:pl-[90px] xl:rtl:pr-[90px] 2xl:ltr:pl-[120px] 2xl:rtl:pr-[120px] order-1 lg:order-2">
-              <Image
-                src="/images/logo-big.svg"
-                alt="logo"
-                className="inline-block dark:hidden"
-                width={142}
-                height={38}
-              />
-              <Image
-                src="/images/white-logo-big.svg"
-                alt="logo"
-                className="hidden dark:inline-block"
-                width={142}
-                height={38}
-              />
-
-              <div className="my-[17px] md:my-[25px]">
-                <h1 className="!font-semibold !text-[22px] md:!text-xl lg:!text-2xl !mb-[5px] md:!mb-[7px]">
-                  التحقق من البريد الإلكتروني
-                </h1>
-                <p className="text-gray-500 dark:text-gray-400">
-                  {error 
-                    ? "حدث خطأ في التحقق. يرجى طلب رابط جديد."
-                    : "تحقق من بريدك الإلكتروني واضغط على الرابط"}
-                </p>
+            {/* Icon */}
+            <div className="flex justify-center mb-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30 rounded-full flex items-center justify-center">
+                <i className="ri-mail-check-line text-4xl text-primary-500 dark:text-primary-400"></i>
               </div>
+            </div>
 
-              {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 mb-6">
-                  <div className="flex items-start gap-3">
-                    <i className="ri-error-warning-line text-2xl text-red-600 dark:text-red-400"></i>
-                    <div>
-                      <h3 className="font-semibold text-red-900 dark:text-red-100 mb-1">
-                        فشل التحقق
-                      </h3>
-                      <p className="text-sm text-red-700 dark:text-red-300">
-                        {error}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-6 mb-6">
-                <div className="flex items-start gap-3 mb-4">
-                  <i className="ri-mail-line text-3xl text-blue-600 dark:text-blue-400"></i>
-                  <div>
-                    <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-                      لم تستلم البريد؟
-                    </h3>
-                    <p className="text-sm text-blue-700 dark:text-blue-300 mb-4">
-                      تحقق من مجلد الرسائل غير المرغوب فيها، أو يمكنك طلب إرسال الرابط مرة أخرى
-                    </p>
-                    
-                    <div className="flex flex-col gap-3">
-                      <input
-                        type="email"
-                        className="h-[45px] rounded-md text-black dark:text-white border border-blue-200 dark:border-blue-800 bg-white dark:bg-[#0c1427] px-[15px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400"
-                        placeholder="أدخل بريدك الإلكتروني"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        disabled={resendLoading}
-                      />
-                      
-                      <button
-                        onClick={handleResend}
-                        className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-all disabled:bg-gray-400"
-                        disabled={resendLoading}
-                      >
-                        {resendLoading ? (
-                          <span className="flex items-center justify-center gap-2">
-                            <i className="ri-loader-4-line animate-spin"></i>
-                            جاري الإرسال...
-                          </span>
-                        ) : (
-                          <span className="flex items-center justify-center gap-2">
-                            <i className="ri-mail-send-line"></i>
-                            إعادة إرسال الرابط
-                          </span>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <p className="text-center">
-                <Link
-                  href={`/${locale}/authentication/sign-in`}
-                  className="text-primary-500 transition-all font-semibold hover:underline"
-                >
-                  العودة لتسجيل الدخول
-                </Link>
+            {/* Title */}
+            <div className="text-center mb-6">
+              <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
+                {t("title")}
+              </h1>
+              <p className="text-gray-500 dark:text-gray-400">
+                {error ? t("errorMessage") : t("subtitle")}
               </p>
+            </div>
+
+            {error && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-xl p-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <i className="ri-error-warning-line text-2xl text-red-600 dark:text-red-400"></i>
+                  <div>
+                    <h3 className="font-semibold text-red-900 dark:text-red-100">
+                      {t("errorTitle")}
+                    </h3>
+                    <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Resend Section */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-xl p-6 space-y-4">
+              <div className="flex items-center gap-3">
+                <i className="ri-mail-line text-2xl text-blue-600 dark:text-blue-400"></i>
+                <h3 className="font-semibold text-blue-900 dark:text-blue-100">
+                  {t("didntReceive")}
+                </h3>
+              </div>
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                {t("checkSpam")}
+              </p>
+              
+              <div className="space-y-3">
+                <input
+                  type="email"
+                  className="h-12 w-full rounded-lg bg-white dark:bg-[#0a0e19] border border-blue-200 dark:border-blue-800 px-4 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-500 dark:focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+                  placeholder={t("emailPlaceholder")}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={resendLoading}
+                />
+                
+                <button
+                  onClick={handleResend}
+                  className="w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
+                  disabled={resendLoading}
+                >
+                  {resendLoading ? (
+                    <>
+                      <i className="ri-loader-4-line animate-spin text-xl"></i>
+                      {t("sending")}
+                    </>
+                  ) : (
+                    <>
+                      <i className="ri-mail-send-line text-xl"></i>
+                      {t("resendButton")}
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+              <Link
+                href={`/${locale}/authentication/sign-in`}
+                className="text-primary-500 dark:text-primary-400 font-medium hover:underline"
+              >
+                {t("backToLoginLink")}
+              </Link>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 
 export default ConfirmEmailForm;
-
