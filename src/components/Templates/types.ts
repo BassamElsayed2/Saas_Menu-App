@@ -11,6 +11,11 @@ export interface MenuItem {
   categoryName?: string;
   originalPrice?: number;
   discountPercent?: number;
+  isHot?: boolean;
+  isVegetarian?: boolean;
+  isBestSeller?: boolean;
+  prepTime?: string;
+  calories?: string;
 }
 
 export interface Category {
@@ -30,6 +35,29 @@ export interface Branch {
   longitude: string;
 }
 
+export type AdPosition = "after-hero" | "mid-menu" | "pre-footer";
+
+export interface Ad {
+  id: number;
+  position: AdPosition;
+  image: string;
+  title: {
+    ar: string;
+    en: string;
+  };
+  description: {
+    ar: string;
+    en: string;
+  };
+  buttonText: {
+    ar: string;
+    en: string;
+  };
+  link: string;
+  bgColor: string;
+  isActive: boolean;
+}
+
 export interface MenuData {
   menu: {
     id: number;
@@ -39,11 +67,13 @@ export interface MenuData {
     theme: string;
     slug: string;
     isActive: boolean;
+    ownerPlanType?: string;
   };
   categories?: Category[];
   items: MenuItem[];
   itemsByCategory: Record<string, MenuItem[]>;
   branches: Branch[];
+  ads?: Ad[];
   rating: {
     average: number;
     total: number;

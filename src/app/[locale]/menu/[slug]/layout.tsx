@@ -3,6 +3,9 @@ import { getLocale } from "next-intl/server";
 
 export const dynamic = "force-dynamic";
 
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+
 interface LayoutProps {
   children: React.ReactNode;
   params: Promise<{ slug: string }>;
@@ -18,7 +21,7 @@ export async function generateMetadata({
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/public/menu/${slug}?locale=${locale}`,
+      `${API_BASE_URL}/public/menu/${slug}?locale=${locale}`,
       {
         cache: "no-store", // Always fetch fresh data for metadata
       }

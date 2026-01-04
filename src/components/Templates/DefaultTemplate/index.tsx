@@ -48,7 +48,6 @@ export default function DefaultTemplate({
         />
         <AdBanner 
           items={discountedItems} 
-          ownerPlanType={menuData.menu.ownerPlanType}
           menuId={menuData.menu.id}
         />
         <MenuSection
