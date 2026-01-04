@@ -46,8 +46,8 @@ export default function DefaultTemplate({
           logo={menuData.menu.logo}
           rating={menuData.rating}
         />
-        <AdBanner 
-          items={discountedItems} 
+        <AdBanner
+          items={discountedItems}
           ownerPlanType={menuData.menu.ownerPlanType}
           menuId={menuData.menu.id}
         />
@@ -60,7 +60,8 @@ export default function DefaultTemplate({
         <OffersSection items={discountedItems} />
         {/* <ENSServicesSection /> */}
         <Footer menuName={menuData.menu.name} branches={menuData.branches} />
-        <ENSFixedBanner />
+        {/* Show ENS Banner only for free users */}
+        {menuData.menu.ownerPlanType === "free" && <ENSFixedBanner />}
       </div>
     </LanguageProvider>
   );

@@ -42,15 +42,20 @@ export default function UserProfilePage() {
 
   const planInfo = {
     free: { name: t("freePlan"), color: "gray", price: "$0/month" },
-    starter: { name: t("starterPlan"), color: "blue", price: "$9/month" },
-    professional: {
+    monthly: {
       name: t("professionalPlan"),
       color: "purple",
       price: "$29/month",
     },
+    yearly: {
+      name: t("professionalPlan"),
+      color: "purple",
+      price: "$199/year",
+    },
   };
 
-  const currentPlan = subscription?.plan?.toLowerCase() || "free";
+  // Use billingCycle to determine the plan type
+  const currentPlan = subscription?.billingCycle?.toLowerCase() || "free";
   const plan = planInfo[currentPlan as keyof typeof planInfo] || planInfo.free;
 
   return (
@@ -222,7 +227,7 @@ export default function UserProfilePage() {
                 </h3>
                 <div className="space-y-3">
                   {/* Role */}
-                  <div className="flex items-center">
+                  {/* <div className="flex items-center">
                     <svg
                       className="w-5 h-5 text-gray-400 mr-3"
                       fill="none"
@@ -244,7 +249,7 @@ export default function UserProfilePage() {
                         {user.role}
                       </p>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Member Since */}
                   <div className="flex items-center">
@@ -332,7 +337,7 @@ export default function UserProfilePage() {
             </div>
             {/* Email Verification */}
             <div className="flex mt-10 items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
-              <span className="text-sm text-gray-600 dark:text-gray-300">
+              <span className="text-sm text-gray-600 dark:text-gray-300 mb-3">
                 {t("emailVerification")}
               </span>
               <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">
@@ -352,96 +357,120 @@ export default function UserProfilePage() {
           </div>
         </div>
 
-        {/* Subscription Card */}
-        <div className="rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              {t("subscription")}
-            </h3>
-            <button
-              onClick={() =>
-                router.push(`/${locale}/dashboard/profile/edit#subscription`)
-              }
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-            >
-              {t("manageSubscription")} →
-            </button>
-          </div>
-
-          {loadingSubscription ? (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+        {/* Subscription Card - Only for regular users, not admins */}
+        {user.role !== "admin" && (
+          <div className="rounded-lg shadow p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                {t("subscription")}
+              </h3>
+              <button
+                onClick={() =>
+                  router.push(`/${locale}/dashboard/profile/edit#subscription`)
+                }
+                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              >
+                {t("manageSubscription")} →
+              </button>
             </div>
-          ) : (
-            <div>
-              {/* Current Plan */}
-              <div className={`border-2  rounded-lg p-6 mb-4`}>
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h4 className="text-2xl font-bold text-gray-900 dark:text-white">
-                      {plan.name}
-                    </h4>
-                    <p className="text-gray-600 dark:text-gray-300 mt-1">
-                      {plan.price}
-                    </p>
+
+            {loadingSubscription ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+              </div>
+            ) : (
+              <div>
+                {/* Current Plan */}
+                <div className={`border-2  rounded-lg p-6 mb-4`}>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h4 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {plan.name}
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-300 mt-1">
+                        {plan.price}
+                      </p>
+                    </div>
+                    <div
+                      className={`px-4 py-2  text-black dark:text-white rounded-lg font-semibold`}
+                    >
+                      {t("currentPlan")}
+                    </div>
                   </div>
-                  <div
-                    className={`px-4 py-2  text-black dark:text-white rounded-lg font-semibold`}
-                  >
-                    {t("currentPlan")}
-                  </div>
+
+                  {subscription && (
+                    <div className="space-y-2 text-sm">
+                      <p className="text-gray-600 dark:text-gray-300">
+                        <span className="font-medium">{t("status")}:</span>{" "}
+                        <span className="capitalize">
+                          {subscription.status}
+                        </span>
+                      </p>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        <span className="font-medium">
+                          {t("billingCycle")}:
+                        </span>{" "}
+                        <span className="capitalize">
+                          {subscription.billingCycle}
+                        </span>
+                      </p>
+                      {subscription.billingCycle !== "free" && (
+                        <>
+                          <p className="text-gray-600 dark:text-gray-300">
+                            <span className="font-medium">{t("started")}:</span>{" "}
+                            {new Date(
+                              subscription.startDate
+                            ).toLocaleDateString("ar-EG", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })}
+                          </p>
+                          {subscription.endDate && (
+                            <p className="text-gray-600 dark:text-gray-300">
+                              <span className="font-medium">
+                                {t("renews")}:
+                              </span>{" "}
+                              {new Date(
+                                subscription.endDate
+                              ).toLocaleDateString("ar-EG", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })}
+                            </p>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
 
-                {subscription && (
-                  <div className="space-y-2 text-sm">
-                    <p className="text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">{t("status")}:</span>{" "}
-                      <span className="capitalize">{subscription.status}</span>
+                {/* Upgrade Options */}
+                {currentPlan === "free" && (
+                  <div className=" border border-blue-200 rounded-lg p-6">
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      {t("upgradeTitle")}
+                    </h4>
+                    <p className="text-gray-600 dark:text-gray-300 mb-4">
+                      {t("upgradeDescription")}
                     </p>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">{t("billingCycle")}:</span>{" "}
-                      <span className="capitalize">
-                        {subscription.billingCycle}
-                      </span>
-                    </p>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">{t("started")}:</span>{" "}
-                      {new Date(subscription.startDate).toLocaleDateString()}
-                    </p>
-                    {subscription.endDate && (
-                      <p className="text-gray-600 dark:text-gray-300">
-                        <span className="font-medium">{t("renews")}:</span>{" "}
-                        {new Date(subscription.endDate).toLocaleDateString()}
-                      </p>
-                    )}
+                    <button
+                      onClick={() =>
+                        router.push(
+                          `/${locale}/dashboard/profile/edit#subscription`
+                        )
+                      }
+                      className="px-6 py-2  text-black dark:text-white rounded-md hover:bg-blue-700 hover:text-white transition-colors"
+                    >
+                      {t("viewPlans")}
+                    </button>
                   </div>
                 )}
               </div>
-
-              {/* Upgrade Options */}
-              {currentPlan === "free" && (
-                <div className=" border border-blue-200 rounded-lg p-6">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                    {t("upgradeTitle")}
-                  </h4>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    {t("upgradeDescription")}
-                  </p>
-                  <button
-                    onClick={() =>
-                      router.push(
-                        `/${locale}/dashboard/profile/edit#subscription`
-                      )
-                    }
-                    className="px-6 py-2  text-black dark:text-white rounded-md hover:bg-blue-700 hover:text-white transition-colors"
-                  >
-                    {t("viewPlans")}
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );

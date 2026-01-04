@@ -30,6 +30,12 @@ export default function AdsManagement() {
   const [ads, setAds] = useState<Ad[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingAd, setEditingAd] = useState<Ad | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [adToDelete, setAdToDelete] = useState<Ad | null>(null);
+  const [showToggleModal, setShowToggleModal] = useState(false);
+  const [adToToggle, setAdToToggle] = useState<Ad | null>(null);
   const [formData, setFormData] = useState({
     title: "",
     titleAr: "",
@@ -85,34 +91,54 @@ export default function AdsManagement() {
     }
   };
 
-  const handleToggleActive = async (adId: number, isActive: boolean) => {
+  const handleToggleActive = (ad: Ad) => {
+    setAdToToggle(ad);
+    setShowToggleModal(true);
+  };
+
+  const confirmToggleActive = async () => {
+    if (!adToToggle) return;
+
     try {
       const token =
         localStorage.getItem("auth_token") ||
         localStorage.getItem("accessToken");
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/ads/${adId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/ads/${adToToggle.id}`,
         {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ isActive: !isActive }),
+          body: JSON.stringify({ isActive: !adToToggle.isActive }),
         }
       );
 
       if (response.ok) {
-        fetchAds(); // Refresh list
+        toast.success(
+          adToToggle.isActive ? "تم تعطيل الإعلان ✓" : "تم تفعيل الإعلان ✓"
+        );
+        fetchAds();
+        setShowToggleModal(false);
+        setAdToToggle(null);
+      } else {
+        toast.error("فشل تحديث الإعلان");
       }
     } catch (error) {
       console.error("Error updating ad:", error);
+      toast.error("حدث خطأ أثناء تحديث الإعلان");
     }
   };
 
-  const handleDeleteAd = async (adId: number) => {
-    if (!confirm("هل أنت متأكد من حذف هذا الإعلان؟")) return;
+  const handleDeleteAd = (ad: Ad) => {
+    setAdToDelete(ad);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteAd = async () => {
+    if (!adToDelete) return;
 
     try {
       const token =
@@ -120,7 +146,7 @@ export default function AdsManagement() {
         localStorage.getItem("accessToken");
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/ads/${adId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/ads/${adToDelete.id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -128,10 +154,96 @@ export default function AdsManagement() {
       );
 
       if (response.ok) {
-        fetchAds(); // Refresh list
+        toast.success("تم حذف الإعلان بنجاح ✓");
+        fetchAds();
+        setShowDeleteModal(false);
+        setAdToDelete(null);
+      } else {
+        toast.error("فشل حذف الإعلان");
       }
     } catch (error) {
       console.error("Error deleting ad:", error);
+      toast.error("حدث خطأ أثناء حذف الإعلان");
+    }
+  };
+
+  const handleEditAd = (ad: Ad) => {
+    setEditingAd(ad);
+    setFormData({
+      title: ad.title || "",
+      titleAr: ad.titleAr || "",
+      content: ad.content || "",
+      contentAr: ad.contentAr || "",
+      imageUrl: ad.imageUrl || "",
+      linkUrl: ad.linkUrl || "",
+      position: ad.position || "banner",
+      isActive: ad.isActive,
+      displayOrder: 0,
+    });
+    setImagePreview(ad.imageUrl || "");
+    setShowEditModal(true);
+  };
+
+  const handleUpdateAd = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingAd) return;
+
+    try {
+      // Upload image first if exists
+      let uploadedImageUrl = formData.imageUrl;
+      if (imageFile) {
+        const url = await uploadImageFile();
+        if (!url) {
+          toast.error("فشل رفع الصورة");
+          return;
+        }
+        uploadedImageUrl = url;
+      }
+
+      const token =
+        localStorage.getItem("auth_token") ||
+        localStorage.getItem("accessToken");
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/ads/${editingAd.id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+            imageUrl: uploadedImageUrl,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        toast.success("تم تحديث الإعلان بنجاح ✨");
+        setShowEditModal(false);
+        setEditingAd(null);
+        setFormData({
+          title: "",
+          titleAr: "",
+          content: "",
+          contentAr: "",
+          imageUrl: "",
+          linkUrl: "",
+          position: "banner",
+          isActive: true,
+          displayOrder: 0,
+        });
+        setImageFile(null);
+        setImagePreview("");
+        fetchAds();
+      } else {
+        const error = await response.json();
+        toast.error(error.error || "فشل تحديث الإعلان");
+      }
+    } catch (error) {
+      console.error("Error updating ad:", error);
+      toast.error("حدث خطأ أثناء تحديث الإعلان");
     }
   };
 
@@ -334,7 +446,7 @@ export default function AdsManagement() {
                     onChange={(e) =>
                       setFormData({ ...formData, title: e.target.value })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="form-input"
                   />
                 </div>
 
@@ -350,7 +462,7 @@ export default function AdsManagement() {
                       setFormData({ ...formData, titleAr: e.target.value })
                     }
                     required
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="form-input"
                   />
                 </div>
 
@@ -424,7 +536,7 @@ export default function AdsManagement() {
                       setFormData({ ...formData, linkUrl: e.target.value })
                     }
                     placeholder="https://example.com"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="form-input"
                   />
                 </div>
 
@@ -438,7 +550,7 @@ export default function AdsManagement() {
                     onChange={(e) =>
                       setFormData({ ...formData, position: e.target.value })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="form-input"
                   >
                     <option value="banner">بانر</option>
                     <option value="header">رأس الصفحة</option>
@@ -461,7 +573,7 @@ export default function AdsManagement() {
                         displayOrder: parseInt(e.target.value) || 0,
                       })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="form-input"
                   />
                 </div>
 
@@ -579,11 +691,14 @@ export default function AdsManagement() {
 
                     {/* Actions */}
                     <div className="flex gap-2">
-                      <button className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                      <button
+                        onClick={() => handleEditAd(ad)}
+                        className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
                         تعديل
                       </button>
                       <button
-                        onClick={() => handleToggleActive(ad.id, ad.isActive)}
+                        onClick={() => handleToggleActive(ad)}
                         className={`px-4 py-2 text-sm rounded-lg transition-colors ${
                           ad.isActive
                             ? "bg-yellow-600 text-white hover:bg-yellow-700"
@@ -593,7 +708,7 @@ export default function AdsManagement() {
                         {ad.isActive ? "تعطيل" : "تفعيل"}
                       </button>
                       <button
-                        onClick={() => handleDeleteAd(ad.id)}
+                        onClick={() => handleDeleteAd(ad)}
                         className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                       >
                         حذف
@@ -615,6 +730,256 @@ export default function AdsManagement() {
             ))
           )}
         </div>
+
+        {/* Edit Modal */}
+        {showEditModal && editingAd && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-[#0c1427] rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                تعديل الإعلان
+              </h2>
+              <form onSubmit={handleUpdateAd} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* English Title */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      العنوان بالإنجليزية
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.title}
+                      onChange={(e) =>
+                        setFormData({ ...formData, title: e.target.value })
+                      }
+                      className="form-input"
+                    />
+                  </div>
+
+                  {/* Arabic Title */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      العنوان بالعربية *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.titleAr}
+                      onChange={(e) =>
+                        setFormData({ ...formData, titleAr: e.target.value })
+                      }
+                      required
+                      className="form-input"
+                    />
+                  </div>
+
+                  {/* English Content */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      المحتوى بالإنجليزية
+                    </label>
+                    <textarea
+                      value={formData.content}
+                      onChange={(e) =>
+                        setFormData({ ...formData, content: e.target.value })
+                      }
+                      rows={3}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    />
+                  </div>
+
+                  {/* Arabic Content */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      المحتوى بالعربية
+                    </label>
+                    <textarea
+                      value={formData.contentAr}
+                      onChange={(e) =>
+                        setFormData({ ...formData, contentAr: e.target.value })
+                      }
+                      rows={3}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    />
+                  </div>
+
+                  {/* Image Upload */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      تغيير صورة الإعلان
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    />
+                    {imagePreview && (
+                      <div className="mt-3">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-full max-w-md h-48 object-cover rounded-lg"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Link URL */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      رابط الإعلان
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.linkUrl}
+                      onChange={(e) =>
+                        setFormData({ ...formData, linkUrl: e.target.value })
+                      }
+                      className="form-input"
+                    />
+                  </div>
+
+                  {/* Position */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      موضع الإعلان
+                    </label>
+                    <select
+                      value={formData.position}
+                      onChange={(e) =>
+                        setFormData({ ...formData, position: e.target.value })
+                      }
+                      className="form-input"
+                    >
+                      <option value="banner">بانر</option>
+                      <option value="header">رأس الصفحة</option>
+                      <option value="sidebar">الشريط الجانبي</option>
+                      <option value="footer">تذييل الصفحة</option>
+                    </select>
+                  </div>
+
+                  {/* Is Active */}
+                  <div className="flex items-center pt-8">
+                    <input
+                      type="checkbox"
+                      id="isActiveEdit"
+                      checked={formData.isActive}
+                      onChange={(e) =>
+                        setFormData({ ...formData, isActive: e.target.checked })
+                      }
+                      className="w-4 h-4 text-blue-600"
+                    />
+                    <label
+                      htmlFor="isActiveEdit"
+                      className="mr-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
+                      تفعيل الإعلان
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 pt-4">
+                  <button
+                    type="submit"
+                    disabled={uploadingImage}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                  >
+                    {uploadingImage ? "جاري رفع الصورة..." : "حفظ التعديلات"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowEditModal(false);
+                      setEditingAd(null);
+                      setImageFile(null);
+                      setImagePreview("");
+                    }}
+                    className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300"
+                  >
+                    إلغاء
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Toggle Confirmation Modal */}
+        {showToggleModal && adToToggle && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+            <div className="bg-white dark:bg-[#0c1427] rounded-lg shadow-xl max-w-md w-full p-6">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                تأكيد العملية
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                هل أنت متأكد من{" "}
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {adToToggle.isActive ? "تعطيل" : "تفعيل"}
+                </span>{" "}
+                الإعلان:{" "}
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {adToToggle.titleAr}
+                </span>
+                ؟
+              </p>
+              <div className="flex gap-3 justify-end">
+                <button
+                  onClick={() => {
+                    setShowToggleModal(false);
+                    setAdToToggle(null);
+                  }}
+                  className="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300"
+                >
+                  إلغاء
+                </button>
+                <button
+                  onClick={confirmToggleActive}
+                  className={`px-4 py-2 text-sm text-white rounded-lg transition-colors ${
+                    adToToggle.isActive
+                      ? "bg-yellow-600 hover:bg-yellow-700"
+                      : "bg-green-600 hover:bg-green-700"
+                  }`}
+                >
+                  {adToToggle.isActive ? "تعطيل" : "تفعيل"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteModal && adToDelete && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+            <div className="bg-white dark:bg-[#0c1427] rounded-lg shadow-xl max-w-md w-full p-6">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                تأكيد الحذف
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                هل أنت متأكد من حذف الإعلان:{" "}
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {adToDelete.titleAr}
+                </span>
+                ؟ لا يمكن التراجع عن هذا الإجراء.
+              </p>
+              <div className="flex gap-3 justify-end">
+                <button
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setAdToDelete(null);
+                  }}
+                  className="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300"
+                >
+                  إلغاء
+                </button>
+                <button
+                  onClick={confirmDeleteAd}
+                  className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700"
+                >
+                  حذف
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

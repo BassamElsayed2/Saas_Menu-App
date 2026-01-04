@@ -39,9 +39,10 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
   }, []);
 
   // Use current menu ID if available, otherwise use last menu ID for profile pages
+  // Admin users should never see menu-specific sidebar
   const isProfilePage = pathname.includes("/profile/");
   const menuId =
-    currentMenuId || (isProfilePage && lastMenuId ? lastMenuId : null);
+    currentMenuId || (isProfilePage && lastMenuId && user?.role !== "admin" ? lastMenuId : null);
 
   // Determine menu items based on context
   const menuItems = menuId

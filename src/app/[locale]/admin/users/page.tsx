@@ -24,6 +24,12 @@ export default function UsersManagement() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<{
+    id: number;
+    name: string;
+    isSuspended: boolean;
+  } | null>(null);
 
   useEffect(() => {
     // Wait for auth to load
@@ -65,26 +71,39 @@ export default function UsersManagement() {
     }
   };
 
-  const handleSuspendToggle = async (userId: number, isSuspended: boolean) => {
+  const handleSuspendToggle = (
+    userId: number,
+    name: string,
+    isSuspended: boolean
+  ) => {
+    setSelectedUser({ id: userId, name, isSuspended });
+    setShowConfirmModal(true);
+  };
+
+  const confirmSuspendToggle = async () => {
+    if (!selectedUser) return;
+
     try {
       const token =
         localStorage.getItem("auth_token") ||
         localStorage.getItem("accessToken");
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/users/${userId}/suspend`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/users/${selectedUser.id}/suspend`,
         {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ isSuspended: !isSuspended }),
+          body: JSON.stringify({ isSuspended: !selectedUser.isSuspended }),
         }
       );
 
       if (response.ok) {
         fetchUsers(); // Refresh list
+        setShowConfirmModal(false);
+        setSelectedUser(null);
       }
     } catch (error) {
       console.error("Error updating user:", error);
@@ -134,7 +153,7 @@ export default function UsersManagement() {
               placeholder="بحث بالاسم أو البريد الإلكتروني..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full md:w-96 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+              className="form-input"
             />
           </div>
         </div>
@@ -260,16 +279,16 @@ export default function UsersManagement() {
                             onClick={() =>
                               router.push(`/${locale}/admin/users/${u.id}`)
                             }
-                            className="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                            className="font-normal inline-block transition-all rounded-md md:text-md py-[10px]  px-[20px]  bg-primary-500 text-white hover:bg-primary-400"
                           >
                             عرض
                           </button>
                           {u.role !== "admin" && (
                             <button
                               onClick={() =>
-                                handleSuspendToggle(u.id, u.isSuspended)
+                                handleSuspendToggle(u.id, u.name, u.isSuspended)
                               }
-                              className={`px-3 py-1 text-xs rounded transition-colors ${
+                              className={` font-normal inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] px-[20px] ]  text-white  ${
                                 u.isSuspended
                                   ? "bg-green-600 text-white hover:bg-green-700"
                                   : "bg-red-600 text-white hover:bg-red-700"
@@ -287,8 +306,58 @@ export default function UsersManagement() {
             </table>
           </div>
         </div>
+
+        {/* Confirmation Modal */}
+        {showConfirmModal && selectedUser && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+            <div className="bg-white dark:bg-[#0c1427] rounded-lg shadow-xl max-w-md w-full p-6">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                تأكيد العملية
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                {selectedUser.isSuspended ? (
+                  <>
+                    هل أنت متأكد من تفعيل حساب المستخدم{" "}
+                    <span className="font-semibold text-gray-900 dark:text-white">
+                      {selectedUser.name}
+                    </span>
+                    ؟
+                  </>
+                ) : (
+                  <>
+                    هل أنت متأكد من إيقاف حساب المستخدم{" "}
+                    <span className="font-semibold text-gray-900 dark:text-white">
+                      {selectedUser.name}
+                    </span>
+                    ؟ لن يتمكن من الوصول إلى حسابه بعد ذلك.
+                  </>
+                )}
+              </p>
+              <div className="flex gap-3 justify-end">
+                <button
+                  onClick={() => {
+                    setShowConfirmModal(false);
+                    setSelectedUser(null);
+                  }}
+                  className="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                >
+                  إلغاء
+                </button>
+                <button
+                  onClick={confirmSuspendToggle}
+                  className={`px-4 py-2 text-sm text-white rounded-lg transition-colors ${
+                    selectedUser.isSuspended
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "bg-red-600 hover:bg-red-700"
+                  }`}
+                >
+                  {selectedUser.isSuspended ? "تفعيل" : "إيقاف"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-

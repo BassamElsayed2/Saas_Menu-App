@@ -1,10 +1,12 @@
 "use client";
 
-import React, { use, useState, useEffect } from "react";
+import React, { use, useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { toast } from "react-hot-toast";
 import { templates } from "@/components/Templates";
+import { useAuth } from "@/contexts/AuthContext";
+import api from "@/lib/api";
 
 export default function MenuSettingsPage({
   params,
@@ -15,6 +17,7 @@ export default function MenuSettingsPage({
   const t = useTranslations("MenuSettings");
   const locale = useLocale();
   const router = useRouter();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [menuName, setMenuName] = useState("");
@@ -22,12 +25,21 @@ export default function MenuSettingsPage({
   const [activeTab, setActiveTab] = useState<"general" | "appearance">(
     "general"
   );
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+
+  // دمج حالات الـ modals في object واحد لتحسين الأداء
+  const [modalState, setModalState] = useState({
+    deleteModal: { show: false, confirmText: "", isProcessing: false },
+    deactivateModal: { show: false, confirmText: "", isProcessing: false },
+  });
   const [formData, setFormData] = useState({
     nameEn: "",
     nameAr: "",
     descriptionEn: "",
     descriptionAr: "",
     slug: "",
+    logo: "",
     theme: "default",
     isActive: true,
   });
@@ -37,138 +49,288 @@ export default function MenuSettingsPage({
     descriptionEn: "",
     descriptionAr: "",
     slug: "",
+    logo: "",
     theme: "default",
     isActive: true,
   });
 
-  useEffect(() => {
-    fetchMenuSettings();
-  }, [id]);
+  const fetchMenuSettings = useCallback(
+    async (signal?: AbortSignal) => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}?locale=${locale}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            signal,
+          }
+        );
 
-  const fetchMenuSettings = async () => {
-    try {
-      const token = localStorage.getItem("accessToken");
-      console.log("Fetching menu with ID:", id);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}?locale=${locale}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        if (response.ok) {
+          const data = await response.json();
+          const menu = data.menu;
 
-      console.log("Response status:", response.status);
+          if (menu && menu.id) {
+            const displayName =
+              locale === "ar"
+                ? menu.nameAr || menu.name || ""
+                : menu.nameEn || menu.name || "";
+            setMenuName(displayName);
+            setMenuSlug(menu.slug || null);
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Full API Response:", data);
-
-        // البيانات تأتي مباشرة في data.menu وليس data.data.menu
-        const menu = data.menu;
-        console.log("Menu data extracted:", menu);
-
-        if (menu && menu.id) {
-          // استخدام الاسم المترجم للعرض
-          const displayName =
-            locale === "ar"
-              ? menu.nameAr || menu.name || ""
-              : menu.nameEn || menu.name || "";
-          setMenuName(displayName);
-          setMenuSlug(menu.slug || null);
-
-          const initialData = {
-            nameEn: menu.nameEn || "",
-            nameAr: menu.nameAr || "",
-            descriptionEn: menu.descriptionEn || "",
-            descriptionAr: menu.descriptionAr || "",
-            slug: menu.slug || "",
-            theme: menu.theme || "default",
-            isActive: menu.isActive !== undefined ? menu.isActive : true,
-          };
-          console.log("Form data set:", initialData);
-          setFormData(initialData);
-          setOriginalData(initialData);
+            const initialData = {
+              nameEn: menu.nameEn || "",
+              nameAr: menu.nameAr || "",
+              descriptionEn: menu.descriptionEn || "",
+              descriptionAr: menu.descriptionAr || "",
+              slug: menu.slug || "",
+              logo: menu.logo || "",
+              theme: menu.theme || "default",
+              isActive: menu.isActive !== undefined ? menu.isActive : true,
+            };
+            setFormData(initialData);
+            setOriginalData(initialData);
+            setLogoPreview(menu.logo || null);
+          } else {
+            toast.error(
+              locale === "ar"
+                ? "لا يمكن تحميل بيانات القائمة"
+                : "Cannot load menu data"
+            );
+          }
         } else {
-          console.error("Menu data is invalid or missing ID");
-          toast.error("لا يمكن تحميل بيانات القائمة");
+          toast.error(
+            locale === "ar" ? "خطأ في تحميل البيانات" : "Error loading data"
+          );
         }
-      } else {
-        const errorText = await response.text();
-        console.error("Response not OK:", errorText);
-        toast.error("خطأ في تحميل البيانات");
+      } catch (error: any) {
+        if (error.name !== "AbortError") {
+          toast.error(t("fetchError"));
+        }
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching menu settings:", error);
-      toast.error(t("fetchError"));
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [id, locale, t]
+  );
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    const abortController = new AbortController();
+    fetchMenuSettings(abortController.signal);
 
-    // Build update object with only changed fields
-    const updates: any = {};
+    return () => {
+      abortController.abort();
+    };
+  }, [fetchMenuSettings]);
 
-    if (formData.nameEn !== originalData.nameEn) {
-      updates.nameEn = formData.nameEn;
-    }
-    if (formData.nameAr !== originalData.nameAr) {
-      updates.nameAr = formData.nameAr;
-    }
-    if (formData.descriptionEn !== originalData.descriptionEn) {
-      updates.descriptionEn = formData.descriptionEn;
-    }
-    if (formData.descriptionAr !== originalData.descriptionAr) {
-      updates.descriptionAr = formData.descriptionAr;
-    }
-    if (formData.theme !== originalData.theme) {
-      updates.theme = formData.theme;
-    }
-    if (formData.isActive !== originalData.isActive) {
-      updates.isActive = formData.isActive;
-    }
+  // استخدام useMemo لحساب القيم المشتقة
+  const isPremiumUser = useMemo(() => {
+    return user?.planType === "monthly" || user?.planType === "yearly";
+  }, [user?.planType]);
 
-    // Only send request if there are changes
-    if (Object.keys(updates).length === 0) {
-      toast("لا توجد تغييرات لحفظها", { icon: "ℹ️" });
+  const hasChanges = useMemo(() => {
+    return Object.keys(formData).some(
+      (key) =>
+        formData[key as keyof typeof formData] !==
+        originalData[key as keyof typeof originalData]
+    );
+  }, [formData, originalData]);
+
+  const handleLogoChange = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      if (!isPremiumUser) {
+        toast.error(
+          locale === "ar"
+            ? "هذه الميزة متاحة للمستخدمين المدفوعين فقط"
+            : "This feature is only available for premium users"
+        );
+        return;
+      }
+
+      // Validate file type
+      const validTypes = [
+        "image/png",
+        "image/jpeg",
+        "image/jpg",
+        "image/x-icon",
+        "image/vnd.microsoft.icon",
+      ];
+      if (!validTypes.includes(file.type)) {
+        toast.error(
+          locale === "ar"
+            ? "يرجى رفع صورة بصيغة PNG, JPG أو ICO"
+            : "Please upload an image in PNG, JPG or ICO format"
+        );
+        return;
+      }
+
+      // Validate file size (1MB max)
+      const maxSize = 1 * 1024 * 1024;
+      if (file.size > maxSize) {
+        toast.error(
+          locale === "ar"
+            ? "حجم الصورة يجب أن لا يتجاوز 1 ميجابايت"
+            : "Image size must not exceed 1MB"
+        );
+        return;
+      }
+
+      setUploadingLogo(true);
+
+      try {
+        const uploadResponse = await api.uploadImage(file, "logos");
+        if (uploadResponse.error) {
+          toast.error(uploadResponse.error);
+          return;
+        }
+
+        const logoUrl = uploadResponse.data?.url || "";
+        setFormData((prev) => ({ ...prev, logo: logoUrl }));
+        setLogoPreview(logoUrl);
+        toast.success(
+          locale === "ar" ? "تم رفع الشعار بنجاح" : "Logo uploaded successfully"
+        );
+      } catch (error) {
+        toast.error(
+          locale === "ar" ? "فشل رفع الشعار" : "Failed to upload logo"
+        );
+      } finally {
+        setUploadingLogo(false);
+      }
+    },
+    [isPremiumUser, locale]
+  );
+
+  const handleRemoveLogo = useCallback(() => {
+    setFormData((prev) => ({ ...prev, logo: "" }));
+    setLogoPreview(null);
+    toast.success(locale === "ar" ? "تم إزالة الشعار" : "Logo removed");
+  }, [locale]);
+
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+
+      // Build update object with only changed fields
+      const updates: any = {};
+      const fields: (keyof typeof formData)[] = [
+        "nameEn",
+        "nameAr",
+        "descriptionEn",
+        "descriptionAr",
+        "logo",
+        "theme",
+        "isActive",
+      ];
+
+      fields.forEach((field) => {
+        if (formData[field] !== originalData[field]) {
+          updates[field] = formData[field];
+        }
+      });
+
+      // Only send request if there are changes
+      if (Object.keys(updates).length === 0) {
+        toast(
+          locale === "ar" ? "لا توجد تغييرات لحفظها" : "No changes to save",
+          { icon: "ℹ️" }
+        );
+        return;
+      }
+
+      setSaving(true);
+
+      try {
+        const token = localStorage.getItem("accessToken");
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(updates),
+          }
+        );
+
+        if (!response.ok) throw new Error("Failed to update menu");
+
+        toast.success(t("saveSuccess"));
+        setOriginalData({ ...formData });
+        router.push(`/${locale}/dashboard/menus/${id}`);
+      } catch (error) {
+        toast.error(t("saveError"));
+      } finally {
+        setSaving(false);
+      }
+    },
+    [formData, originalData, id, locale, t, router]
+  );
+
+  const handleIsActiveChange = useCallback(
+    (checked: boolean) => {
+      if (!checked && formData.isActive) {
+        setModalState((prev) => ({
+          ...prev,
+          deactivateModal: { show: true, confirmText: "", isProcessing: false },
+        }));
+      } else {
+        setFormData((prev) => ({ ...prev, isActive: checked }));
+      }
+    },
+    [formData.isActive]
+  );
+
+  const handleDeactivateConfirm = useCallback(() => {
+    if (modalState.deactivateModal.confirmText !== "DEACTIVATE") {
+      toast.error(
+        locale === "ar"
+          ? 'يرجى كتابة "DEACTIVATE" للتأكيد'
+          : 'Please type "DEACTIVATE" to confirm'
+      );
       return;
     }
 
-    setSaving(true);
+    setFormData((prev) => ({ ...prev, isActive: false }));
+    setModalState((prev) => ({
+      ...prev,
+      deactivateModal: { show: false, confirmText: "", isProcessing: false },
+    }));
 
-    try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updates),
-        }
+    toast.success(
+      locale === "ar"
+        ? "تم تعطيل القائمة. لا تنسَ حفظ التغييرات."
+        : "Menu deactivated. Don't forget to save changes."
+    );
+  }, [modalState.deactivateModal.confirmText, locale]);
+
+  const handleDeleteClick = useCallback(() => {
+    setModalState((prev) => ({
+      ...prev,
+      deleteModal: { show: true, confirmText: "", isProcessing: false },
+    }));
+  }, []);
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (modalState.deleteModal.confirmText !== "DELETE") {
+      toast.error(
+        locale === "ar"
+          ? 'يرجى كتابة "DELETE" للتأكيد'
+          : 'Please type "DELETE" to confirm'
       );
-
-      if (!response.ok) throw new Error("Failed to update menu");
-
-      toast.success(t("saveSuccess"));
-      // Update original data to reflect saved changes
-      setOriginalData({ ...formData });
-      router.push(`/${locale}/dashboard/menus/${id}`);
-    } catch (error) {
-      console.error("Error saving menu settings:", error);
-      toast.error(t("saveError"));
-    } finally {
-      setSaving(false);
+      return;
     }
-  };
 
-  const handleDelete = async () => {
-    if (!confirm(t("deleteConfirm"))) return;
+    setModalState((prev) => ({
+      ...prev,
+      deleteModal: { ...prev.deleteModal, isProcessing: true },
+    }));
 
     try {
       const token = localStorage.getItem("accessToken");
@@ -187,10 +349,13 @@ export default function MenuSettingsPage({
       toast.success(t("deleteSuccess"));
       router.push(`/${locale}/dashboard/menus`);
     } catch (error) {
-      console.error("Error deleting menu:", error);
       toast.error(t("deleteError"));
+      setModalState((prev) => ({
+        ...prev,
+        deleteModal: { ...prev.deleteModal, isProcessing: false },
+      }));
     }
-  };
+  }, [modalState.deleteModal.confirmText, id, locale, t, router]);
 
   if (loading) {
     return (
@@ -394,9 +559,7 @@ export default function MenuSettingsPage({
                       type="checkbox"
                       id="isActive"
                       checked={formData.isActive}
-                      onChange={(e) =>
-                        setFormData({ ...formData, isActive: e.target.checked })
-                      }
+                      onChange={(e) => handleIsActiveChange(e.target.checked)}
                       className="w-6 h-6 text-green-500 rounded-lg focus:ring-2 focus:ring-green-500 cursor-pointer"
                     />
                   </div>
@@ -428,6 +591,170 @@ export default function MenuSettingsPage({
               </div>
             </div>
 
+            {/* Favicon/Logo Section */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <i className="material-symbols-outlined text-blue-500">image</i>
+                {locale === "ar"
+                  ? "شعار القائمة (Favicon)"
+                  : "Menu Logo (Favicon)"}
+              </h2>
+
+              {/* Premium Feature Check */}
+              {!isPremiumUser ? (
+                <div className="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/20 rounded-xl p-6 border-2 border-amber-300 dark:border-amber-700">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <i className="material-symbols-outlined text-white !text-[28px]">
+                        lock
+                      </i>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-amber-900 dark:text-amber-400 mb-2">
+                        {locale === "ar"
+                          ? "ميزة حصرية للمشتركين"
+                          : "Premium Feature"}
+                      </h3>
+                      <p className="text-sm text-amber-700 dark:text-amber-300 mb-4">
+                        {locale === "ar"
+                          ? "قم بالترقية إلى الخطة المدفوعة لتتمكن من تخصيص شعار قائمتك وإضافة Favicon مخصص"
+                          : "Upgrade to a premium plan to customize your menu logo and add a custom favicon"}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          router.push(
+                            `/${locale}/dashboard/profile/user-profile`
+                          )
+                        }
+                        className="px-6 py-3 bg-amber-600 text-white rounded-xl hover:bg-amber-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2 font-semibold"
+                      >
+                        <i className="material-symbols-outlined !text-[20px]">
+                          upgrade
+                        </i>
+                        {locale === "ar" ? "ترقية الخطة" : "Upgrade Plan"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Current Logo Preview */}
+                  {logoPreview && (
+                    <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                      <div className="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center border-2 border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <img
+                          src={logoPreview}
+                          alt="Logo"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                          {locale === "ar" ? "الشعار الحالي" : "Current Logo"}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          {locale === "ar"
+                            ? "سيظهر كـ favicon في متصفح الزوار"
+                            : "Will appear as favicon in visitors' browsers"}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleRemoveLogo}
+                        className="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors flex items-center gap-2 text-sm font-semibold"
+                      >
+                        <i className="material-symbols-outlined !text-[18px]">
+                          delete
+                        </i>
+                        {locale === "ar" ? "إزالة" : "Remove"}
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Upload Button */}
+                  <div className="relative">
+                    <input
+                      type="file"
+                      id="logo-upload"
+                      accept="image/png,image/jpeg,image/jpg,image/x-icon"
+                      onChange={handleLogoChange}
+                      disabled={uploadingLogo}
+                      className="hidden"
+                    />
+                    <label
+                      htmlFor="logo-upload"
+                      className={`flex items-center justify-center gap-3 px-6 py-4 border-2 border-dashed rounded-xl transition-all cursor-pointer ${
+                        uploadingLogo
+                          ? "border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 cursor-not-allowed"
+                          : "border-primary-300 dark:border-primary-700 hover:border-primary-500 dark:hover:border-primary-500 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30"
+                      }`}
+                    >
+                      {uploadingLogo ? (
+                        <>
+                          <div className="w-6 h-6 border-3 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+                          <span className="text-gray-600 dark:text-gray-400 font-semibold">
+                            {locale === "ar" ? "جاري الرفع..." : "Uploading..."}
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <i className="material-symbols-outlined text-primary-500 !text-[28px]">
+                            upload
+                          </i>
+                          <span className="text-primary-700 dark:text-primary-300 font-semibold">
+                            {logoPreview
+                              ? locale === "ar"
+                                ? "تغيير الشعار"
+                                : "Change Logo"
+                              : locale === "ar"
+                              ? "رفع شعار"
+                              : "Upload Logo"}
+                          </span>
+                        </>
+                      )}
+                    </label>
+                  </div>
+
+                  {/* Info Box */}
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                    <div className="flex items-start gap-3">
+                      <i className="material-symbols-outlined text-blue-500 !text-[24px] mt-0.5">
+                        info
+                      </i>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">
+                          {locale === "ar" ? "نصائح" : "Tips"}
+                        </h4>
+                        <ul className="text-sm text-blue-700 dark:text-blue-400 space-y-1 list-disc list-inside">
+                          <li>
+                            {locale === "ar"
+                              ? "الصيغ المدعومة: PNG, JPG, ICO"
+                              : "Supported formats: PNG, JPG, ICO"}
+                          </li>
+                          <li>
+                            {locale === "ar"
+                              ? "الحجم الأقصى: 1 ميجابايت"
+                              : "Maximum size: 1MB"}
+                          </li>
+                          <li>
+                            {locale === "ar"
+                              ? "يُنصح باستخدام صورة مربعة (مثل 512×512 بكسل)"
+                              : "Recommended: Square image (e.g., 512×512 pixels)"}
+                          </li>
+                          <li>
+                            {locale === "ar"
+                              ? "سيظهر الشعار في علامة تبويب المتصفح"
+                              : "Logo will appear in the browser tab"}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Danger Zone */}
             <div className="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-xl p-6 border-2 border-red-300 dark:border-red-700 shadow-lg">
               <div className="flex items-start gap-4">
@@ -445,7 +772,7 @@ export default function MenuSettingsPage({
                   </p>
                   <button
                     type="button"
-                    onClick={handleDelete}
+                    onClick={handleDeleteClick}
                     className="px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2 font-semibold"
                   >
                     <i className="material-symbols-outlined !text-[20px]">
@@ -610,6 +937,264 @@ export default function MenuSettingsPage({
           </button>
         </div>
       </form>
+
+      {/* Delete Confirmation Modal */}
+      {modalState.deleteModal.show && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border-2 border-red-200 dark:border-red-800">
+            {/* Header */}
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i className="material-symbols-outlined text-red-600 dark:text-red-400 !text-[32px]">
+                  warning
+                </i>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                  {locale === "ar"
+                    ? "تأكيد حذف القائمة"
+                    : "Confirm Menu Deletion"}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {locale === "ar"
+                    ? "هذا الإجراء لا يمكن التراجع عنه"
+                    : "This action cannot be undone"}
+                </p>
+              </div>
+            </div>
+
+            {/* Warning Message */}
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 mb-6">
+              <p className="text-sm text-red-800 dark:text-red-300 mb-3">
+                {locale === "ar" ? (
+                  <>
+                    سيتم حذف <strong>{menuName}</strong> وجميع المنتجات والفئات
+                    والإعلانات المرتبطة بها نهائياً.
+                  </>
+                ) : (
+                  <>
+                    <strong>{menuName}</strong> and all associated products,
+                    categories, and ads will be permanently deleted.
+                  </>
+                )}
+              </p>
+              <p className="text-sm font-semibold text-red-900 dark:text-red-200">
+                {locale === "ar" ? (
+                  <>
+                    اكتب{" "}
+                    <span className="font-mono bg-white dark:bg-gray-800 px-2 py-1 rounded">
+                      DELETE
+                    </span>{" "}
+                    للتأكيد
+                  </>
+                ) : (
+                  <>
+                    Type{" "}
+                    <span className="font-mono bg-white dark:bg-gray-800 px-2 py-1 rounded">
+                      DELETE
+                    </span>{" "}
+                    to confirm
+                  </>
+                )}
+              </p>
+            </div>
+
+            {/* Input Field */}
+            <div className="mb-6">
+              <input
+                type="text"
+                value={modalState.deleteModal.confirmText}
+                onChange={(e) =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    deleteModal: {
+                      ...prev.deleteModal,
+                      confirmText: e.target.value,
+                    },
+                  }))
+                }
+                placeholder="DELETE"
+                className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-red-500 dark:bg-gray-700 dark:text-white font-mono text-center text-lg"
+                disabled={modalState.deleteModal.isProcessing}
+              />
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    deleteModal: {
+                      show: false,
+                      confirmText: "",
+                      isProcessing: false,
+                    },
+                  }))
+                }
+                disabled={modalState.deleteModal.isProcessing}
+                className="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {locale === "ar" ? "إلغاء" : "Cancel"}
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteConfirm}
+                disabled={
+                  modalState.deleteModal.isProcessing ||
+                  modalState.deleteModal.confirmText !== "DELETE"
+                }
+                className="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {modalState.deleteModal.isProcessing ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    {locale === "ar" ? "جاري الحذف..." : "Deleting..."}
+                  </>
+                ) : (
+                  <>
+                    <i className="material-symbols-outlined !text-[20px]">
+                      delete_forever
+                    </i>
+                    {locale === "ar" ? "حذف نهائياً" : "Delete Forever"}
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Deactivate Confirmation Modal */}
+      {modalState.deactivateModal.show && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border-2 border-amber-200 dark:border-amber-800">
+            {/* Header */}
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i className="material-symbols-outlined text-amber-600 dark:text-amber-400 !text-[32px]">
+                  pause_circle
+                </i>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                  {locale === "ar"
+                    ? "تأكيد تعطيل القائمة"
+                    : "Confirm Menu Deactivation"}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {locale === "ar"
+                    ? "ستصبح القائمة غير مرئية للعملاء"
+                    : "The menu will become invisible to customers"}
+                </p>
+              </div>
+            </div>
+
+            {/* Warning Message */}
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-6">
+              <p className="text-sm text-amber-800 dark:text-amber-300 mb-3">
+                {locale === "ar" ? (
+                  <>
+                    عند تعطيل القائمة <strong>{menuName}</strong>، لن يتمكن
+                    العملاء من الوصول إليها أو مشاهدة المنتجات. يمكنك إعادة
+                    تفعيلها في أي وقت.
+                  </>
+                ) : (
+                  <>
+                    When deactivating <strong>{menuName}</strong>, customers
+                    will not be able to access it or view products. You can
+                    reactivate it at any time.
+                  </>
+                )}
+              </p>
+              <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                {locale === "ar" ? (
+                  <>
+                    اكتب{" "}
+                    <span className="font-mono bg-white dark:bg-gray-800 px-2 py-1 rounded">
+                      DEACTIVATE
+                    </span>{" "}
+                    للتأكيد
+                  </>
+                ) : (
+                  <>
+                    Type{" "}
+                    <span className="font-mono bg-white dark:bg-gray-800 px-2 py-1 rounded">
+                      DEACTIVATE
+                    </span>{" "}
+                    to confirm
+                  </>
+                )}
+              </p>
+            </div>
+
+            {/* Input Field */}
+            <div className="mb-6">
+              <input
+                type="text"
+                value={modalState.deactivateModal.confirmText}
+                onChange={(e) =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    deactivateModal: {
+                      ...prev.deactivateModal,
+                      confirmText: e.target.value,
+                    },
+                  }))
+                }
+                placeholder="DEACTIVATE"
+                className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-amber-500 dark:bg-gray-700 dark:text-white font-mono text-center text-lg"
+                disabled={modalState.deactivateModal.isProcessing}
+              />
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    deactivateModal: {
+                      show: false,
+                      confirmText: "",
+                      isProcessing: false,
+                    },
+                  }))
+                }
+                disabled={modalState.deactivateModal.isProcessing}
+                className="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {locale === "ar" ? "إلغاء" : "Cancel"}
+              </button>
+              <button
+                type="button"
+                onClick={handleDeactivateConfirm}
+                disabled={
+                  modalState.deactivateModal.isProcessing ||
+                  modalState.deactivateModal.confirmText !== "DEACTIVATE"
+                }
+                className="flex-1 px-4 py-3 bg-amber-600 text-white rounded-xl hover:bg-amber-700 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {modalState.deactivateModal.isProcessing ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    {locale === "ar" ? "جاري التعطيل..." : "Deactivating..."}
+                  </>
+                ) : (
+                  <>
+                    <i className="material-symbols-outlined !text-[20px]">
+                      toggle_off
+                    </i>
+                    {locale === "ar" ? "تعطيل القائمة" : "Deactivate Menu"}
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -69,7 +69,7 @@ export default function UserDetailsPage({
   const [subscriptionForm, setSubscriptionForm] = useState({
     planId: 1,
     billingCycle: "free" as "free" | "monthly" | "yearly",
-    startDate: new Date().toISOString().split('T')[0],
+    startDate: new Date().toISOString().split("T")[0],
     endDate: "",
   });
   const [submitting, setSubmitting] = useState(false);
@@ -185,7 +185,63 @@ export default function UserDetailsPage({
     }
   };
 
-  const handleToggleMenuStatus = async (menuId: number, currentStatus: boolean) => {
+  const handleApplyFreeLimits = async () => {
+    if (
+      !confirm(
+        "هل أنت متأكد من تطبيق قيود الخطة المجانية؟\n\nسيتم:\n• تعطيل القوائم الزائدة\n• حذف المنتجات الزائدة\n• حذف جميع الإعلانات\n• حذف جميع الفروع\n\nهذا الإجراء لا يمكن التراجع عنه!"
+      )
+    ) {
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const token =
+        localStorage.getItem("auth_token") ||
+        localStorage.getItem("accessToken");
+
+      if (!token) return;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/users/${resolvedParams.id}/apply-free-limits`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        const changes = result.changes;
+
+        let message = "✅ تم تطبيق قيود الخطة المجانية بنجاح!\n\n";
+        message += "التغييرات:\n";
+        message += `• القوائم المعطلة: ${changes.menusDeactivated}\n`;
+        message += `• المنتجات المحذوفة: ${changes.productsDeleted}\n`;
+        message += `• الإعلانات المحذوفة: ${changes.adsDeleted}\n`;
+        message += `• الفروع المحذوفة: ${changes.branchesDeleted}`;
+
+        alert(message);
+        fetchUserDetails(); // Refresh user details
+      } else {
+        const error = await response.json();
+        alert(error.error || "فشل تطبيق قيود الخطة المجانية");
+      }
+    } catch (error) {
+      console.error("Error applying free limits:", error);
+      alert("حدث خطأ أثناء تطبيق القيود");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleToggleMenuStatus = async (
+    menuId: number,
+    currentStatus: boolean
+  ) => {
     try {
       const token =
         localStorage.getItem("auth_token") ||
@@ -236,9 +292,7 @@ export default function UserDetailsPage({
     return (
       <div className="py-5 px-5 sm:px-5 md:px-5 lg:px-8">
         <div className="text-center py-20">
-          <p className="text-gray-600 dark:text-gray-400">
-            المستخدم غير موجود
-          </p>
+          <p className="text-gray-600 dark:text-gray-400">المستخدم غير موجود</p>
           <button
             onClick={() => router.push(`/${locale}/admin/users`)}
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -279,12 +333,22 @@ export default function UserDetailsPage({
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
               معلومات الاشتراك
             </h2>
-            <button
-              onClick={() => setShowSubscriptionModal(true)}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              تغيير الاشتراك
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleApplyFreeLimits}
+                disabled={submitting}
+                className="px-4 py-2 text-sm bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                title="تطبيق قيود الخطة المجانية"
+              >
+                {submitting ? "جاري التطبيق..." : "تطبيق قيود Free"}
+              </button>
+              <button
+                onClick={() => setShowSubscriptionModal(true)}
+                className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                تغيير الاشتراك
+              </button>
+            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
@@ -352,22 +416,7 @@ export default function UserDetailsPage({
                 {userDetails.email}
               </p>
             </div>
-            <div>
-              <label className="text-sm text-gray-600 dark:text-gray-400">
-                الدور
-              </label>
-              <p>
-                <span
-                  className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${
-                    userDetails.role === "admin"
-                      ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
-                      : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
-                  }`}
-                >
-                  {userDetails.role === "admin" ? "أدمن" : "مستخدم"}
-                </span>
-              </p>
-            </div>
+
             <div>
               <label className="text-sm text-gray-600 dark:text-gray-400">
                 الخطة
@@ -551,13 +600,17 @@ export default function UserDetailsPage({
                   </div>
                   <div className="flex gap-2 ml-4">
                     <button
-                      onClick={() => window.open(`/${locale}/menu/${menu.slug}`, "_blank")}
+                      onClick={() =>
+                        window.open(`/${locale}/menu/${menu.slug}`, "_blank")
+                      }
                       className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       عرض
                     </button>
                     <button
-                      onClick={() => handleToggleMenuStatus(menu.id, menu.isActive)}
+                      onClick={() =>
+                        handleToggleMenuStatus(menu.id, menu.isActive)
+                      }
                       className={`px-4 py-2 text-sm rounded-lg transition-colors ${
                         menu.isActive
                           ? "bg-red-600 text-white hover:bg-red-700"
@@ -599,11 +652,14 @@ export default function UserDetailsPage({
                 <select
                   value={subscriptionForm.planId}
                   onChange={(e) => {
-                    const selectedPlan = plans.find(p => p.id === Number(e.target.value));
+                    const selectedPlan = plans.find(
+                      (p) => p.id === Number(e.target.value)
+                    );
                     setSubscriptionForm({
                       ...subscriptionForm,
                       planId: Number(e.target.value),
-                      billingCycle: selectedPlan?.name === "Free" ? "free" : "monthly",
+                      billingCycle:
+                        selectedPlan?.name === "Free" ? "free" : "monthly",
                     });
                   }}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#15203c] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
@@ -626,10 +682,16 @@ export default function UserDetailsPage({
                   onChange={(e) =>
                     setSubscriptionForm({
                       ...subscriptionForm,
-                      billingCycle: e.target.value as "free" | "monthly" | "yearly",
+                      billingCycle: e.target.value as
+                        | "free"
+                        | "monthly"
+                        | "yearly",
                     })
                   }
-                  disabled={plans.find(p => p.id === subscriptionForm.planId)?.name === "Free"}
+                  disabled={
+                    plans.find((p) => p.id === subscriptionForm.planId)
+                      ?.name === "Free"
+                  }
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#15203c] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="free">مجاني</option>
@@ -674,7 +736,8 @@ export default function UserDetailsPage({
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#15203c] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                   />
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    إذا تُرك فارغاً، سيتم حساب التاريخ تلقائياً (شهر/سنة من تاريخ البدء)
+                    إذا تُرك فارغاً، سيتم حساب التاريخ تلقائياً (شهر/سنة من
+                    تاريخ البدء)
                   </p>
                 </div>
               )}
@@ -703,4 +766,3 @@ export default function UserDetailsPage({
     </div>
   );
 }
-

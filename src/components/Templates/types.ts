@@ -39,6 +39,7 @@ export interface MenuData {
     theme: string;
     slug: string;
     isActive: boolean;
+    ownerPlanType?: string;
   };
   categories?: Category[];
   items: MenuItem[];

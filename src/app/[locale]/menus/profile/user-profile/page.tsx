@@ -42,15 +42,16 @@ export default function UserProfilePage() {
 
   const planInfo = {
     free: { name: t("freePlan"), color: "gray", price: "$0/month" },
-    starter: { name: t("starterPlan"), color: "blue", price: "$9/month" },
-    professional: {
+    monthly: { name: t("professionalPlan"), color: "purple", price: "$29/month" },
+    yearly: {
       name: t("professionalPlan"),
       color: "purple",
-      price: "$29/month",
+      price: "$199/year",
     },
   };
 
-  const currentPlan = subscription?.plan?.toLowerCase() || "free";
+  // Use billingCycle to determine the plan type
+  const currentPlan = subscription?.billingCycle?.toLowerCase() || "free";
   const plan = planInfo[currentPlan as keyof typeof planInfo] || planInfo.free;
 
   return (
@@ -329,21 +330,22 @@ export default function UserProfilePage() {
           </div>
         </div>
 
-        {/* Subscription Card */}
-        <div className="rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              {t("subscription")}
-            </h3>
-            <button
-              onClick={() =>
-                router.push(`/${locale}/menus/profile/edit#subscription`)
-              }
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-            >
-              {t("manageSubscription")} →
-            </button>
-          </div>
+        {/* Subscription Card - Only for regular users, not admins */}
+        {user.role !== "admin" && (
+          <div className="rounded-lg shadow p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                {t("subscription")}
+              </h3>
+              <button
+                onClick={() =>
+                  router.push(`/${locale}/menus/profile/edit#subscription`)
+                }
+                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              >
+                {t("manageSubscription")} →
+              </button>
+            </div>
 
           {loadingSubscription ? (
             <div className="text-center py-8">
@@ -381,15 +383,27 @@ export default function UserProfilePage() {
                         {subscription.billingCycle}
                       </span>
                     </p>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">{t("started")}:</span>{" "}
-                      {new Date(subscription.startDate).toLocaleDateString()}
-                    </p>
-                    {subscription.endDate && (
-                      <p className="text-gray-600 dark:text-gray-300">
-                        <span className="font-medium">{t("renews")}:</span>{" "}
-                        {new Date(subscription.endDate).toLocaleDateString()}
-                      </p>
+                    {subscription.billingCycle !== 'free' && (
+                      <>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          <span className="font-medium">{t("started")}:</span>{" "}
+                          {new Date(subscription.startDate).toLocaleDateString('ar-EG', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </p>
+                        {subscription.endDate && (
+                          <p className="text-gray-600 dark:text-gray-300">
+                            <span className="font-medium">{t("renews")}:</span>{" "}
+                            {new Date(subscription.endDate).toLocaleDateString('ar-EG', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            })}
+                          </p>
+                        )}
+                      </>
                     )}
                   </div>
                 )}
@@ -416,7 +430,8 @@ export default function UserProfilePage() {
               )}
             </div>
           )}
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );

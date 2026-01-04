@@ -5,6 +5,7 @@ import Settings from "./Settings";
 import DarkMode from "./DarkMode";
 import Fullscreen from "./Fullscreen";
 import ProfileMenu from "./ProfileMenu";
+import NotificationBell from "../../Notifications/NotificationBell";
 import { usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 
@@ -97,6 +98,8 @@ const Header: React.FC<HeaderProps> = ({ toggleActive }) => {
             <DarkMode />
 
             <Fullscreen />
+
+            <NotificationBell locale={locale} />
 
             <ProfileMenu />
           </div>
