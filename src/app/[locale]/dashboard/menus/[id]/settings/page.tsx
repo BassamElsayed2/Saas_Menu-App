@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { toast } from "react-hot-toast";
 import { templates } from "@/components/Templates";
+import { api } from "@/lib/api";
 
 export default function MenuSettingsPage({
   params,
@@ -47,21 +48,13 @@ export default function MenuSettingsPage({
 
   const fetchMenuSettings = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
       console.log("Fetching menu with ID:", id);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}?locale=${locale}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get(`/menus/${id}?locale=${locale}`);
 
-      console.log("Response status:", response.status);
+      console.log("API Response:", response);
 
-      if (response.ok) {
-        const data = await response.json();
+      if (response.data && !response.error) {
+        const data = response.data;
         console.log("Full API Response:", data);
 
         // البيانات تأتي مباشرة في data.menu وليس data.data.menu
@@ -94,8 +87,7 @@ export default function MenuSettingsPage({
           toast.error("لا يمكن تحميل بيانات القائمة");
         }
       } else {
-        const errorText = await response.text();
-        console.error("Response not OK:", errorText);
+        console.error("Response error:", response.error);
         toast.error("خطأ في تحميل البيانات");
       }
     } catch (error) {
@@ -110,7 +102,7 @@ export default function MenuSettingsPage({
     e.preventDefault();
 
     // Build update object with only changed fields
-    const updates: any = {};
+    const updates: Record<string, unknown> = {};
 
     if (formData.nameEn !== originalData.nameEn) {
       updates.nameEn = formData.nameEn;
@@ -140,20 +132,9 @@ export default function MenuSettingsPage({
     setSaving(true);
 
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updates),
-        }
-      );
+      const response = await api.put(`/menus/${id}`, updates);
 
-      if (!response.ok) throw new Error("Failed to update menu");
+      if (response.error) throw new Error(response.error);
 
       toast.success(t("saveSuccess"));
       // Update original data to reflect saved changes
@@ -171,18 +152,9 @@ export default function MenuSettingsPage({
     if (!confirm(t("deleteConfirm"))) return;
 
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.delete(`/menus/${id}`);
 
-      if (!response.ok) throw new Error("Failed to delete menu");
+      if (response.error) throw new Error(response.error);
 
       toast.success(t("deleteSuccess"));
       router.push(`/${locale}/dashboard/menus`);

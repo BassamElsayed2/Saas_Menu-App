@@ -21,7 +21,7 @@ export const templates: TemplateInfo[] = [
     descriptionAr: "قائمة عصرية ثنائية اللغة مع قسم بطولي ورسوم متحركة سلسة",
   },
   {
-    id: "warm",
+    id: "template2",
     name: "Warm Light Template",
     nameAr: "القالب الدافئ الفاتح",
     component: Template2,

@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMenu } from "@/hooks/useApi";
 import { templates } from "@/components/Templates";
+import { api } from "@/lib/api";
 
 export default function MenuSettingsPage({
   params,
@@ -64,28 +65,19 @@ export default function MenuSettingsPage({
 
   const fetchMenuSettings = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get(`/menus/${id}`);
 
-      if (response.ok) {
-        const data = await response.json();
-        const menu = data.data?.menu;
-        if (menu) {
+      if (response.data && !response.error) {
+        const menuData = response.data.data?.menu || response.data.menu;
+        if (menuData) {
           const initialData = {
-            nameEn: menu.nameEn || menu.name || "",
-            nameAr: menu.nameAr || "",
-            descriptionEn: menu.descriptionEn || menu.description || "",
-            descriptionAr: menu.descriptionAr || "",
-            slug: menu.slug || "",
-            theme: menu.theme || "default",
-            isActive: menu.isActive || false,
+            nameEn: menuData.nameEn || menuData.name || "",
+            nameAr: menuData.nameAr || "",
+            descriptionEn: menuData.descriptionEn || menuData.description || "",
+            descriptionAr: menuData.descriptionAr || "",
+            slug: menuData.slug || "",
+            theme: menuData.theme || "default",
+            isActive: menuData.isActive || false,
           };
           setFormData(initialData);
           setOriginalData(initialData);
@@ -103,7 +95,7 @@ export default function MenuSettingsPage({
     e.preventDefault();
 
     // Build update object with only changed fields
-    const updates: any = {};
+    const updates: Record<string, unknown> = {};
 
     if (formData.nameEn !== originalData.nameEn) {
       updates.nameEn = formData.nameEn;
@@ -133,20 +125,9 @@ export default function MenuSettingsPage({
     setSaving(true);
 
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updates),
-        }
-      );
+      const response = await api.put(`/menus/${id}`, updates);
 
-      if (!response.ok) throw new Error("Failed to update menu");
+      if (response.error) throw new Error(response.error);
 
       toast.success(t("saveSuccess"));
       // Update original data to reflect saved changes
@@ -164,18 +145,9 @@ export default function MenuSettingsPage({
     if (!confirm(t("deleteConfirm"))) return;
 
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.delete(`/menus/${id}`);
 
-      if (!response.ok) throw new Error("Failed to delete menu");
+      if (response.error) throw new Error(response.error);
 
       toast.success(t("deleteSuccess"));
       router.push(`/${locale}/menus`);
