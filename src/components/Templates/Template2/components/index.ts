@@ -4,7 +4,7 @@ export { Footer } from "./Footer";
 export { MenuCard } from "./MenuCard";
 export { SearchBar } from "./SearchBar";
 export { MenuSection } from "./MenuSection";
-export { AdBanner, AfterHeroAd, MidMenuAd, PreFooterAd } from "./AdBanner";
+export { AfterHeroAd, MidMenuAd, PreFooterAd } from "./AdBanner";
 export { Modal } from "./Modal";
 export { WhatsAppButton } from "./WhatsAppButton";
 export { MobileCategoriesSheet } from "./MobileCategoriesSheet";

@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import "remixicon/fonts/remixicon.css";
+import "./styles.css";
 import { TemplateProps, MenuItem, Ad } from "../types";
 import { LanguageProvider, useLanguage } from "./context";
-import { globalStyles } from "./styles";
 import { translations } from "./translations";
 import {
   Navbar,
@@ -193,11 +193,7 @@ function Template2Inner({
   const phoneNumber = menuData.branches?.[0]?.phone?.replace(/[^0-9]/g, "") || "201023456789";
 
   return (
-    <div dir={t.dir} lang={t.lang}>
-      <style jsx global>
-        {globalStyles}
-      </style>
-
+    <div className="t2-wrapper" dir={t.dir} lang={t.lang}>
       {/* Navbar */}
       <Navbar
         isScrolled={isScrolled}
