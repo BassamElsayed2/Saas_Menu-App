@@ -5,14 +5,12 @@ import "remixicon/fonts/remixicon.css";
 import "./styles.css";
 import { TemplateProps, MenuItem, Ad } from "../types";
 import { LanguageProvider, useLanguage } from "./context";
-import { translations } from "./translations";
 import {
   Navbar,
   HeroSection,
   Footer,
   MenuSection,
   AfterHeroAd,
-  MidMenuAd,
   PreFooterAd,
   Modal,
   WhatsAppButton,

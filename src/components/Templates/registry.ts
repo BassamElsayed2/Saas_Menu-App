@@ -1,6 +1,7 @@
 import { TemplateInfo } from "./types";
 import DefaultTemplate from "./DefaultTemplate";
 import Template2 from "./Template2";
+import Template3 from "./Template3";
 
 /**
  * Template Registry
@@ -28,6 +29,15 @@ export const templates: TemplateInfo[] = [
     description:
       "A beautiful warm-colored template with orange accents and light background",
     descriptionAr: "قالب جميل بألوان دافئة مع لمسات برتقالية وخلفية فاتحة",
+  },
+  {
+    id: "template3",
+    name: "Ember Bloom Dark",
+    nameAr: "قالب إمبر بلوم الداكن",
+    component: Template3,
+    description:
+      "A dark cinematic template with warm amber/orange accents and elegant glass effects",
+    descriptionAr: "قالب سينمائي داكن مع لمسات برتقالية دافئة وتأثيرات زجاجية أنيقة",
   },
 ];
 

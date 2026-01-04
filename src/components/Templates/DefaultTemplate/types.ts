@@ -3,7 +3,6 @@
 // ============================
 
 export type Locale = "ar" | "en";
-export type Category = "all" | "appetizers" | "mains" | "drinks" | "desserts";
 
 export interface MenuItem {
   id: string;
@@ -30,14 +29,5 @@ export interface AdItem {
   badge?: { ar: string; en: string };
   link?: string;
   discount?: string;
-}
-
-export interface ENSAdItem {
-  id: string;
-  titleAr: string;
-  titleEn: string;
-  descriptionAr: string;
-  descriptionEn: string;
-  icon: string;
 }
 

@@ -10,6 +10,5 @@ export { SmallAdCard } from "./SmallAdCard";
 export { OffersSection } from "./OffersSection";
 export { MenuCard } from "./MenuCard";
 export { MenuSection } from "./MenuSection";
-export { ENSServicesSection } from "./ENSServicesSection";
 export { ENSFixedBanner } from "./ENSFixedBanner";
 export { Footer } from "./Footer";

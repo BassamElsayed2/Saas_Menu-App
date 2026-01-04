@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useCallback, useMemo } from "react";
-import { Category as LocalCategory } from "../types";
 import { useLanguage } from "../context";
 import { Button } from "./Button";
 import { Input } from "./Input";

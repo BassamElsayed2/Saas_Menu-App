@@ -1653,9 +1653,6 @@
 /* ============================
    WhatsApp Button
    ============================ */
-.t2-whatsapp-container {
-  /* Positioning handled in component for RTL/LTR support */
-}
 
 .t2-whatsapp-button {
   width: 68px;

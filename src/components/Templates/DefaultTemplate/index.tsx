@@ -8,7 +8,6 @@ import {
   AdBanner,
   MenuSection,
   OffersSection,
-  ENSServicesSection,
   Footer,
   ENSFixedBanner,
 } from "./components";
@@ -57,7 +56,6 @@ export default function DefaultTemplate({
           onCategoryChange={onCategoryChange}
         />
         <OffersSection items={discountedItems} />
-        {/* <ENSServicesSection /> */}
         <Footer menuName={menuData.menu.name} branches={menuData.branches} />
         <ENSFixedBanner />
       </div>
