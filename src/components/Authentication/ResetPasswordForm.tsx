@@ -3,13 +3,16 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useLocale, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import api from "@/lib/api";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { useRouter } from "next/navigation";
 
 const ResetPasswordForm: React.FC = () => {
   const locale = useLocale();
+  const t = useTranslations("ResetPassword");
+  const isRTL = locale === "ar";
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -21,6 +24,13 @@ const ResetPasswordForm: React.FC = () => {
   const [success, setSuccess] = useState(false);
   
   useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  useEffect(() => {
     const tokenParam = searchParams?.get('token');
     if (tokenParam) {
       setToken(tokenParam);
@@ -31,22 +41,22 @@ const ResetPasswordForm: React.FC = () => {
     e.preventDefault();
     
     if (!token) {
-      toast.error('رابط غير صالح');
+      toast.error(t("invalidLink"));
       return;
     }
     
     if (!password || !confirmPassword) {
-      toast.error('يرجى ملء جميع الحقول');
+      toast.error(t("fillAllFields"));
       return;
     }
     
     if (password.length < 8) {
-      toast.error('كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+      toast.error(t("passwordMinLength"));
       return;
     }
     
     if (password !== confirmPassword) {
-      toast.error('كلمة المرور غير متطابقة');
+      toast.error(t("passwordMismatch"));
       return;
     }
     
@@ -57,10 +67,9 @@ const ResetPasswordForm: React.FC = () => {
     if (result.error) {
       toast.error(result.error);
     } else {
-      toast.success('تم تغيير كلمة المرور بنجاح');
+      toast.success(t("successMessage"));
       setSuccess(true);
       
-      // Redirect to sign in after 2 seconds
       setTimeout(() => {
         router.push(`/${locale}/authentication/sign-in`);
       }, 2000);
@@ -71,158 +80,194 @@ const ResetPasswordForm: React.FC = () => {
 
   if (!token) {
     return (
-      <div className="auth-main-content bg-white dark:bg-[#0a0e19] py-[60px] md:py-[80px] lg:py-[135px]">
-        <div className="mx-auto px-[12.5px] md:max-w-[720px]">
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-6 text-center">
-            <i className="ri-error-warning-line text-5xl text-red-600 dark:text-red-400 mb-4"></i>
-            <h2 className="text-xl font-semibold text-red-900 dark:text-red-100 mb-2">
-              رابط غير صالح
+      <main className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] flex items-center justify-center relative overflow-hidden">
+        {/* Ambient Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 right-10 w-72 h-72 bg-red-500/10 dark:bg-red-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 left-10 w-96 h-96 bg-red-500/5 dark:bg-red-400/10 rounded-full blur-3xl animate-pulse" />
+        </div>
+
+        <div className="max-w-md mx-auto px-4 animate-slide-up w-full relative z-10">
+          <div className="bg-white/90 dark:bg-[#0c1427]/90 backdrop-blur-xl border border-red-200/50 dark:border-red-500/20 rounded-2xl shadow-2xl p-8 text-center">
+            <div className="w-20 h-20 mx-auto mb-6 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+              <i className="ri-error-warning-line text-4xl text-red-600 dark:text-red-400"></i>
+            </div>
+            <h2 className="text-2xl font-bold text-red-900 dark:text-red-100 mb-3">
+              {t("invalidLinkTitle")}
             </h2>
-            <p className="text-red-700 dark:text-red-300 mb-4">
-              الرابط منتهي الصلاحية أو غير صحيح
+            <p className="text-red-700 dark:text-red-300 mb-6">
+              {t("invalidLinkDescription")}
             </p>
             <Link
               href={`/${locale}/authentication/forgot-password`}
-              className="inline-block px-6 py-2 bg-primary-500 text-white rounded-md hover:bg-primary-400"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl font-semibold hover:shadow-lg hover:scale-[1.02] transition-all"
             >
-              طلب رابط جديد
+              <i className="ri-link text-xl"></i>
+              {t("requestNewLink")}
             </Link>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
   return (
-    <>
-      <Toaster position="top-center" />
-      
-      <div className="auth-main-content bg-white dark:bg-[#0a0e19] py-[60px] md:py-[80px] lg:py-[135px]">
-        <div className="mx-auto px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-center">
-            <div className="xl:ltr:-mr-[25px] xl:rtl:-ml-[25px] 2xl:ltr:-mr-[45px] 2xl:rtl:-ml-[45px] rounded-[25px] order-2 lg:order-1">
+    <main className="min-h-screen bg-gradient-to-b from-white via-purple-50/50 to-white dark:from-[#0a0e19] dark:via-[#0c1427] dark:to-[#0a0e19] relative overflow-hidden transition-colors duration-300">
+      {/* Ambient Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 ltr:right-10 rtl:left-10 w-72 h-72 bg-primary-500/10 dark:bg-primary-500/20 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-20 ltr:left-10 rtl:right-10 w-96 h-96 bg-primary-500/5 dark:bg-primary-400/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-200/30 dark:bg-purple-900/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-4 py-10 relative z-10">
+        {/* Top Bar - Back Button */}
+        <div className="flex items-center justify-between mb-8">
+          <Link
+            href={`/${locale}/authentication/sign-in`}
+            className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition group"
+          >
+            <i className={`ri-arrow-${isRTL ? 'right' : 'left'}-line text-xl transition-transform ${isRTL ? 'group-hover:translate-x-1' : 'group-hover:-translate-x-1'}`}></i>
+            {t("backToLogin")}
+          </Link>
+        </div>
+
+        {/* Card with Animation */}
+        <div className="max-w-md mx-auto animate-slide-up">
+          <div className="bg-white/90 dark:bg-[#0c1427]/90 backdrop-blur-xl border border-gray-200/50 dark:border-primary-500/10 rounded-2xl shadow-2xl dark:shadow-primary-500/5 p-8 md:p-10">
+            {/* Logo */}
+            <div className="flex justify-center mb-6">
               <Image
-                src="/images/reset-password.jpg"
-                alt="reset-password"
-                className="rounded-[25px]"
-                width={646}
-                height={804}
+                src="/images/ENS.png"
+                alt="logo"
+                className="h-16 w-auto dark:hidden"
+                width={160}
+                height={64}
+              />
+              <Image
+                src="/images/ENS.png"
+                alt="logo"
+                className="h-16 w-auto hidden dark:block"
+                width={160}
+                height={64}
               />
             </div>
 
-            <div className="xl:ltr:pl-[90px] xl:rtl:pr-[90px] 2xl:ltr:pl-[120px] 2xl:rtl:pr-[120px] order-1 lg:order-2">
-              <Image
-                src="/images/logo-big.svg"
-                alt="logo"
-                className="inline-block dark:hidden"
-                width={142}
-                height={38}
-              />
-              <Image
-                src="/images/white-logo-big.svg"
-                alt="logo"
-                className="hidden dark:inline-block"
-                width={142}
-                height={38}
-              />
-
-              <div className="my-[17px] md:my-[25px]">
-                <h1 className="!font-semibold !text-[22px] md:!text-xl lg:!text-2xl !mb-[5px] md:!mb-[7px]">
-                  {success ? "تم التغيير بنجاح!" : "إعادة تعيين كلمة المرور"}
-                </h1>
-                <p className="text-gray-500 dark:text-gray-400">
-                  {success 
-                    ? "سيتم تحويلك لصفحة تسجيل الدخول..."
-                    : "أدخل كلمة المرور الجديدة"
-                  }
-                </p>
+            {/* Icon */}
+            <div className="flex justify-center mb-6">
+              <div className={`w-20 h-20 rounded-full flex items-center justify-center ${
+                success 
+                  ? "bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30" 
+                  : "bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30"
+              }`}>
+                <i className={`text-4xl ${
+                  success 
+                    ? "ri-checkbox-circle-line text-green-600 dark:text-green-400" 
+                    : "ri-key-2-line text-primary-500 dark:text-primary-400"
+                }`}></i>
               </div>
+            </div>
 
-              {!success ? (
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-[15px] relative">
-                    <label className="mb-[10px] md:mb-[12px] text-black dark:text-white font-medium block">
-                      كلمة المرور الجديدة
-                    </label>
+            {/* Title */}
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
+                {success ? t("successTitle") : t("title")}
+              </h1>
+              <p className="text-gray-500 dark:text-gray-400">
+                {success ? t("redirecting") : t("subtitle")}
+              </p>
+            </div>
+
+            {!success ? (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* New Password */}
+                <div className="space-y-2">
+                  <label className="flex gap-2 items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                    <i className="ri-lock-line text-primary-500 dark:text-primary-400"></i>
+                    {t("newPassword")}
+                  </label>
+                  <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                      placeholder="8 أحرف على الأقل"
+                      placeholder={t("newPasswordPlaceholder")}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       disabled={loading}
                       required
                       minLength={8}
+                      className="h-12 w-full rounded-lg bg-gray-50 dark:bg-[#0a0e19] border border-gray-200 dark:border-[#1e293b] px-4 ltr:pr-12 rtl:pl-12 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-500 dark:focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:focus:ring-primary-400/20 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     <button
-                      className="absolute text-lg ltr:right-[20px] rtl:left-[20px] bottom-[12px] transition-all hover:text-primary-500"
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
+                      className="absolute ltr:right-3 rtl:left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-primary-500 dark:hover:text-primary-400 transition-colors text-xl"
                     >
-                      <i className={showPassword ? "ri-eye-line" : "ri-eye-off-line"}></i>
+                      <i className={showPassword ? "ri-eye-off-line" : "ri-eye-line"}></i>
                     </button>
                   </div>
-
-                  <div className="mb-[15px] relative">
-                    <label className="mb-[10px] md:mb-[12px] text-black dark:text-white font-medium block">
-                      تأكيد كلمة المرور
-                    </label>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                      placeholder="أعد إدخال كلمة المرور"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      disabled={loading}
-                      required
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="md:text-md block w-full text-center transition-all rounded-md font-medium mt-[20px] md:mt-[25px] py-[12px] px-[25px] text-white bg-primary-500 hover:bg-primary-400 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    disabled={loading}
-                  >
-                    <span className="flex items-center justify-center gap-[5px]">
-                      {loading ? (
-                        <>
-                          <i className="ri-loader-4-line animate-spin"></i>
-                          جاري التغيير...
-                        </>
-                      ) : (
-                        <>
-                          <i className="ri-lock-password-line"></i>
-                          تغيير كلمة المرور
-                        </>
-                      )}
-                    </span>
-                  </button>
-                </form>
-              ) : (
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-6 text-center">
-                  <i className="ri-checkbox-circle-line text-5xl text-green-600 dark:text-green-400 mb-4"></i>
-                  <h3 className="text-xl font-semibold text-green-900 dark:text-green-100 mb-2">
-                    تم تغيير كلمة المرور
-                  </h3>
-                  <p className="text-green-700 dark:text-green-300">
-                    يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة
-                  </p>
                 </div>
-              )}
 
-              <p className="mt-[15px] md:mt-[20px] text-center">
-                <Link
-                  href={`/${locale}/authentication/sign-in`}
-                  className="text-primary-500 transition-all font-semibold hover:underline"
+                {/* Confirm Password */}
+                <div className="space-y-2">
+                  <label className="flex gap-2 items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                    <i className="ri-lock-password-line text-primary-500 dark:text-primary-400"></i>
+                    {t("confirmPassword")}
+                  </label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder={t("confirmPasswordPlaceholder")}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    disabled={loading}
+                    required
+                    className="h-12 w-full rounded-lg bg-gray-50 dark:bg-[#0a0e19] border border-gray-200 dark:border-[#1e293b] px-4 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-500 dark:focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 dark:focus:ring-primary-400/20 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-12 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500 text-white font-semibold text-lg shadow-lg shadow-primary-500/25 dark:shadow-primary-400/30 hover:shadow-xl hover:shadow-primary-500/30 dark:hover:shadow-primary-400/40 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
                 >
-                  العودة لتسجيل الدخول
-                </Link>
-              </p>
+                  {loading ? (
+                    <>
+                      <i className="ri-loader-4-line animate-spin text-xl"></i>
+                      {t("changing")}
+                    </>
+                  ) : (
+                    <>
+                      <i className="ri-lock-password-line text-xl"></i>
+                      {t("changeButton")}
+                    </>
+                  )}
+                </button>
+              </form>
+            ) : (
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/50 rounded-xl p-6 text-center">
+                <i className="ri-checkbox-circle-line text-5xl text-green-600 dark:text-green-400 mb-4"></i>
+                <h3 className="text-lg font-bold text-green-900 dark:text-green-100 mb-2">
+                  {t("successMessage")}
+                </h3>
+                <p className="text-sm text-green-700 dark:text-green-300">
+                  {t("canNowLogin")}
+                </p>
+              </div>
+            )}
+
+            {/* Footer */}
+            <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+              <Link
+                href={`/${locale}/authentication/sign-in`}
+                className="text-primary-500 dark:text-primary-400 font-medium hover:underline"
+              >
+                {t("backToLoginLink")}
+              </Link>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 
