@@ -4,3 +4,6 @@ export { default as DefaultTemplate } from "./DefaultTemplate";
 // Export registry and types
 export * from "./registry";
 export * from "./types";
+
+// Export shared utilities
+export * from "./shared";

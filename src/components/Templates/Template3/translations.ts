@@ -82,4 +82,4 @@ export const translations = {
 };
 
 export type Language = keyof typeof translations;
-export type TranslationType = typeof translations.ar;
+export type TranslationType = typeof translations.ar | typeof translations.en;
