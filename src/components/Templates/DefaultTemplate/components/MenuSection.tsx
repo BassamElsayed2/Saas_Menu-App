@@ -19,6 +19,7 @@ interface MenuSectionProps {
   items: MenuItem[];
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
+  currency?: string;
 }
 
 export const MenuSection: React.FC<MenuSectionProps> = ({
@@ -26,6 +27,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
   items: apiItems,
   selectedCategory,
   onCategoryChange,
+  currency = "SAR",
 }) => {
   const { t, direction, locale } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
@@ -242,6 +244,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
                 key={item.id}
                 item={item}
                 index={index}
+                currency={currency}
                 onClick={() => openModal(item)}
               />
             ))}
@@ -263,7 +266,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
       </div>
 
       {/* Modal */}
-      <Modal isOpen={isModalOpen} onClose={closeModal} item={selectedItem} />
+      <Modal isOpen={isModalOpen} onClose={closeModal} item={selectedItem} currency={currency} />
     </section>
   );
 };

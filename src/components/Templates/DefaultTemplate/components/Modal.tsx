@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { MenuItem } from "../types";
 import { useLanguage } from "../context";
 import { Icon } from "./Icon";
+import { getCurrencyByCode } from "@/constants/currencies";
 
 // ============================
 // Modal Component
@@ -13,11 +14,13 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   item: MenuItem | null;
+  currency?: string;
 }
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, item }) => {
+export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, item, currency = "SAR" }) => {
   const { locale, direction } = useLanguage();
   const rtl = direction === "rtl";
+  const currencySymbol = getCurrencyByCode(currency)?.symbol || currency;
 
   useEffect(() => {
     if (isOpen) {
@@ -134,7 +137,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, item }) => {
                 <>
                   <div className="flex items-baseline gap-2">
                     <span className="text-sm text-[var(--text-muted)] line-through">
-                      {item.originalPrice} ج.م
+                      {item.originalPrice} {currencySymbol}
                     </span>
                     <span className="text-xs font-bold bg-[var(--accent)] text-white px-2 py-0.5 rounded">
                       -{item.discountPercent}%
@@ -144,7 +147,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, item }) => {
                     <span className="text-3xl font-bold text-[var(--accent)]">
                       {item.price}
                     </span>
-                    <span className="text-lg text-[var(--text-muted)]">ج.م</span>
+                    <span className="text-lg text-[var(--text-muted)]">{currencySymbol}</span>
                   </div>
                 </>
               ) : (
@@ -152,7 +155,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, item }) => {
                   <span className="text-3xl font-bold text-[var(--accent)]">
                     {item.price}
                   </span>
-                  <span className="text-lg text-[var(--text-muted)]">ج.م</span>
+                  <span className="text-lg text-[var(--text-muted)]">{currencySymbol}</span>
                 </div>
               )}
             </div>

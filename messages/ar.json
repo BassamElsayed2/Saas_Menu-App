@@ -585,6 +585,7 @@
     "saving": "جاري الحفظ...",
     "product": "منتج",
     "products": "منتجات",
+    "results": "نتيجة",
     "showing": "عرض",
     "of": "من",
     "page": "صفحة",
@@ -598,9 +599,15 @@
     "descriptionAr": "الوصف بالعربية",
     "descriptionEn": "الوصف بالإنجليزية",
     "category": "الفئة",
+    "selectCategory": "اختر التصنيف",
     "price": "السعر",
+    "currency": "ريال",
     "image": "الصورة",
+    "clickToChange": "اضغط للتغيير",
+    "clickToUpload": "اضغط لرفع صورة",
     "status": "الحالة",
+    "availability": "التوفر",
+    "availableForOrder": "متاح للطلب",
     "actions": "الإجراءات",
     "available": "متوفر",
     "unavailable": "غير متوفر",
@@ -808,6 +815,7 @@
     "sections": {
       "general": "إعدادات عامة",
       "appearance": "المظهر",
+      "currency": "العملة",
       "status": "الحالة"
     },
     "fields": {
@@ -818,6 +826,8 @@
       "slug": "الرابط المخصص",
       "slugHint": "سيظهر في رابط القائمة: yoursite.com/menu/slug",
       "theme": "المظهر",
+      "currency": "العملة",
+      "currencyHint": "اختر العملة التي سيتم عرض الأسعار بها",
       "isActive": "تفعيل القائمة",
       "isActiveHint": "عند التفعيل، ستكون القائمة مرئية للعامة"
     },
@@ -898,5 +908,52 @@
     "successTitle": "تم التغيير بنجاح!",
     "redirecting": "سيتم تحويلك لصفحة تسجيل الدخول...",
     "canNowLogin": "يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة"
+  },
+  "AdminUsers": {
+    "title": "إدارة المستخدمين",
+    "subtitle": "عرض وإدارة جميع المستخدمين في النظام",
+    "backButton": "رجوع",
+    "searchPlaceholder": "بحث بالاسم أو البريد الإلكتروني...",
+    "stats": {
+      "totalUsers": "إجمالي المستخدمين",
+      "activeUsers": "المستخدمين النشطين",
+      "suspendedUsers": "المستخدمين الموقوفين"
+    },
+    "table": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "plan": "الخطة",
+      "status": "الحالة",
+      "actions": "إجراءات"
+    },
+    "roles": {
+      "admin": "أدمن",
+      "user": "مستخدم"
+    },
+    "plans": {
+      "yearly": "سنوي",
+      "monthly": "شهري",
+      "free": "مجاني"
+    },
+    "status": {
+      "active": "نشط",
+      "suspended": "موقوف"
+    },
+    "actions": {
+      "view": "عرض",
+      "suspend": "إيقاف",
+      "activate": "تفعيل"
+    },
+    "noResults": "لا توجد نتائج",
+    "loading": "جاري التحميل...",
+    "confirmModal": {
+      "title": "تأكيد العملية",
+      "activateMessage": "هل أنت متأكد من تفعيل حساب المستخدم",
+      "suspendMessage": "هل أنت متأكد من إيقاف حساب المستخدم",
+      "suspendWarning": "؟ لن يتمكن من الوصول إلى حسابه بعد ذلك.",
+      "cancel": "إلغاء",
+      "confirm": "تأكيد"
+    }
   }
 }

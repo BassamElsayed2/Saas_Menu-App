@@ -38,6 +38,7 @@ export interface MenuData {
     logo: string;
     theme: string;
     slug: string;
+    currency: string;
     isActive: boolean;
     ownerPlanType?: string;
   };

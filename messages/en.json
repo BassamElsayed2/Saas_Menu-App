@@ -588,6 +588,7 @@
     "saving": "Saving...",
     "product": "Product",
     "products": "Products",
+    "results": "results",
     "showing": "Showing",
     "of": "of",
     "page": "Page",
@@ -601,9 +602,14 @@
     "descriptionAr": "Description (Arabic)",
     "descriptionEn": "Description (English)",
     "category": "Category",
+    "selectCategory": "Select Category",
     "price": "Price",
+    "currency": "SAR",
     "image": "Image",
+    "clickToChange": "Click to change",
     "status": "Status",
+    "availability": "Availability",
+    "availableForOrder": "Available for order",
     "actions": "Actions",
     "available": "Available",
     "unavailable": "Unavailable",
@@ -809,6 +815,7 @@
     "sections": {
       "general": "General Settings",
       "appearance": "Appearance",
+      "currency": "Currency",
       "status": "Status"
     },
     "fields": {
@@ -819,6 +826,8 @@
       "slug": "Custom URL",
       "slugHint": "Will appear in menu URL: yoursite.com/menu/slug",
       "theme": "Theme",
+      "currency": "Currency",
+      "currencyHint": "Select the currency for displaying prices",
       "isActive": "Activate Menu",
       "isActiveHint": "When active, the menu will be visible to the public"
     },
@@ -899,5 +908,52 @@
     "successTitle": "Changed Successfully!",
     "redirecting": "You will be redirected to login...",
     "canNowLogin": "You can now sign in with your new password"
+  },
+  "AdminUsers": {
+    "title": "User Management",
+    "subtitle": "View and manage all users in the system",
+    "backButton": "Back",
+    "searchPlaceholder": "Search by name or email...",
+    "stats": {
+      "totalUsers": "Total Users",
+      "activeUsers": "Active Users",
+      "suspendedUsers": "Suspended Users"
+    },
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "plan": "Plan",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "roles": {
+      "admin": "Admin",
+      "user": "User"
+    },
+    "plans": {
+      "yearly": "Yearly",
+      "monthly": "Monthly",
+      "free": "Free"
+    },
+    "status": {
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "actions": {
+      "view": "View",
+      "suspend": "Suspend",
+      "activate": "Activate"
+    },
+    "noResults": "No results found",
+    "loading": "Loading...",
+    "confirmModal": {
+      "title": "Confirm Action",
+      "activateMessage": "Are you sure you want to activate the user account for",
+      "suspendMessage": "Are you sure you want to suspend the user account for",
+      "suspendWarning": "? They will not be able to access their account afterwards.",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    }
   }
 }

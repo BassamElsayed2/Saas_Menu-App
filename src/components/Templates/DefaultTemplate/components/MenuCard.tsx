@@ -4,6 +4,7 @@ import React, { memo } from "react";
 import { MenuItem } from "../types";
 import { useLanguage } from "../context";
 import { Icon } from "./Icon";
+import { getCurrencyByCode } from "@/constants/currencies";
 
 // ============================
 // Menu Card Component
@@ -12,10 +13,11 @@ import { Icon } from "./Icon";
 interface MenuCardProps {
   item: MenuItem;
   index: number;
+  currency?: string;
   onClick: () => void;
 }
 
-export const MenuCard = memo<MenuCardProps>(({ item, index, onClick }) => {
+export const MenuCard = memo<MenuCardProps>(({ item, index, currency = "SAR", onClick }) => {
   const { locale, direction } = useLanguage();
   const rtl = direction === "rtl";
 
@@ -24,6 +26,7 @@ export const MenuCard = memo<MenuCardProps>(({ item, index, onClick }) => {
     locale === "ar" ? item.descriptionAr : item.descriptionEn;
   const popularText = locale === "ar" ? "الأكثر طلباً" : "Popular";
   const viewDetails = locale === "ar" ? "عرض التفاصيل" : "View Details";
+  const currencySymbol = getCurrencyByCode(currency)?.symbol || currency;
 
   return (
     <div
@@ -166,14 +169,14 @@ export const MenuCard = memo<MenuCardProps>(({ item, index, onClick }) => {
             {item.originalPrice && item.discountPercent ? (
               <>
                 <span className="text-xs text-[var(--text-muted)] line-through">
-                  {item.originalPrice} ج.م
+                  {item.originalPrice} {currencySymbol}
                 </span>
                 <div className="flex items-baseline gap-1">
                   <span className="text-[var(--accent)] font-extrabold text-lg sm:text-xl">
                     {item.price}
                   </span>
                   <span className="text-xs sm:text-sm font-medium text-[var(--text-muted)]">
-                    ج.م
+                    {currencySymbol}
                   </span>
                   <span className="text-[10px] font-bold bg-[var(--accent)] text-white px-1.5 py-0.5 rounded ml-1">
                     -{item.discountPercent}%
@@ -191,7 +194,7 @@ export const MenuCard = memo<MenuCardProps>(({ item, index, onClick }) => {
               >
                 {item.price}
                 <span className="text-xs sm:text-sm font-medium text-[var(--text-muted)]">
-                  ج.م
+                  {currencySymbol}
                 </span>
               </span>
             )}

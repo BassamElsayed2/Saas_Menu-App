@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { templates } from "@/components/Templates";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/lib/api";
+import CurrencySelector from "@/components/CurrencySelector";
 
 export default function MenuSettingsPage({
   params,
@@ -41,6 +42,7 @@ export default function MenuSettingsPage({
     slug: "",
     logo: "",
     theme: "default",
+    currency: "SAR",
     isActive: true,
   });
   const [originalData, setOriginalData] = useState({
@@ -51,6 +53,7 @@ export default function MenuSettingsPage({
     slug: "",
     logo: "",
     theme: "default",
+    currency: "SAR",
     isActive: true,
   });
 
@@ -88,6 +91,7 @@ export default function MenuSettingsPage({
               slug: menu.slug || "",
               logo: menu.logo || "",
               theme: menu.theme || "default",
+              currency: menu.currency || "SAR",
               isActive: menu.isActive !== undefined ? menu.isActive : true,
             };
             setFormData(initialData);
@@ -225,6 +229,7 @@ export default function MenuSettingsPage({
         "descriptionAr",
         "logo",
         "theme",
+        "currency",
         "isActive",
       ];
 
@@ -412,7 +417,7 @@ export default function MenuSettingsPage({
             }`}
           >
             <i className="material-symbols-outlined !text-[24px]">palette</i>
-            <span>الشكل والتصميم</span>
+            <span>{locale === "ar" ? "الشكل والتصميم" : "Appearance"}</span>
           </button>
         </div>
       </div>
@@ -538,6 +543,46 @@ export default function MenuSettingsPage({
                       </i>
                       {t("fields.slugHint")} - لا يمكن تغيير الرابط بعد الإنشاء
                     </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Currency Settings */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <i className="material-symbols-outlined text-green-500">
+                  payments
+                </i>
+                {t("sections.currency")}
+              </h2>
+
+              <div className="max-w-2xl">
+                <CurrencySelector
+                  value={formData.currency}
+                  onChange={(currency) =>
+                    setFormData({ ...formData, currency })
+                  }
+                  label={t("fields.currency")}
+                  hint={t("fields.currencyHint")}
+                  showArabOnly={false}
+                />
+
+                <div className="mt-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                  <div className="flex items-start gap-3">
+                    <i className="material-symbols-outlined text-blue-500 !text-[24px] mt-0.5">
+                      info
+                    </i>
+                    <div>
+                      <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-1">
+                        {locale === "ar" ? "ملاحظة" : "Note"}
+                      </h4>
+                      <p className="text-sm text-blue-700 dark:text-blue-400">
+                        {locale === "ar"
+                          ? "العملة التي تختارها سيتم عرضها مع جميع الأسعار في قائمتك العامة."
+                          : "The currency you select will be displayed with all prices in your public menu."}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

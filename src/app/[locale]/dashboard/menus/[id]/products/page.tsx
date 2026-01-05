@@ -8,6 +8,7 @@ import Link from "next/link";
 import api from "@/lib/api";
 import { toast } from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { getCurrencyByCode } from "@/constants/currencies";
 
 interface MenuItem {
   id: number;
@@ -35,6 +36,7 @@ export default function ProductsPage() {
 
   const [products, setProducts] = useState<MenuItem[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
+  const [menuCurrency, setMenuCurrency] = useState<string>("SAR");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -91,9 +93,35 @@ export default function ProductsPage() {
     }
   };
 
+  // Fetch menu data to get currency
+  const fetchMenuData = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/menus/${menuId}?locale=${locale}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const menu = data.menu;
+        if (menu?.currency) {
+          setMenuCurrency(menu.currency);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching menu data:", error);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
     fetchCategories();
+    fetchMenuData();
   }, [menuId, locale]);
 
   // Handle tab switching
@@ -399,7 +427,7 @@ export default function ProductsPage() {
 
                           <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
                             {product.price?.toFixed(2) || "0.00"}{" "}
-                            {t("Products.currency") || "SAR"}
+                            {getCurrencyByCode(menuCurrency)?.symbol || menuCurrency}
                           </td>
 
                           <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
@@ -502,6 +530,7 @@ export default function ProductsPage() {
         <CreateProductModal
           menuId={menuId}
           locale={locale}
+          menuCurrency={menuCurrency}
           onClose={() => setShowCreateModal(false)}
           onSuccess={() => {
             setShowCreateModal(false);
@@ -516,6 +545,7 @@ export default function ProductsPage() {
           menuId={menuId}
           locale={locale}
           product={selectedProduct}
+          menuCurrency={menuCurrency}
           onClose={() => {
             setShowEditModal(false);
             setSelectedProduct(null);
@@ -535,11 +565,13 @@ export default function ProductsPage() {
 function CreateProductModal({
   menuId,
   locale,
+  menuCurrency,
   onClose,
   onSuccess,
 }: {
   menuId: number;
   locale: string;
+  menuCurrency: string;
   onClose: () => void;
   onSuccess: () => void;
 }) {
@@ -865,7 +897,7 @@ function CreateProductModal({
                       className="w-full h-[50px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] pl-4 pr-16 text-black dark:text-white outline-0 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 font-medium">
-                      {t("Products.currency") || "SAR"}
+                      {getCurrencyByCode(menuCurrency)?.symbol || menuCurrency}
                     </span>
                   </div>
                 </div>
@@ -1035,12 +1067,14 @@ function EditProductModal({
   menuId,
   locale,
   product,
+  menuCurrency,
   onClose,
   onSuccess,
 }: {
   menuId: number;
   locale: string;
   product: MenuItem;
+  menuCurrency: string;
   onClose: () => void;
   onSuccess: () => void;
 }) {
@@ -1370,7 +1404,7 @@ function EditProductModal({
                       className="w-full h-[50px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] pl-4 pr-16 text-black dark:text-white outline-0 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 font-medium">
-                      {t("Products.currency") || "SAR"}
+                      {getCurrencyByCode(menuCurrency)?.symbol || menuCurrency}
                     </span>
                   </div>
                 </div>

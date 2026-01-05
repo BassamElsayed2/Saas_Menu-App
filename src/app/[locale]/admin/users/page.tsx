@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface User {
@@ -21,6 +21,7 @@ export default function UsersManagement() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations("AdminUsers");
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -132,17 +133,19 @@ export default function UsersManagement() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                إدارة المستخدمين
+                {t("title")}
               </h1>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                عرض وإدارة جميع المستخدمين في النظام
+                {t("subtitle")}
               </p>
             </div>
             <button
               onClick={() => router.push(`/${locale}/admin`)}
               className="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >
-              ← رجوع
+              {locale === "ar" ? "← " : ""}
+              {t("backButton")}
+              {locale === "en" ? " →" : ""}
             </button>
           </div>
 
@@ -150,7 +153,7 @@ export default function UsersManagement() {
           <div className="mb-4">
             <input
               type="text"
-              placeholder="بحث بالاسم أو البريد الإلكتروني..."
+              placeholder={t("searchPlaceholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="form-input"
@@ -162,7 +165,7 @@ export default function UsersManagement() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-              إجمالي المستخدمين
+              {t("stats.totalUsers")}
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
               {users.length}
@@ -170,7 +173,7 @@ export default function UsersManagement() {
           </div>
           <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-              المستخدمين النشطين
+              {t("stats.activeUsers")}
             </div>
             <div className="text-2xl font-bold text-green-600">
               {users.filter((u) => !u.isSuspended).length}
@@ -178,7 +181,7 @@ export default function UsersManagement() {
           </div>
           <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-              المستخدمين الموقوفين
+              {t("stats.suspendedUsers")}
             </div>
             <div className="text-2xl font-bold text-red-600">
               {users.filter((u) => u.isSuspended).length}
@@ -193,22 +196,22 @@ export default function UsersManagement() {
               <thead className="bg-gray-50 dark:bg-[#15203c]">
                 <tr>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    الاسم
+                    {t("table.name")}
                   </th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    البريد الإلكتروني
+                    {t("table.email")}
                   </th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    الدور
+                    {t("table.role")}
                   </th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    الخطة
+                    {t("table.plan")}
                   </th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    الحالة
+                    {t("table.status")}
                   </th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    إجراءات
+                    {t("table.actions")}
                   </th>
                 </tr>
               </thead>
@@ -219,7 +222,7 @@ export default function UsersManagement() {
                       colSpan={6}
                       className="px-4 py-8 text-center text-gray-500 dark:text-gray-400"
                     >
-                      لا توجد نتائج
+                      {t("noResults")}
                     </td>
                   </tr>
                 ) : (
@@ -242,7 +245,9 @@ export default function UsersManagement() {
                               : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
                           }`}
                         >
-                          {u.role === "admin" ? "أدمن" : "مستخدم"}
+                          {u.role === "admin"
+                            ? t("roles.admin")
+                            : t("roles.user")}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm">
@@ -256,10 +261,10 @@ export default function UsersManagement() {
                           }`}
                         >
                           {u.planName === "Yearly"
-                            ? "سنوي"
+                            ? t("plans.yearly")
                             : u.planName === "Monthly"
-                            ? "شهري"
-                            : u.planName || "مجاني"}
+                            ? t("plans.monthly")
+                            : u.planName || t("plans.free")}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm">
@@ -270,7 +275,9 @@ export default function UsersManagement() {
                               : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                           }`}
                         >
-                          {u.isSuspended ? "موقوف" : "نشط"}
+                          {u.isSuspended
+                            ? t("status.suspended")
+                            : t("status.active")}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm">
@@ -281,7 +288,7 @@ export default function UsersManagement() {
                             }
                             className="font-normal inline-block transition-all rounded-md md:text-md py-[10px]  px-[20px]  bg-primary-500 text-white hover:bg-primary-400"
                           >
-                            عرض
+                            {t("actions.view")}
                           </button>
                           {u.role !== "admin" && (
                             <button
@@ -294,7 +301,9 @@ export default function UsersManagement() {
                                   : "bg-red-600 text-white hover:bg-red-700"
                               }`}
                             >
-                              {u.isSuspended ? "تفعيل" : "إيقاف"}
+                              {u.isSuspended
+                                ? t("actions.activate")
+                                : t("actions.suspend")}
                             </button>
                           )}
                         </div>
@@ -312,12 +321,12 @@ export default function UsersManagement() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
             <div className="bg-white dark:bg-[#0c1427] rounded-lg shadow-xl max-w-md w-full p-6">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                تأكيد العملية
+                {t("confirmModal.title")}
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
                 {selectedUser.isSuspended ? (
                   <>
-                    هل أنت متأكد من تفعيل حساب المستخدم{" "}
+                    {t("confirmModal.activateMessage")}{" "}
                     <span className="font-semibold text-gray-900 dark:text-white">
                       {selectedUser.name}
                     </span>
@@ -325,11 +334,11 @@ export default function UsersManagement() {
                   </>
                 ) : (
                   <>
-                    هل أنت متأكد من إيقاف حساب المستخدم{" "}
+                    {t("confirmModal.suspendMessage")}{" "}
                     <span className="font-semibold text-gray-900 dark:text-white">
                       {selectedUser.name}
                     </span>
-                    ؟ لن يتمكن من الوصول إلى حسابه بعد ذلك.
+                    {t("confirmModal.suspendWarning")}
                   </>
                 )}
               </p>
@@ -341,7 +350,7 @@ export default function UsersManagement() {
                   }}
                   className="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                 >
-                  إلغاء
+                  {t("confirmModal.cancel")}
                 </button>
                 <button
                   onClick={confirmSuspendToggle}
@@ -351,7 +360,9 @@ export default function UsersManagement() {
                       : "bg-red-600 hover:bg-red-700"
                   }`}
                 >
-                  {selectedUser.isSuspended ? "تفعيل" : "إيقاف"}
+                  {selectedUser.isSuspended
+                    ? t("actions.activate")
+                    : t("actions.suspend")}
                 </button>
               </div>
             </div>
