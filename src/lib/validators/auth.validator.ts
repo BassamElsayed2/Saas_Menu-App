@@ -24,7 +24,7 @@ export const signupSchema = z
   .object({
     email: z
       .string({
-        required_error: "البريد الإلكتروني مطلوب",
+        message: "البريد الإلكتروني مطلوب",
       })
       .email("صيغة البريد الإلكتروني غير صحيحة")
       .toLowerCase()
@@ -32,7 +32,7 @@ export const signupSchema = z
 
     password: z
       .string({
-        required_error: "كلمة المرور مطلوبة",
+        message: "كلمة المرور مطلوبة",
       })
       .min(8, "كلمة المرور يجب أن تكون 8 أحرف على الأقل")
       .regex(
@@ -41,12 +41,12 @@ export const signupSchema = z
       ),
 
     confirmPassword: z.string({
-      required_error: "تأكيد كلمة المرور مطلوب",
+      message: "تأكيد كلمة المرور مطلوب",
     }),
 
     name: z
       .string({
-        required_error: "الاسم مطلوب",
+        message: "الاسم مطلوب",
       })
       .trim()
       .min(1, "الاسم لا يمكن أن يكون فارغاً")
@@ -54,7 +54,7 @@ export const signupSchema = z
 
     phoneNumber: z
       .string({
-        required_error: "رقم الهاتف مطلوب",
+        message: "رقم الهاتف مطلوب",
       })
       .trim()
       .regex(phoneRegex, "صيغة رقم الهاتف غير صحيحة")
@@ -72,7 +72,7 @@ export const signupSchema = z
 export const loginSchema = z.object({
   email: z
     .string({
-      required_error: "البريد الإلكتروني مطلوب",
+      message: "البريد الإلكتروني مطلوب",
     })
     .email("صيغة البريد الإلكتروني غير صحيحة")
     .toLowerCase()
@@ -80,7 +80,7 @@ export const loginSchema = z.object({
 
   password: z
     .string({
-      required_error: "كلمة المرور مطلوبة",
+      message: "كلمة المرور مطلوبة",
     })
     .min(1, "كلمة المرور مطلوبة"),
 });
@@ -95,5 +95,5 @@ export type LoginFormData = z.infer<typeof loginSchema>;
  * Helper function to get error message from Zod validation
  */
 export const getZodErrorMessage = (error: z.ZodError): string => {
-  return error.errors[0]?.message || "خطأ في التحقق من البيانات";
+  return (error as any).errors?.[0]?.message || "خطأ في التحقق من البيانات";
 };

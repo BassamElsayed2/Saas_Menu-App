@@ -32,7 +32,7 @@ interface User {
 interface AuthContextType {
   user: User | null | undefined;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<any>;
   signup: (
     email: string,
     password: string,

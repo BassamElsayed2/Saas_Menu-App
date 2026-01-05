@@ -1,0 +1,26 @@
+# Coolify Configuration for Next.js Frontend
+
+# Port Configuration
+PORT=3000
+
+# Health Check
+HEALTH_CHECK_PATH=/
+HEALTH_CHECK_PORT=3000
+
+# Docker Build
+BUILD_CONTEXT=.
+DOCKERFILE_PATH=./Dockerfile
+
+# Next.js Specific
+NEXT_TELEMETRY_DISABLED=true
+NODE_ENV=production
+
+# Auto Deploy
+AUTO_DEPLOY=true
+DEPLOY_ON_PUSH=true
+BRANCH=main
+
+# Build Args (if needed)
+# Add your environment variables here
+# NEXT_PUBLIC_API_URL=https://your-api-url.com
+

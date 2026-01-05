@@ -58,7 +58,6 @@ export default async function RootLayout({ children, params }: Props) {
         <ReactQueryProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <AuthProvider>
-              {/* <LayoutProvider>{children}</LayoutProvider> */}
               {children}
               <Toaster position="top-right" />
             </AuthProvider>
