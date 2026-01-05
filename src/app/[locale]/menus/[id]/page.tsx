@@ -1,7 +1,7 @@
 "use client";
 
 import React, { use, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, notFound } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
@@ -30,6 +30,7 @@ export default function MenuDashboard({
   
   const [loading, setLoading] = useState(true);
   const [menuName, setMenuName] = useState("");
+  const [notFoundError, setNotFoundError] = useState(false);
   const [stats, setStats] = useState<MenuStats>({
     totalItems: 0,
     activeItems: 0,
@@ -46,13 +47,18 @@ export default function MenuDashboard({
         return;
       }
 
-      if (menu && menu.userId !== user.id) {
-        toast.error("ليس لديك صلاحية للوصول لهذه القائمة");
-        router.push(`/${locale}/menus`);
+      if (error || (menu && menu.userId !== user.id)) {
+        // إذا كان هناك خطأ أو المستخدم لا يملك القائمة، اعرض 404
+        setNotFoundError(true);
         return;
       }
     }
-  }, [user, menu, authLoading, menuLoading, router, locale]);
+  }, [user, menu, authLoading, menuLoading, router, locale, error]);
+
+  // Trigger notFound() when error is detected
+  if (notFoundError) {
+    notFound();
+  }
 
   useEffect(() => {
     fetchMenuData();

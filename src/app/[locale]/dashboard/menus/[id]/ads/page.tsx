@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter, notFound } from "next/navigation";
 import { useEffect, useState, use } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import toast from "react-hot-toast";
@@ -37,6 +37,7 @@ export default function AdsPage({
   const locale = useLocale();
   const [ads, setAds] = useState<Ad[]>([]);
   const [loadingAds, setLoadingAds] = useState(true);
+  const [notFoundError, setNotFoundError] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [adToDelete, setAdToDelete] = useState<Ad | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -44,6 +45,11 @@ export default function AdsPage({
 
   // Check if user is on free plan
   const isFreePlan = user?.planType === "free" || !user?.planType;
+
+  // Trigger notFound() when error is detected
+  if (notFoundError) {
+    notFound();
+  }
 
   useEffect(() => {
     if (!loading && !user) {
@@ -78,14 +84,21 @@ export default function AdsPage({
           }
         );
 
+        if (response.status === 404) {
+          setNotFoundError(true);
+          return;
+        }
+
         if (response.ok) {
           const data = await response.json();
           setAds(data.data?.ads || []);
+        } else if (response.status >= 400) {
+          setNotFoundError(true);
         }
       }
     } catch (error) {
       console.error("Error fetching ads:", error);
-      toast.error("فشل تحميل الإعلانات");
+      setNotFoundError(true);
     } finally {
       setLoadingAds(false);
     }

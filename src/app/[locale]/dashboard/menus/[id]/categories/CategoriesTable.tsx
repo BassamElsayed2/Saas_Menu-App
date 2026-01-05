@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, notFound } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
@@ -66,7 +66,23 @@ const CategoriesTable: React.FC = () => {
       return response.data?.categories || [];
     },
     enabled: !!menuId,
+    retry: false, // Don't retry on 404
   });
+
+  // Check for 404 error and redirect
+  useEffect(() => {
+    if (error) {
+      const errorMessage = (error as Error).message || "";
+      if (
+        errorMessage.includes("not found") ||
+        errorMessage.includes("404") ||
+        errorMessage.includes("access denied") ||
+        errorMessage.includes("do not have access")
+      ) {
+        notFound();
+      }
+    }
+  }, [error]);
 
   // Create category mutation
   const createCategoryMutation = useMutation({

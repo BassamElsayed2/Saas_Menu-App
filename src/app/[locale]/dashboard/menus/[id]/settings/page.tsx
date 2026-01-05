@@ -1,7 +1,7 @@
 "use client";
 
 import React, { use, useState, useEffect, useCallback, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, notFound } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { toast } from "react-hot-toast";
 import { templates } from "@/components/Templates";
@@ -23,6 +23,7 @@ export default function MenuSettingsPage({
   const [saving, setSaving] = useState(false);
   const [menuName, setMenuName] = useState("");
   const [menuSlug, setMenuSlug] = useState<string | null>(null);
+  const [notFoundError, setNotFoundError] = useState(false);
   const [activeTab, setActiveTab] = useState<"general" | "appearance">(
     "general"
   );
@@ -71,6 +72,11 @@ export default function MenuSettingsPage({
           }
         );
 
+        if (response.status === 404) {
+          setNotFoundError(true);
+          return;
+        }
+
         if (response.ok) {
           const data = await response.json();
           const menu = data.menu;
@@ -98,20 +104,14 @@ export default function MenuSettingsPage({
             setOriginalData(initialData);
             setLogoPreview(menu.logo || null);
           } else {
-            toast.error(
-              locale === "ar"
-                ? "لا يمكن تحميل بيانات القائمة"
-                : "Cannot load menu data"
-            );
+            setNotFoundError(true);
           }
         } else {
-          toast.error(
-            locale === "ar" ? "خطأ في تحميل البيانات" : "Error loading data"
-          );
+          setNotFoundError(true);
         }
       } catch (error: any) {
         if (error.name !== "AbortError") {
-          toast.error(t("fetchError"));
+          setNotFoundError(true);
         }
       } finally {
         setLoading(false);
@@ -119,6 +119,11 @@ export default function MenuSettingsPage({
     },
     [id, locale, t]
   );
+
+  // Trigger notFound() when error is detected
+  if (notFoundError) {
+    notFound();
+  }
 
   useEffect(() => {
     const abortController = new AbortController();

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { use, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, notFound } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import { getMenuPublicUrl } from "@/lib/menuUrl";
@@ -33,6 +33,7 @@ export default function MenuDashboard({
   const [loading, setLoading] = useState(true);
   const [menuName, setMenuName] = useState("");
   const [menuSlug, setMenuSlug] = useState<string | null>(null);
+  const [notFoundError, setNotFoundError] = useState(false);
   const [stats, setStats] = useState<MenuStats>({
     totalItems: 0,
     activeItems: 0,
@@ -57,6 +58,11 @@ export default function MenuDashboard({
         }
       );
 
+      if (response.status === 404) {
+        setNotFoundError(true);
+        return;
+      }
+
       if (response.ok) {
         const data = await response.json();
         const menu = data.menu;
@@ -73,13 +79,21 @@ export default function MenuDashboard({
           activeItems: data.activeItemsCount || 0,
           categories: data.categoriesCount || 0,
         });
+      } else {
+        setNotFoundError(true);
       }
     } catch (error) {
       console.error("Error fetching menu data:", error);
+      setNotFoundError(true);
     } finally {
       setLoading(false);
     }
   };
+
+  // Trigger notFound() when error is detected
+  if (notFoundError) {
+    notFound();
+  }
 
   const fetchRecentActivity = async () => {
     try {
@@ -95,6 +109,11 @@ export default function MenuDashboard({
         }
       );
 
+      if (productsResponse.status === 404) {
+        setNotFoundError(true);
+        return;
+      }
+
       // Fetch recent categories
       const categoriesResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}/categories`,
@@ -104,6 +123,11 @@ export default function MenuDashboard({
           },
         }
       );
+
+      if (categoriesResponse.status === 404) {
+        setNotFoundError(true);
+        return;
+      }
 
       const activities: RecentItem[] = [];
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { use, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, notFound } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { toast } from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -18,10 +18,11 @@ export default function MenuSettingsPage({
   const locale = useLocale();
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  const { data: menu, isLoading: menuLoading } = useMenu(parseInt(id));
+  const { data: menu, isLoading: menuLoading, error } = useMenu(parseInt(id));
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [notFoundError, setNotFoundError] = useState(false);
   const [formData, setFormData] = useState({
     nameEn: "",
     nameAr: "",
@@ -50,13 +51,18 @@ export default function MenuSettingsPage({
         return;
       }
 
-      if (menu && menu.userId !== user.id) {
-        toast.error("ليس لديك صلاحية للوصول لهذه القائمة");
-        router.push(`/${locale}/menus`);
+      if (error || (menu && menu.userId !== user.id)) {
+        // إذا كان هناك خطأ أو المستخدم لا يملك القائمة، اعرض 404
+        setNotFoundError(true);
         return;
       }
     }
-  }, [user, menu, authLoading, menuLoading, router, locale]);
+  }, [user, menu, authLoading, menuLoading, router, locale, error]);
+
+  // Trigger notFound() when error is detected
+  if (notFoundError) {
+    notFound();
+  }
 
   useEffect(() => {
     fetchMenuSettings();
@@ -74,6 +80,11 @@ export default function MenuSettingsPage({
         }
       );
 
+      if (response.status === 404) {
+        setNotFoundError(true);
+        return;
+      }
+
       if (response.ok) {
         const data = await response.json();
         const menu = data.data?.menu;
@@ -89,11 +100,15 @@ export default function MenuSettingsPage({
           };
           setFormData(initialData);
           setOriginalData(initialData);
+        } else {
+          setNotFoundError(true);
         }
+      } else {
+        setNotFoundError(true);
       }
     } catch (error) {
       console.error("Error fetching menu settings:", error);
-      toast.error(t("fetchError"));
+      setNotFoundError(true);
     } finally {
       setLoading(false);
     }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,6 +38,7 @@ export default function ProductsPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [menuCurrency, setMenuCurrency] = useState<string>("SAR");
   const [loading, setLoading] = useState(true);
+  const [notFoundError, setNotFoundError] = useState(false);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("all");
@@ -46,6 +47,11 @@ export default function ProductsPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<MenuItem | null>(null);
   const productsPerPage = 10;
+
+  // Trigger notFound() when error is detected
+  if (notFoundError) {
+    notFound();
+  }
 
   // Get user data and check subscription
   const { user } = useAuth();
@@ -59,6 +65,11 @@ export default function ProductsPage() {
       const response = await api.getMenuItems(menuId, locale);
 
       if (response.error) {
+        // Check if it's a 404 error
+        if (response.error.includes("not found") || response.error.includes("404")) {
+          setNotFoundError(true);
+          return;
+        }
         toast.error(response.error);
         setProducts([]);
         return;
@@ -70,8 +81,7 @@ export default function ProductsPage() {
       setProducts(Array.isArray(items) ? items : []);
     } catch (error) {
       console.error("Error fetching products:", error);
-      toast.error(t("Products.fetchError") || "Failed to fetch products");
-      setProducts([]);
+      setNotFoundError(true);
     } finally {
       setLoading(false);
     }
@@ -81,6 +91,10 @@ export default function ProductsPage() {
   const fetchCategories = async () => {
     try {
       const response = await api.get(`/menus/${menuId}/categories`);
+      if (response.error && (response.error.includes("not found") || response.error.includes("404"))) {
+        setNotFoundError(true);
+        return;
+      }
       if (response.data) {
         const cats = response.data.categories || [];
         setCategories(Array.isArray(cats) ? cats : []);
@@ -106,15 +120,23 @@ export default function ProductsPage() {
         }
       );
 
+      if (response.status === 404) {
+        setNotFoundError(true);
+        return;
+      }
+
       if (response.ok) {
         const data = await response.json();
         const menu = data.menu;
         if (menu?.currency) {
           setMenuCurrency(menu.currency);
         }
+      } else {
+        setNotFoundError(true);
       }
     } catch (error) {
       console.error("Error fetching menu data:", error);
+      setNotFoundError(true);
     }
   };
 
