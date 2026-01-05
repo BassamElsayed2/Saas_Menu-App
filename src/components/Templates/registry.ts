@@ -1,4 +1,5 @@
 import { TemplateInfo } from "./types";
+import Template1 from "./Template1";
 import DefaultTemplate from "./DefaultTemplate";
 
 /**
@@ -8,8 +9,18 @@ import DefaultTemplate from "./DefaultTemplate";
  * 1. Create TemplateX.tsx in this folder
  * 2. Import it above
  * 3. Add it to the templates array below
+ *
+ * Note: First template in the array is the DEFAULT
  */
 export const templates: TemplateInfo[] = [
+  {
+    id: "template1",
+    name: "Template 1",
+    nameAr: "القالب الأول",
+    component: Template1,
+    description: "Modern elegant menu template",
+    descriptionAr: "قالب منيو عصري وأنيق",
+  },
   {
     id: "default",
     name: "Default Template",
