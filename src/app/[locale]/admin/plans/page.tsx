@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useAuth } from "@/contexts/AuthContext";
+import Image from "next/image";
 
 interface Plan {
   id: number;
   name: string;
   nameAr: string;
-  price: number;
+  priceMonthly: number;
   durationInDays: number;
   maxMenus: number;
   maxProductsPerMenu: number;
@@ -22,6 +23,7 @@ export default function PlansManagement() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations("AdminPlans");
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
@@ -89,7 +91,7 @@ export default function PlansManagement() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            priceMonthly: editingPlan.price,
+            priceMonthly: editingPlan.priceMonthly,
             maxMenus: editingPlan.maxMenus,
             maxProductsPerMenu: editingPlan.maxProductsPerMenu,
             allowCustomDomain: editingPlan.allowCustomDomain,
@@ -103,14 +105,14 @@ export default function PlansManagement() {
         setShowEditModal(false);
         setEditingPlan(null);
         fetchPlans(); // Refresh list
-        alert("تم تحديث الخطة بنجاح");
+        alert(t("editModal.updateSuccess"));
       } else {
         const error = await response.json();
-        alert(error.error || "فشل تحديث الخطة");
+        alert(error.error || t("editModal.updateError"));
       }
     } catch (error) {
       console.error("Error updating plan:", error);
-      alert("حدث خطأ أثناء تحديث الخطة");
+      alert(t("editModal.updateError"));
     }
   };
 
@@ -126,197 +128,198 @@ export default function PlansManagement() {
     <div className="py-5 px-5 sm:px-5 md:px-5 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                إدارة الخطط
-              </h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                عرض وإدارة خطط الاشتراك المتاحة
-              </p>
-            </div>
-            <button
-              onClick={() => router.push(`/${locale}/admin`)}
-              className="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-            >
-              ← رجوع
-            </button>
+        <div className="mb-[25px] md:flex items-center justify-between">
+          <div>
+            <h5 className="!mb-2 text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+              {t("title")}
+            </h5>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              {t("subtitle")}
+            </p>
           </div>
+          <button
+            onClick={() => router.push(`/${locale}/admin`)}
+            className="mt-4 md:mt-0 px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          >
+            {locale === "ar" ? "← " : "→ "}
+            {t("backButton")}
+          </button>
         </div>
 
         {/* Plans Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {plans.map((plan) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[25px] mb-[25px]">
+          {plans.map((plan, index) => (
             <div
               key={plan.id}
-              className="trezo-card bg-white dark:bg-[#0c1427] p-6 rounded-md hover:shadow-lg transition-shadow"
+              className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md text-center"
             >
-              {/* Header */}
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {plan.nameAr}
-                  </h3>
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      plan.isActive
-                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                        : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
-                    }`}
-                  >
-                    {plan.isActive ? "نشط" : "غير نشط"}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="trezo-card-content relative md:py-[10px] md:px-[10px]">
+                <span className="inline-block text-gray-700 dark:text-gray-300 rounded-md py-[6.5px] px-[17.3px] border border-gray-300 dark:border-[#172036]">
                   {plan.name}
+                </span>
+
+                <div className="leading-none text-4xl text-gray-900 dark:text-white my-[15px] md:my-[17px] font-medium -tracking-[1px]">
+                  ${plan.priceMonthly}
+                  <span className="text-md text-gray-600 dark:text-gray-400 font-normal tracking-normal">
+                    {t("perMonth")}
+                  </span>
+                </div>
+
+                <p className="font-medium text-gray-700 dark:text-gray-300">
+                  {plan.durationInDays}{" "}
+                  {plan.durationInDays === 1 ? t("day") : t("days")}
                 </p>
-              </div>
 
-              {/* Price */}
-              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                  ${plan.price}
-                  <span className="text-sm font-normal text-gray-600 dark:text-gray-400">
-                    {" "}
-                    / {plan.durationInDays} يوم
-                  </span>
-                </div>
-              </div>
-
-              {/* Features */}
-              <div className="space-y-3 mb-4">
-                <div className="flex items-center text-sm">
-                  <span className="text-green-500 ml-2">✓</span>
-                  <span className="text-gray-700 dark:text-gray-300">
+                <ul className="mt-[20px] md:mt-[28px] ltr:text-left rtl:text-right">
+                  <li className="relative ltr:pl-[30px] ltr:md:pl-[38px] rtl:pr-[30px] rtl:md:pr-[38px] mb-[15px]">
+                    <i className="material-symbols-outlined text-success-600 absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
+                      check
+                    </i>
                     {plan.maxMenus === -1
-                      ? "قوائم غير محدودة"
-                      : `${plan.maxMenus} قائمة`}
-                  </span>
-                </div>
-                <div className="flex items-center text-sm">
-                  <span className="text-green-500 ml-2">✓</span>
-                  <span className="text-gray-700 dark:text-gray-300">
+                      ? t("features.unlimitedMenus")
+                      : `${plan.maxMenus} ${
+                          plan.maxMenus === 1
+                            ? t("features.menus")
+                            : t("features.menusPlural")
+                        }`}
+                  </li>
+                  <li className="relative ltr:pl-[30px] ltr:md:pl-[38px] rtl:pr-[30px] rtl:md:pr-[38px] mb-[15px]">
+                    <i className="material-symbols-outlined text-success-600 absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
+                      check
+                    </i>
                     {plan.maxProductsPerMenu === -1
-                      ? "منتجات غير محدودة"
-                      : `${plan.maxProductsPerMenu} منتج لكل قائمة`}
-                  </span>
-                </div>
-                <div className="flex items-center text-sm">
-                  <span
-                    className={`ml-2 ${
-                      plan.allowCustomDomain ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
-                    {plan.allowCustomDomain ? "✓" : "✗"}
-                  </span>
-                  <span className="text-gray-700 dark:text-gray-300">
-                    نطاق مخصص
-                  </span>
-                </div>
-                <div className="flex items-center text-sm">
-                  <span
-                    className={`ml-2 ${
-                      !plan.hasAds ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
-                    {!plan.hasAds ? "✓" : "✗"}
-                  </span>
-                  <span className="text-gray-700 dark:text-gray-300">
-                    بدون إعلانات
-                  </span>
-                </div>
-              </div>
+                      ? t("features.unlimitedProducts")
+                      : `${plan.maxProductsPerMenu} ${t(
+                          "features.productsPlural"
+                        )}`}
+                  </li>
+                  <li className="relative ltr:pl-[30px] ltr:md:pl-[38px] rtl:pr-[30px] rtl:md:pr-[38px] mb-[15px]">
+                    <i
+                      className={`material-symbols-outlined ${
+                        plan.allowCustomDomain
+                          ? "text-success-600"
+                          : "text-red-500"
+                      } absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2`}
+                    >
+                      {plan.allowCustomDomain ? "check" : "close"}
+                    </i>
+                    {t("features.customDomain")}
+                  </li>
+                  <li className="relative ltr:pl-[30px] ltr:md:pl-[38px] rtl:pr-[30px] rtl:md:pr-[38px] mb-[15px] last:mb-0">
+                    <i
+                      className={`material-symbols-outlined ${
+                        !plan.hasAds ? "text-success-600" : "text-red-500"
+                      } absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2`}
+                    >
+                      {!plan.hasAds ? "check" : "close"}
+                    </i>
+                    {t("features.noAds")}
+                  </li>
+                </ul>
 
-              {/* Actions */}
-              <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button
+                  type="button"
                   onClick={() => handleEditPlan(plan)}
-                  className="flex-1 px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="block w-full rounded-md font-medium transition-all md:text-md mt-[20px] md:mt-[20px] py-[12px] px-[20px] text-white bg-primary-500 hover:bg-primary-400"
                 >
-                  تعديل
+                  <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px]">
+                    <i className="material-symbols-outlined !text-md absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
+                      edit
+                    </i>
+                    {t("actions.edit")}
+                  </span>
                 </button>
-                <button
-                  className={`flex-1 px-4 py-2 text-sm rounded-lg transition-colors ${
-                    plan.isActive
-                      ? "bg-red-600 text-white hover:bg-red-700"
-                      : "bg-green-600 text-white hover:bg-green-700"
-                  }`}
-                >
-                  {plan.isActive ? "تعطيل" : "تفعيل"}
-                </button>
+
+                {/* Status Badge */}
+                <div className="absolute -top-[9px] ltr:-right-[17px] rtl:-left-[17px]">
+                  {plan.isActive ? (
+                    <div className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      {t("status.active")}
+                    </div>
+                  ) : (
+                    <div className="bg-gray-400 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      {t("status.inactive")}
+                    </div>
+                  )}
+                </div>
+
+                {/* Popular Badge for middle plan */}
+                {index === 1 && plan.isActive && (
+                  <div className="absolute -top-[9px] ltr:left-[10px] rtl:right-[10px]">
+                    <Image
+                      src="/images/icons/star-popular.svg"
+                      alt="popular"
+                      width={80}
+                      height={80}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Add New Plan Button */}
-        <div className="mt-6 text-center">
-          <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
-            + إضافة خطة جديدة
-          </button>
-        </div>
-
         {/* Edit Plan Modal */}
         {showEditModal && editingPlan && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white dark:bg-[#0c1427] rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-[#0c1427] rounded-md p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                تعديل الخطة: {editingPlan.nameAr}
+                {t("editModal.title")}:{" "}
+                {locale === "ar" ? editingPlan.nameAr : editingPlan.name}
               </h2>
 
               <div className="space-y-4">
                 {/* Price */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    السعر ($)
+                    {t("editModal.price")}
                   </label>
                   <input
                     type="number"
-                    value={editingPlan.price}
+                    value={editingPlan.priceMonthly ?? 0}
                     onChange={(e) =>
                       setEditingPlan({
                         ...editingPlan,
-                        price: parseFloat(e.target.value) || 0,
+                        priceMonthly: parseFloat(e.target.value) || 0,
                       })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none"
                   />
                 </div>
 
                 {/* Max Menus */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    الحد الأقصى للقوائم (-1 = غير محدود)
+                    {t("editModal.maxMenus")}
                   </label>
                   <input
                     type="number"
-                    value={editingPlan.maxMenus}
+                    value={editingPlan.maxMenus ?? 0}
                     onChange={(e) =>
                       setEditingPlan({
                         ...editingPlan,
                         maxMenus: parseInt(e.target.value) || 0,
                       })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none"
                   />
                 </div>
 
                 {/* Max Products Per Menu */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    الحد الأقصى للمنتجات لكل قائمة (-1 = غير محدود)
+                    {t("editModal.maxProducts")}
                   </label>
                   <input
                     type="number"
-                    value={editingPlan.maxProductsPerMenu}
+                    value={editingPlan.maxProductsPerMenu ?? 0}
                     onChange={(e) =>
                       setEditingPlan({
                         ...editingPlan,
                         maxProductsPerMenu: parseInt(e.target.value) || 0,
                       })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none"
                   />
                 </div>
 
@@ -325,20 +328,20 @@ export default function PlansManagement() {
                   <input
                     type="checkbox"
                     id="allowCustomDomain"
-                    checked={editingPlan.allowCustomDomain}
+                    checked={editingPlan.allowCustomDomain ?? false}
                     onChange={(e) =>
                       setEditingPlan({
                         ...editingPlan,
                         allowCustomDomain: e.target.checked,
                       })
                     }
-                    className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                    className="w-5 h-5 text-primary-600 rounded focus:ring-2 focus:ring-primary-500"
                   />
                   <label
                     htmlFor="allowCustomDomain"
                     className="text-sm font-medium text-gray-700 dark:text-gray-300"
                   >
-                    السماح بنطاق مخصص
+                    {t("editModal.allowCustomDomain")}
                   </label>
                 </div>
 
@@ -347,20 +350,20 @@ export default function PlansManagement() {
                   <input
                     type="checkbox"
                     id="hasAds"
-                    checked={editingPlan.hasAds}
+                    checked={editingPlan.hasAds ?? false}
                     onChange={(e) =>
                       setEditingPlan({
                         ...editingPlan,
                         hasAds: e.target.checked,
                       })
                     }
-                    className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                    className="w-5 h-5 text-primary-600 rounded focus:ring-2 focus:ring-primary-500"
                   />
                   <label
                     htmlFor="hasAds"
                     className="text-sm font-medium text-gray-700 dark:text-gray-300"
                   >
-                    يحتوي على إعلانات
+                    {t("editModal.hasAds")}
                   </label>
                 </div>
 
@@ -369,20 +372,20 @@ export default function PlansManagement() {
                   <input
                     type="checkbox"
                     id="isActive"
-                    checked={editingPlan.isActive}
+                    checked={editingPlan.isActive ?? false}
                     onChange={(e) =>
                       setEditingPlan({
                         ...editingPlan,
                         isActive: e.target.checked,
                       })
                     }
-                    className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                    className="w-5 h-5 text-primary-600 rounded focus:ring-2 focus:ring-primary-500"
                   />
                   <label
                     htmlFor="isActive"
                     className="text-sm font-medium text-gray-700 dark:text-gray-300"
                   >
-                    الخطة نشطة
+                    {t("editModal.isActive")}
                   </label>
                 </div>
               </div>
@@ -391,18 +394,18 @@ export default function PlansManagement() {
               <div className="flex gap-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <button
                   onClick={handleSavePlan}
-                  className="flex-1 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                  className="flex-1 px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors font-medium"
                 >
-                  حفظ التعديلات
+                  {t("editModal.save")}
                 </button>
                 <button
                   onClick={() => {
                     setShowEditModal(false);
                     setEditingPlan(null);
                   }}
-                  className="flex-1 px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
+                  className="flex-1 px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
                 >
-                  إلغاء
+                  {t("editModal.cancel")}
                 </button>
               </div>
             </div>

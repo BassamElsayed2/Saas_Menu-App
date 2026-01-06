@@ -955,5 +955,47 @@
       "cancel": "Cancel",
       "confirm": "Confirm"
     }
+  },
+  "AdminPlans": {
+    "title": "Plans Management",
+    "subtitle": "View and manage available subscription plans",
+    "backButton": "Back",
+    "loading": "Loading...",
+    "popular": "Most Popular",
+    "perMonth": "/ per month",
+    "day": "day",
+    "days": "days",
+    "features": {
+      "unlimitedMenus": "Unlimited Menus",
+      "menus": "Menu",
+      "menusPlural": "Menus",
+      "unlimitedProducts": "Unlimited Products",
+      "products": "Product per menu",
+      "productsPlural": "Products per menu",
+      "customDomain": "Custom Domain",
+      "noAds": "No Ads"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "edit": "Edit",
+      "activate": "Activate",
+      "deactivate": "Deactivate"
+    },
+    "editModal": {
+      "title": "Edit Plan",
+      "price": "Price ($)",
+      "maxMenus": "Max Menus (-1 = unlimited)",
+      "maxProducts": "Max Products per Menu (-1 = unlimited)",
+      "allowCustomDomain": "Allow Custom Domain",
+      "hasAds": "Contains Ads",
+      "isActive": "Plan Active",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "updateSuccess": "Plan updated successfully",
+      "updateError": "Failed to update plan"
+    }
   }
 }

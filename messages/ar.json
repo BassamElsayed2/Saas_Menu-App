@@ -955,5 +955,47 @@
       "cancel": "إلغاء",
       "confirm": "تأكيد"
     }
+  },
+  "AdminPlans": {
+    "title": "إدارة الخطط",
+    "subtitle": "عرض وإدارة خطط الاشتراك المتاحة",
+    "backButton": "رجوع",
+    "loading": "جاري التحميل...",
+    "popular": "الأكثر طلباً",
+    "perMonth": "/ شهرياً",
+    "day": "يوم",
+    "days": "يوم",
+    "features": {
+      "unlimitedMenus": "قوائم غير محدودة",
+      "menus": "قائمة",
+      "menusPlural": "قوائم",
+      "unlimitedProducts": "منتجات غير محدودة",
+      "products": "منتج لكل قائمة",
+      "productsPlural": "منتج لكل قائمة",
+      "customDomain": "نطاق مخصص",
+      "noAds": "بدون إعلانات"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "actions": {
+      "edit": "تعديل",
+      "activate": "تفعيل",
+      "deactivate": "تعطيل"
+    },
+    "editModal": {
+      "title": "تعديل الخطة",
+      "price": "السعر ($)",
+      "maxMenus": "الحد الأقصى للقوائم (-1 = غير محدود)",
+      "maxProducts": "الحد الأقصى للمنتجات لكل قائمة (-1 = غير محدود)",
+      "allowCustomDomain": "السماح بنطاق مخصص",
+      "hasAds": "يحتوي على إعلانات",
+      "isActive": "الخطة نشطة",
+      "save": "حفظ التعديلات",
+      "cancel": "إلغاء",
+      "updateSuccess": "تم تحديث الخطة بنجاح",
+      "updateError": "فشل تحديث الخطة"
+    }
   }
 }
