@@ -1,5 +1,6 @@
 import { TemplateInfo } from "./types";
 import DefaultTemplate from "./DefaultTemplate";
+import ClassicTemplate from "./ClassicTemplate";
 
 /**
  * Template Registry
@@ -18,6 +19,14 @@ export const templates: TemplateInfo[] = [
     description:
       "Modern bilingual menu with hero section and smooth animations",
     descriptionAr: "قائمة عصرية ثنائية اللغة مع قسم بطولي ورسوم متحركة سلسة",
+  },
+  {
+    id: "classic",
+    name: "Classic Template",
+    nameAr: "القالب الكلاسيكي",
+    component: ClassicTemplate,
+    description: "Classic menu template with a modern design",
+    descriptionAr: "قالب قائمة عصري مع تصميم كلاسيكي",
   },
 ];
 

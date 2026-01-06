@@ -257,6 +257,9 @@ export default function MenuSettingsPage({
 
       try {
         const token = localStorage.getItem("accessToken");
+        
+        console.log("📤 Sending update:", updates);
+        
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}`,
           {
@@ -269,13 +272,18 @@ export default function MenuSettingsPage({
           }
         );
 
-        if (!response.ok) throw new Error("Failed to update menu");
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          console.error("❌ Update failed:", response.status, errorData);
+          throw new Error(errorData.error || "Failed to update menu");
+        }
 
         toast.success(t("saveSuccess"));
         setOriginalData({ ...formData });
         router.push(`/${locale}/dashboard/menus/${id}`);
-      } catch (error) {
-        toast.error(t("saveError"));
+      } catch (error: any) {
+        console.error("❌ Error:", error);
+        toast.error(error.message || t("saveError"));
       } finally {
         setSaving(false);
       }
