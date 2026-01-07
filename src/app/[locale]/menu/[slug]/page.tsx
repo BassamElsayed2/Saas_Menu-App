@@ -76,6 +76,36 @@ export default function PublicMenuPage({
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [showRatingModal, setShowRatingModal] = useState(false);
 
+  // Get preview theme from URL - check on mount and URL changes
+  const [previewTheme, setPreviewTheme] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const themeParam = urlParams.get("theme");
+    const isPreview = urlParams.get("preview") === "true";
+
+    return isPreview && themeParam ? themeParam : null;
+  });
+
+  // Re-check when component mounts or updates
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const themeParam = urlParams.get("theme");
+    const isPreview = urlParams.get("preview") === "true";
+
+    const newTheme = isPreview && themeParam ? themeParam : null;
+
+    if (newTheme !== previewTheme) {
+      console.log(
+        "🔄 Updating preview theme from",
+        previewTheme,
+        "to",
+        newTheme
+      );
+      setPreviewTheme(newTheme);
+    }
+  }, []); // Run once on mount to ensure we catch iframe URL
+
   useEffect(() => {
     fetchMenuData();
   }, [slug, locale]);
@@ -96,8 +126,6 @@ export default function PublicMenuPage({
           const apiUrl =
             process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
           const fetchUrl = `${apiUrl}/public/menu/${slug}?locale=${locale}`;
-
-          console.log("Fetching from:", fetchUrl);
 
           const response = await fetch(fetchUrl, {
             method: "GET",
@@ -278,20 +306,23 @@ export default function PublicMenuPage({
     );
   }
 
-  // Determine which template to use based on theme
-  const theme = menuData.menu.theme || "default";
+  // Determine which template to use based on preview theme or menu theme
+  const theme = previewTheme || menuData.menu.theme || "default";
+
   const templateInfo = getTemplateById(theme) || getDefaultTemplate();
   const TemplateComponent = templateInfo.component;
 
   return (
     <>
-      <TemplateComponent
-        menuData={menuData}
-        slug={slug}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-        onShowRatingModal={() => setShowRatingModal(true)}
-      />
+      <div style={previewTheme ? { marginTop: "52px" } : undefined}>
+        <TemplateComponent
+          menuData={menuData}
+          slug={slug}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          onShowRatingModal={() => setShowRatingModal(true)}
+        />
+      </div>
     </>
   );
 }

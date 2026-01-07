@@ -842,8 +842,37 @@
     },
     "buttons": {
       "save": "Save Changes",
+      "saveChanges": "Save Changes",
       "saving": "Saving...",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "select": "Select",
+      "selected": "Selected",
+      "edit": "Edit",
+      "remove": "Remove",
+      "uploadLogo": "Upload Logo",
+      "uploading": "Uploading...",
+      "upgradePlan": "Upgrade Plan",
+      "deleteForever": "Delete Forever",
+      "deleting": "Deleting...",
+      "deactivateMenu": "Deactivate Menu",
+      "deactivating": "Deactivating..."
+    },
+    "messages": {
+      "noChanges": "No changes to save",
+      "logoUploaded": "Logo uploaded successfully",
+      "logoUploadFailed": "Failed to upload logo",
+      "logoRemoved": "Logo removed",
+      "currentLogo": "Current Logo"
+    },
+    "tabs": {
+      "general": "General",
+      "appearance": "Appearance"
+    },
+    "tips": {
+      "title": "Tip",
+      "titlePlural": "Tips",
+      "appearanceHint": "Click on any template to preview it. The selected template will appear directly in your public menu.",
+      "note": "Note"
     },
     "dangerZone": {
       "title": "Danger Zone",

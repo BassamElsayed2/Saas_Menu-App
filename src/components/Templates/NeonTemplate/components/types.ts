@@ -1,0 +1,75 @@
+import { MenuItem as BaseMenuItem, MenuData } from "../../types";
+
+export interface AdSpaceProps {
+  position: "left" | "right";
+  menuId: number;
+  ownerPlanType?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+}
+
+export interface FoodItemModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  item: BaseMenuItem | null;
+  isProPlan?: boolean;
+  currency?: string;
+}
+
+export interface MenuCustomizations {
+  primaryColor?: string;
+  secondaryColor?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  heroTitleAr?: string;
+  heroSubtitleAr?: string;
+  heroTitleEn?: string;
+  heroSubtitleEn?: string;
+}
+
+export interface TemplatesSectionProps {
+  menuData: MenuData;
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+  customizations?: MenuCustomizations;
+}
+
+export interface NavbarProps {
+  menuName: string;
+  logo: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+}
+
+export interface FooterProps {
+  menuName: string;
+  branches: {
+    id: number;
+    name: string;
+    address: string;
+    phone: string;
+    latitude: string;
+    longitude: string;
+  }[];
+  primaryColor?: string;
+  secondaryColor?: string;
+}
+
+export interface QRCodeSectionProps {
+  slug: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+}
+
+export interface GlobalAd {
+  id: number;
+  title: string;
+  titleAr: string;
+  content: string;
+  contentAr: string;
+  imageUrl: string | null;
+  linkUrl: string | null;
+  position: string;
+  displayOrder: number;
+  isActive: boolean;
+}

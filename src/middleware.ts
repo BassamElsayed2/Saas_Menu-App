@@ -29,16 +29,20 @@ export function middleware(request: NextRequest) {
   }
 
   // Block direct access to /menu/[slug] path - must use subdomain
-  if (url.pathname.match(/^\/[a-z]{2}\/menu\/[^/]+/)) {
+  // EXCEPT for preview mode (when accessed from iframe in settings)
+  const isPreviewMode = url.searchParams.get('preview') === 'true';
+  
+  if (url.pathname.match(/^\/[a-z]{2}\/menu\/[^/]+/) && !isPreviewMode) {
     // Extract slug from path
     const pathMatch = url.pathname.match(/\/menu\/([^/]+)/);
     if (pathMatch) {
       const slug = pathMatch[1];
-      // Redirect to subdomain
+      // Redirect to subdomain with query parameters preserved
       const protocol = url.protocol;
       const port = hostname.includes(':') ? ':' + hostname.split(':')[1] : '';
       const baseHost = hostWithoutPort.includes('localhost') ? 'localhost' : hostWithoutPort.split('.').slice(-2).join('.');
-      return NextResponse.redirect(`${protocol}//${slug}.${baseHost}${port}`);
+      const queryString = url.search; // Preserve query parameters
+      return NextResponse.redirect(`${protocol}//${slug}.${baseHost}${port}${queryString}`);
     }
   }
 

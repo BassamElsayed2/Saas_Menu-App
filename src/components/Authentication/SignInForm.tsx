@@ -28,7 +28,6 @@ const SignInForm: React.FC = () => {
     }
 
     setLoading(true);
-    console.log("📝 Form submitted, attempting login...");
 
     try {
       const result = await login(email, password);

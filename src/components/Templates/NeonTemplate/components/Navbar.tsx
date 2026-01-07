@@ -6,18 +6,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Menu, X, Moon, Sun, Globe } from "@/components/icons/Icons";
+import { NavbarProps } from "./types";
 
-export const Navbar = () => {
+export const Navbar: React.FC<NavbarProps> = ({ 
+  menuName, 
+  logo,
+  primaryColor = "#14b8a6",
+  secondaryColor = "#06b6d4" 
+}) => {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("navbar");
   const isRTL = locale === "ar";
 
   const NAV_ITEMS = [
-    { key: "home", path: "#hero" },
-    { key: "features", path: "#features" },
     { key: "templates", path: "#templates" },
-    { key: "pricing", path: "#pricing" },
+
     { key: "contact", path: "#contact" },
   ];
 
@@ -77,28 +81,32 @@ export const Navbar = () => {
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         isSticky
-          ? "backdrop-blur-xl bg-white/90 dark:bg-slate-900/90 shadow-xl border-b border-teal-100 dark:border-teal-900"
+          ? "backdrop-blur-xl bg-white/90 dark:bg-slate-900/90 shadow-xl"
           : "bg-transparent"
       }`}
+      style={isSticky ? {
+        borderBottom: `1px solid ${primaryColor}20`
+      } : undefined}
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <Link href={`/${locale}`} className="flex items-center gap-3 group">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-lg blur opacity-75 group-hover:opacity-100 transition" />
-              <div className="relative bg-gradient-to-r from-teal-500 to-cyan-500 p-2 rounded-lg">
-                <Image
-                  src="/images/ENS-copy.png"
-                  alt="ENS Logo"
-                  width={100}
-                  height={30}
-                  priority
-                  className="brightness-0 invert"
-                />
-              </div>
+          <div className="relative">
+            <div 
+              className="absolute inset-0 rounded-lg blur opacity-75 group-hover:opacity-100 transition" 
+              style={{
+                background: `linear-gradient(to right, ${primaryColor}66, ${secondaryColor}66)`
+              }}
+            />
+            <div 
+              className="relative px-4 py-2 rounded-lg"
+              style={{
+                background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`
+              }}
+            >
+              <span className="text-white font-bold text-lg">{menuName}</span>
             </div>
-          </Link>
+          </div>
 
           <nav className="hidden lg:flex items-center gap-8">
             {NAV_ITEMS.map((item) => (
@@ -108,13 +116,29 @@ export const Navbar = () => {
                 onClick={(e) => handleNavClick(e, item.path)}
                 className={`relative text-sm font-semibold transition-all duration-300 ${
                   pathname === item.path
-                    ? "text-teal-600 dark:text-teal-400"
-                    : "text-slate-700 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400"
+                    ? ""
+                    : "text-slate-700 dark:text-slate-300"
                 }`}
+                style={pathname === item.path ? { color: primaryColor } : undefined}
+                onMouseEnter={(e) => {
+                  if (pathname !== item.path) {
+                    e.currentTarget.style.color = primaryColor;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (pathname !== item.path) {
+                    e.currentTarget.style.color = '';
+                  }
+                }}
               >
                 {t(item.key)}
                 {pathname === item.path && (
-                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />
+                  <span 
+                    className="absolute -bottom-1 left-0 w-full h-0.5 rounded-full" 
+                    style={{
+                      background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`
+                    }}
+                  />
                 )}
               </a>
             ))}
@@ -124,7 +148,13 @@ export const Navbar = () => {
             <button
               onClick={toggleLanguage}
               aria-label="Toggle language"
-              className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-teal-100 dark:hover:bg-teal-900/30 transition-all duration-300"
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 transition-all duration-300"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = `${primaryColor}20`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '';
+              }}
             >
               <Globe className="w-5 h-5 text-slate-700 dark:text-slate-300" />
             </button>
@@ -132,7 +162,13 @@ export const Navbar = () => {
             <button
               onClick={toggleDarkMode}
               aria-label="Toggle theme"
-              className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-teal-100 dark:hover:bg-teal-900/30 transition-all duration-300"
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 transition-all duration-300"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = `${primaryColor}20`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '';
+              }}
             >
               {isDarkMode ? (
                 <Sun className="w-5 h-5 text-amber-500" />
@@ -140,13 +176,6 @@ export const Navbar = () => {
                 <Moon className="w-5 h-5 text-slate-700 dark:text-slate-300" />
               )}
             </button>
-
-            <Link
-              href={`/${locale}/authentication/sign-in`}
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-semibold hover:from-teal-600 hover:to-cyan-600 transition-all shadow-lg hover:shadow-xl"
-            >
-              {t("login")}
-            </Link>
           </div>
 
           <button
@@ -159,7 +188,12 @@ export const Navbar = () => {
         </div>
 
         {isOpen && (
-          <div className="lg:hidden mt-4 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl p-6 space-y-4 border border-teal-100 dark:border-teal-900">
+          <div 
+            className="lg:hidden mt-4 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl p-6 space-y-4"
+            style={{
+              border: `1px solid ${primaryColor}20`
+            }}
+          >
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.key}
@@ -168,7 +202,13 @@ export const Navbar = () => {
                   handleNavClick(e, item.path);
                   setIsOpen(false);
                 }}
-                className="block text-slate-800 dark:text-slate-200 font-medium hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                className="block text-slate-800 dark:text-slate-200 font-medium transition-colors"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = primaryColor;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '';
+                }}
               >
                 {t(item.key)}
               </a>
@@ -187,7 +227,16 @@ export const Navbar = () => {
             </div>
             <Link
               href={`/${locale}/authentication/sign-in`}
-              className="block text-center rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 py-3 font-semibold text-white hover:from-teal-600 hover:to-cyan-600 transition-all"
+              className="block text-center rounded-xl py-3 font-semibold text-white transition-all"
+              style={{
+                background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '0.9';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '1';
+              }}
             >
               {t("login")}
             </Link>

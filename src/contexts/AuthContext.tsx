@@ -72,9 +72,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     phoneNumber: string
   ): Promise<boolean> => {
     try {
-      console.log("📝 Starting signup...");
       await signupMutation.mutateAsync({ email, password, name, phoneNumber });
-      console.log("✅ Signup successful");
+
       return true;
     } catch (error) {
       console.error("❌ Signup error:", error);

@@ -1,6 +1,6 @@
 import { TemplateInfo } from "./types";
 import DefaultTemplate from "./DefaultTemplate";
-import ClassicTemplate from "./ClassicTemplate";
+import NeonTemplate from "./NeonTemplate";
 
 /**
  * Template Registry
@@ -21,12 +21,12 @@ export const templates: TemplateInfo[] = [
     descriptionAr: "قائمة عصرية ثنائية اللغة مع قسم بطولي ورسوم متحركة سلسة",
   },
   {
-    id: "classic",
-    name: "Classic Template",
-    nameAr: "القالب الكلاسيكي",
-    component: ClassicTemplate,
-    description: "Classic menu template with a modern design",
-    descriptionAr: "قالب قائمة عصري مع تصميم كلاسيكي",
+    id: "neon",
+    name: "Neon Template",
+    nameAr: "قالب النيون",
+    component: NeonTemplate,
+    description: "Neon menu template with a modern design",
+    descriptionAr: "قالب قائمة نيون مع تصميم عصري",
   },
 ];
 

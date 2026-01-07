@@ -842,8 +842,37 @@
     },
     "buttons": {
       "save": "حفظ التغييرات",
+      "saveChanges": "حفظ التغييرات",
       "saving": "جاري الحفظ...",
-      "cancel": "إلغاء"
+      "cancel": "إلغاء",
+      "select": "اختيار",
+      "selected": "محدد",
+      "edit": "تعديل",
+      "remove": "إزالة",
+      "uploadLogo": "رفع شعار",
+      "uploading": "جاري الرفع...",
+      "upgradePlan": "ترقية الخطة",
+      "deleteForever": "حذف نهائياً",
+      "deleting": "جاري الحذف...",
+      "deactivateMenu": "تعطيل القائمة",
+      "deactivating": "جاري التعطيل..."
+    },
+    "messages": {
+      "noChanges": "لا توجد تغييرات لحفظها",
+      "logoUploaded": "تم رفع الشعار بنجاح",
+      "logoUploadFailed": "فشل رفع الشعار",
+      "logoRemoved": "تم إزالة الشعار",
+      "currentLogo": "الشعار الحالي"
+    },
+    "tabs": {
+      "general": "عام",
+      "appearance": "الشكل والتصميم"
+    },
+    "tips": {
+      "title": "نصيحة",
+      "titlePlural": "نصائح",
+      "appearanceHint": "اضغط على أي تصميم لمعاينته. التصميم المحدد سيظهر مباشرة في قائمتك العامة.",
+      "note": "ملاحظة"
     },
     "dangerZone": {
       "title": "منطقة الخطر",

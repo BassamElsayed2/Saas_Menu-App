@@ -35,6 +35,13 @@ export default function MenuSettingsPage({
     deleteModal: { show: false, confirmText: "", isProcessing: false },
     deactivateModal: { show: false, confirmText: "", isProcessing: false },
   });
+
+  // Template preview modal
+  const [previewModal, setPreviewModal] = useState({
+    show: false,
+    templateId: "",
+  });
+  const [iframeLoading, setIframeLoading] = useState(true);
   const [formData, setFormData] = useState({
     nameEn: "",
     nameAr: "",
@@ -201,13 +208,9 @@ export default function MenuSettingsPage({
         const logoUrl = uploadResponse.data?.url || "";
         setFormData((prev) => ({ ...prev, logo: logoUrl }));
         setLogoPreview(logoUrl);
-        toast.success(
-          locale === "ar" ? "تم رفع الشعار بنجاح" : "Logo uploaded successfully"
-        );
+        toast.success(t("messages.logoUploaded"));
       } catch (error) {
-        toast.error(
-          locale === "ar" ? "فشل رفع الشعار" : "Failed to upload logo"
-        );
+        toast.error(t("messages.logoUploadFailed"));
       } finally {
         setUploadingLogo(false);
       }
@@ -218,7 +221,7 @@ export default function MenuSettingsPage({
   const handleRemoveLogo = useCallback(() => {
     setFormData((prev) => ({ ...prev, logo: "" }));
     setLogoPreview(null);
-    toast.success(locale === "ar" ? "تم إزالة الشعار" : "Logo removed");
+    toast.success(t("messages.logoRemoved"));
   }, [locale]);
 
   const handleSubmit = useCallback(
@@ -246,10 +249,7 @@ export default function MenuSettingsPage({
 
       // Only send request if there are changes
       if (Object.keys(updates).length === 0) {
-        toast(
-          locale === "ar" ? "لا توجد تغييرات لحفظها" : "No changes to save",
-          { icon: "ℹ️" }
-        );
+        toast(t("messages.noChanges"), { icon: "ℹ️" });
         return;
       }
 
@@ -257,9 +257,7 @@ export default function MenuSettingsPage({
 
       try {
         const token = localStorage.getItem("accessToken");
-        
-        console.log("📤 Sending update:", updates);
-        
+
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/menus/${id}`,
           {
@@ -280,7 +278,8 @@ export default function MenuSettingsPage({
 
         toast.success(t("saveSuccess"));
         setOriginalData({ ...formData });
-        router.push(`/${locale}/dashboard/menus/${id}`);
+        // Stay on settings page instead of redirecting
+        // router.push(`/${locale}/dashboard/menus/${id}`);
       } catch (error: any) {
         console.error("❌ Error:", error);
         toast.error(error.message || t("saveError"));
@@ -418,7 +417,10 @@ export default function MenuSettingsPage({
             }`}
           >
             <i className="material-symbols-outlined !text-[24px]">settings</i>
-            <span>الإعدادات العامة</span>
+            <span>
+              {" "}
+              {locale === "ar" ? "الإعدادات العامة" : "General Settings"}
+            </span>
           </button>
           <button
             type="button"
@@ -430,7 +432,7 @@ export default function MenuSettingsPage({
             }`}
           >
             <i className="material-symbols-outlined !text-[24px]">palette</i>
-            <span>{locale === "ar" ? "الشكل والتصميم" : "Appearance"}</span>
+            <span>{t("tabs.appearance")}</span>
           </button>
         </div>
       </div>
@@ -588,7 +590,7 @@ export default function MenuSettingsPage({
                     </i>
                     <div>
                       <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-1">
-                        {locale === "ar" ? "ملاحظة" : "Note"}
+                        {t("tips.note")}
                       </h4>
                       <p className="text-sm text-blue-700 dark:text-blue-400">
                         {locale === "ar"
@@ -690,7 +692,7 @@ export default function MenuSettingsPage({
                         <i className="material-symbols-outlined !text-[20px]">
                           upgrade
                         </i>
-                        {locale === "ar" ? "ترقية الخطة" : "Upgrade Plan"}
+                        {t("buttons.upgradePlan")}
                       </button>
                     </div>
                   </div>
@@ -709,7 +711,7 @@ export default function MenuSettingsPage({
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                          {locale === "ar" ? "الشعار الحالي" : "Current Logo"}
+                          {t("messages.currentLogo")}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           {locale === "ar"
@@ -725,7 +727,7 @@ export default function MenuSettingsPage({
                         <i className="material-symbols-outlined !text-[18px]">
                           delete
                         </i>
-                        {locale === "ar" ? "إزالة" : "Remove"}
+                        {t("buttons.remove")}
                       </button>
                     </div>
                   )}
@@ -752,7 +754,7 @@ export default function MenuSettingsPage({
                         <>
                           <div className="w-6 h-6 border-3 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
                           <span className="text-gray-600 dark:text-gray-400 font-semibold">
-                            {locale === "ar" ? "جاري الرفع..." : "Uploading..."}
+                            {t("buttons.uploading")}
                           </span>
                         </>
                       ) : (
@@ -782,7 +784,7 @@ export default function MenuSettingsPage({
                       </i>
                       <div className="flex-1">
                         <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">
-                          {locale === "ar" ? "نصائح" : "Tips"}
+                          {t("tips.titlePlural")}
                         </h4>
                         <ul className="text-sm text-blue-700 dark:text-blue-400 space-y-1 list-disc list-inside">
                           <li>
@@ -851,7 +853,7 @@ export default function MenuSettingsPage({
               <i className="material-symbols-outlined text-purple-500">
                 palette
               </i>
-              اختر تصميم القائمة
+              {locale === "ar" ? "اختر تصميم القائمة" : "Select Menu Design"}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -860,9 +862,6 @@ export default function MenuSettingsPage({
                 return (
                   <div
                     key={template.id}
-                    onClick={() =>
-                      setFormData({ ...formData, theme: template.id })
-                    }
                     className={`relative group cursor-pointer rounded-xl overflow-hidden border-4 transition-all duration-300 ${
                       isSelected
                         ? "border-primary-500 shadow-2xl scale-105"
@@ -917,7 +916,7 @@ export default function MenuSettingsPage({
                           <i className="material-symbols-outlined !text-[16px]">
                             check_circle
                           </i>
-                          محدد
+                          {locale === "ar" ? "محدد" : "Selected"}
                         </div>
                       )}
 
@@ -936,11 +935,85 @@ export default function MenuSettingsPage({
                       <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-1">
                         {locale === "ar" ? template.nameAr : template.name}
                       </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                         {locale === "ar"
                           ? template.descriptionAr
                           : template.description}
                       </p>
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-2">
+                        {/* معاينة Button */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+
+                            if (!menuSlug) {
+                              toast.error(
+                                locale === "ar"
+                                  ? "جاري تحميل بيانات القائمة..."
+                                  : "Loading menu data..."
+                              );
+                              return;
+                            }
+
+                            setIframeLoading(true);
+                            setPreviewModal({
+                              show: true,
+                              templateId: template.id,
+                            });
+                          }}
+                          className="flex-1 px-4 py-2 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white shadow-md"
+                        >
+                          <i className="material-symbols-outlined !text-[18px]">
+                            visibility
+                          </i>
+                          {locale === "ar" ? "معاينة" : "Preview"}
+                        </button>
+
+                        {/* اختيار Button */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setFormData({ ...formData, theme: template.id });
+                          }}
+                          className={`flex-1 px-4 py-2 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
+                            isSelected
+                              ? "bg-primary-500 text-white shadow-md"
+                              : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                          }`}
+                        >
+                          <i className="material-symbols-outlined !text-[18px]">
+                            {isSelected
+                              ? "check_circle"
+                              : "radio_button_unchecked"}
+                          </i>
+                          {isSelected
+                            ? t("buttons.selected")
+                            : t("buttons.select")}
+                        </button>
+
+                        {/* تعديل Button - only for Neon template and Pro users */}
+                        {template.id === "neon" &&
+                          user?.planType &&
+                          user.planType !== "free" && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                router.push(
+                                  `/${locale}/dashboard/menus/${id}/customize`
+                                );
+                              }}
+                              className="px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white rounded-lg font-semibold transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+                            >
+                              <i className="material-symbols-outlined !text-[18px]">
+                                tune
+                              </i>
+                              {t("buttons.edit")}
+                            </button>
+                          )}
+                      </div>
                     </div>
                   </div>
                 );
@@ -954,46 +1027,89 @@ export default function MenuSettingsPage({
                 </i>
                 <div>
                   <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-1">
-                    نصيحة
+                    {locale === "ar" ? "نصيحة" : "Tip"}
                   </h4>
                   <p className="text-sm text-blue-700 dark:text-blue-400">
-                    اضغط على أي تصميم لمعاينته. التصميم المحدد سيظهر مباشرة في
-                    قائمتك العامة.
+                    {locale === "ar"
+                      ? "اضغط على معاينة لرؤية القالب، ثم اضغط تأكيد لتطبيقه. لا تنسَ حفظ التغييرات!"
+                      : "Click preview to see the template, then confirm to apply it. Don't forget to save changes!"}
                   </p>
                 </div>
               </div>
             </div>
+
+            {/* Save Button for Appearance Changes */}
+            {hasChanges && (
+              <div className="mt-6 flex items-center justify-end gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData(originalData);
+                    toast.success(
+                      locale === "ar"
+                        ? "تم إلغاء التغييرات"
+                        : "Changes cancelled"
+                    );
+                  }}
+                  className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-300 dark:hover:bg-gray-600 transition-all"
+                >
+                  {t("buttons.cancel")}
+                </button>
+                <button
+                  type="button"
+                  disabled={saving}
+                  onClick={handleSubmit}
+                  className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {saving ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      {locale === "ar" ? "جاري الحفظ..." : "Saving..."}
+                    </>
+                  ) : (
+                    <>
+                      <i className="material-symbols-outlined !text-[20px]">
+                        save
+                      </i>
+                      {t("buttons.saveChanges")}
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <button
-            type="submit"
-            disabled={saving}
-            className="flex-1 px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 font-semibold text-lg"
-          >
-            {saving ? (
-              <>
-                <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
-                {t("buttons.saving")}
-              </>
-            ) : (
-              <>
-                <i className="material-symbols-outlined !text-[24px]">save</i>
-                {t("buttons.save")}
-              </>
-            )}
-          </button>
-          <button
-            type="button"
-            onClick={() => router.push(`/${locale}/dashboard/menus/${id}`)}
-            className="px-8 py-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-semibold text-lg flex items-center justify-center gap-2"
-          >
-            <i className="material-symbols-outlined !text-[24px]">close</i>
-            {t("buttons.cancel")}
-          </button>
-        </div>
+        {/* Action Buttons - Hide in Appearance tab */}
+        {activeTab !== "appearance" && (
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button
+              type="submit"
+              disabled={saving}
+              className="flex-1 px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 font-semibold text-lg"
+            >
+              {saving ? (
+                <>
+                  <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+                  {t("buttons.saving")}
+                </>
+              ) : (
+                <>
+                  <i className="material-symbols-outlined !text-[24px]">save</i>
+                  {t("buttons.save")}
+                </>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push(`/${locale}/dashboard/menus/${id}`)}
+              className="px-8 py-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-semibold text-lg flex items-center justify-center gap-2"
+            >
+              <i className="material-symbols-outlined !text-[24px]">close</i>
+              {t("buttons.cancel")}
+            </button>
+          </div>
+        )}
       </form>
 
       {/* Delete Confirmation Modal */}
@@ -1094,7 +1210,7 @@ export default function MenuSettingsPage({
                 disabled={modalState.deleteModal.isProcessing}
                 className="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {locale === "ar" ? "إلغاء" : "Cancel"}
+                {t("buttons.cancel")}
               </button>
               <button
                 type="button"
@@ -1108,17 +1224,206 @@ export default function MenuSettingsPage({
                 {modalState.deleteModal.isProcessing ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    {locale === "ar" ? "جاري الحذف..." : "Deleting..."}
+                    {t("buttons.deleting")}
                   </>
                 ) : (
                   <>
                     <i className="material-symbols-outlined !text-[20px]">
                       delete_forever
                     </i>
-                    {locale === "ar" ? "حذف نهائياً" : "Delete Forever"}
+                    {t("buttons.deleteForever")}
                   </>
                 )}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Template Preview Modal */}
+      {previewModal.show && menuSlug && (
+        <div className="fixed inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70 backdrop-blur-md flex items-center justify-center z-50 p-2 md:p-6 animate-fadeIn">
+          <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] max-w-7xl w-full h-[95vh] overflow-hidden flex flex-col animate-slideUp border border-gray-200/50 dark:border-gray-700/50">
+            {/* Modal Header - Enhanced */}
+            <div className="relative bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 p-6">
+              {/* Decorative background pattern */}
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
+
+              <div className="relative flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
+                    <i className="material-symbols-outlined text-white !text-[32px]">
+                      visibility
+                    </i>
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-2xl md:text-3xl font-black text-white mb-1 drop-shadow-lg">
+                      {locale === "ar" ? "معاينة القالب" : "Template Preview"}
+                    </h2>
+                    <div className="flex items-center gap-2">
+                      <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-semibold">
+                        {locale === "ar"
+                          ? templates.find(
+                              (t) => t.id === previewModal.templateId
+                            )?.nameAr
+                          : templates.find(
+                              (t) => t.id === previewModal.templateId
+                            )?.name}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIframeLoading(true);
+                          // Force reload by changing key
+                          setPreviewModal({
+                            ...previewModal,
+                            templateId: previewModal.templateId,
+                          });
+                        }}
+                        className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-semibold hover:bg-white/30 transition-all flex items-center gap-1"
+                        title={locale === "ar" ? "إعادة تحميل" : "Reload"}
+                      >
+                        <i className="material-symbols-outlined !text-[16px]">
+                          refresh
+                        </i>
+                        {locale === "ar" ? "تحديث" : "Reload"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPreviewModal({ show: false, templateId: "" });
+                    setIframeLoading(true);
+                  }}
+                  className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm hover:bg-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-lg"
+                >
+                  <i className="material-symbols-outlined text-white !text-[24px]">
+                    close
+                  </i>
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body - iframe with shadow */}
+            <div className="flex-1 overflow-hidden relative bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+              {/* Loading State - Enhanced */}
+              {iframeLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm z-10">
+                  <div className="text-center">
+                    {/* Animated loader */}
+                    <div className="relative w-20 h-20 mx-auto mb-6">
+                      <div className="absolute inset-0 border-4 border-blue-200 dark:border-blue-800 rounded-full"></div>
+                      <div className="absolute inset-0 border-4 border-transparent border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin"></div>
+                      <div
+                        className="absolute inset-2 border-4 border-transparent border-t-indigo-600 dark:border-t-indigo-400 rounded-full animate-spin"
+                        style={{
+                          animationDirection: "reverse",
+                          animationDuration: "0.8s",
+                        }}
+                      ></div>
+                    </div>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                      {locale === "ar"
+                        ? "جاري تحميل المعاينة..."
+                        : "Loading preview..."}
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {locale === "ar"
+                        ? "الرجاء الانتظار قليلاً"
+                        : "Please wait a moment"}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Iframe with border */}
+              <div className="w-full h-full p-3">
+                {(() => {
+                  // Use same origin (including subdomain) to avoid redirect issues
+                  const origin =
+                    typeof window !== "undefined" ? window.location.origin : "";
+
+                  // Build URL with current host to maintain subdomain
+                  const iframeUrl = `${origin}/${locale}/menu/${menuSlug}?preview=true&theme=${
+                    previewModal.templateId
+                  }&_t=${Date.now()}`;
+
+                  return (
+                    <iframe
+                      key={`preview-${previewModal.templateId}-${Date.now()}`}
+                      src={iframeUrl}
+                      className="w-full h-full border-0 rounded-2xl shadow-2xl bg-white dark:bg-gray-800"
+                      title="Template Preview"
+                      onLoad={() => {
+                        setTimeout(() => setIframeLoading(false), 500);
+                      }}
+                    />
+                  );
+                })()}
+              </div>
+            </div>
+
+            {/* Modal Footer - Enhanced */}
+            <div className="bg-gradient-to-r from-gray-50 via-white to-gray-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 border-t border-gray-200 dark:border-gray-700">
+              <div className="p-6">
+                {/* Info Note - Enhanced */}
+                <div className="mb-5 flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                  <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i className="material-symbols-outlined text-white !text-[20px]">
+                      info
+                    </i>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-blue-900 dark:text-blue-300">
+                      {locale === "ar"
+                        ? "المعاينة تعرض قائمتك الفعلية بالقالب المختار. قد تستغرق بضع ثوان للتحميل."
+                        : "Preview shows your actual menu with the selected template. May take a few seconds to load."}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Action Buttons - Enhanced */}
+                <div className="flex items-center justify-between gap-4">
+                  <button
+                    onClick={() => {
+                      setPreviewModal({ show: false, templateId: "" });
+                      setIframeLoading(true);
+                    }}
+                    className="px-8 py-3.5 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all transform hover:scale-105 flex items-center gap-2"
+                  >
+                    <i className="material-symbols-outlined !text-[20px]">
+                      close
+                    </i>
+                    {locale === "ar" ? "إلغاء" : "Cancel"}
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setFormData({
+                        ...formData,
+                        theme: previewModal.templateId,
+                      });
+                      setPreviewModal({ show: false, templateId: "" });
+                      setIframeLoading(true);
+                      toast.success(
+                        locale === "ar"
+                          ? "تم تغيير القالب بنجاح"
+                          : "Template changed successfully"
+                      );
+                    }}
+                    className="px-8 py-3.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 text-white font-bold rounded-xl transition-all shadow-xl hover:shadow-2xl flex items-center gap-3 transform hover:scale-105"
+                  >
+                    <i className="material-symbols-outlined !text-[24px]">
+                      check_circle
+                    </i>
+                    <span className="text-lg">
+                      {locale === "ar" ? "تأكيد واستخدام" : "Confirm & Apply"}
+                    </span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1224,7 +1529,7 @@ export default function MenuSettingsPage({
                 disabled={modalState.deactivateModal.isProcessing}
                 className="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {locale === "ar" ? "إلغاء" : "Cancel"}
+                {t("buttons.cancel")}
               </button>
               <button
                 type="button"
@@ -1238,14 +1543,14 @@ export default function MenuSettingsPage({
                 {modalState.deactivateModal.isProcessing ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    {locale === "ar" ? "جاري التعطيل..." : "Deactivating..."}
+                    {t("buttons.deactivating")}
                   </>
                 ) : (
                   <>
                     <i className="material-symbols-outlined !text-[20px]">
                       toggle_off
                     </i>
-                    {locale === "ar" ? "تعطيل القائمة" : "Deactivate Menu"}
+                    {t("buttons.deactivateMenu")}
                   </>
                 )}
               </button>

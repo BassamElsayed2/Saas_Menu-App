@@ -10,7 +10,6 @@ const Chat: React.FC = () => {
 
   const handleSelect = (option: string) => {
     setSelectedOption(option);
-    console.log(`Selected option: ${option}`); // Add your logic here
   };
 
   return (
@@ -103,9 +102,9 @@ const Chat: React.FC = () => {
                   </div>
                   <div className="mb-[5px] last:mb-0">
                     <p className="py-[10px] px-[15px] inline-block bg-gray-50 dark:bg-[#15203c] ltr:rounded-r-md rtl:rounded-l-md">
-                      Oh, they&apos;ve got this Kanban board for task management. You
-                      can drag and drop tasks between columns – it&apos;s so
-                      intuitive. Makes managing tasks a breeze. 🔥
+                      Oh, they&apos;ve got this Kanban board for task
+                      management. You can drag and drop tasks between columns –
+                      it&apos;s so intuitive. Makes managing tasks a breeze. 🔥
                     </p>
                   </div>
                 </div>
@@ -138,8 +137,8 @@ const Chat: React.FC = () => {
                 <div className="ltr:text-left rtl:text-right">
                   <div className="mb-[5px] last:mb-0">
                     <p className="py-[10px] px-[15px] inline-block bg-gray-50 dark:bg-[#15203c] ltr:rounded-r-md rtl:rounded-l-md">
-                      Yeah, that&apos;s the one! It&apos;s got a sleek Material Design,
-                      and the features are pretty robust.
+                      Yeah, that&apos;s the one! It&apos;s got a sleek Material
+                      Design, and the features are pretty robust.
                     </p>
                   </div>
                 </div>
@@ -206,9 +205,9 @@ const Chat: React.FC = () => {
                 <div className="ltr:text-left rtl:text-right">
                   <div className="mb-[5px] last:mb-0">
                     <p className="py-[10px] px-[15px] inline-block bg-gray-50 dark:bg-[#15203c] ltr:rounded-r-md rtl:rounded-l-md">
-                      Oh, they&apos;ve got this Kanban board for task management. You
-                      can drag and drop tasks between columns – it&apos;s so
-                      intuitive.
+                      Oh, they&apos;ve got this Kanban board for task
+                      management. You can drag and drop tasks between columns –
+                      it&apos;s so intuitive.
                     </p>
                   </div>
                 </div>

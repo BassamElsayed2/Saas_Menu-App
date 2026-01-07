@@ -3,6 +3,7 @@ import React from "react";
 interface IconProps {
   size?: number;
   className?: string;
+  color?: string;
 }
 
 export const Globe: React.FC<IconProps> = ({ size = 20, className = "" }) => (
@@ -191,10 +192,10 @@ export const Share2: React.FC<IconProps> = ({ size = 20, className = "" }) => (
   </i>
 );
 
-export const Star: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+export const Star: React.FC<IconProps> = ({ size = 20, className = "", color }) => (
   <i
     className={`material-symbols-outlined ${className}`}
-    style={{ fontSize: size }}
+    style={{ fontSize: size, color }}
   >
     star
   </i>
