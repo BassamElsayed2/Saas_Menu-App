@@ -15,13 +15,15 @@ const ReadEmail: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between border-b border-gray-100 dark:border-[#172036] pb-[15px] md:pb-[19px]">
-          <div className="trezo-card-title">
-            <h5 className="!mb-0 !text-md !font-semibold">Sales Review Meeting</h5>
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between border-b border-gray-100 dark:border-[#172036] pb-[15px] md:pb-[19px]">
+          <div className="ENS-card-title">
+            <h5 className="!mb-0 !text-md !font-semibold">
+              Sales Review Meeting
+            </h5>
           </div>
 
-          <div className="trezo-card-subtitle flex items-center gap-[10px] md:gap-[15px] mt-[12px] sm:mt-0">
+          <div className="ENS-card-subtitle flex items-center gap-[10px] md:gap-[15px] mt-[12px] sm:mt-0">
             <button
               type="button"
               className="transition-all hover:text-primary-500 relative top-px"
@@ -45,8 +47,8 @@ const ReadEmail: React.FC = () => {
               <i className="material-symbols-outlined !text-[20px]">delete</i>
             </button>
 
-            <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block transition-all text-[26px] leading-none text-black dark:text-white hover:text-primary-500">
+            <Menu as="div" className="ENS-card-dropdown relative">
+              <MenuButton className="ENS-card-dropdown-btn inline-block transition-all text-[26px] leading-none text-black dark:text-white hover:text-primary-500">
                 <i className="material-symbols-outlined !text-[20px]">
                   more_vert
                 </i>
@@ -82,7 +84,7 @@ const ReadEmail: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card-content">
+        <div className="ENS-card-content">
           <div className="sm:flex items-center justify-between mb-[20px] md:mb-[25px]">
             <div className="flex items-center">
               <Image
@@ -96,7 +98,7 @@ const ReadEmail: React.FC = () => {
                 <span className="block text-black dark:text-white font-semibold">
                   Sarah Smith
                 </span>
-                <span className="block text-xs mt-[2px]">sarah@trezo.com</span>
+                <span className="block text-xs mt-[2px]">sarah@ENS.com</span>
               </div>
             </div>
 
@@ -121,13 +123,14 @@ const ReadEmail: React.FC = () => {
             </span>
 
             <p className="!mb-[20px] last:!mb-0">
-              Great, I&apos;ll go ahead and send out the calendar invite shortly.
+              Great, I&apos;ll go ahead and send out the calendar invite
+              shortly.
             </p>
 
             <p className="!mb-[20px] last:!mb-0">
-              Regarding the agenda, I think your suggestions are spot on. I&apos;ll
-              add them to the agenda and circulate it to everyone before the
-              meeting so they can come prepared.
+              Regarding the agenda, I think your suggestions are spot on.
+              I&apos;ll add them to the agenda and circulate it to everyone
+              before the meeting so they can come prepared.
             </p>
 
             <p className="!mb-[20px] last:!mb-0">
@@ -139,7 +142,8 @@ const ReadEmail: React.FC = () => {
             </p>
 
             <p className="!mb-[20px] last:!mb-0">
-              Let me know if you think that&apos;s a valuable addition to the agenda.
+              Let me know if you think that&apos;s a valuable addition to the
+              agenda.
             </p>
 
             <div className="mt-[50px]">

@@ -248,7 +248,6 @@ const initialProducts: Product[] = [
   },
 ];
 
-
 const ProductsList: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -288,8 +287,8 @@ const ProductsList: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-tabs products-tabs" id="trezo-tabs">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-tabs products-tabs" id="ENS-tabs">
           {/* Tabs */}
           <ul className="products-list-navs mb-[10px] md:mb-[15px]">
             {["All Products", "Published Products", "Draft Products"].map(
@@ -314,8 +313,8 @@ const ProductsList: React.FC = () => {
           </ul>
 
           <div className="products-tab-content">
-            <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
-              <div className="trezo-card-title">
+            <div className="ENS-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
+              <div className="ENS-card-title">
                 <form className="relative sm:w-[265px]">
                   <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
                     <i className="material-symbols-outlined !text-[20px]">
@@ -332,7 +331,7 @@ const ProductsList: React.FC = () => {
                 </form>
               </div>
 
-              <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
+              <div className="ENS-card-subtitle mt-[15px] sm:mt-0">
                 <Link
                   href="/ecommerce/create-product/"
                   className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
@@ -348,7 +347,7 @@ const ProductsList: React.FC = () => {
               </div>
             </div>
 
-            <div className="trezo-card-content">
+            <div className="ENS-card-content">
               <div className="table-responsive overflow-x-auto">
                 <table className="w-full">
                   <thead className="text-black dark:text-white">

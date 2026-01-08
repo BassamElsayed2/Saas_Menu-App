@@ -28,15 +28,18 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+  const API_URL =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
   // Fetch notifications
   const fetchNotifications = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token =
+        localStorage.getItem("auth_token") ||
+        localStorage.getItem("accessToken");
       if (!token) return;
 
-      const response = await fetch(`${API_URL}/api/notifications`, {
+      const response = await fetch(`${API_URL}/notifications`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -52,15 +55,14 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
   // Fetch unread count
   const fetchUnreadCount = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token =
+        localStorage.getItem("auth_token") ||
+        localStorage.getItem("accessToken");
       if (!token) return;
 
-      const response = await fetch(
-        `${API_URL}/api/notifications/unread-count`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await fetch(`${API_URL}/notifications/unread-count`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (!response.ok) throw new Error("Failed to fetch");
 
@@ -74,11 +76,13 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
   // Mark notification as read
   const markAsRead = async (notificationId: number) => {
     try {
-      const token = localStorage.getItem("token");
+      const token =
+        localStorage.getItem("auth_token") ||
+        localStorage.getItem("accessToken");
       if (!token) return;
 
       const response = await fetch(
-        `${API_URL}/api/notifications/${notificationId}/read`,
+        `${API_URL}/notifications/${notificationId}/read`,
         {
           method: "PATCH",
           headers: { Authorization: `Bearer ${token}` },
@@ -105,10 +109,12 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
   const markAllAsRead = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      const token =
+        localStorage.getItem("auth_token") ||
+        localStorage.getItem("accessToken");
       if (!token) return;
 
-      const response = await fetch(`${API_URL}/api/notifications/read-all`, {
+      const response = await fetch(`${API_URL}/notifications/read-all`, {
         method: "PATCH",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -134,11 +140,13 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
   // Delete notification
   const deleteNotification = async (notificationId: number) => {
     try {
-      const token = localStorage.getItem("token");
+      const token =
+        localStorage.getItem("auth_token") ||
+        localStorage.getItem("accessToken");
       if (!token) return;
 
       const response = await fetch(
-        `${API_URL}/api/notifications/${notificationId}`,
+        `${API_URL}/notifications/${notificationId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },

@@ -9,13 +9,13 @@ const OrderDetailsContent: React.FC = () => {
     <>
       <div className="lg:grid lg:grid-cols-3 gap-[25px]">
         <div className="lg:col-span-2">
-          <div className="trezo-card bg-primary-500 mb-[25px] p-[20px] md:p-[25px] rounded-md">
-            <div className="trezo-card-header mb-[5px] md:mb-[25px] sm:flex items-center justify-between">
-              <div className="trezo-card-title">
+          <div className="ENS-card bg-primary-500 mb-[25px] p-[20px] md:p-[25px] rounded-md">
+            <div className="ENS-card-header mb-[5px] md:mb-[25px] sm:flex items-center justify-between">
+              <div className="ENS-card-title">
                 <h5 className="!mb-0 !text-white">Tracking ID: 000346798254</h5>
               </div>
             </div>
-            <div className="trezo-card-content">
+            <div className="ENS-card-content">
               <div className="relative z-[1] sm:flex items-center justify-between">
                 <span className="absolute left-0 right-0 top-[25px] -z-[1] border-t border-dashed border-white hidden md:inline-block"></span>
 
@@ -68,30 +68,30 @@ const OrderDetailsContent: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[25px] mb-[25px]">
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
-          <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-            <div className="trezo-card-title">
+        <div className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
+          <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+            <div className="ENS-card-title">
               <h5 className="!mb-0">Billing Details</h5>
             </div>
           </div>
 
-          <div className="trezo-card-content">
+          <div className="ENS-card-content">
             <ul>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
-                  Name: {' '}
+                  Name:{" "}
                 </span>
                 Gary Fraser
               </li>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
-                  Email: {' '}
+                  Email:{" "}
                 </span>
-                example@trezo.com
+                example@ENS.com
               </li>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
-                  Phone: {' '}
+                  Phone:{" "}
                 </span>
                 +1 444 333 5566
               </li>
@@ -105,36 +105,36 @@ const OrderDetailsContent: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
-          <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-            <div className="trezo-card-title">
+        <div className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
+          <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+            <div className="ENS-card-title">
               <h5 className="!mb-0">Shipping Details</h5>
             </div>
           </div>
 
-          <div className="trezo-card-content">
+          <div className="ENS-card-content">
             <ul>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
-                  Shipping Date: {' '}
+                  Shipping Date:{" "}
                 </span>
                 25 Nov 2024 10:30 AM
               </li>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
-                  Email: {' '}
+                  Email:{" "}
                 </span>
-                example@trezo.com
+                example@ENS.com
               </li>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
-                  Phone: {' '}
+                  Phone:{" "}
                 </span>
                 +1 444 333 5566
               </li>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
-                  Address: {' '}
+                  Address:{" "}
                 </span>
                 789 Pine St, Villageton, England
               </li>
@@ -142,14 +142,14 @@ const OrderDetailsContent: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
-          <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-            <div className="trezo-card-title">
+        <div className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
+          <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+            <div className="ENS-card-title">
               <h5 className="!mb-0">Delivery Details</h5>
             </div>
           </div>
 
-          <div className="trezo-card-content">
+          <div className="ENS-card-content">
             <ul>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
@@ -158,21 +158,21 @@ const OrderDetailsContent: React.FC = () => {
               </li>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
-                  Order ID: {' '}
+                  Order ID:{" "}
                 </span>
                 XXXXXX1004
               </li>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
-                  Payment Method: {' '}
+                  Payment Method:{" "}
                 </span>
                 Master Card
               </li>
               <li className="mb-[12px] last:mb-0">
                 <span className="text-black dark:text-white font-medium">
-                  Email: {' '}
+                  Email:{" "}
                 </span>
-                example@trezo.com
+                example@ENS.com
               </li>
             </ul>
           </div>

@@ -9,8 +9,8 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-content">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-content">
           <form className="relative mb-[20px] md:mb-[27px]">
             <input
               type="text"

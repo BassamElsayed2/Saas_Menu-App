@@ -30,6 +30,17 @@ export interface Branch {
   longitude: string;
 }
 
+export interface MenuCustomizations {
+  primaryColor?: string;
+  secondaryColor?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  heroTitleAr?: string;
+  heroSubtitleAr?: string;
+  heroTitleEn?: string;
+  heroSubtitleEn?: string;
+}
+
 export interface MenuData {
   menu: {
     id: number;
@@ -50,6 +61,7 @@ export interface MenuData {
     average: number;
     total: number;
   };
+  customizations?: MenuCustomizations;
 }
 
 export interface TemplateProps {

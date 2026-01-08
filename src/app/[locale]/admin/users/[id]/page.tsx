@@ -328,7 +328,7 @@ export default function UserDetailsPage({
         </div>
 
         {/* Subscription Card */}
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-6 rounded-md mb-6">
+        <div className="ENS-card bg-white dark:bg-[#0c1427] p-6 rounded-md mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
               معلومات الاشتراك
@@ -395,7 +395,7 @@ export default function UserDetailsPage({
         </div>
 
         {/* User Info Card */}
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-6 rounded-md mb-6">
+        <div className="ENS-card bg-white dark:bg-[#0c1427] p-6 rounded-md mb-6">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             المعلومات الأساسية
           </h2>
@@ -515,7 +515,7 @@ export default function UserDetailsPage({
         </div>
 
         {/* Stats Card */}
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-6 rounded-md">
+        <div className="ENS-card bg-white dark:bg-[#0c1427] p-6 rounded-md">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             الإحصائيات
           </h2>
@@ -552,7 +552,7 @@ export default function UserDetailsPage({
         </div>
 
         {/* Menus Card */}
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-6 rounded-md">
+        <div className="ENS-card bg-white dark:bg-[#0c1427] p-6 rounded-md">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             القوائم ({userDetails.menus?.length || 0})
           </h2>

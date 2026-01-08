@@ -13,14 +13,14 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] flex items-center justify-between">
+          <div className="ENS-card-title">
             <h5 className="!mb-0 !text-md !font-medium">Messages</h5>
           </div>
         </div>
 
-        <div className="trezo-card-content">
+        <div className="ENS-card-content">
           <form className="relative mb-[20px]">
             <label className="absolute ltr:left-[13px] rtl:right-[13px] mt-[2px] text-black dark:text-white top-1/2 -translate-y-1/2">
               <i className="material-symbols-outlined !text-lg">search</i>
@@ -32,7 +32,7 @@ const Sidebar: React.FC = () => {
             />
           </form>
 
-          <div className="trezo-tabs" id="trezo-tabs">
+          <div className="ENS-tabs" id="ENS-tabs">
             {/* Tabs navs */}
             <ul className="chat-sidebar-navs flex border-b border-gray-100 dark:border-[#172036]">
               <li className="nav-item ltr:mr-[19px] rtl:ml-[19px] xl:ltr:mr-[30px] xl:rtl:ml-[30px] ltr:last:mr-0 rtl:last:ml-0">
@@ -66,7 +66,7 @@ const Sidebar: React.FC = () => {
                 </button>
               </li>
             </ul>
-            
+
             {/* Tabs Content */}
             <div className="chat-sidebar-tab-content">
               {activeTab === 0 && (
@@ -695,7 +695,7 @@ const Sidebar: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center justify-between mb-[13.5px] pb-[13.5px] border-b border-gray-100 dark:border-[#172036] last:border-0 last:pb-0 last:mb-0">
                       <div className="flex items-center">
                         <div className="relative ltr:mr-[10px] rtl:ml-[10px]">

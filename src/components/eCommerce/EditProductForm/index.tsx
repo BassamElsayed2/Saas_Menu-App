@@ -49,14 +49,14 @@ const EditProductForm: React.FC = () => {
       <form>
         <div className="lg:grid lg:grid-cols-3 gap-[25px]">
           <div className="lg:col-span-2">
-            <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-              <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-                <div className="trezo-card-title">
+            <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+              <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+                <div className="ENS-card-title">
                   <h5 className="!mb-0">Add A Product</h5>
                 </div>
               </div>
 
-              <div className="trezo-card-content">
+              <div className="ENS-card-content">
                 <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
@@ -101,7 +101,7 @@ const EditProductForm: React.FC = () => {
                       <option value={2}>Fediz</option>
                       <option value={3}>Debilop</option>
                       <option value={4}>Canin</option>
-                      <option value={5}>Trezo</option>
+                      <option value={5}>ENS</option>
                     </select>
                   </div>
 
@@ -284,14 +284,14 @@ const EditProductForm: React.FC = () => {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-              <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-                <div className="trezo-card-title">
+            <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+              <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+                <div className="ENS-card-title">
                   <h5 className="!mb-0">Product Category & Tags</h5>
                 </div>
               </div>
 
-              <div className="trezo-card-content">
+              <div className="ENS-card-content">
                 <div className="mb-[20px] md:mb-[25px] last:mb-0">
                   <label className="mb-[10px] text-black dark:text-white font-medium block">
                     Category
@@ -349,14 +349,14 @@ const EditProductForm: React.FC = () => {
               </div>
             </div>
 
-            <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-              <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-                <div className="trezo-card-title">
+            <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+              <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+                <div className="ENS-card-title">
                   <h5 className="!mb-0">Other Options</h5>
                 </div>
               </div>
 
-              <div className="trezo-card-content">
+              <div className="ENS-card-content">
                 <div className="mb-[20px] md:mb-[25px] last:mb-0">
                   <label className="mb-[10px] text-black dark:text-white font-medium block">
                     Title
@@ -382,8 +382,8 @@ const EditProductForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card mb-[25px]">
-          <div className="trezo-card-content">
+        <div className="ENS-card mb-[25px]">
+          <div className="ENS-card-content">
             <button
               type="button"
               className="font-medium inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-danger-500 text-white hover:bg-danger-400"

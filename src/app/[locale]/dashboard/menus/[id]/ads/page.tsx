@@ -221,7 +221,7 @@ export default function AdsPage({
             </p>
           </div>
         ) : ads.length === 0 ? (
-          <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center border border-gray-100 dark:border-gray-700">
+          <div className="ENS-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center border border-gray-100 dark:border-gray-700">
             <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30 rounded-full flex items-center justify-center mx-auto mb-6">
               <i className="material-symbols-outlined text-primary-500 dark:text-primary-400 !text-[48px]">
                 ads_click
@@ -260,7 +260,7 @@ export default function AdsPage({
             {ads.map((ad) => (
               <div
                 key={ad.id}
-                className={`trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 dark:border-gray-700 ${
+                className={`ENS-card bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 dark:border-gray-700 ${
                   isFreePlan ? "opacity-75" : ""
                 }`}
               >
@@ -398,7 +398,7 @@ export default function AdsPage({
       {/* Delete Confirmation Modal */}
       {adToDelete && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-          <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
+          <div className="ENS-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
             {/* Warning Icon */}
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
@@ -652,7 +652,7 @@ function CreateAdModal({ menuId, onClose, onSuccess }: CreateAdModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-      <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
+      <div className="ENS-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-3">
@@ -1079,7 +1079,7 @@ function EditAdModal({ ad, onClose, onSuccess }: EditAdModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-      <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
+      <div className="ENS-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-3">

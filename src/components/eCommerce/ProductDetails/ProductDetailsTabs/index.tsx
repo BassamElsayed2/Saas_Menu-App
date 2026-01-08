@@ -12,7 +12,7 @@ const ProductDetailsTabs: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-tabs product-details-tabs" id="trezo-tabs">
+      <div className="ENS-tabs product-details-tabs" id="ENS-tabs">
         <ul className="navs">
           <li className="nav-item inline-block">
             <button
@@ -53,8 +53,8 @@ const ProductDetailsTabs: React.FC = () => {
 
         <div>
           {activeTab === 0 && (
-            <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-              <div className="trezo-card-content">
+            <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+              <div className="ENS-card-content">
                 <p>
                   The Apple MacBook Pro 16.2 is a cutting-edge laptop designed
                   to deliver exceptional performance and advanced features for
@@ -83,9 +83,11 @@ const ProductDetailsTabs: React.FC = () => {
           )}
 
           {activeTab === 1 && (
-            <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-              <div className="trezo-card-content">
-                <h6 className="!font-semibold !mb-[12px] !text-[15px]">General</h6>
+            <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+              <div className="ENS-card-content">
+                <h6 className="!font-semibold !mb-[12px] !text-[15px]">
+                  General
+                </h6>
                 <ul>
                   <li className="py-[11px] px-[20px] border-b border-l border-r border-gray-100 dark:border-[#172036] first:border-t">
                     <span className="text-black dark:text-white">Brand:</span>
@@ -275,8 +277,8 @@ const ProductDetailsTabs: React.FC = () => {
 
           {activeTab === 2 && (
             <div>
-              <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-                <div className="trezo-card-content">
+              <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+                <div className="ENS-card-content">
                   <div className="md:grid md:grid-cols-3 gap-[25px] items-center">
                     <div className="md:col-span-2">
                       <div className="flex items-center relative gap-[15px] mb-[15px] ltr:pr-[48px] rtl:pl-[48px] last:mb-0">
@@ -377,7 +379,9 @@ const ProductDetailsTabs: React.FC = () => {
 
                     <div className="md:col-span-1">
                       <div className="text-center mt-[25px] md:mt-0">
-                        <h3 className="!mb-[7px] !leading-none !text-5xl">4.28</h3>
+                        <h3 className="!mb-[7px] !leading-none !text-5xl">
+                          4.28
+                        </h3>
                         <div className="flex items-center justify-center mb-[10px] text-[#ee8336] text-[30px] gap-[4px]">
                           <i className="ri-star-fill"></i>
                           <i className="ri-star-fill"></i>

@@ -28,7 +28,7 @@ const initialMembers: TeamMember[] = [
     role: "Business Analyst",
     image: "/images/users/user11.jpg",
     joinedDate: "01 Jan 2024",
-    email: "turner@trezo.com",
+    email: "turner@ENS.com",
     phone: "+1 555-445-4455",
     location: "Washington D.C",
     socialLinks: {
@@ -44,7 +44,7 @@ const initialMembers: TeamMember[] = [
     role: "Project Manager",
     image: "/images/users/user12.jpg",
     joinedDate: "10 Jan 2024",
-    email: "parker@trezo.com",
+    email: "parker@ENS.com",
     phone: "+1 555-445-7788",
     location: "San Diego",
     socialLinks: {
@@ -59,7 +59,7 @@ const initialMembers: TeamMember[] = [
     role: "Team Leader",
     image: "/images/users/user13.jpg",
     joinedDate: "20 Jan 2024",
-    email: "lee@trezo.com",
+    email: "lee@ENS.com",
     phone: "+1 555-333-2288",
     location: "Los Angeles",
     socialLinks: {
@@ -74,7 +74,7 @@ const initialMembers: TeamMember[] = [
     role: "Software Engineer",
     image: "/images/users/user14.jpg",
     joinedDate: "15 Jan 2024",
-    email: "olivia@trezo.com",
+    email: "olivia@ENS.com",
     phone: "+1 555-111-2233",
     location: "New York",
     socialLinks: {
@@ -89,7 +89,7 @@ const initialMembers: TeamMember[] = [
     role: "UX Designer",
     image: "/images/users/user15.jpg",
     joinedDate: "18 Jan 2024",
-    email: "james@trezo.com",
+    email: "james@ENS.com",
     phone: "+1 555-678-9123",
     location: "Chicago",
     socialLinks: {
@@ -103,7 +103,7 @@ const initialMembers: TeamMember[] = [
     role: "Data Scientist",
     image: "/images/users/user16.jpg",
     joinedDate: "25 Jan 2024",
-    email: "sophia@trezo.com",
+    email: "sophia@ENS.com",
     phone: "+1 555-234-2345",
     location: "San Francisco",
     socialLinks: {
@@ -117,7 +117,7 @@ const initialMembers: TeamMember[] = [
     role: "Product Manager",
     image: "/images/users/user17.jpg",
     joinedDate: "28 Jan 2024",
-    email: "liam@trezo.com",
+    email: "liam@ENS.com",
     phone: "+1 555-334-4455",
     location: "Austin",
     socialLinks: {
@@ -131,7 +131,7 @@ const initialMembers: TeamMember[] = [
     role: "HR Specialist",
     image: "/images/users/user18.jpg",
     joinedDate: "30 Jan 2024",
-    email: "mason@trezo.com",
+    email: "mason@ENS.com",
     phone: "+1 555-445-5566",
     location: "Seattle",
     socialLinks: {
@@ -145,7 +145,7 @@ const initialMembers: TeamMember[] = [
     role: "Marketing Manager",
     image: "/images/users/user19.jpg",
     joinedDate: "05 Feb 2024",
-    email: "charlotte@trezo.com",
+    email: "charlotte@ENS.com",
     phone: "+1 555-556-6677",
     location: "Boston",
     socialLinks: {
@@ -159,7 +159,7 @@ const initialMembers: TeamMember[] = [
     role: "SEO Specialist",
     image: "/images/users/user20.jpg",
     joinedDate: "06 Feb 2024",
-    email: "amelia@trezo.com",
+    email: "amelia@ENS.com",
     phone: "+1 555-667-7788",
     location: "Miami",
     socialLinks: {
@@ -173,7 +173,7 @@ const initialMembers: TeamMember[] = [
     role: "Content Writer",
     image: "/images/users/user21.jpg",
     joinedDate: "07 Feb 2024",
-    email: "benjamin@trezo.com",
+    email: "benjamin@ENS.com",
     phone: "+1 555-778-8899",
     location: "Denver",
     socialLinks: {
@@ -187,7 +187,7 @@ const initialMembers: TeamMember[] = [
     role: "Graphic Designer",
     image: "/images/users/user22.jpg",
     joinedDate: "10 Feb 2024",
-    email: "ella@trezo.com",
+    email: "ella@ENS.com",
     phone: "+1 555-889-9900",
     location: "Los Angeles",
     socialLinks: {
@@ -201,7 +201,7 @@ const initialMembers: TeamMember[] = [
     role: "Full Stack Developer",
     image: "/images/users/user23.jpg",
     joinedDate: "12 Feb 2024",
-    email: "lucas@trezo.com",
+    email: "lucas@ENS.com",
     phone: "+1 555-990-0011",
     location: "Houston",
     socialLinks: {
@@ -215,7 +215,7 @@ const initialMembers: TeamMember[] = [
     role: "Product Designer",
     image: "/images/users/user24.jpg",
     joinedDate: "14 Feb 2024",
-    email: "mia@trezo.com",
+    email: "mia@ENS.com",
     phone: "+1 555-123-3344",
     location: "Dallas",
     socialLinks: {
@@ -228,7 +228,7 @@ const initialMembers: TeamMember[] = [
     role: "Software Architect",
     image: "/images/users/user25.jpg",
     joinedDate: "16 Feb 2024",
-    email: "alexander@trezo.com",
+    email: "alexander@ENS.com",
     phone: "+1 555-234-4455",
     location: "Portland",
     socialLinks: {
@@ -242,7 +242,7 @@ const initialMembers: TeamMember[] = [
     role: "Business Consultant",
     image: "/images/users/user26.jpg",
     joinedDate: "18 Feb 2024",
-    email: "zoe@trezo.com",
+    email: "zoe@ENS.com",
     phone: "+1 555-345-5566",
     location: "Chicago",
     socialLinks: {
@@ -256,7 +256,7 @@ const initialMembers: TeamMember[] = [
     role: "Lead Developer",
     image: "/images/users/user27.jpg",
     joinedDate: "20 Feb 2024",
-    email: "henry@trezo.com",
+    email: "henry@ENS.com",
     phone: "+1 555-456-6677",
     location: "San Francisco",
     socialLinks: {
@@ -269,7 +269,7 @@ const initialMembers: TeamMember[] = [
     role: "Sales Manager",
     image: "/images/users/user28.jpg",
     joinedDate: "22 Feb 2024",
-    email: "grace@trezo.com",
+    email: "grace@ENS.com",
     phone: "+1 555-567-7788",
     location: "Austin",
     socialLinks: {
@@ -283,7 +283,7 @@ const initialMembers: TeamMember[] = [
     role: "QA Engineer",
     image: "/images/users/user29.jpg",
     joinedDate: "24 Feb 2024",
-    email: "jack@trezo.com",
+    email: "jack@ENS.com",
     phone: "+1 555-678-8899",
     location: "Miami",
     socialLinks: {
@@ -297,7 +297,7 @@ const initialMembers: TeamMember[] = [
     role: "Operations Manager",
     image: "/images/users/user30.jpg",
     joinedDate: "26 Feb 2024",
-    email: "lily@trezo.com",
+    email: "lily@ENS.com",
     phone: "+1 555-789-9900",
     location: "New York",
     socialLinks: {
@@ -336,9 +336,9 @@ const TeamMembers: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header sm:flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header sm:flex items-center justify-between">
+          <div className="ENS-card-title">
             <form className="relative sm:w-[265px]">
               <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
                 <i className="material-symbols-outlined !text-[20px]">search</i>
@@ -350,7 +350,7 @@ const TeamMembers: React.FC = () => {
               />
             </form>
           </div>
-          <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
+          <div className="ENS-card-subtitle mt-[15px] sm:mt-0">
             <Link
               href="/users/add-user"
               className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
@@ -370,9 +370,9 @@ const TeamMembers: React.FC = () => {
         {currentMembers.map((member) => (
           <div
             key={member.id}
-            className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
+            className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
           >
-            <div className="trezo-card-content">
+            <div className="ENS-card-content">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <Image
@@ -418,24 +418,24 @@ const TeamMembers: React.FC = () => {
               <ul className="mt-[17px]">
                 <li className="mb-[9px] last:mb-0">
                   <span className="text-black dark:text-white">
-                    Joined Date: {' '}
+                    Joined Date:{" "}
                   </span>
                   {member.joinedDate}
                 </li>
                 <li className="mb-[9px] last:mb-0">
                   <span className="text-black dark:text-white">
-                    Email Address: {' '}
+                    Email Address:{" "}
                   </span>
                   {member.email}
                 </li>
                 <li className="mb-[9px] last:mb-0">
                   <span className="text-black dark:text-white">
-                    Phone Number: {' '}
+                    Phone Number:{" "}
                   </span>
                   {member.phone}
                 </li>
                 <li className="mb-[9px] last:mb-0">
-                  <span className="text-black dark:text-white">Location:</span> {' '}
+                  <span className="text-black dark:text-white">Location:</span>{" "}
                   {member.location}
                 </li>
               </ul>
@@ -487,8 +487,8 @@ const TeamMembers: React.FC = () => {
         ))}
       </div>
 
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-content">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-content">
           <div className="sm:flex sm:items-center justify-between">
             <p className="!mb-0">
               Showing {currentPage * itemsPerPage - itemsPerPage + 1} to{" "}

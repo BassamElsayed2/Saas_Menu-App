@@ -30,14 +30,14 @@ const ComposeForm: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between border-b border-gray-100 dark:border-[#172036] pb-[15px] md:pb-[20px]">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between border-b border-gray-100 dark:border-[#172036] pb-[15px] md:pb-[20px]">
+          <div className="ENS-card-title">
             <h5 className="!mb-0 !text-md !font-semibold">New Message</h5>
           </div>
         </div>
 
-        <div className="trezo-card-content">
+        <div className="ENS-card-content">
           <form>
             <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
               <div className="mb-[20px] sm:mb-0">
@@ -46,11 +46,11 @@ const ComposeForm: React.FC = () => {
                 </label>
                 <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
                   <option value="0">Select</option>
-                  <option value="1">james&#64;trezo.com</option>
-                  <option value="2">andy&#64;trezo.com</option>
-                  <option value="3">mateo&#64;trezo.com</option>
-                  <option value="4">luca&#64;trezo.com</option>
-                  <option value="5">tomato&#64;trezo.com</option>
+                  <option value="1">james&#64;ENS.com</option>
+                  <option value="2">andy&#64;ENS.com</option>
+                  <option value="3">mateo&#64;ENS.com</option>
+                  <option value="4">luca&#64;ENS.com</option>
+                  <option value="5">tomato&#64;ENS.com</option>
                 </select>
               </div>
 
@@ -60,11 +60,11 @@ const ComposeForm: React.FC = () => {
                 </label>
                 <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
                   <option value="0">Select</option>
-                  <option value="1">james&#64;trezo.com</option>
-                  <option value="2">andy&#64;trezo.com</option>
-                  <option value="3">mateo&#64;trezo.com</option>
-                  <option value="4">luca&#64;trezo.com</option>
-                  <option value="5">tomato&#64;trezo.com</option>
+                  <option value="1">james&#64;ENS.com</option>
+                  <option value="2">andy&#64;ENS.com</option>
+                  <option value="3">mateo&#64;ENS.com</option>
+                  <option value="4">luca&#64;ENS.com</option>
+                  <option value="5">tomato&#64;ENS.com</option>
                 </select>
               </div>
 
@@ -74,11 +74,11 @@ const ComposeForm: React.FC = () => {
                 </label>
                 <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
                   <option value="0">Select</option>
-                  <option value="1">james&#64;trezo.com</option>
-                  <option value="2">andy&#64;trezo.com</option>
-                  <option value="3">mateo&#64;trezo.com</option>
-                  <option value="4">luca&#64;trezo.com</option>
-                  <option value="5">tomato&#64;trezo.com</option>
+                  <option value="1">james&#64;ENS.com</option>
+                  <option value="2">andy&#64;ENS.com</option>
+                  <option value="3">mateo&#64;ENS.com</option>
+                  <option value="4">luca&#64;ENS.com</option>
+                  <option value="5">tomato&#64;ENS.com</option>
                 </select>
               </div>
 

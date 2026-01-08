@@ -39,9 +39,9 @@ const PricingStyle1: React.FC = () => {
         {pricingPlans.map((plan, index) => (
           <div
             key={index}
-            className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
+            className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
           >
-            <div className="trezo-card-content md:p-[10px] md:max-w-[500px]">
+            <div className="ENS-card-content md:p-[10px] md:max-w-[500px]">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-[25px]">
                 <div className="relative ltr:sm:mr-[45px] rtl:sm:ml-[45px] ltr:sm:border-r rtl:sm:border-l border-gray-100 dark:border-[#172036]">
                   <span className="inline-block text-gray-400 rounded-md py-[6.5px] px-[17.3px] border border-gray-100 dark:border-[#172036]">
@@ -72,7 +72,7 @@ const PricingStyle1: React.FC = () => {
                     </div>
                   )}
                 </div>
-                
+
                 <ul className="md:ltr:-ml-[25px] md:rtl:-mr-[25px]">
                   {plan.features.map((feature, idx) => (
                     <li

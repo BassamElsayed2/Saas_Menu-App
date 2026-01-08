@@ -8,8 +8,8 @@ import interactionPlugin from "@fullcalendar/interaction";
 const MyFullCalendar: React.FC = () => {
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-content relative">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-content relative">
           <div id="fullCalendar">
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin]}

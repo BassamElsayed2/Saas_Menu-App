@@ -58,8 +58,11 @@ const PricingStyle2: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[25px] mb-[25px]">
         {pricingPlans.map((plan, index) => (
-          <div key={index} className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md text-center">
-            <div className="trezo-card-content relative md:py-[10px] md:px-[10px]">
+          <div
+            key={index}
+            className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md text-center"
+          >
+            <div className="ENS-card-content relative md:py-[10px] md:px-[10px]">
               <span className="inline-block text-gray-400 rounded-md py-[6.5px] px-[17.3px] border border-gray-100 dark:border-[#172036]">
                 {plan.name}
               </span>

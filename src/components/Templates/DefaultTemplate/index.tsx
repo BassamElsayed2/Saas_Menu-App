@@ -8,7 +8,6 @@ import {
   AdBanner,
   MenuSection,
   OffersSection,
-  ENSServicesSection,
   Footer,
   ENSFixedBanner,
 } from "./components";

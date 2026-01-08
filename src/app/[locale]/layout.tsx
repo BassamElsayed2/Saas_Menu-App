@@ -8,6 +8,7 @@ import "swiper/css/bundle";
 import "./globals.css";
 
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import GoogleOAuthProvider from "@/providers/GoogleOAuthProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import type { Metadata } from "next";
 import { Tajawal } from "next/font/google";
@@ -24,8 +25,8 @@ const tajawal = Tajawal({
 });
 
 export const metadata: Metadata = {
-  title: "Trezo - Tailwind Nextjs Admin Dashboard Templat",
-  description: "Tailwind Nextjs Admin Dashboard Templat",
+  title: "ENS - Saas Menu",
+  description: "Saas Menu",
 };
 
 export async function generateStaticParams() {
@@ -57,10 +58,12 @@ export default async function RootLayout({ children, params }: Props) {
       <body className={`${tajawal.variable} antialiased`}>
         <ReactQueryProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
-            <AuthProvider>
-              {children}
-              <Toaster position="top-right" />
-            </AuthProvider>
+            <GoogleOAuthProvider>
+              <AuthProvider>
+                {children}
+                <Toaster position="top-right" />
+              </AuthProvider>
+            </GoogleOAuthProvider>
           </NextIntlClientProvider>
         </ReactQueryProvider>
       </body>

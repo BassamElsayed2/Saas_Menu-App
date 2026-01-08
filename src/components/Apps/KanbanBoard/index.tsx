@@ -142,13 +142,13 @@ const KanbanBoard: React.FC = () => {
       <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-[25px]">
         {/* To Do */}
         <div>
-          <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-            <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-              <div className="trezo-card-title">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+            <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+              <div className="ENS-card-title">
                 <h5 className="!mb-0">To Do</h5>
               </div>
             </div>
-            <div className="trezo-card-content">
+            <div className="ENS-card-content">
               {todoCards.map((card, index) => (
                 <div
                   key={index}
@@ -203,13 +203,13 @@ const KanbanBoard: React.FC = () => {
 
         {/* Doing */}
         <div>
-          <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-            <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-              <div className="trezo-card-title">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+            <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+              <div className="ENS-card-title">
                 <h5 className="!mb-0">Doing</h5>
               </div>
             </div>
-            <div className="trezo-card-content">
+            <div className="ENS-card-content">
               {doingCards.map((card, index) => (
                 <div
                   key={index}
@@ -264,13 +264,13 @@ const KanbanBoard: React.FC = () => {
 
         {/* Done */}
         <div>
-          <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-            <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-              <div className="trezo-card-title">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+            <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+              <div className="ENS-card-title">
                 <h5 className="!mb-0">Done</h5>
               </div>
             </div>
-            <div className="trezo-card-content">
+            <div className="ENS-card-content">
               {doneCards.map((card, index) => (
                 <div
                   key={index}
@@ -337,13 +337,13 @@ const KanbanBoard: React.FC = () => {
               transition
               className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-[550px] data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
             >
-              <div className="trezo-card w-full bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
-                <div className="trezo-card-header bg-gray-50 dark:bg-[#15203c] mb-[20px] md:mb-[25px] flex items-center justify-between -mx-[20px] md:-mx-[25px] -mt-[20px] md:-mt-[25px] p-[20px] md:p-[25px] rounded-t-md">
-                  <div className="trezo-card-title">
+              <div className="ENS-card w-full bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
+                <div className="ENS-card-header bg-gray-50 dark:bg-[#15203c] mb-[20px] md:mb-[25px] flex items-center justify-between -mx-[20px] md:-mx-[25px] -mt-[20px] md:-mt-[25px] p-[20px] md:p-[25px] rounded-t-md">
+                  <div className="ENS-card-title">
                     <h5 className="!mb-0">Add New Card</h5>
                   </div>
 
-                  <div className="trezo-card-subtitle">
+                  <div className="ENS-card-subtitle">
                     <button
                       type="button"
                       className="text-[23px] transition-all leading-none text-black dark:text-white hover:text-primary-500"
@@ -354,7 +354,7 @@ const KanbanBoard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="trezo-card-content">
+                <div className="ENS-card-content">
                   <form>
                     <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
                       <div className="sm:col-span-2 mb-[20px] sm:mb-0">
@@ -364,7 +364,7 @@ const KanbanBoard: React.FC = () => {
                         <input
                           type="text"
                           className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                          placeholder="E.g. Trezo Dashboard"
+                          placeholder="E.g. ENS Dashboard"
                         />
                       </div>
 

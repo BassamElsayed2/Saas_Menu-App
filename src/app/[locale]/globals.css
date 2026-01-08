@@ -640,16 +640,16 @@ body.modal-open {
 }
 
 /** Card */
-.trezo-card {
-  .trezo-card-dropdown {
-    .trezo-card-dropdown-menu {
+.ENS-card {
+  .ENS-card-dropdown {
+    .ENS-card-dropdown-menu {
       @apply opacity-0 invisible;
     }
-    &:has(.active) > .trezo-card-dropdown-menu {
+    &:has(.active) > .ENS-card-dropdown-menu {
       @apply opacity-100 visible;
     }
   }
-  .trezo-card-content {
+  .ENS-card-content {
     .without-border {
       tbody {
         tr {
@@ -678,20 +678,20 @@ body.modal-open {
       }
     }
     .market-price-statistics {
-      .trezo-card-dropdown {
-        .trezo-card-dropdown-menu {
+      .ENS-card-dropdown {
+        .ENS-card-dropdown-menu {
           @apply opacity-0 invisible;
         }
-        &:has(.active) > .trezo-card-dropdown-menu {
+        &:has(.active) > .ENS-card-dropdown-menu {
           @apply opacity-100 visible;
         }
       }
     }
     .cryptocurrency-types {
-      .trezo-card-dropdown-menu {
+      .ENS-card-dropdown-menu {
         @apply opacity-0 invisible;
       }
-      &:has(.active) > .trezo-card-dropdown-menu {
+      &:has(.active) > .ENS-card-dropdown-menu {
         @apply opacity-100 visible;
       }
     }
@@ -1055,8 +1055,8 @@ html[dir="rtl"] {
       }
     }
   }
-  .trezo-card {
-    .trezo-card-content {
+  .ENS-card {
+    .ENS-card-content {
       .chat-body {
         direction: ltr;
 
@@ -1608,7 +1608,7 @@ html[dir="rtl"] {
 }
 
 /** Product Details Tabs */
-.trezo-tabs {
+.ENS-tabs {
   .navs {
     .nav-item {
       .nav-link {

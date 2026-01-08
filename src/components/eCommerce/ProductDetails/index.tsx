@@ -39,8 +39,8 @@ const ProductDetails: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-content lg:max-w-[1070px] md:pt-[15px] md:px-[15px] md:pb-[75px]">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-content lg:max-w-[1070px] md:pt-[15px] md:px-[15px] md:pb-[75px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px]">
             <div className="lg:ltr:mr-[30px] lg:rtl:ml-[30px]">
               <div>
@@ -132,8 +132,8 @@ const ProductDetails: React.FC = () => {
               </span>
 
               <h6 className="!font-medium !text-lg !leading-[1.5] !mb-[16px]">
-                Apple MacBook Pro 16.2&quot; with Liquid Retina XDR Display, M2 Max
-                Chip with 12-Core CPU
+                Apple MacBook Pro 16.2&quot; with Liquid Retina XDR Display, M2
+                Max Chip with 12-Core CPU
               </h6>
 
               <div className="leading-none border-b border-gray-100 dark:border-[#172036] pb-[20px] md:pb-[25px] mb-[21px] text-md text-warning-500 flex items-center">

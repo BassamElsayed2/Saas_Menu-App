@@ -180,7 +180,7 @@ export default function AdminDashboard() {
           {statsCards.map((stat, index) => (
             <div
               key={index}
-              className="trezo-card bg-white dark:bg-[#0c1427] p-4 md:p-5 rounded-md hover:shadow-lg transition-shadow"
+              className="ENS-card bg-white dark:bg-[#0c1427] p-4 md:p-5 rounded-md hover:shadow-lg transition-shadow"
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -203,13 +203,13 @@ export default function AdminDashboard() {
         </div>
 
         {/* Charts Placeholder */}
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
-          <div className="trezo-card-header mb-[20px]">
+        <div className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
+          <div className="ENS-card-header mb-[20px]">
             <h5 className="text-xl font-bold text-gray-900 dark:text-white">
               الإحصائيات التفصيلية
             </h5>
           </div>
-          <div className="trezo-card-content">
+          <div className="ENS-card-content">
             <p className="text-gray-600 dark:text-gray-400 text-center py-8">
               الرسوم البيانية متاحة قريباً
             </p>

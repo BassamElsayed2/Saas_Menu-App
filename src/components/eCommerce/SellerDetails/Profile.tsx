@@ -15,9 +15,9 @@ const Profile: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] flex items-center justify-between">
-          <div className="trezo-card-title flex items-center">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] flex items-center justify-between">
+          <div className="ENS-card-title flex items-center">
             <Image
               src="/images/sellers/seller1.png"
               alt="seller-image"
@@ -29,13 +29,13 @@ const Profile: React.FC = () => {
               <span className="text-md block mb-[2px] font-medium text-black dark:text-white">
                 Ava Turner
               </span>
-              <span className="block">turner@trezo.com</span>
+              <span className="block">turner@ENS.com</span>
             </div>
           </div>
 
-          <div className="trezo-card-subtitle">
-            <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block transition-all text-[26px] text-gray-500 dark:text-gray-400 leading-none hover:text-primary-500">
+          <div className="ENS-card-subtitle">
+            <Menu as="div" className="ENS-card-dropdown relative">
+              <MenuButton className="ENS-card-dropdown-btn inline-block transition-all text-[26px] text-gray-500 dark:text-gray-400 leading-none hover:text-primary-500">
                 <i className="ri-more-fill"></i>
               </MenuButton>
 
@@ -60,7 +60,7 @@ const Profile: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card-content">
+        <div className="ENS-card-content">
           <ul>
             <li className="text-black dark:text-white mb-[10px] last:mb-0">
               <span className="text-gray-500 dark:text-gray-400">

@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import { useLanguage } from "../context";
 import { Icon } from "./Icon";
 import { Branch } from "../../types";
+import Image from "next/image";
 
 // ============================
 // Footer Component
@@ -52,7 +53,7 @@ export const Footer: React.FC<FooterProps> = ({ menuName, branches }) => {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Top */}
-        <div
+        {/* <div
           className="
       grid grid-cols-1
       sm:grid-cols-2
@@ -61,22 +62,13 @@ export const Footer: React.FC<FooterProps> = ({ menuName, branches }) => {
       text-start
     "
         >
-          {/* Brand */}
           <div>
-            <h3
-              className="
-          text-xl sm:text-2xl
-          font-extrabold
-          bg-gradient-to-r
-          from-[var(--accent)]
-          to-[var(--accent-2)]
-          bg-clip-text
-          text-transparent
-          mb-3
-        "
-            >
-              {t.brand}
-            </h3>
+            <Image
+              src="/images/ENS-copy.png"
+              alt="ENS Logo"
+              width={100}
+              height={100}
+            />
             <p
               className="
           text-sm sm:text-base
@@ -89,7 +81,6 @@ export const Footer: React.FC<FooterProps> = ({ menuName, branches }) => {
             </p>
           </div>
 
-          {/* Contact */}
           <div>
             <h4
               className="
@@ -153,7 +144,6 @@ export const Footer: React.FC<FooterProps> = ({ menuName, branches }) => {
             </ul>
           </div>
 
-          {/* Social */}
           <div className="sm:col-span-2 md:col-span-1">
             <h4
               className="
@@ -192,7 +182,7 @@ export const Footer: React.FC<FooterProps> = ({ menuName, branches }) => {
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Bottom */}
         <div
@@ -244,4 +234,3 @@ export const Footer: React.FC<FooterProps> = ({ menuName, branches }) => {
     </footer>
   );
 };
-

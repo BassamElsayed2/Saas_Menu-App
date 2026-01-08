@@ -72,9 +72,9 @@ const ApplicationsContent: React.FC = () => {
       {cardData.map((card, index) => (
         <div
           key={index}
-          className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
+          className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
         >
-          <div className="trezo-card-content">
+          <div className="ENS-card-content">
             <div className="form-check">
               <input type="checkbox" className="cursor-pointer" />
             </div>
@@ -82,7 +82,7 @@ const ApplicationsContent: React.FC = () => {
               <div className="leading-none ltr:mr-[12px] rtl:ml-[12px]">
                 <Image
                   src={card.icon}
-                  alt={`${card.title}-icon`} 
+                  alt={`${card.title}-icon`}
                   width={30}
                   height={30}
                 />

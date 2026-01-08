@@ -127,15 +127,15 @@ const Revenue: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+          <div className="ENS-card-title">
             <h5 className="!mb-0">Revenue: $23.91k</h5>
           </div>
 
-          <div className="trezo-card-subtitle">
-            <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block transition-all hover:text-primary-500">
+          <div className="ENS-card-subtitle">
+            <Menu as="div" className="ENS-card-dropdown relative">
+              <MenuButton className="ENS-card-dropdown-btn inline-block transition-all hover:text-primary-500">
                 <span className="inline-block relative ltr:pr-[17px] ltr:md:pr-[20px] rtl:pl-[17px] rtl:ml:pr-[20px]">
                   {selectedOption}
                   <i className="ri-arrow-down-s-line text-lg absolute ltr:-right-[3px] rtl:-left-[3px] top-1/2 -translate-y-1/2"></i>
@@ -165,7 +165,7 @@ const Revenue: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card-content">
+        <div className="ENS-card-content">
           <div className="-mt-[8px] ltr:-ml-[13px] rtl:-mr-[13px] -mb-[22px">
             {isChartLoaded && (
               <Chart

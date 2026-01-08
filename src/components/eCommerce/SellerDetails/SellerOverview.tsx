@@ -1,18 +1,18 @@
 "use client";
 
-import React from "react"; 
+import React from "react";
 
 const SellerOverview: React.FC = () => {
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] flex items-center justify-between">
+          <div className="ENS-card-title">
             <h5 className="!mb-0">Seller Overview</h5>
           </div>
         </div>
 
-        <div className="trezo-card-content">
+        <div className="ENS-card-content">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-[20px] sm:gap-[25px]">
             <div className="bg-primary-50 dark:bg-[#15203c] rounded-md py-[22px] px-[20px]">
               <div className="flex items-center">

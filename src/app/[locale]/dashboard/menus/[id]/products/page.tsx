@@ -66,7 +66,10 @@ export default function ProductsPage() {
 
       if (response.error) {
         // Check if it's a 404 error
-        if (response.error.includes("not found") || response.error.includes("404")) {
+        if (
+          response.error.includes("not found") ||
+          response.error.includes("404")
+        ) {
           setNotFoundError(true);
           return;
         }
@@ -91,7 +94,10 @@ export default function ProductsPage() {
   const fetchCategories = async () => {
     try {
       const response = await api.get(`/menus/${menuId}/categories`);
-      if (response.error && (response.error.includes("not found") || response.error.includes("404"))) {
+      if (
+        response.error &&
+        (response.error.includes("not found") || response.error.includes("404"))
+      ) {
         setNotFoundError(true);
         return;
       }
@@ -234,8 +240,8 @@ export default function ProductsPage() {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-tabs products-tabs" id="trezo-tabs">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-tabs products-tabs" id="ENS-tabs">
           {/* Tabs */}
           <ul className="products-list-navs mb-[10px] md:mb-[15px]">
             {[
@@ -262,8 +268,8 @@ export default function ProductsPage() {
           </ul>
 
           <div className="products-tab-content">
-            <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between gap-3">
-              <div className="trezo-card-title flex flex-col sm:flex-row gap-3 flex-1">
+            <div className="ENS-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between gap-3">
+              <div className="ENS-card-title flex flex-col sm:flex-row gap-3 flex-1">
                 {/* Search Input */}
                 <form className="relative sm:w-[265px]">
                   <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
@@ -314,7 +320,7 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
+              <div className="ENS-card-subtitle mt-[15px] sm:mt-0">
                 <button
                   onClick={() => setShowCreateModal(true)}
                   className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
@@ -329,7 +335,7 @@ export default function ProductsPage() {
               </div>
             </div>
 
-            <div className="trezo-card-content">
+            <div className="ENS-card-content">
               <div className="table-responsive overflow-x-auto">
                 <table className="w-full">
                   <thead className="text-black dark:text-white">
@@ -449,7 +455,8 @@ export default function ProductsPage() {
 
                           <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
                             {product.price?.toFixed(2) || "0.00"}{" "}
-                            {getCurrencyByCode(menuCurrency)?.symbol || menuCurrency}
+                            {getCurrencyByCode(menuCurrency)?.symbol ||
+                              menuCurrency}
                           </td>
 
                           <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">

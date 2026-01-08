@@ -97,9 +97,9 @@ const AssetsContent: React.FC = () => {
         {cardsData.map((card) => (
           <div
             key={card.id}
-            className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
+            className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
           >
-            <div className="trezo-card-content">
+            <div className="ENS-card-content">
               <div className="form-check">
                 <input type="checkbox" className="cursor-pointer" />
               </div>

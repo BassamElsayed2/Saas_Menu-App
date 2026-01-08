@@ -9,8 +9,8 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-content">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-content">
           <form className="relative mb-[20px]">
             <label className="absolute ltr:left-[13px] rtl:right-[13px] mt-[2px] text-black dark:text-white top-1/2 -translate-y-1/2">
               <i className="material-symbols-outlined !text-lg">search</i>
@@ -39,7 +39,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="/apps/email/inbox/"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px] dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "/apps/email/inbox/" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "/apps/email/inbox/"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -56,7 +58,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -70,7 +74,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -84,7 +90,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -98,7 +106,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -112,7 +122,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -126,7 +138,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -140,7 +154,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -154,7 +170,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -168,7 +186,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -182,7 +202,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -196,7 +218,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
@@ -210,7 +234,9 @@ const Sidebar: React.FC = () => {
               <Link
                 href="#"
                 className={`flex items-center justify-between relative ltr:pl-[30px] rtl:pr-[30px]  dark:text-white transition-all hover:text-primary-500 font-medium ${
-                  pathname === "#" ? "text-primary-500" : "text-black dark:text-white"
+                  pathname === "#"
+                    ? "text-primary-500"
+                    : "text-black dark:text-white"
                 }`}
               >
                 <i className="material-symbols-outlined !text-lg absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">

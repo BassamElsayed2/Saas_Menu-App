@@ -167,14 +167,14 @@ const ImportantContent: React.FC = () => {
   };
 
   return (
-    <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-      <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-        <div className="trezo-card-title">
+    <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+        <div className="ENS-card-title">
           <h5 className="!mb-0">Important</h5>
         </div>
       </div>
 
-      <div className="trezo-card-content">
+      <div className="ENS-card-content">
         <div className="table-responsive overflow-x-auto">
           <table className="w-full">
             <thead className="text-black dark:text-white">

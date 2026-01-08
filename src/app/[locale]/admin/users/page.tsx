@@ -163,7 +163,7 @@ export default function UsersManagement() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               {t("stats.totalUsers")}
             </div>
@@ -171,7 +171,7 @@ export default function UsersManagement() {
               {users.length}
             </div>
           </div>
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               {t("stats.activeUsers")}
             </div>
@@ -179,7 +179,7 @@ export default function UsersManagement() {
               {users.filter((u) => !u.isSuspended).length}
             </div>
           </div>
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               {t("stats.suspendedUsers")}
             </div>
@@ -190,7 +190,7 @@ export default function UsersManagement() {
         </div>
 
         {/* Users Table */}
-        <div className="trezo-card bg-white dark:bg-[#0c1427] rounded-md overflow-hidden">
+        <div className="ENS-card bg-white dark:bg-[#0c1427] rounded-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 dark:bg-[#15203c]">

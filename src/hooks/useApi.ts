@@ -26,12 +26,13 @@ export function useCurrentUser() {
       
       const user = (result.data as any)?.user || null;
       
-      // Merge with localStorage for profile image only (temporary solution until backend integration)
+      // Use backend profileImage if available, otherwise fallback to localStorage
       if (user && typeof window !== 'undefined') {
-        const savedImage = localStorage.getItem(`profileImage_${user.id}`);
-        
-        if (savedImage) {
-          user.profileImage = savedImage;
+        if (!user.profileImage) {
+          const savedImage = localStorage.getItem(`profileImage_${user.id}`);
+          if (savedImage) {
+            user.profileImage = savedImage;
+          }
         }
       }
       

@@ -9,6 +9,7 @@ import api from "@/lib/api";
 import { getMenuPublicUrl } from "@/lib/menuUrl";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import { UpgradePlanModal } from "@/components/Modals/UpgradePlanModal";
 
 interface Menu {
   id: number;
@@ -27,10 +28,30 @@ export default function MenusPage() {
   const t = useTranslations("Menus");
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [menuToDelete, setMenuToDelete] = useState<Menu | null>(null);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [subscription, setSubscription] = useState<any>(null);
 
   // React Query hooks
   const { data: menus = [], isLoading: loadingMenus } = useMenus();
   const deleteMenu = useDeleteMenu();
+
+  // Fetch subscription info
+  useEffect(() => {
+    const fetchSubscription = async () => {
+      try {
+        const result = await api.get("/user/subscription");
+        if (result.data) {
+          setSubscription(result.data.subscription);
+        }
+      } catch (error) {
+        console.error("Error fetching subscription:", error);
+      }
+    };
+
+    if (user) {
+      fetchSubscription();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -91,7 +112,17 @@ export default function MenusPage() {
               </p>
             </div>
             <button
-              onClick={() => setShowCreateModal(true)}
+              onClick={() => {
+                // Check if user has reached the limit
+                const maxMenus = subscription?.maxMenus || 1; // Default to 1 for free plan
+                const currentMenuCount = menus.length;
+
+                if (currentMenuCount >= maxMenus) {
+                  setShowUpgradeModal(true);
+                } else {
+                  setShowCreateModal(true);
+                }
+              }}
               className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl font-medium"
             >
               <i className="material-symbols-outlined !text-[20px]">add</i>
@@ -107,7 +138,7 @@ export default function MenusPage() {
             </p>
           </div>
         ) : menus.length === 0 ? (
-          <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center border border-gray-100 dark:border-gray-700">
+          <div className="ENS-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center border border-gray-100 dark:border-gray-700">
             <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30 rounded-full flex items-center justify-center mx-auto mb-6">
               <i className="material-symbols-outlined text-primary-500 dark:text-primary-400 !text-[48px]">
                 restaurant_menu
@@ -131,7 +162,7 @@ export default function MenusPage() {
             {menus.map((menu: Menu) => (
               <div
                 key={menu.id}
-                className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 dark:border-gray-700 group"
+                className="ENS-card bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 dark:border-gray-700 group"
               >
                 {/* Logo and Header */}
                 <div className="flex items-start gap-4 mb-4">
@@ -257,6 +288,16 @@ export default function MenusPage() {
       {showCreateModal && (
         <CreateMenuModal onClose={() => setShowCreateModal(false)} />
       )}
+
+      {/* Upgrade Plan Modal */}
+      {showUpgradeModal && (
+        <UpgradePlanModal
+          onClose={() => setShowUpgradeModal(false)}
+          currentMenuCount={menus.length}
+          maxMenus={subscription?.maxMenus || 1}
+          planName={subscription?.plan || "Free"}
+        />
+      )}
     </div>
   );
 }
@@ -287,7 +328,7 @@ function DeleteConfirmModal({
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-      <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
+      <div className="ENS-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
         {/* Warning Icon */}
         <div className="flex justify-center mb-4">
           <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
@@ -559,9 +600,15 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type (only .ico files)
-    if (!file.type.includes("icon") && !file.name.endsWith(".ico")) {
-      toast.error("يجب اختيار ملف favicon بصيغة .ico فقط");
+    // Validate file type (accept .ico and .png files)
+    const isValidType =
+      file.type.includes("icon") ||
+      file.name.endsWith(".ico") ||
+      file.type === "image/png" ||
+      file.name.endsWith(".png");
+
+    if (!isValidType) {
+      toast.error("يجب اختيار ملف بصيغة .ico أو .png فقط");
       return;
     }
 
@@ -588,7 +635,7 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-      <div className="trezo-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
+      <div className="ENS-card bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-3">
@@ -782,13 +829,13 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
                         اسحب الصورة هنا
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-500">
-                        ICO فقط (حد أقصى 1 ميجابايت)
+                        PNG أو ICO فقط (حد أقصى 1 ميجابايت)
                       </p>
                     </div>
                     <input
                       type="file"
                       className="hidden"
-                      accept=".ico,image/x-icon"
+                      accept=".ico,.png,image/x-icon,image/png"
                       onChange={handleLogoChange}
                       disabled={uploadingLogo}
                     />

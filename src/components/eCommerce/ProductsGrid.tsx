@@ -124,13 +124,13 @@ const ProductsGrid: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header sm:flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header sm:flex items-center justify-between">
+          <div className="ENS-card-title">
             <h5 className="!mb-0 !font-medium">Filter</h5>
           </div>
 
-          <div className="trezo-card-subtitle mt-[15px] sm:mt-0 sm:flex items-center gap-[20px]">
+          <div className="ENS-card-subtitle mt-[15px] sm:mt-0 sm:flex items-center gap-[20px]">
             <form className="relative sm:w-[265px]">
               <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
                 <i className="material-symbols-outlined !text-[20px]">search</i>
@@ -144,10 +144,10 @@ const ProductsGrid: React.FC = () => {
               />
             </form>
 
-            <div className="trezo-card-dropdown relative mt-[15px] sm:mt-0">
+            <div className="ENS-card-dropdown relative mt-[15px] sm:mt-0">
               <button
                 type="button"
-                className="trezo-card-dropdown-btn inline-block rounded-md border border-gray-100 py-[5px] md:py-[6.5px] px-[12px] md:px-[19px] transition-all hover:bg-gray-50 dark:border-[#172036] dark:hover:bg-[#0a0e19]"
+                className="ENS-card-dropdown-btn inline-block rounded-md border border-gray-100 py-[5px] md:py-[6.5px] px-[12px] md:px-[19px] transition-all hover:bg-gray-50 dark:border-[#172036] dark:hover:bg-[#0a0e19]"
                 id="dropdownToggleBtn"
               >
                 <span className="inline-block relative ltr:pr-[17px] ltr:md:pr-[20px] rtl:pl-[17px] rtl:ml:pr-[20px]">
@@ -156,7 +156,7 @@ const ProductsGrid: React.FC = () => {
                 </span>
               </button>
 
-              <ul className="trezo-card-dropdown-menu transition-all bg-white shadow-3xl rounded-md top-full py-[15px] absolute ltr:right-0 rtl:left-0 w-[195px] z-[50] dark:bg-dark dark:shadow-none">
+              <ul className="ENS-card-dropdown-menu transition-all bg-white shadow-3xl rounded-md top-full py-[15px] absolute ltr:right-0 rtl:left-0 w-[195px] z-[50] dark:bg-dark dark:shadow-none">
                 <li>
                   <button
                     type="button"
@@ -270,8 +270,8 @@ const ProductsGrid: React.FC = () => {
       </div>
 
       {/* Pagination */}
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-content">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-content">
           <div className="sm:flex sm:items-center justify-between">
             <p className="!mb-0">
               {" "}

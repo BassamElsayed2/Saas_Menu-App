@@ -30,7 +30,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ context }) => {
   const planBadgeColor = isFreePlan
     ? "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
     : "bg-gradient-to-r from-amber-500 to-amber-600 text-white";
-  
+
   // Hide badge for admin users
   const showPlanBadge = user?.role !== "admin";
 

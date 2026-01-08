@@ -56,8 +56,8 @@ const PricingStyle3: React.FC = () => {
         <h5 className="!mb-0">Pricing Style - 3</h5>
       </div>
 
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md text-center">
-        <div className="trezo-card-content py-[25px]">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md text-center">
+        <div className="ENS-card-content py-[25px]">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[25px]">
             {pricingPlans.map((plan, index) => (
               <div key={index} className="md:px-[25px] relative">
@@ -110,7 +110,7 @@ const PricingStyle3: React.FC = () => {
                       height={80}
                     />
                   </div>
-                )} 
+                )}
               </div>
             ))}
           </div>

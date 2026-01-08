@@ -19,7 +19,7 @@ const initialReviews: Review[] = [
   {
     id: "#999",
     reviewer: "Olivia Clark",
-    email: "olivia@trezo.com",
+    email: "olivia@ENS.com",
     avatar: "/images/users/user6.jpg",
     rating: 5,
     reviewText: "Lorem Ipsum is simply dummy text of the printing industry.",
@@ -30,7 +30,7 @@ const initialReviews: Review[] = [
   {
     id: "#998",
     reviewer: "Zephyr Zing",
-    email: "zephyr@trezo.com",
+    email: "zephyr@ENS.com",
     avatar: "/images/users/user7.jpg",
     rating: 4.5,
     reviewText:
@@ -42,7 +42,7 @@ const initialReviews: Review[] = [
   {
     id: "#997",
     reviewer: "Nova Nectar",
-    email: "nova@trezo.com",
+    email: "nova@ENS.com",
     avatar: "/images/users/user8.jpg",
     rating: 4,
     reviewText:
@@ -54,7 +54,7 @@ const initialReviews: Review[] = [
   {
     id: "#996",
     reviewer: "Isabella Chang",
-    email: "isabella@trezo.com",
+    email: "isabella@ENS.com",
     avatar: "/images/users/user9.jpg",
     rating: 3.5,
     reviewText:
@@ -66,7 +66,7 @@ const initialReviews: Review[] = [
   {
     id: "#995",
     reviewer: "Alina Bennett",
-    email: "alina@trezo.com",
+    email: "alina@ENS.com",
     avatar: "/images/users/user10.jpg",
     rating: 5,
     reviewText:
@@ -78,7 +78,7 @@ const initialReviews: Review[] = [
   {
     id: "#994",
     reviewer: "Liam Harper",
-    email: "liam@trezo.com",
+    email: "liam@ENS.com",
     avatar: "/images/users/user11.jpg",
     rating: 4.5,
     reviewText:
@@ -90,7 +90,7 @@ const initialReviews: Review[] = [
   {
     id: "#993",
     reviewer: "Emma Collins",
-    email: "emma@trezo.com",
+    email: "emma@ENS.com",
     avatar: "/images/users/user12.jpg",
     rating: 4,
     reviewText:
@@ -102,7 +102,7 @@ const initialReviews: Review[] = [
   {
     id: "#992",
     reviewer: "Sophia Martin",
-    email: "sophia@trezo.com",
+    email: "sophia@ENS.com",
     avatar: "/images/users/user13.jpg",
     rating: 4,
     reviewText:
@@ -114,7 +114,7 @@ const initialReviews: Review[] = [
   {
     id: "#991",
     reviewer: "James Turner",
-    email: "james@trezo.com",
+    email: "james@ENS.com",
     avatar: "/images/users/user14.jpg",
     rating: 3,
     reviewText:
@@ -126,7 +126,7 @@ const initialReviews: Review[] = [
   {
     id: "#990",
     reviewer: "Benjamin Scott",
-    email: "benjamin@trezo.com",
+    email: "benjamin@ENS.com",
     avatar: "/images/users/user15.jpg",
     rating: 5,
     reviewText:
@@ -157,12 +157,12 @@ const ManageReviews: React.FC = () => {
   );
 
   return (
-    <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-      <div className="trezo-card-header mb-[20px] md:mb-[25px] flex justify-between items-center">
+    <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="ENS-card-header mb-[20px] md:mb-[25px] flex justify-between items-center">
         <h5 className="!mb-0">Manage Reviews</h5>
       </div>
 
-      <div className="trezo-card-content">
+      <div className="ENS-card-content">
         {/* Table */}
         <div className="table-responsive overflow-x-auto">
           <table className="w-full">

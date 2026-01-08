@@ -136,6 +136,7 @@
     "contactUs": "Contact Us",
     "mostPopular": "Most Popular",
     "save40": "Save 40%",
+    "loading": "Loading...",
     "packages": [
       {
         "name": "Basic",
@@ -474,7 +475,10 @@
     "showPassword": "Show password",
     "hidePassword": "Hide password",
     "accountSuspended": "This account has been suspended. Please contact support.",
-    "contactSupport": "Contact Support"
+    "contactSupport": "Contact Support",
+    "orContinueWith": "Or continue with",
+    "signInWithGoogle": "Sign in with Google",
+    "googleNotConfigured": "Google Sign-In is not configured yet. Please set up Google OAuth in backend"
   },
   "SignUp": {
     "title": "Create Account",

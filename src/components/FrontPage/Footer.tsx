@@ -13,21 +13,25 @@ const FooterSection = () => {
     { name: navT("features"), path: "#features" },
     { name: navT("team"), path: "#how-it-works" },
     { name: navT("faq"), path: "#packages" },
-    { name: navT("contact"), path: "#contact" }
+    { name: navT("contact"), path: "#contact" },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    path: string
+  ) => {
     if (path.startsWith("#")) {
       e.preventDefault();
       const element = document.querySelector(path);
       if (element) {
         const navbarHeight = 100;
-        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const elementPosition =
+          element.getBoundingClientRect().top + window.pageYOffset;
         const offsetPosition = elementPosition - navbarHeight;
-        
+
         window.scrollTo({
           top: offsetPosition,
-          behavior: "smooth"
+          behavior: "smooth",
         });
       }
     }
@@ -51,7 +55,7 @@ const FooterSection = () => {
                 alt="ENS Logo"
                 className="h-12 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
                 onError={(e) => {
-                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.style.display = "none";
                 }}
               />
               <span className="text-3xl font-bold text-gray-50 transition-colors duration-300 group-hover:text-purple-400">
@@ -68,7 +72,10 @@ const FooterSection = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-bold mb-6 text-purple-400" suppressHydrationWarning>
+            <h4
+              className="text-lg font-bold mb-6 text-purple-400"
+              suppressHydrationWarning
+            >
               {t("quickLinks")}
             </h4>
             <ul className="space-y-3">
@@ -89,18 +96,21 @@ const FooterSection = () => {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-bold mb-6 text-purple-400" suppressHydrationWarning>
+            <h4
+              className="text-lg font-bold mb-6 text-purple-400"
+              suppressHydrationWarning
+            >
               {t("contactUs")}
             </h4>
             <ul className="space-y-4">
               <li className="flex items-center gap-3 group">
                 <Phone className="w-5 h-5 text-purple-400 transition-transform duration-300 group-hover:scale-110" />
                 <a
-                  href="tel:+201000000000"
+                  href="tel:+201553841793"
                   className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-400 transition-colors text-base"
                   dir="ltr"
                 >
-                  +20 100 000 0000
+                  +20 15 53841793
                 </a>
               </li>
               <li className="flex items-center gap-3 group">

@@ -7,7 +7,7 @@ export const translations = {
     brand: "منيو الكتروني",
     tagline: "استمتع بأشهى المأكولات",
     hero: {
-      title: "اكتشف",
+      title: "استكشف قائمتنا",
       highlight: "قائمتنا",
       subtitle: "المميزة",
       description: "تجربة طعام فريدة تجمع بين النكهات الأصيلة والإبداع العصري",
@@ -33,7 +33,7 @@ export const translations = {
       tryDifferentKeywords: "جرب البحث بكلمات أخرى",
     },
     footer: {
-      address: "القاهرة، مصر",
+      address: "الغربية، طنطا",
       phone: "+20 10 123 4567",
       hours: "مفتوح يومياً: 12:00 م - 12:00 ص",
       rights: "جميع الحقوق محفوظة",
@@ -45,7 +45,7 @@ export const translations = {
     brand: "Online Menu",
     tagline: "Enjoy the finest cuisine",
     hero: {
-      title: "Discover",
+      title: "Discover Our Menu",
       highlight: "Our Menu",
       subtitle: "Excellence",
       description:
@@ -83,4 +83,3 @@ export const translations = {
 } as const;
 
 export type TranslationType = typeof translations.ar | typeof translations.en;
-

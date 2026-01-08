@@ -24,7 +24,7 @@ const initialReviews: Review[] = [
   {
     id: "#999",
     reviewer: "Olivia Clark",
-    email: "olivia@trezo.com",
+    email: "olivia@ENS.com",
     avatar: "/images/users/user6.jpg",
     rating: 5,
     reviewText: "Lorem Ipsum is simply dummy text of the printing industry.",
@@ -38,7 +38,7 @@ const initialReviews: Review[] = [
   {
     id: "#998",
     reviewer: "Zephyr Zing",
-    email: "zephyr@trezo.com",
+    email: "zephyr@ENS.com",
     avatar: "/images/users/user7.jpg",
     rating: 4.5,
     reviewText:
@@ -53,7 +53,7 @@ const initialReviews: Review[] = [
   {
     id: "#997",
     reviewer: "Nova Nectar",
-    email: "nova@trezo.com",
+    email: "nova@ENS.com",
     avatar: "/images/users/user8.jpg",
     rating: 4,
     reviewText:
@@ -68,7 +68,7 @@ const initialReviews: Review[] = [
   {
     id: "#996",
     reviewer: "Isabella Chang",
-    email: "isabella@trezo.com",
+    email: "isabella@ENS.com",
     avatar: "/images/users/user9.jpg",
     rating: 3.5,
     reviewText:
@@ -83,7 +83,7 @@ const initialReviews: Review[] = [
   {
     id: "#995",
     reviewer: "Alina Bennett",
-    email: "alina@trezo.com",
+    email: "alina@ENS.com",
     avatar: "/images/users/user10.jpg",
     rating: 5,
     reviewText:
@@ -98,7 +98,7 @@ const initialReviews: Review[] = [
   {
     id: "#994",
     reviewer: "Liam Harper",
-    email: "liam@trezo.com",
+    email: "liam@ENS.com",
     avatar: "/images/users/user11.jpg",
     rating: 4.5,
     reviewText:
@@ -113,7 +113,7 @@ const initialReviews: Review[] = [
   {
     id: "#993",
     reviewer: "Emma Collins",
-    email: "emma@trezo.com",
+    email: "emma@ENS.com",
     avatar: "/images/users/user12.jpg",
     rating: 4,
     reviewText:
@@ -128,7 +128,7 @@ const initialReviews: Review[] = [
   {
     id: "#992",
     reviewer: "Sophia Martin",
-    email: "sophia@trezo.com",
+    email: "sophia@ENS.com",
     avatar: "/images/users/user13.jpg",
     rating: 4,
     reviewText:
@@ -143,7 +143,7 @@ const initialReviews: Review[] = [
   {
     id: "#991",
     reviewer: "James Turner",
-    email: "james@trezo.com",
+    email: "james@ENS.com",
     avatar: "/images/users/user14.jpg",
     rating: 3,
     reviewText:
@@ -158,7 +158,7 @@ const initialReviews: Review[] = [
   {
     id: "#990",
     reviewer: "Benjamin Scott",
-    email: "benjamin@trezo.com",
+    email: "benjamin@ENS.com",
     avatar: "/images/users/user15.jpg",
     rating: 5,
     reviewText:
@@ -196,10 +196,11 @@ const ReviewsTable: React.FC = () => {
   };
 
   // Filtered Reviews Based on Search
-  const filteredReviews = reviews.filter((review) =>
-    review.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    review.reviewer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    review.productName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredReviews = reviews.filter(
+    (review) =>
+      review.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.reviewer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.productName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Pagination logic
@@ -210,9 +211,9 @@ const ReviewsTable: React.FC = () => {
   );
 
   return (
-    <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-      <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
-        <div className="trezo-card-title">
+    <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="ENS-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
+        <div className="ENS-card-title">
           <form className="relative sm:w-[265px]">
             <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
               <i className="material-symbols-outlined !text-[20px]">search</i>
@@ -227,10 +228,10 @@ const ReviewsTable: React.FC = () => {
           </form>
         </div>
 
-        <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
-          <div className="trezo-card-subtitle">
-            <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block rounded-md border border-gray-100 py-[5px] md:py-[6.5px] px-[12px] md:px-[19px] transition-all hover:bg-gray-50 dark:border-[#172036] dark:hover:bg-[#0a0e19]">
+        <div className="ENS-card-subtitle mt-[15px] sm:mt-0">
+          <div className="ENS-card-subtitle">
+            <Menu as="div" className="ENS-card-dropdown relative">
+              <MenuButton className="ENS-card-dropdown-btn inline-block rounded-md border border-gray-100 py-[5px] md:py-[6.5px] px-[12px] md:px-[19px] transition-all hover:bg-gray-50 dark:border-[#172036] dark:hover:bg-[#0a0e19]">
                 <span className="inline-block relative ltr:pr-[17px] ltr:md:pr-[20px] rtl:pl-[17px] rtl:ml:pr-[20px]">
                   {selectedOption}
                   <i className="ri-arrow-down-s-line text-lg absolute ltr:-right-[3px] rtl:-left-[3px] top-1/2 -translate-y-1/2"></i>
@@ -241,25 +242,27 @@ const ReviewsTable: React.FC = () => {
                 transition
                 className="transition-all bg-white shadow-3xl rounded-md top-full py-[15px] absolute ltr:right-0 rtl:left-0 w-[195px] z-[50] dark:bg-dark dark:shadow-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
               >
-                {["This Day", "This Week", "This Month", "This Year"].map((option) => (
-                  <MenuItem
-                    key={option}
-                    as="div"
-                    className={`block w-full transition-all text-black cursor-pointer ltr:text-left rtl:text-right relative py-[8px] px-[20px] hover:bg-gray-50 dark:text-white dark:hover:bg-black ${
-                      selectedOption === option ? "font-semibold" : ""
-                    }`}
-                    onClick={() => handleSelect(option)}
-                  >
-                    {option}
-                  </MenuItem>
-                ))}
+                {["This Day", "This Week", "This Month", "This Year"].map(
+                  (option) => (
+                    <MenuItem
+                      key={option}
+                      as="div"
+                      className={`block w-full transition-all text-black cursor-pointer ltr:text-left rtl:text-right relative py-[8px] px-[20px] hover:bg-gray-50 dark:text-white dark:hover:bg-black ${
+                        selectedOption === option ? "font-semibold" : ""
+                      }`}
+                      onClick={() => handleSelect(option)}
+                    >
+                      {option}
+                    </MenuItem>
+                  )
+                )}
               </MenuItems>
             </Menu>
-          </div> 
+          </div>
         </div>
       </div>
 
-      <div className="trezo-card-content">
+      <div className="ENS-card-content">
         {/* Table */}
         <div className="table-responsive overflow-x-auto">
           <table className="w-full">

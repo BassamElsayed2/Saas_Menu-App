@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import toast from "react-hot-toast";
+import GoogleAuthButton from "./GoogleAuthButton";
 
 const SignInForm: React.FC = () => {
   const locale = useLocale();
@@ -88,6 +89,20 @@ const SignInForm: React.FC = () => {
               </div>
 
               <form onSubmit={handleSubmit}>
+                {/* Google Sign In Button */}
+                <div className="mb-[20px]">
+                  <GoogleAuthButton mode="signin" />
+                </div>
+
+                {/* Divider */}
+                <div className="flex items-center mb-[20px]">
+                  <div className="flex-1 border-t border-gray-200 dark:border-[#172036]"></div>
+                  <span className="px-4 text-sm text-gray-500 dark:text-gray-400">
+                    {t("orContinueWith")}
+                  </span>
+                  <div className="flex-1 border-t border-gray-200 dark:border-[#172036]"></div>
+                </div>
+
                 <div className="mb-[15px] relative">
                   <label className="mb-[10px] md:mb-[12px] text-black dark:text-white font-medium block">
                     {t("email")}
@@ -129,12 +144,12 @@ const SignInForm: React.FC = () => {
                   </button>
                 </div>
 
-                <Link
+                {/* <Link
                   href={`/${locale}/authentication/forgot-password`}
                   className="inline-block text-primary-500 transition-all font-semibold hover:underline"
                 >
                   {t("forgotPassword")}
-                </Link>
+                </Link> */}
 
                 <button
                   type="submit"

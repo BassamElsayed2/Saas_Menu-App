@@ -1,5 +1,5 @@
 {
-  "name": "trezo",
+  "name": "ENS",
   "version": "3.6.0",
   "private": true,
   "scripts": {
@@ -19,6 +19,7 @@
     "@fullcalendar/interaction": "^6.1.17",
     "@fullcalendar/react": "^6.1.17",
     "@headlessui/react": "^2.2.2",
+    "@react-oauth/google": "^0.13.4",
     "@tanstack/react-query": "^5.90.12",
     "@tanstack/react-query-devtools": "^5.91.1",
     "apexcharts": "^4.7.0",

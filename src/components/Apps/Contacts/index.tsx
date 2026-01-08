@@ -23,7 +23,7 @@ const Contacts: React.FC = () => {
     {
       id: "#854",
       name: "Oliver Khan",
-      email: "oliver@trezo.com",
+      email: "oliver@ENS.com",
       phone: "+1 555-123-4567",
       lastContacted: "19 Jun 2024",
       company: "ABC Corporation",
@@ -34,7 +34,7 @@ const Contacts: React.FC = () => {
     {
       id: "#853",
       name: "Carolyn Barnes",
-      email: "carolyn@trezo.com",
+      email: "carolyn@ENS.com",
       phone: "+1 555-987-6543",
       lastContacted: "18 Jun 2024",
       company: "XYZ Ltd",
@@ -45,7 +45,7 @@ const Contacts: React.FC = () => {
     {
       id: "#852",
       name: "Donna Miller",
-      email: "donna@trezo.com",
+      email: "donna@ENS.com",
       phone: "+1 555-456-7890",
       lastContacted: "17 Jun 2024",
       company: "Tech Solutions",
@@ -56,7 +56,7 @@ const Contacts: React.FC = () => {
     {
       id: "#851",
       name: "Rebecca Block",
-      email: "rebecca@trezo.com",
+      email: "rebecca@ENS.com",
       phone: "+1 555-658-4488",
       lastContacted: "15 Jun 2024",
       company: "Acma Industries",
@@ -67,7 +67,7 @@ const Contacts: React.FC = () => {
     {
       id: "#850",
       name: "Ramiro McCarty",
-      email: "ramiro@trezo.com",
+      email: "ramiro@ENS.com",
       phone: "+1 555-558-9966",
       lastContacted: "14 Jun 2024",
       company: "Synergy Ltd",
@@ -78,7 +78,7 @@ const Contacts: React.FC = () => {
     {
       id: "#849",
       name: "Robert Fairweather",
-      email: "robert@trezo.com",
+      email: "robert@ENS.com",
       phone: "+1 555-357-5888",
       lastContacted: "13 Jun 2024",
       company: "Summit Solutions",
@@ -89,7 +89,7 @@ const Contacts: React.FC = () => {
     {
       id: "#848",
       name: "Marcelino Haddock",
-      email: "marcelino@trezo.com",
+      email: "marcelino@ENS.com",
       phone: "+1 555-456-8877",
       lastContacted: "12 Jun 2024",
       company: "Strategies Ltd",
@@ -100,7 +100,7 @@ const Contacts: React.FC = () => {
     {
       id: "#847",
       name: "Thomas Wilson",
-      email: "thomas@trezo.com",
+      email: "thomas@ENS.com",
       phone: "+1 555-622-4488",
       lastContacted: "11 Jun 2024",
       company: "Tech Enterprises",
@@ -111,7 +111,7 @@ const Contacts: React.FC = () => {
     {
       id: "#846",
       name: "Nathaniel Hulsey",
-      email: "nathaniel@trezo.com",
+      email: "nathaniel@ENS.com",
       phone: "+1 555-225-4488",
       lastContacted: "10 Jun 2024",
       company: "Synetic Solutions",
@@ -122,7 +122,7 @@ const Contacts: React.FC = () => {
     {
       id: "#845",
       name: "Jasmine Cooper",
-      email: "jasmine@trezo.com",
+      email: "jasmine@ENS.com",
       phone: "+1 555-333-4444",
       lastContacted: "9 Jun 2024",
       company: "Horizon Inc",
@@ -133,7 +133,7 @@ const Contacts: React.FC = () => {
     {
       id: "#844",
       name: "David Johnson",
-      email: "david@trezo.com",
+      email: "david@ENS.com",
       phone: "+1 555-111-2222",
       lastContacted: "8 Jun 2024",
       company: "NextGen Tech",
@@ -144,7 +144,7 @@ const Contacts: React.FC = () => {
     {
       id: "#843",
       name: "Sophia Williams",
-      email: "sophia@trezo.com",
+      email: "sophia@ENS.com",
       phone: "+1 555-555-7777",
       lastContacted: "7 Jun 2024",
       company: "Future Vision",
@@ -155,7 +155,7 @@ const Contacts: React.FC = () => {
     {
       id: "#842",
       name: "Michael Brown",
-      email: "michael@trezo.com",
+      email: "michael@ENS.com",
       phone: "+1 555-888-9999",
       lastContacted: "6 Jun 2024",
       company: "Global Networks",
@@ -166,7 +166,7 @@ const Contacts: React.FC = () => {
     {
       id: "#841",
       name: "Emma Davis",
-      email: "emma@trezo.com",
+      email: "emma@ENS.com",
       phone: "+1 555-222-3333",
       lastContacted: "5 Jun 2024",
       company: "Dynamic Systems",
@@ -177,7 +177,7 @@ const Contacts: React.FC = () => {
     {
       id: "#840",
       name: "Liam Taylor",
-      email: "liam@trezo.com",
+      email: "liam@ENS.com",
       phone: "+1 555-444-5555",
       lastContacted: "4 Jun 2024",
       company: "Core Solutions",
@@ -188,7 +188,7 @@ const Contacts: React.FC = () => {
     {
       id: "#839",
       name: "Olivia Martinez",
-      email: "olivia@trezo.com",
+      email: "olivia@ENS.com",
       phone: "+1 555-666-7777",
       lastContacted: "3 Jun 2024",
       company: "Alpha Innovations",
@@ -199,7 +199,7 @@ const Contacts: React.FC = () => {
     {
       id: "#838",
       name: "Aiden Clark",
-      email: "aiden@trezo.com",
+      email: "aiden@ENS.com",
       phone: "+1 555-888-1111",
       lastContacted: "2 Jun 2024",
       company: "Skyline Ventures",
@@ -210,7 +210,7 @@ const Contacts: React.FC = () => {
     {
       id: "#837",
       name: "Ella Lewis",
-      email: "ella@trezo.com",
+      email: "ella@ENS.com",
       phone: "+1 555-999-2222",
       lastContacted: "1 Jun 2024",
       company: "Urban Analytics",
@@ -221,7 +221,7 @@ const Contacts: React.FC = () => {
     {
       id: "#836",
       name: "Lucas Harris",
-      email: "lucas@trezo.com",
+      email: "lucas@ENS.com",
       phone: "+1 555-777-6666",
       lastContacted: "31 May 2024",
       company: "Eco Systems",
@@ -232,7 +232,7 @@ const Contacts: React.FC = () => {
     {
       id: "#835",
       name: "Mia Moore",
-      email: "mia@trezo.com",
+      email: "mia@ENS.com",
       phone: "+1 555-555-3333",
       lastContacted: "30 May 2024",
       company: "Nova Industries",
@@ -316,9 +316,9 @@ const Contacts: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
+          <div className="ENS-card-title">
             <form className="relative sm:w-[265px]">
               <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
                 <i className="material-symbols-outlined !text-[20px]">search</i>
@@ -333,9 +333,9 @@ const Contacts: React.FC = () => {
             </form>
           </div>
 
-          <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
-            <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block rounded-md border border-gray-100 py-[5px] md:py-[6.5px] px-[12px] md:px-[19px] transition-all hover:bg-gray-50 dark:border-[#172036] dark:hover:bg-[#0a0e19]">
+          <div className="ENS-card-subtitle mt-[15px] sm:mt-0">
+            <Menu as="div" className="ENS-card-dropdown relative">
+              <MenuButton className="ENS-card-dropdown-btn inline-block rounded-md border border-gray-100 py-[5px] md:py-[6.5px] px-[12px] md:px-[19px] transition-all hover:bg-gray-50 dark:border-[#172036] dark:hover:bg-[#0a0e19]">
                 <span className="inline-block relative ltr:pr-[17px] ltr:md:pr-[20px] rtl:pl-[17px] rtl:ml:pr-[20px]">
                   {selectedOption}
                   <i className="ri-arrow-down-s-line text-lg absolute ltr:-right-[3px] rtl:-left-[3px] top-1/2 -translate-y-1/2"></i>
@@ -363,7 +363,7 @@ const Contacts: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card-content -mx-[20px] md:-mx-[25px]">
+        <div className="ENS-card-content -mx-[20px] md:-mx-[25px]">
           <div className="table-responsive overflow-x-auto">
             <table className="w-full">
               <thead className="text-black dark:text-white">

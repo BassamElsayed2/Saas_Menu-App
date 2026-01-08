@@ -1,4 +1,4 @@
-import { MenuItem as BaseMenuItem, MenuData } from "../../types";
+import { MenuItem as BaseMenuItem, MenuData, MenuCustomizations } from "../../types";
 
 export interface AdSpaceProps {
   position: "left" | "right";
@@ -14,17 +14,6 @@ export interface FoodItemModalProps {
   item: BaseMenuItem | null;
   isProPlan?: boolean;
   currency?: string;
-}
-
-export interface MenuCustomizations {
-  primaryColor?: string;
-  secondaryColor?: string;
-  backgroundColor?: string;
-  textColor?: string;
-  heroTitleAr?: string;
-  heroSubtitleAr?: string;
-  heroTitleEn?: string;
-  heroSubtitleEn?: string;
 }
 
 export interface TemplatesSectionProps {

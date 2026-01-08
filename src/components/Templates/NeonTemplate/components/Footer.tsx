@@ -5,11 +5,11 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { FooterProps } from "./types";
 
-export const Footer: React.FC<FooterProps> = ({ 
-  menuName, 
+export const Footer: React.FC<FooterProps> = ({
+  menuName,
   branches,
   primaryColor = "#14b8a6",
-  secondaryColor = "#06b6d4"
+  secondaryColor = "#06b6d4",
 }) => {
   const t = useTranslations("Landing.footer");
   const navT = useTranslations("navbar");
@@ -50,40 +50,40 @@ export const Footer: React.FC<FooterProps> = ({
       id="contact"
       className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-300 py-16 overflow-hidden border-t-2"
       style={{
-        borderColor: `${primaryColor}20`
+        borderColor: `${primaryColor}20`,
       }}
     >
       {/* Background effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div 
-          className="absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl" 
+        <div
+          className="absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl"
           style={{
-            backgroundColor: `${primaryColor}0D`
+            backgroundColor: `${primaryColor}0D`,
           }}
         />
-        <div 
+        <div
           className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl"
           style={{
-            backgroundColor: `${secondaryColor}0D`
+            backgroundColor: `${secondaryColor}0D`,
           }}
         />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-6 group">
               <div className="relative">
-                <div 
+                <div
                   className="absolute inset-0 rounded-lg blur opacity-50 group-hover:opacity-75 transition"
                   style={{
-                    background: `linear-gradient(to right, ${primaryColor}66, ${secondaryColor}66)`
+                    background: `linear-gradient(to right, ${primaryColor}66, ${secondaryColor}66)`,
                   }}
                 />
-                <div 
+                <div
                   className="relative p-2 rounded-lg"
                   style={{
-                    background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`
+                    background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`,
                   }}
                 >
                   <Image
@@ -102,7 +102,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           <div>
-            <h4 
+            <h4
               className="text-lg font-bold mb-6"
               style={{ color: primaryColor }}
             >
@@ -119,7 +119,7 @@ export const Footer: React.FC<FooterProps> = ({
                       e.currentTarget.style.color = primaryColor;
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.color = '';
+                      e.currentTarget.style.color = "";
                     }}
                   >
                     {link.name}
@@ -130,7 +130,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           <div>
-            <h4 
+            <h4
               className="text-lg font-bold mb-6"
               style={{ color: primaryColor }}
             >
@@ -149,7 +149,7 @@ export const Footer: React.FC<FooterProps> = ({
                         e.currentTarget.style.color = primaryColor;
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.color = '';
+                        e.currentTarget.style.color = "";
                       }}
                     >
                       {branches[0].phone}
@@ -174,7 +174,7 @@ export const Footer: React.FC<FooterProps> = ({
                         e.currentTarget.style.color = primaryColor;
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.color = '';
+                        e.currentTarget.style.color = "";
                       }}
                     >
                       +20 100 000 0000
@@ -189,7 +189,7 @@ export const Footer: React.FC<FooterProps> = ({
                         e.currentTarget.style.color = primaryColor;
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.color = '';
+                        e.currentTarget.style.color = "";
                       }}
                     >
                       info@ens.com
@@ -199,7 +199,7 @@ export const Footer: React.FC<FooterProps> = ({
               )}
             </ul>
           </div>
-        </div>
+        </div> */}
 
         <div className="border-t border-slate-700 pt-8">
           <div className="flex flex-col items-center gap-6">
@@ -212,10 +212,10 @@ export const Footer: React.FC<FooterProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.opacity = '0.8';
+                  e.currentTarget.style.opacity = "0.8";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.opacity = "1";
                 }}
               >
                 ENS

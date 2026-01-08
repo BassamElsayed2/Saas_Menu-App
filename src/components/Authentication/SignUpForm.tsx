@@ -14,6 +14,7 @@ import {
 import type { SignupFormData } from "@/lib/validators/auth.validator";
 import { useAvailabilityCheck } from "@/hooks/useAvailabilityCheck";
 import { FormInput } from "./FormInput";
+import GoogleAuthButton from "./GoogleAuthButton";
 
 /**
  * Sign Up Form Component
@@ -133,7 +134,8 @@ const SignUpForm: React.FC = () => {
 
       if (success) {
         toast.success("تم إنشاء الحساب بنجاح!");
-        router.push(`/${locale}/authentication/confirm-email`);
+        // Redirect directly to menus page (email verification disabled)
+        router.push(`/${locale}/menus`);
       }
     } catch (error) {
       console.error("Signup error:", error);
@@ -189,6 +191,20 @@ const SignUpForm: React.FC = () => {
 
               {/* Form */}
               <form onSubmit={handleSubmit} noValidate>
+                {/* Google Sign Up Button */}
+                <div className="mb-[20px]">
+                  <GoogleAuthButton mode="signup" />
+                </div>
+
+                {/* Divider */}
+                <div className="flex items-center mb-[20px]">
+                  <div className="flex-1 border-t border-gray-200 dark:border-[#172036]"></div>
+                  <span className="px-4 text-sm text-gray-500 dark:text-gray-400">
+                    أو أنشئ حساباً جديداً
+                  </span>
+                  <div className="flex-1 border-t border-gray-200 dark:border-[#172036]"></div>
+                </div>
+
                 {/* Name Field */}
                 <FormInput
                   label="الاسم الكامل"

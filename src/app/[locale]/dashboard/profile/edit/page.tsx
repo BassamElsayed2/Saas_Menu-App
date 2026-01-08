@@ -319,42 +319,45 @@ export default function EditProfilePage() {
   const plans = [
     {
       id: "free",
-      name: "Free",
-      price: "$0",
-      period: "forever",
-      features: [
-        "1 Menu",
-        "Up to 20 items",
-        "Basic customization",
-        "Ads supported",
-      ],
+      name: locale === "ar" ? "مجاني" : "Free",
+      price: locale === "ar" ? "مجاني" : "Free",
+      period: "",
+      features:
+        locale === "ar"
+          ? ["منيو واحد", "50 منتج", "إعلانات", "بدون تعديلات"]
+          : ["1 Menu", "50 products", "With ads", "No customization"],
     },
     {
-      id: "starter",
-      name: "Starter",
-      price: "$9",
-      period: "/month",
-      features: [
-        "3 Menus",
-        "Unlimited items",
-        "Advanced customization",
-        "No ads",
-        "Analytics",
-      ],
+      id: "pro",
+      name: locale === "ar" ? "احترافي" : "Pro",
+      price: "29.99",
+      period: locale === "ar" ? "/شهرياً" : "/month",
+      features:
+        locale === "ar"
+          ? [
+              "3 منيو",
+              "200 منتج لكل قائمة",
+              "تحكم في الإعلانات",
+              "شامل التعديلات",
+            ]
+          : [
+              "3 Menus",
+              "200 products per menu",
+              "Control ads",
+              "Full customization",
+            ],
       popular: true,
     },
     {
-      id: "professional",
-      name: "Professional",
-      price: "$29",
-      period: "/month",
-      features: [
-        "Unlimited menus",
-        "Full customization",
-        "Priority support",
-        "Advanced analytics",
-        "Custom domain",
-      ],
+      id: "customize",
+      name: locale === "ar" ? "مخصص" : "Customize",
+      price: locale === "ar" ? "قريباً" : "Coming Soon",
+      period: "",
+      features:
+        locale === "ar"
+          ? ["قريباً", "اتصل بنا للمزيد من التفاصيل"]
+          : ["Coming Soon", "Contact us for more details"],
+      comingSoon: true,
     },
   ];
 
@@ -752,34 +755,41 @@ export default function EditProfilePage() {
             {plans.map((plan) => (
               <div
                 key={plan.id}
-                className={`border-2 rounded-lg p-6 cursor-pointer transition-all ${
-                  selectedPlan === plan.id
-                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900"
-                    : "border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600"
+                className={`border-2 rounded-lg p-6 transition-all ${
+                  plan.comingSoon
+                    ? "opacity-75 cursor-not-allowed bg-gray-50 dark:bg-gray-800/50 border-gray-300 dark:border-gray-700"
+                    : selectedPlan === plan.id
+                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900 cursor-pointer"
+                    : "border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600 cursor-pointer"
                 } ${plan.popular ? "ring-2 ring-blue-500" : ""}`}
-                onClick={() => setSelectedPlan(plan.id)}
+                onClick={() => !plan.comingSoon && setSelectedPlan(plan.id)}
               >
-                {plan.popular && (
+                {plan.comingSoon && (
+                  <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full mb-2 inline-block">
+                    {locale === "ar" ? "قريباً" : "Coming Soon"}
+                  </span>
+                )}
+                {plan.popular && !plan.comingSoon && (
                   <span className="bg-blue-500 text-white dark:text-white text-xs px-2 py-1 rounded-full mb-2 inline-block">
                     {t("mostPopular")}
                   </span>
                 )}
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                  {t(`plans.${plan.id}.name`)}
+                  {plan.name}
                 </h3>
                 <div className="mb-4">
                   <span className="text-3xl font-bold text-gray-900 dark:text-white">
                     {plan.price}
                   </span>
-                  <span className="text-gray-600 dark:text-white">
-                    {t(`plans.${plan.id}.period`)}
+                  <span className="text-gray-600 dark:text-gray-400">
+                    {plan.period}
                   </span>
                 </div>
                 <ul className="space-y-2 mb-4">
                   {plan.features.map((feature, index) => (
                     <li
                       key={index}
-                      className="flex items-start text-sm text-gray-600 dark:text-white"
+                      className="flex items-start text-sm text-gray-600 dark:text-gray-300"
                     >
                       <svg
                         className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0"
@@ -792,7 +802,7 @@ export default function EditProfilePage() {
                           clipRule="evenodd"
                         />
                       </svg>
-                      {t(`plans.${plan.id}.features.${index}`)}
+                      {feature}
                     </li>
                   ))}
                 </ul>

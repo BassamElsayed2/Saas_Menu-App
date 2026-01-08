@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image"; 
+import Image from "next/image";
 
 const AddUserForm: React.FC = () => {
   // Upload image
@@ -23,8 +23,8 @@ const AddUserForm: React.FC = () => {
       <form>
         <div className="xl:grid xl:grid-cols-5 2xl:grid-cols-3 gap-[25px]">
           <div className="xl:col-span-3 2xl:col-span-2">
-            <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-              <div className="trezo-card-content">
+            <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+              <div className="ENS-card-content">
                 <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
@@ -55,7 +55,7 @@ const AddUserForm: React.FC = () => {
                     <input
                       type="text"
                       className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                      defaultValue="E.g. olivia@trezo.com"
+                      defaultValue="E.g. olivia@ENS.com"
                     />
                   </div>
 
@@ -212,13 +212,13 @@ const AddUserForm: React.FC = () => {
           </div>
 
           <div className="xl:col-span-2 2xl:col-span-1">
-            <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-              <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-                <div className="trezo-card-title">
+            <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+              <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+                <div className="ENS-card-title">
                   <h5 className="!mb-0">Privacy Policy</h5>
                 </div>
               </div>
-              <div className="trezo-card-content">
+              <div className="ENS-card-content">
                 <div className="mb-[20px] sm:mb-[25px]">
                   <div className="form-check flex items-center gap-[8px] mb-[10px] last:mb-0">
                     <input
@@ -279,8 +279,8 @@ const AddUserForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card mb-[25px]">
-          <div className="trezo-card-content">
+        <div className="ENS-card mb-[25px]">
+          <div className="ENS-card-content">
             <button
               type="button"
               className="font-medium inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-danger-500 text-white hover:bg-danger-400"

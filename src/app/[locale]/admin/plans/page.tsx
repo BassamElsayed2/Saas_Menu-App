@@ -9,13 +9,16 @@ import Image from "next/image";
 interface Plan {
   id: number;
   name: string;
-  nameAr: string;
+  nameAr?: string;
+  description?: string;
   priceMonthly: number;
-  durationInDays: number;
+  priceYearly?: number;
+  durationInDays?: number;
   maxMenus: number;
   maxProductsPerMenu: number;
   hasAds: boolean;
   allowCustomDomain: boolean;
+  features?: string;
   isActive: boolean;
 }
 
@@ -92,11 +95,9 @@ export default function PlansManagement() {
           },
           body: JSON.stringify({
             priceMonthly: editingPlan.priceMonthly,
+            priceYearly: editingPlan.priceYearly,
             maxMenus: editingPlan.maxMenus,
             maxProductsPerMenu: editingPlan.maxProductsPerMenu,
-            allowCustomDomain: editingPlan.allowCustomDomain,
-            hasAds: editingPlan.hasAds,
-            isActive: editingPlan.isActive,
           }),
         }
       );
@@ -148,27 +149,53 @@ export default function PlansManagement() {
 
         {/* Plans Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[25px] mb-[25px]">
-          {plans.map((plan, index) => (
+          {plans.map((plan, index) => {
+            const isFree = plan.priceMonthly === 0;
+            const isComingSoon = !plan.isActive;
+            
+            return (
             <div
               key={plan.id}
-              className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md text-center"
+              className={`ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md text-center ${
+                isComingSoon ? "opacity-75" : ""
+              }`}
             >
-              <div className="trezo-card-content relative md:py-[10px] md:px-[10px]">
+              <div className="ENS-card-content relative md:py-[10px] md:px-[10px]">
                 <span className="inline-block text-gray-700 dark:text-gray-300 rounded-md py-[6.5px] px-[17.3px] border border-gray-300 dark:border-[#172036]">
                   {plan.name}
                 </span>
 
+                {plan.description && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    {plan.description}
+                  </p>
+                )}
+
                 <div className="leading-none text-4xl text-gray-900 dark:text-white my-[15px] md:my-[17px] font-medium -tracking-[1px]">
-                  ${plan.priceMonthly}
-                  <span className="text-md text-gray-600 dark:text-gray-400 font-normal tracking-normal">
-                    {t("perMonth")}
-                  </span>
+                  {isFree ? (
+                    <span className="text-2xl">
+                      {locale === "ar" ? "مجاني" : "Free"}
+                    </span>
+                  ) : isComingSoon ? (
+                    <span className="text-2xl text-purple-600 dark:text-purple-400">
+                      {locale === "ar" ? "قريباً" : "Coming Soon"}
+                    </span>
+                  ) : (
+                    <>
+                      ${plan.priceMonthly}
+                      <span className="text-md text-gray-600 dark:text-gray-400 font-normal tracking-normal">
+                        {locale === "ar" ? "/شهرياً" : "/month"}
+                      </span>
+                    </>
+                  )}
                 </div>
 
-                <p className="font-medium text-gray-700 dark:text-gray-300">
-                  {plan.durationInDays}{" "}
-                  {plan.durationInDays === 1 ? t("day") : t("days")}
-                </p>
+                {plan.priceYearly !== undefined && !isFree && !isComingSoon && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {locale === "ar" ? "أو" : "or"} ${plan.priceYearly}{" "}
+                    {locale === "ar" ? "/سنوياً" : "/year"}
+                  </p>
+                )}
 
                 <ul className="mt-[20px] md:mt-[28px] ltr:text-left rtl:text-right">
                   <li className="relative ltr:pl-[30px] ltr:md:pl-[38px] rtl:pr-[30px] rtl:md:pr-[38px] mb-[15px]">
@@ -237,8 +264,8 @@ export default function PlansManagement() {
                       {t("status.active")}
                     </div>
                   ) : (
-                    <div className="bg-gray-400 text-white text-xs font-bold px-3 py-1 rounded-full">
-                      {t("status.inactive")}
+                    <div className="bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      {locale === "ar" ? "قريباً" : "Coming Soon"}
                     </div>
                   )}
                 </div>
@@ -256,31 +283,62 @@ export default function PlansManagement() {
                 )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Edit Plan Modal */}
         {showEditModal && editingPlan && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white dark:bg-[#0c1427] rounded-md p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                {t("editModal.title")}:{" "}
-                {locale === "ar" ? editingPlan.nameAr : editingPlan.name}
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                {t("editModal.title")}: {editingPlan.name}
               </h2>
 
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-3 mb-6">
+                <p className="text-sm text-blue-800 dark:text-blue-300">
+                  <i className="material-symbols-outlined !text-[16px] align-middle">
+                    info
+                  </i>{" "}
+                  {locale === "ar"
+                    ? "يمكنك تعديل الأسعار وعدد القوائم والمنتجات فقط"
+                    : "You can only edit prices, menus count, and products count"}
+                </p>
+              </div>
+
               <div className="space-y-4">
-                {/* Price */}
+                {/* Monthly Price */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {t("editModal.price")}
+                    {t("editModal.price")} ({locale === "ar" ? "شهري" : "Monthly"})
                   </label>
                   <input
                     type="number"
+                    step="0.01"
                     value={editingPlan.priceMonthly ?? 0}
                     onChange={(e) =>
                       setEditingPlan({
                         ...editingPlan,
                         priceMonthly: parseFloat(e.target.value) || 0,
+                      })
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none"
+                  />
+                </div>
+
+                {/* Yearly Price */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {locale === "ar" ? "السعر السنوي" : "Yearly Price"} ({locale === "ar" ? "اختياري" : "Optional"})
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={editingPlan.priceYearly ?? 0}
+                    onChange={(e) =>
+                      setEditingPlan({
+                        ...editingPlan,
+                        priceYearly: parseFloat(e.target.value) || 0,
                       })
                     }
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none"
@@ -294,6 +352,7 @@ export default function PlansManagement() {
                   </label>
                   <input
                     type="number"
+                    min="1"
                     value={editingPlan.maxMenus ?? 0}
                     onChange={(e) =>
                       setEditingPlan({
@@ -303,6 +362,11 @@ export default function PlansManagement() {
                     }
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none"
                   />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {locale === "ar" 
+                      ? "استخدم -1 للقوائم غير المحدودة" 
+                      : "Use -1 for unlimited menus"}
+                  </p>
                 </div>
 
                 {/* Max Products Per Menu */}
@@ -321,72 +385,11 @@ export default function PlansManagement() {
                     }
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none"
                   />
-                </div>
-
-                {/* Allow Custom Domain */}
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    id="allowCustomDomain"
-                    checked={editingPlan.allowCustomDomain ?? false}
-                    onChange={(e) =>
-                      setEditingPlan({
-                        ...editingPlan,
-                        allowCustomDomain: e.target.checked,
-                      })
-                    }
-                    className="w-5 h-5 text-primary-600 rounded focus:ring-2 focus:ring-primary-500"
-                  />
-                  <label
-                    htmlFor="allowCustomDomain"
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    {t("editModal.allowCustomDomain")}
-                  </label>
-                </div>
-
-                {/* Has Ads */}
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    id="hasAds"
-                    checked={editingPlan.hasAds ?? false}
-                    onChange={(e) =>
-                      setEditingPlan({
-                        ...editingPlan,
-                        hasAds: e.target.checked,
-                      })
-                    }
-                    className="w-5 h-5 text-primary-600 rounded focus:ring-2 focus:ring-primary-500"
-                  />
-                  <label
-                    htmlFor="hasAds"
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    {t("editModal.hasAds")}
-                  </label>
-                </div>
-
-                {/* Is Active */}
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    id="isActive"
-                    checked={editingPlan.isActive ?? false}
-                    onChange={(e) =>
-                      setEditingPlan({
-                        ...editingPlan,
-                        isActive: e.target.checked,
-                      })
-                    }
-                    className="w-5 h-5 text-primary-600 rounded focus:ring-2 focus:ring-primary-500"
-                  />
-                  <label
-                    htmlFor="isActive"
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    {t("editModal.isActive")}
-                  </label>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {locale === "ar" 
+                      ? "استخدم -1 للمنتجات غير المحدودة" 
+                      : "Use -1 for unlimited products"}
+                  </p>
                 </div>
               </div>
 

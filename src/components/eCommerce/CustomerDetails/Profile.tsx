@@ -15,9 +15,9 @@ const Profile: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-          <div className="trezo-card-title flex items-center">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+          <div className="ENS-card-title flex items-center">
             <Image
               src="/images/users/user11.jpg"
               alt="user-image"
@@ -33,9 +33,9 @@ const Profile: React.FC = () => {
             </div>
           </div>
 
-          <div className="trezo-card-subtitle">
-            <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block transition-all text-[26px] text-gray-500 dark:text-gray-400 leading-none hover:text-primary-500">
+          <div className="ENS-card-subtitle">
+            <Menu as="div" className="ENS-card-dropdown relative">
+              <MenuButton className="ENS-card-dropdown-btn inline-block transition-all text-[26px] text-gray-500 dark:text-gray-400 leading-none hover:text-primary-500">
                 <i className="ri-more-fill"></i>
               </MenuButton>
 
@@ -60,7 +60,7 @@ const Profile: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card-content">
+        <div className="ENS-card-content">
           <ul>
             <li className="mb-[15px] md:mb-[17px] last:mb-0 text-black dark:text-white font-medium">
               <span className="block font-normal mb-[5px] text-gray-500 dark:text-gray-400">
@@ -73,7 +73,7 @@ const Profile: React.FC = () => {
               <span className="block font-normal mb-[5px] text-gray-500 dark:text-gray-400">
                 Billing Email:
               </span>
-              ava@trezo.com
+              ava@ENS.com
             </li>
 
             <li className="mb-[15px] md:mb-[17px] last:mb-0 text-black dark:text-white font-medium">

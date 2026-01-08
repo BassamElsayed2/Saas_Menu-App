@@ -391,7 +391,7 @@ export default function AdsManagement() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               إجمالي الإعلانات
             </div>
@@ -399,7 +399,7 @@ export default function AdsManagement() {
               {ads.length}
             </div>
           </div>
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               الإعلانات النشطة
             </div>
@@ -407,7 +407,7 @@ export default function AdsManagement() {
               {ads.filter((a) => a.isActive).length}
             </div>
           </div>
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               إجمالي النقرات
             </div>
@@ -429,7 +429,7 @@ export default function AdsManagement() {
 
         {/* Add Ad Form */}
         {showAddForm && (
-          <div className="mb-6 trezo-card bg-white dark:bg-[#0c1427] p-6 rounded-md">
+          <div className="mb-6 ENS-card bg-white dark:bg-[#0c1427] p-6 rounded-md">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               إضافة إعلان جديد
             </h2>
@@ -624,7 +624,7 @@ export default function AdsManagement() {
         {/* Ads List */}
         <div className="space-y-4">
           {ads.length === 0 ? (
-            <div className="trezo-card bg-white dark:bg-[#0c1427] p-8 rounded-md text-center">
+            <div className="ENS-card bg-white dark:bg-[#0c1427] p-8 rounded-md text-center">
               <p className="text-gray-600 dark:text-gray-400">
                 لا توجد إعلانات بعد
               </p>
@@ -633,7 +633,7 @@ export default function AdsManagement() {
             ads.map((ad) => (
               <div
                 key={ad.id}
-                className="trezo-card bg-white dark:bg-[#0c1427] p-6 rounded-md"
+                className="ENS-card bg-white dark:bg-[#0c1427] p-6 rounded-md"
               >
                 <div className="flex flex-col md:flex-row gap-4">
                   {/* Image */}

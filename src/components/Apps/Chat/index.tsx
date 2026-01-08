@@ -14,9 +14,9 @@ const Chat: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header sm:flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header sm:flex items-center justify-between">
+          <div className="ENS-card-title">
             <div className="flex items-center">
               <div className="relative ltr:mr-[15px] rtl:ml-[15px]">
                 <Image
@@ -37,7 +37,7 @@ const Chat: React.FC = () => {
             </div>
           </div>
 
-          <div className="trezo-card-subtitle mt-[15px] sm:mt-0 flex items-center gap-[15px]">
+          <div className="ENS-card-subtitle mt-[15px] sm:mt-0 flex items-center gap-[15px]">
             <button
               type="button"
               className="inline-block transition-all hover:text-primary-500"
@@ -52,8 +52,8 @@ const Chat: React.FC = () => {
               <i className="material-symbols-outlined !text-md">videocam</i>
             </button>
 
-            <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block transition-all text-[20px] text-gray-500 dark:text-gray-400 relative -top-px leading-none hover:text-primary-500">
+            <Menu as="div" className="ENS-card-dropdown relative">
+              <MenuButton className="ENS-card-dropdown-btn inline-block transition-all text-[20px] text-gray-500 dark:text-gray-400 relative -top-px leading-none hover:text-primary-500">
                 <i className="ri-more-fill"></i>
               </MenuButton>
 
@@ -78,7 +78,7 @@ const Chat: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card-content">
+        <div className="ENS-card-content">
           <div className="border-t border-gray-100 dark:border-[#172036] mt-[20px] mb-[18px]"></div>
 
           <span className="text-xs pb-[18px] block">2023-11-10 09:15 AM</span>

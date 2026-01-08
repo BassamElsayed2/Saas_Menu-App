@@ -134,7 +134,7 @@ export default function AdminsManagement() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               إجمالي المشرفين
             </div>
@@ -142,7 +142,7 @@ export default function AdminsManagement() {
               {admins.length}
             </div>
           </div>
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               آخر تسجيل دخول
             </div>
@@ -166,7 +166,7 @@ export default function AdminsManagement() {
 
         {/* Add Admin Form */}
         {showAddForm && (
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-6 rounded-md mb-6">
+          <div className="ENS-card bg-white dark:bg-[#0c1427] p-6 rounded-md mb-6">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
               إضافة مشرف جديد
             </h3>
@@ -237,7 +237,7 @@ export default function AdminsManagement() {
         )}
 
         {/* Admins List */}
-        <div className="trezo-card bg-white dark:bg-[#0c1427] rounded-md overflow-hidden">
+        <div className="ENS-card bg-white dark:bg-[#0c1427] rounded-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 dark:bg-[#15203c]">
@@ -304,4 +304,3 @@ export default function AdminsManagement() {
     </div>
   );
 }
-

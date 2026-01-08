@@ -22,7 +22,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-854",
     name: "Oliver Khan",
-    email: "oliver@trezo.com",
+    email: "oliver@ENS.com",
     phone: "+1 555-123-4567",
     lastLogin: "10 Oct 2024",
     totalSpend: "$6,855.00",
@@ -34,7 +34,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-853",
     name: "Carolyn Barnes",
-    email: "carolyn@trezo.com",
+    email: "carolyn@ENS.com",
     phone: "+1 555-987-6543",
     lastLogin: "11 Sep 2024",
     totalSpend: "$2,800.00",
@@ -46,7 +46,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-852",
     name: "Sophia Green",
-    email: "sophia@trezo.com",
+    email: "sophia@ENS.com",
     phone: "+1 555-222-3456",
     lastLogin: "5 Jan 2025",
     totalSpend: "$1,250.00",
@@ -58,7 +58,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-851",
     name: "Liam Johnson",
-    email: "liam@trezo.com",
+    email: "liam@ENS.com",
     phone: "+1 555-111-7890",
     lastLogin: "12 Dec 2024",
     totalSpend: "$4,300.00",
@@ -70,7 +70,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-850",
     name: "Emma Wilson",
-    email: "emma@trezo.com",
+    email: "emma@ENS.com",
     phone: "+1 555-333-5678",
     lastLogin: "20 Nov 2024",
     totalSpend: "$3,100.00",
@@ -82,7 +82,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-849",
     name: "Aiden Taylor",
-    email: "aiden@trezo.com",
+    email: "aiden@ENS.com",
     phone: "+1 555-444-2345",
     lastLogin: "15 Dec 2024",
     totalSpend: "$2,450.00",
@@ -94,7 +94,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-848",
     name: "Mia Martinez",
-    email: "mia@trezo.com",
+    email: "mia@ENS.com",
     phone: "+1 555-555-3456",
     lastLogin: "18 Dec 2024",
     totalSpend: "$5,500.00",
@@ -106,7 +106,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-847",
     name: "Ethan Harris",
-    email: "ethan@trezo.com",
+    email: "ethan@ENS.com",
     phone: "+1 555-666-7890",
     lastLogin: "25 Jan 2025",
     totalSpend: "$7,200.00",
@@ -118,7 +118,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-846",
     name: "Isabella Lee",
-    email: "isabella@trezo.com",
+    email: "isabella@ENS.com",
     phone: "+1 555-777-2345",
     lastLogin: "9 Jan 2025",
     totalSpend: "$9,100.00",
@@ -130,7 +130,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-845",
     name: "Jackson Walker",
-    email: "jackson@trezo.com",
+    email: "jackson@ENS.com",
     phone: "+1 555-888-4567",
     lastLogin: "12 Jan 2025",
     totalSpend: "$3,000.00",
@@ -142,7 +142,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-844",
     name: "Lily King",
-    email: "lily@trezo.com",
+    email: "lily@ENS.com",
     phone: "+1 555-999-5678",
     lastLogin: "7 Nov 2024",
     totalSpend: "$6,750.00",
@@ -154,7 +154,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-843",
     name: "Lucas Scott",
-    email: "lucas@trezo.com",
+    email: "lucas@ENS.com",
     phone: "+1 555-123-6789",
     lastLogin: "1 Dec 2024",
     totalSpend: "$4,800.00",
@@ -166,7 +166,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-842",
     name: "Charlotte Perez",
-    email: "charlotte@trezo.com",
+    email: "charlotte@ENS.com",
     phone: "+1 555-234-7890",
     lastLogin: "22 Dec 2024",
     totalSpend: "$1,200.00",
@@ -178,7 +178,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-841",
     name: "James Wright",
-    email: "james@trezo.com",
+    email: "james@ENS.com",
     phone: "+1 555-345-8901",
     lastLogin: "10 Jan 2025",
     totalSpend: "$2,900.00",
@@ -190,7 +190,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-840",
     name: "Harper Harris",
-    email: "harper@trezo.com",
+    email: "harper@ENS.com",
     phone: "+1 555-456-9012",
     lastLogin: "17 Jan 2025",
     totalSpend: "$1,800.00",
@@ -202,7 +202,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-839",
     name: "Sebastian Clark",
-    email: "sebastian@trezo.com",
+    email: "sebastian@ENS.com",
     phone: "+1 555-567-0123",
     lastLogin: "16 Jan 2025",
     totalSpend: "$3,600.00",
@@ -214,7 +214,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-838",
     name: "Chloe Turner",
-    email: "chloe@trezo.com",
+    email: "chloe@ENS.com",
     phone: "+1 555-678-1234",
     lastLogin: "2 Jan 2025",
     totalSpend: "$4,100.00",
@@ -226,7 +226,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-837",
     name: "Mason Robinson",
-    email: "mason@trezo.com",
+    email: "mason@ENS.com",
     phone: "+1 555-789-2345",
     lastLogin: "21 Dec 2024",
     totalSpend: "$5,700.00",
@@ -238,7 +238,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-836",
     name: "Amelia Evans",
-    email: "amelia@trezo.com",
+    email: "amelia@ENS.com",
     phone: "+1 555-890-3456",
     lastLogin: "29 Dec 2024",
     totalSpend: "$8,900.00",
@@ -250,7 +250,7 @@ const customersData: Customer[] = [
   {
     id: "#JAN-835",
     name: "Benjamin Allen",
-    email: "benjamin@trezo.com",
+    email: "benjamin@ENS.com",
     phone: "+1 555-901-4567",
     lastLogin: "19 Jan 2025",
     totalSpend: "$3,300.00",
@@ -277,9 +277,10 @@ const CustomersTable: React.FC = () => {
   const itemsPerPage = 10;
 
   // Handle search
-  const filteredCustomers = customers.filter((customer) =>
-    customer.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    customer.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCustomers = customers.filter(
+    (customer) =>
+      customer.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      customer.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Handle pagination
@@ -298,9 +299,9 @@ const CustomersTable: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
+          <div className="ENS-card-title">
             <form className="relative sm:w-[265px]">
               <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
                 <i className="material-symbols-outlined !text-[20px]">search</i>
@@ -315,9 +316,9 @@ const CustomersTable: React.FC = () => {
             </form>
           </div>
 
-          <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
-            <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block rounded-md border border-gray-100 py-[5px] md:py-[6.5px] px-[12px] md:px-[19px] transition-all hover:bg-gray-50 dark:border-[#172036] dark:hover:bg-[#0a0e19]">
+          <div className="ENS-card-subtitle mt-[15px] sm:mt-0">
+            <Menu as="div" className="ENS-card-dropdown relative">
+              <MenuButton className="ENS-card-dropdown-btn inline-block rounded-md border border-gray-100 py-[5px] md:py-[6.5px] px-[12px] md:px-[19px] transition-all hover:bg-gray-50 dark:border-[#172036] dark:hover:bg-[#0a0e19]">
                 <span className="inline-block relative ltr:pr-[17px] ltr:md:pr-[20px] rtl:pl-[17px] rtl:ml:pr-[20px]">
                   {selectedOption}
                   <i className="ri-arrow-down-s-line text-lg absolute ltr:-right-[3px] rtl:-left-[3px] top-1/2 -translate-y-1/2"></i>
@@ -347,7 +348,7 @@ const CustomersTable: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card-content">
+        <div className="ENS-card-content">
           <div className="table-responsive overflow-x-auto">
             <table className="w-full">
               <thead className="text-black dark:text-white">

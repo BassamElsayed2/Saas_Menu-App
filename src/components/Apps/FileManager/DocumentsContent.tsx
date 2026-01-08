@@ -109,15 +109,15 @@ const DocumentsContent: React.FC = () => {
       {cardData.map((card, index) => (
         <div
           key={index}
-          className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md text-center"
+          className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md text-center"
         >
-          <div className="trezo-card-content">
+          <div className="ENS-card-content">
             <Image
               src={card.icon}
               className="inline-block"
               alt={card.title}
               width={56}
-              height={56} 
+              height={56}
             />
             <h6 className="!my-[18px] !text-[15px]">{card.title}</h6>
             <div className="flex justify-center items-center gap-[12px]">

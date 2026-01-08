@@ -9,7 +9,7 @@ const initialSellers = [
     id: 1,
     image: "/images/sellers/seller1.png",
     name: "Ava Turner",
-    email: "turner@trezo.com",
+    email: "turner@ENS.com",
     lastSaleDate: "25 Nov 2024",
     itemStock: 50,
     walletBalance: "$9,999.50",
@@ -21,7 +21,7 @@ const initialSellers = [
     id: 2,
     image: "/images/sellers/seller2.png",
     name: "Ethan Parker",
-    email: "ethan@trezo.com",
+    email: "ethan@ENS.com",
     lastSaleDate: "01 Nov 2024",
     itemStock: 39,
     walletBalance: "$6,756.50",
@@ -33,7 +33,7 @@ const initialSellers = [
     id: 3,
     image: "/images/sellers/seller3.png",
     name: "Isabella Lee",
-    email: "isabella@trezo.com",
+    email: "isabella@ENS.com",
     lastSaleDate: "30 Sep 2024",
     itemStock: 75,
     walletBalance: "$5,550.00",
@@ -45,7 +45,7 @@ const initialSellers = [
     id: 4,
     image: "/images/sellers/seller4.png",
     name: "John Doe",
-    email: "john@trezo.com",
+    email: "john@ENS.com",
     lastSaleDate: "15 Dec 2024",
     itemStock: 45,
     walletBalance: "$7,500.00",
@@ -57,7 +57,7 @@ const initialSellers = [
     id: 5,
     image: "/images/sellers/seller5.png",
     name: "Lily Roberts",
-    email: "lily@trezo.com",
+    email: "lily@ENS.com",
     lastSaleDate: "12 Oct 2024",
     itemStock: 60,
     walletBalance: "$8,500.00",
@@ -69,7 +69,7 @@ const initialSellers = [
     id: 6,
     image: "/images/sellers/seller6.png",
     name: "Mason Evans",
-    email: "mason@trezo.com",
+    email: "mason@ENS.com",
     lastSaleDate: "22 Nov 2024",
     itemStock: 72,
     walletBalance: "$10,200.50",
@@ -81,7 +81,7 @@ const initialSellers = [
     id: 7,
     image: "/images/sellers/seller7.png",
     name: "Sophia Bennett",
-    email: "sophia@trezo.com",
+    email: "sophia@ENS.com",
     lastSaleDate: "09 Dec 2024",
     itemStock: 90,
     walletBalance: "$11,100.00",
@@ -93,7 +93,7 @@ const initialSellers = [
     id: 8,
     image: "/images/sellers/seller8.png",
     name: "Lucas Mitchell",
-    email: "lucas@trezo.com",
+    email: "lucas@ENS.com",
     lastSaleDate: "05 Jan 2025",
     itemStock: 30,
     walletBalance: "$4,500.00",
@@ -105,7 +105,7 @@ const initialSellers = [
     id: 9,
     image: "/images/sellers/seller9.png",
     name: "Charlotte Carter",
-    email: "charlotte@trezo.com",
+    email: "charlotte@ENS.com",
     lastSaleDate: "18 Dec 2024",
     itemStock: 55,
     walletBalance: "$7,800.00",
@@ -117,7 +117,7 @@ const initialSellers = [
     id: 10,
     image: "/images/sellers/seller10.png",
     name: "Aiden Brooks",
-    email: "aiden@trezo.com",
+    email: "aiden@ENS.com",
     lastSaleDate: "14 Jan 2025",
     itemStock: 40,
     walletBalance: "$5,600.00",
@@ -129,7 +129,7 @@ const initialSellers = [
     id: 11,
     image: "/images/sellers/seller11.png",
     name: "Ella Martin",
-    email: "ella@trezo.com",
+    email: "ella@ENS.com",
     lastSaleDate: "11 Oct 2024",
     itemStock: 65,
     walletBalance: "$6,700.00",
@@ -141,7 +141,7 @@ const initialSellers = [
     id: 12,
     image: "/images/sellers/seller12.png",
     name: "James Harris",
-    email: "james@trezo.com",
+    email: "james@ENS.com",
     lastSaleDate: "21 Dec 2024",
     itemStock: 80,
     walletBalance: "$9,300.00",
@@ -153,7 +153,7 @@ const initialSellers = [
     id: 13,
     image: "/images/sellers/seller1.png",
     name: "Amelia Clark",
-    email: "amelia@trezo.com",
+    email: "amelia@ENS.com",
     lastSaleDate: "23 Nov 2024",
     itemStock: 50,
     walletBalance: "$7,200.00",
@@ -165,7 +165,7 @@ const initialSellers = [
     id: 14,
     image: "/images/sellers/seller2.png",
     name: "Benjamin Scott",
-    email: "benjamin@trezo.com",
+    email: "benjamin@ENS.com",
     lastSaleDate: "02 Dec 2024",
     itemStock: 60,
     walletBalance: "$8,000.00",
@@ -177,7 +177,7 @@ const initialSellers = [
     id: 15,
     image: "/images/sellers/seller3.png",
     name: "Harper White",
-    email: "harper@trezo.com",
+    email: "harper@ENS.com",
     lastSaleDate: "16 Jan 2025",
     itemStock: 25,
     walletBalance: "$3,400.00",
@@ -189,7 +189,7 @@ const initialSellers = [
     id: 16,
     image: "/images/sellers/seller4.png",
     name: "Jackson Young",
-    email: "jackson@trezo.com",
+    email: "jackson@ENS.com",
     lastSaleDate: "19 Nov 2024",
     itemStock: 85,
     walletBalance: "$10,700.00",
@@ -201,7 +201,7 @@ const initialSellers = [
     id: 17,
     image: "/images/sellers/seller5.png",
     name: "Grace Adams",
-    email: "grace@trezo.com",
+    email: "grace@ENS.com",
     lastSaleDate: "07 Dec 2024",
     itemStock: 20,
     walletBalance: "$2,800.00",
@@ -213,7 +213,7 @@ const initialSellers = [
     id: 18,
     image: "/images/sellers/seller6.png",
     name: "Oliver King",
-    email: "oliver@trezo.com",
+    email: "oliver@ENS.com",
     lastSaleDate: "08 Nov 2024",
     itemStock: 30,
     walletBalance: "$4,200.00",
@@ -225,7 +225,7 @@ const initialSellers = [
     id: 19,
     image: "/images/sellers/seller7.png",
     name: "Zoe Martinez",
-    email: "zoe@trezo.com",
+    email: "zoe@ENS.com",
     lastSaleDate: "30 Dec 2024",
     itemStock: 60,
     walletBalance: "$7,300.00",
@@ -237,7 +237,7 @@ const initialSellers = [
     id: 20,
     image: "/images/sellers/seller8.png",
     name: "Sebastian Lee",
-    email: "sebastian@trezo.com",
+    email: "sebastian@ENS.com",
     lastSaleDate: "03 Jan 2025",
     itemStock: 100,
     walletBalance: "$12,500.00",
@@ -299,9 +299,9 @@ const SellersContent: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header sm:flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header sm:flex items-center justify-between">
+          <div className="ENS-card-title">
             <form className="relative sm:w-[265px]">
               <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
                 <i className="material-symbols-outlined !text-[20px]">search</i>
@@ -316,7 +316,7 @@ const SellersContent: React.FC = () => {
             </form>
           </div>
 
-          <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
+          <div className="ENS-card-subtitle mt-[15px] sm:mt-0">
             <Link
               href="/ecommerce/create-seller"
               className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
@@ -337,9 +337,9 @@ const SellersContent: React.FC = () => {
         {currentSellers.map((seller) => (
           <div
             key={seller.id}
-            className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
+            className="ENS-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
           >
-            <div className="trezo-card-content">
+            <div className="ENS-card-content">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <Image
@@ -418,31 +418,31 @@ const SellersContent: React.FC = () => {
               <ul className="mt-[20px]">
                 <li className="text-black dark:text-white mb-[10px] last:mb-0">
                   <span className="text-gray-500 dark:text-gray-400">
-                    Last Sale Date: {' '}
+                    Last Sale Date:{" "}
                   </span>
                   {seller.lastSaleDate}
                 </li>
                 <li className="text-black dark:text-white mb-[10px] last:mb-0">
                   <span className="text-gray-500 dark:text-gray-400">
-                    Item Stock: {' '}
+                    Item Stock:{" "}
                   </span>
                   {seller.itemStock}
                 </li>
                 <li className="text-black dark:text-white mb-[10px] last:mb-0">
                   <span className="text-gray-500 dark:text-gray-400">
-                    Wallet Balance: {' '}
+                    Wallet Balance:{" "}
                   </span>
                   {seller.walletBalance}
                 </li>
                 <li className="text-black dark:text-white mb-[10px] last:mb-0">
                   <span className="text-gray-500 dark:text-gray-400">
-                    Revenue: {' '}
+                    Revenue:{" "}
                   </span>
                   {seller.revenue}
                 </li>
                 <li className="text-black dark:text-white mb-[10px] last:mb-0">
                   <span className="text-gray-500 dark:text-gray-400">
-                    Store: {' '}
+                    Store:{" "}
                   </span>
                   {seller.store}
                 </li>
@@ -453,8 +453,8 @@ const SellersContent: React.FC = () => {
       </div>
 
       {/* Pagination */}
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-content">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-content">
           <div className="sm:flex sm:items-center justify-between">
             <p className="!mb-0">
               Showing {indexOfFirstSeller + 1} -{" "}

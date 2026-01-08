@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 interface UserAvatarProps {
@@ -28,6 +28,8 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   showBorder = false,
   onClick,
 }) => {
+  const [imageError, setImageError] = useState(false);
+
   const getInitial = (name: string): string => {
     if (!name) return "?";
     // Get first character, support both Arabic and English
@@ -61,7 +63,13 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
 
   const avatarColor = getColorFromName(name);
 
-  if (src) {
+  // Show image only if src exists, is not empty, and didn't fail to load
+  const shouldShowImage = src && src.trim() !== "" && !imageError;
+
+  if (shouldShowImage) {
+    // Check if it's an external URL (Google, Facebook, etc.)
+    const isExternalImage = src.startsWith('http://') || src.startsWith('https://');
+    
     return (
       <div
         className={`relative rounded-full overflow-hidden ${sizeClass} ${borderClass} ${className} ${
@@ -69,13 +77,31 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         }`}
         onClick={onClick}
       >
-        <Image
-          src={src}
-          alt={name}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
+        {isExternalImage ? (
+          // Use regular img tag for external images (Google, etc.)
+          <img
+            src={src}
+            alt={name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              console.error("❌ Image failed to load:", src);
+              setImageError(true);
+            }}
+          />
+        ) : (
+          // Use Next.js Image for internal images
+          <Image
+            src={src}
+            alt={name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            onError={(e) => {
+              console.error("❌ Image failed to load:", src);
+              setImageError(true);
+            }}
+          />
+        )}
       </div>
     );
   }

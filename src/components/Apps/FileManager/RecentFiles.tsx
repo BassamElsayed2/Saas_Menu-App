@@ -187,12 +187,12 @@ const RecentFiles: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+          <div className="ENS-card-title">
             <h5 className="!mb-0">Recent Files</h5>
           </div>
-          <div className="trezo-card-subtitle">
+          <div className="ENS-card-subtitle">
             <button
               type="button"
               className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
@@ -208,7 +208,7 @@ const RecentFiles: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card-content">
+        <div className="ENS-card-content">
           <div className="table-responsive overflow-x-auto">
             <table className="w-full">
               <thead className="text-black dark:text-white">
@@ -404,12 +404,12 @@ const RecentFiles: React.FC = () => {
               transition
               className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-[550px] data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
             >
-              <div className="trezo-card w-full bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
-                <div className="trezo-card-header bg-gray-50 dark:bg-[#15203c] mb-[20px] md:mb-[25px] flex items-center justify-between -mx-[20px] md:-mx-[25px] -mt-[20px] md:-mt-[25px] p-[20px] md:p-[25px] rounded-t-md">
-                  <div className="trezo-card-title">
+              <div className="ENS-card w-full bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
+                <div className="ENS-card-header bg-gray-50 dark:bg-[#15203c] mb-[20px] md:mb-[25px] flex items-center justify-between -mx-[20px] md:-mx-[25px] -mt-[20px] md:-mt-[25px] p-[20px] md:p-[25px] rounded-t-md">
+                  <div className="ENS-card-title">
                     <h5 className="!mb-0">Add New File</h5>
                   </div>
-                  <div className="trezo-card-subtitle">
+                  <div className="ENS-card-subtitle">
                     <button
                       type="button"
                       className="text-[23px] transition-all leading-none text-black dark:text-white hover:text-primary-500"
@@ -420,7 +420,7 @@ const RecentFiles: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="trezo-card-content">
+                <div className="ENS-card-content">
                   <form>
                     <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
                       <div className="sm:col-span-2 mb-[20px] sm:mb-0">

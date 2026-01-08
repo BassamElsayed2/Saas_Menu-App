@@ -8,7 +8,7 @@ const users = [
   {
     id: "JAN-158",
     name: "Marcia Baker",
-    email: "marcia@trezo.com",
+    email: "marcia@ENS.com",
     location: "Washington D.C",
     phone: "+1 555-445-4455",
     projects: 6,
@@ -18,7 +18,7 @@ const users = [
   {
     id: "JAN-325",
     name: "Carolyn Barnes",
-    email: "barnes@trezo.com",
+    email: "barnes@ENS.com",
     location: "Chicago",
     phone: "+1 555-455-9966",
     projects: 10,
@@ -28,7 +28,7 @@ const users = [
   {
     id: "JAN-214",
     name: "James Smith",
-    email: "james@trezo.com",
+    email: "james@ENS.com",
     location: "New York",
     phone: "+1 555-789-1234",
     projects: 5,
@@ -38,7 +38,7 @@ const users = [
   {
     id: "JAN-402",
     name: "Patricia Johnson",
-    email: "patricia@trezo.com",
+    email: "patricia@ENS.com",
     location: "San Francisco",
     phone: "+1 555-321-9876",
     projects: 7,
@@ -48,7 +48,7 @@ const users = [
   {
     id: "JAN-518",
     name: "Robert Brown",
-    email: "robert@trezo.com",
+    email: "robert@ENS.com",
     location: "Los Angeles",
     phone: "+1 555-654-3210",
     projects: 12,
@@ -58,7 +58,7 @@ const users = [
   {
     id: "JAN-628",
     name: "Emily Davis",
-    email: "emily@trezo.com",
+    email: "emily@ENS.com",
     location: "Seattle",
     phone: "+1 555-159-7532",
     projects: 9,
@@ -68,7 +68,7 @@ const users = [
   {
     id: "JAN-731",
     name: "Michael Wilson",
-    email: "michael@trezo.com",
+    email: "michael@ENS.com",
     location: "Houston",
     phone: "+1 555-852-7413",
     projects: 8,
@@ -78,7 +78,7 @@ const users = [
   {
     id: "JAN-845",
     name: "Linda Moore",
-    email: "linda@trezo.com",
+    email: "linda@ENS.com",
     location: "Boston",
     phone: "+1 555-369-2581",
     projects: 11,
@@ -88,7 +88,7 @@ const users = [
   {
     id: "JAN-956",
     name: "David Martinez",
-    email: "david@trezo.com",
+    email: "david@ENS.com",
     location: "Miami",
     phone: "+1 555-951-7534",
     projects: 6,
@@ -98,7 +98,7 @@ const users = [
   {
     id: "JAN-102",
     name: "Sarah Anderson",
-    email: "sarah@trezo.com",
+    email: "sarah@ENS.com",
     location: "Austin",
     phone: "+1 555-357-9514",
     projects: 13,
@@ -108,7 +108,7 @@ const users = [
   {
     id: "JAN-113",
     name: "Richard Thomas",
-    email: "richard@trezo.com",
+    email: "richard@ENS.com",
     location: "Denver",
     phone: "+1 555-684-1593",
     projects: 4,
@@ -118,7 +118,7 @@ const users = [
   {
     id: "JAN-224",
     name: "Karen White",
-    email: "karen@trezo.com",
+    email: "karen@ENS.com",
     location: "Dallas",
     phone: "+1 555-742-9516",
     projects: 14,
@@ -128,7 +128,7 @@ const users = [
   {
     id: "JAN-335",
     name: "Christopher Harris",
-    email: "chris@trezo.com",
+    email: "chris@ENS.com",
     location: "Phoenix",
     phone: "+1 555-963-8521",
     projects: 7,
@@ -138,7 +138,7 @@ const users = [
   {
     id: "JAN-446",
     name: "Nancy Clark",
-    email: "nancy@trezo.com",
+    email: "nancy@ENS.com",
     location: "San Diego",
     phone: "+1 555-357-2486",
     projects: 9,
@@ -148,7 +148,7 @@ const users = [
   {
     id: "JAN-557",
     name: "Matthew Lewis",
-    email: "matthew@trezo.com",
+    email: "matthew@ENS.com",
     location: "Portland",
     phone: "+1 555-753-6842",
     projects: 10,
@@ -158,7 +158,7 @@ const users = [
   {
     id: "JAN-668",
     name: "Barbara Walker",
-    email: "barbara@trezo.com",
+    email: "barbara@ENS.com",
     location: "Philadelphia",
     phone: "+1 555-852-3574",
     projects: 8,
@@ -168,7 +168,7 @@ const users = [
   {
     id: "JAN-779",
     name: "Steven Hall",
-    email: "steven@trezo.com",
+    email: "steven@ENS.com",
     location: "Las Vegas",
     phone: "+1 555-741-3698",
     projects: 11,
@@ -178,7 +178,7 @@ const users = [
   {
     id: "JAN-880",
     name: "Jessica Young",
-    email: "jessica@trezo.com",
+    email: "jessica@ENS.com",
     location: "Orlando",
     phone: "+1 555-951-2587",
     projects: 5,
@@ -188,7 +188,7 @@ const users = [
   {
     id: "JAN-991",
     name: "Daniel King",
-    email: "daniel@trezo.com",
+    email: "daniel@ENS.com",
     location: "Minneapolis",
     phone: "+1 555-357-6548",
     projects: 12,
@@ -235,9 +235,9 @@ const UsersListTable: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
-          <div className="trezo-card-title">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
+          <div className="ENS-card-title">
             <form className="relative sm:w-[265px]">
               <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
                 <i className="material-symbols-outlined !text-[20px]">search</i>
@@ -251,7 +251,7 @@ const UsersListTable: React.FC = () => {
               />
             </form>
           </div>
-          <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
+          <div className="ENS-card-subtitle mt-[15px] sm:mt-0">
             <Link
               href="/users/add-user"
               className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
@@ -266,7 +266,7 @@ const UsersListTable: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card-content -mx-[20px] md:-mx-[25px]">
+        <div className="ENS-card-content -mx-[20px] md:-mx-[25px]">
           <div className="table-responsive overflow-x-auto">
             <table className="w-full">
               <thead className="text-black dark:text-white">
@@ -361,7 +361,7 @@ const UsersListTable: React.FC = () => {
                             edit
                           </i>
                         </button>
-                        
+
                         <button
                           type="button"
                           className="text-danger-500 leading-none"

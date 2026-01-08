@@ -262,18 +262,18 @@ const Inbox: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[15px] md:mb-[20px] flex items-center justify-between">
-          <div className="trezo-card-subtitle flex items-center">
+      <div className="ENS-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="ENS-card-header mb-[15px] md:mb-[20px] flex items-center justify-between">
+          <div className="ENS-card-subtitle flex items-center">
             <div className="form-check relative top-[1px]">
               <input type="checkbox" className="cursor-pointer" />
             </div>
 
             <Menu
               as="div"
-              className="trezo-card-dropdown relative ltr:ml-[2px] rtl:mr-[2px] ltr:mr-[15px] rtl:ml-[15px] ltr:md:mr-[25px] rtl:md:ml-[25px]"
+              className="ENS-card-dropdown relative ltr:ml-[2px] rtl:mr-[2px] ltr:mr-[15px] rtl:ml-[15px] ltr:md:mr-[25px] rtl:md:ml-[25px]"
             >
-              <MenuButton className="trezo-card-dropdown-btn inline-block transition-all text-[25px] leading-none hover:text-primary-500">
+              <MenuButton className="ENS-card-dropdown-btn inline-block transition-all text-[25px] leading-none hover:text-primary-500">
                 <i className="material-symbols-outlined !text-[18px]">
                   arrow_drop_down
                 </i>
@@ -321,8 +321,8 @@ const Inbox: React.FC = () => {
               <i className="material-symbols-outlined !text-lg">delete</i>
             </button>
 
-            <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block transition-all text-[25px] leading-none hover:text-primary-500">
+            <Menu as="div" className="ENS-card-dropdown relative">
+              <MenuButton className="ENS-card-dropdown-btn inline-block transition-all text-[25px] leading-none hover:text-primary-500">
                 <i className="material-symbols-outlined !text-[18px]">
                   more_vert
                 </i>
@@ -358,7 +358,7 @@ const Inbox: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card-content relative">
+        <div className="ENS-card-content relative">
           <ul>
             <li className="inline-block ltr:mr-[35px] rtl:ml-[35px] ltr:last:mr-0 rtl:last:ml-0">
               <Link
