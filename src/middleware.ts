@@ -2,95 +2,63 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
+  const url = request.nextUrl.clone();
   const hostname = request.headers.get("host") || "";
-  const url = request.nextUrl;
-
-  // Extract subdomain
-  // Format: subdomain.ensmenu.com or subdomain.localhost:3000
-  let subdomain: string | null = null;
-
-  // Remove port if present (e.g., localhost:3000 -> localhost)
   const hostWithoutPort = hostname.split(":")[0];
   const hostParts = hostWithoutPort.split(".");
 
-  // Check if we have a subdomain
+  let subdomain: string | null = null;
+
+  // تحديد الـ subdomain
   if (hostWithoutPort.includes("localhost")) {
-    // Development: subdomain.localhost:3000
-    // hostParts = ['subdomain', 'localhost']
-    if (
-      hostParts.length >= 2 &&
-      hostParts[0] !== "localhost" &&
-      hostParts[0] !== "www"
-    ) {
+    if (hostParts.length >= 2 && hostParts[0] !== "localhost" && hostParts[0] !== "www") {
       subdomain = hostParts[0];
     }
   } else {
-    // Production: subdomain.ensmenu.com
-    // hostParts = ['subdomain', 'ensmenu', 'com']
-    if (
-      hostParts.length >= 3 &&
-      hostParts[0] !== "www" &&
-      hostParts[0] !== "dashboard"
-    ) {
+    if (hostParts.length >= 3 && hostParts[0] !== "www" && hostParts[0] !== "dashboard") {
       subdomain = hostParts[0];
     }
   }
 
-  // Block direct access to /menu/[slug] path - must use subdomain
-  // EXCEPT for preview mode (when accessed from iframe in settings)
   const isPreviewMode = url.searchParams.get("preview") === "true";
 
-  if (url.pathname.match(/^\/[a-z]{2}\/menu\/[^/]+/) && !isPreviewMode) {
-    // Extract slug from path
-    const pathMatch = url.pathname.match(/\/menu\/([^/]+)/);
-    if (pathMatch) {
-      const slug = pathMatch[1];
-
-      // ✅ Only redirect if NOT already on the correct subdomain
-      if (!hostname.startsWith(slug + ".")) {
-        // Redirect to subdomain with query parameters preserved
-        const protocol = url.protocol;
-        const port = hostname.includes(":") ? ":" + hostname.split(":")[1] : "";
-        const baseHost = hostWithoutPort.includes("localhost")
-          ? "localhost"
-          : hostWithoutPort.split(".").slice(-2).join(".");
-        const queryString = url.search; // Preserve query parameters
-        return NextResponse.redirect(
-          `${protocol}//${slug}.${baseHost}${port}${queryString}`
-        );
-      }
-    }
+  // -------------------------------
+  // Redirect من /locale/menu/[slug] → slug.domain.com
+  // فقط إذا المستخدم مش على subdomain بالفعل
+  // -------------------------------
+  const menuPathMatch = url.pathname.match(/^\/[a-z]{2}\/menu\/([^/]+)/);
+  if (menuPathMatch && !isPreviewMode && !subdomain) {
+    const slug = menuPathMatch[1];
+    const protocol = url.protocol;
+    const baseHost = hostWithoutPort.includes("localhost")
+      ? "localhost"
+      : hostWithoutPort.split(".").slice(-2).join(".");
+    const port = hostname.includes(":") ? ":" + hostname.split(":")[1] : "";
+    const queryString = url.search;
+    return NextResponse.redirect(`${protocol}//${slug}.${baseHost}${port}${queryString}`);
   }
 
-  // If we have a subdomain, rewrite to the public menu page
+  // -------------------------------
+  // Rewrite للـ subdomain → /locale/menu/subdomain
+  // -------------------------------
   if (subdomain) {
-    // Determine locale from path or default to 'ar'
     let locale = "ar";
-    if (url.pathname.startsWith("/en")) {
-      locale = "en";
-    } else if (url.pathname.startsWith("/ar")) {
-      locale = "ar";
-    }
+    if (url.pathname.startsWith("/en")) locale = "en";
+    else if (url.pathname.startsWith("/ar")) locale = "ar";
 
-    // Rewrite subdomain.domain.com to domain.com/locale/menu/subdomain
-    // If path is just '/' or '/locale', rewrite to menu page
-    // Otherwise, preserve the pathname (for API calls, etc.)
     let pathname = url.pathname;
 
-    if (
-      pathname === "/" ||
-      pathname === `/${locale}` ||
-      pathname === "/ar" ||
-      pathname === "/en"
-    ) {
+    if (pathname === "/" || pathname === `/${locale}`) {
       pathname = `/${locale}/menu/${subdomain}`;
     }
 
-    // Don't rewrite API calls or static files
+    // استثناءات لأي API أو ملفات Next.js أو static
     if (
       pathname.startsWith("/api") ||
       pathname.startsWith("/_next") ||
-      pathname.startsWith("/images")
+      pathname.startsWith("/images") ||
+      pathname.startsWith("/uploads") ||
+      pathname === "/favicon.ico"
     ) {
       return NextResponse.next();
     }
@@ -98,20 +66,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.rewrite(new URL(pathname, request.url));
   }
 
-  // Continue with normal routing
+  // أي حاجة تانية، تمر عادي
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public files
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico|images|uploads).*)",
-  ],
+  matcher: "/((?!api|_next/static|_next/image|favicon.ico|images|uploads).*)",
 };
