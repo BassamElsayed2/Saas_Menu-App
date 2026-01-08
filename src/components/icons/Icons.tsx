@@ -84,10 +84,10 @@ export const Check: React.FC<IconProps> = ({ size = 20, className = "" }) => (
   </i>
 );
 
-export const Sparkles: React.FC<IconProps> = ({ size = 20, className = "" }) => (
+export const Sparkles: React.FC<IconProps> = ({ size = 20, className = "", color }) => (
   <i
     className={`material-symbols-outlined ${className}`}
-    style={{ fontSize: size }}
+    style={{ fontSize: size, color }}
   >
     auto_awesome
   </i>

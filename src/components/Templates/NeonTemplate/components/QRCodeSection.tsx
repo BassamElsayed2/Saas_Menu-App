@@ -59,7 +59,7 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
                 border: `1px solid ${primaryColor}33`
               }}
             >
-              <Sparkles className="w-4 h-4" style={{ color: primaryColor }} />
+              <Sparkles className="w-4 h-4" color={primaryColor} />
               <span className="text-sm font-semibold" style={{ color: primaryColor }}>
                 {locale === "ar" ? "تابعنا" : "Follow Us"}
               </span>
