@@ -26,16 +26,6 @@ export function useCurrentUser() {
       
       const user = (result.data as any)?.user || null;
       
-      // Use backend profileImage if available, otherwise fallback to localStorage
-      if (user && typeof window !== 'undefined') {
-        if (!user.profileImage) {
-          const savedImage = localStorage.getItem(`profileImage_${user.id}`);
-          if (savedImage) {
-            user.profileImage = savedImage;
-          }
-        }
-      }
-      
       return user;
     },
     staleTime: 1 * 60 * 1000, // 1 minute - reduced to ensure fresh data

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useAuth } from "@/contexts/AuthContext";
+import toast from "react-hot-toast";
 
 interface Admin {
   id: number;
@@ -90,14 +91,14 @@ export default function AdminsManagement() {
         setShowAddForm(false);
         setFormData({ email: "", password: "", name: "" });
         fetchAdmins(); // Refresh list
-        alert("تم إنشاء حساب الأدمن بنجاح");
+        toast.success("تم إنشاء حساب الأدمن بنجاح ✨");
       } else {
         const error = await response.json();
-        alert(error.error || "فشل إنشاء الحساب");
+        toast.error(error.error || "فشل إنشاء الحساب");
       }
     } catch (error) {
       console.error("Error creating admin:", error);
-      alert("حدث خطأ أثناء إنشاء الحساب");
+      toast.error("حدث خطأ أثناء إنشاء الحساب");
     }
   };
 

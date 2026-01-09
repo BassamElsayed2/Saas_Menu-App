@@ -17,48 +17,48 @@ function NeonTemplate({
 }: TemplateProps) {
   // Get customizations from menuData
   const customizations = menuData.customizations || {};
-  
+
   // Extract colors for all components
   const primaryColor = customizations.primaryColor || "#14b8a6";
   const secondaryColor = customizations.secondaryColor || "#06b6d4";
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950">
-      <AdSpace 
-        position="left" 
+      <AdSpace
+        position="left"
         menuId={menuData.menu.id}
         ownerPlanType={menuData.menu.ownerPlanType}
         primaryColor={primaryColor}
         secondaryColor={secondaryColor}
       />
-      <AdSpace 
-        position="right" 
+      <AdSpace
+        position="right"
         menuId={menuData.menu.id}
         ownerPlanType={menuData.menu.ownerPlanType}
         primaryColor={primaryColor}
         secondaryColor={secondaryColor}
       />
 
-      <Navbar 
+      <Navbar
         menuName={menuData.menu.name}
         logo={menuData.menu.logo}
         primaryColor={primaryColor}
         secondaryColor={secondaryColor}
       />
       <main>
-        <TemplatesSection 
+        <TemplatesSection
           menuData={menuData}
           selectedCategory={selectedCategory}
           onCategoryChange={onCategoryChange}
           customizations={customizations}
         />
-        <QRCodeSection 
+        <QRCodeSection
           slug={slug}
           primaryColor={primaryColor}
           secondaryColor={secondaryColor}
         />
       </main>
-      <Footer 
+      <Footer
         menuName={menuData.menu.name}
         branches={menuData.branches}
         primaryColor={primaryColor}

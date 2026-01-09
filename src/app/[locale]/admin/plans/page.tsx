@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 interface Plan {
   id: number;
@@ -106,14 +107,14 @@ export default function PlansManagement() {
         setShowEditModal(false);
         setEditingPlan(null);
         fetchPlans(); // Refresh list
-        alert(t("editModal.updateSuccess"));
+        toast.success(t("editModal.updateSuccess"));
       } else {
         const error = await response.json();
-        alert(error.error || t("editModal.updateError"));
+        toast.error(error.error || t("editModal.updateError"));
       }
     } catch (error) {
       console.error("Error updating plan:", error);
-      alert(t("editModal.updateError"));
+      toast.error(t("editModal.updateError"));
     }
   };
 

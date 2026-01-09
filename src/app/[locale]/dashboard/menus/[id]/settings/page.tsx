@@ -24,11 +24,12 @@ export default function MenuSettingsPage({
   const [menuName, setMenuName] = useState("");
   const [menuSlug, setMenuSlug] = useState<string | null>(null);
   const [notFoundError, setNotFoundError] = useState(false);
-  const [activeTab, setActiveTab] = useState<"general" | "appearance">(
-    "general"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "general" | "appearance" | "footer"
+  >("general");
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [uploadingFooterLogo, setUploadingFooterLogo] = useState(false);
 
   // دمج حالات الـ modals في object واحد لتحسين الأداء
   const [modalState, setModalState] = useState({
@@ -52,6 +53,13 @@ export default function MenuSettingsPage({
     theme: "default",
     currency: "SAR",
     isActive: true,
+    footerLogo: "",
+    footerDescriptionEn: "",
+    footerDescriptionAr: "",
+    socialFacebook: "",
+    socialInstagram: "",
+    socialTwitter: "",
+    socialWhatsapp: "",
   });
   const [originalData, setOriginalData] = useState({
     nameEn: "",
@@ -63,6 +71,13 @@ export default function MenuSettingsPage({
     theme: "default",
     currency: "SAR",
     isActive: true,
+    footerLogo: "",
+    footerDescriptionEn: "",
+    footerDescriptionAr: "",
+    socialFacebook: "",
+    socialInstagram: "",
+    socialTwitter: "",
+    socialWhatsapp: "",
   });
 
   const fetchMenuSettings = useCallback(
@@ -106,6 +121,13 @@ export default function MenuSettingsPage({
               theme: menu.theme || "default",
               currency: menu.currency || "SAR",
               isActive: menu.isActive !== undefined ? menu.isActive : true,
+              footerLogo: menu.footerLogo || "",
+              footerDescriptionEn: menu.footerDescriptionEn || "",
+              footerDescriptionAr: menu.footerDescriptionAr || "",
+              socialFacebook: menu.socialFacebook || "",
+              socialInstagram: menu.socialInstagram || "",
+              socialTwitter: menu.socialTwitter || "",
+              socialWhatsapp: menu.socialWhatsapp || "",
             };
             setFormData(initialData);
             setOriginalData(initialData);
@@ -433,6 +455,66 @@ export default function MenuSettingsPage({
           >
             <i className="material-symbols-outlined !text-[24px]">palette</i>
             <span>{t("tabs.appearance")}</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("footer")}
+            className={`flex-1 px-6 py-4 font-bold text-base transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden group ${
+              activeTab === "footer"
+                ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white shadow-2xl scale-105 border-2 border-amber-400"
+                : "bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-700 dark:text-gray-300 hover:from-amber-50 hover:via-orange-50 hover:to-amber-50 dark:hover:from-amber-900/20 dark:hover:via-orange-900/20 dark:hover:to-amber-900/20 hover:shadow-lg border-2 border-transparent hover:border-amber-300 dark:hover:border-amber-700"
+            }`}
+          >
+            {/* Background Animation */}
+            <div
+              className={`absolute inset-0 ${
+                activeTab === "footer" ? "opacity-20" : "opacity-0"
+              } transition-opacity duration-300`}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent animate-shimmer"></div>
+            </div>
+
+            {/* Icon with special effect */}
+            <div
+              className={`relative ${
+                activeTab === "footer" ? "animate-bounce-slow" : ""
+              }`}
+            >
+              <i
+                className={`material-symbols-outlined !text-[28px] ${
+                  activeTab === "footer" ? "drop-shadow-lg" : ""
+                }`}
+              >
+                web
+              </i>
+              {activeTab === "footer" && (
+                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                </span>
+              )}
+            </div>
+
+            {/* Text with gradient on hover */}
+            <span
+              className={`relative ${
+                activeTab === "footer" ? "drop-shadow-md" : ""
+              }`}
+            >
+              {locale === "ar" ? "إعدادات الميديا" : "Media Settings"}
+            </span>
+
+            {/* Sparkle Effect */}
+            {activeTab === "footer" && (
+              <>
+                <span className="absolute top-2 left-4 text-white text-xs opacity-80 animate-pulse">
+                  ✨
+                </span>
+                <span className="absolute bottom-2 right-6 text-white text-xs opacity-60 animate-pulse delay-150">
+                  ⭐
+                </span>
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -1078,6 +1160,377 @@ export default function MenuSettingsPage({
               </div>
             )}
           </div>
+        )}
+
+        {/* Footer Tab Content */}
+        {activeTab === "footer" && (
+          <>
+            {/* Premium Feature Lock Overlay for Free Users */}
+            {!isPremiumUser && (
+              <div className="relative bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 dark:from-amber-900/30 dark:via-orange-900/30 dark:to-yellow-900/30 rounded-2xl p-10 border-4 border-amber-400 dark:border-amber-600 mb-8 overflow-hidden shadow-2xl">
+                {/* Animated Background Elements */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <div className="absolute -top-12 -left-12 w-48 h-48 bg-amber-400/20 rounded-full blur-3xl animate-pulse"></div>
+                  <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-orange-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-300/10 rounded-full blur-3xl"></div>
+                </div>
+
+                <div className="relative flex flex-col items-center text-center ">
+                  {/* Lock Icon with animation */}
+                  <div className="relative mb-6">
+                    <div className="w-24 h-24 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center shadow-2xl animate-bounce-slow">
+                      <i className="material-symbols-outlined text-white !text-[56px] drop-shadow-lg">
+                        lock
+                      </i>
+                    </div>
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 bg-amber-400 rounded-full blur-xl opacity-50 animate-pulse"></div>
+
+                    {/* Stars around lock */}
+                    <span className="absolute -top-2 -left-2 text-3xl animate-pulse">
+                      ✨
+                    </span>
+                    <span className="absolute -top-2 -right-2 text-3xl animate-pulse delay-500">
+                      ⭐
+                    </span>
+                    <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 text-3xl animate-pulse delay-1000">
+                      💫
+                    </span>
+                  </div>
+
+                  {/* Title with gradient */}
+                  <h3 className="text-3xl md:text-4xl font-black mb-4 bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 dark:from-amber-400 dark:via-orange-400 dark:to-amber-500 text-transparent bg-clip-text drop-shadow-sm">
+                    {locale === "ar"
+                      ? "✨ ميزة حصرية للمشتركين Pro ✨"
+                      : "✨ Exclusive Pro Feature ✨"}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-lg md:text-xl text-amber-800 dark:text-amber-200 mb-8 max-w-3xl leading-relaxed font-medium">
+                    {locale === "ar"
+                      ? "قم بالترقية إلى الخطة الاحترافية لتتمكن من تخصيص فوتر قائمتك بإضافة الشعار والوصف وروابط التواصل الاجتماعي الخاصة بك"
+                      : "Upgrade to Pro plan to customize your menu footer with your logo, description, and social media links"}
+                  </p>
+
+                  {/* Features list */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-left max-w-2xl">
+                    {[
+                      {
+                        icon: "image",
+                        text:
+                          locale === "ar"
+                            ? "شعار مخصص للفوتر"
+                            : "Custom Footer Logo",
+                      },
+                      {
+                        icon: "description",
+                        text:
+                          locale === "ar"
+                            ? "وصف متعدد اللغات"
+                            : "Multi-language Description",
+                      },
+                      {
+                        icon: "share",
+                        text:
+                          locale === "ar"
+                            ? "روابط السوشيال ميديا"
+                            : "Social Media Links",
+                      },
+                      {
+                        icon: "verified",
+                        text:
+                          locale === "ar"
+                            ? "مظهر احترافي"
+                            : "Professional Appearance",
+                      },
+                    ].map((feature, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-3 bg-white/60 dark:bg-gray-800/60 rounded-xl px-4 py-3 shadow-md backdrop-blur-sm border border-amber-200 dark:border-amber-700"
+                      >
+                        <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
+                          <i className="material-symbols-outlined text-white !text-[20px]">
+                            {feature.icon}
+                          </i>
+                        </div>
+                        <span className="text-amber-900 dark:text-amber-100 font-semibold">
+                          {feature.text}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Upgrade Button */}
+                  <div className="flex gap-4">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        router.push(
+                          `/${locale}/menus/profile/edit#subscription`
+                        )
+                      }
+                      className="group relative px-10 py-5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white rounded-2xl hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 transition-all duration-300 shadow-2xl hover:shadow-amber-500/50 hover:scale-110 flex items-center gap-3 font-black text-xl overflow-hidden"
+                    >
+                      {/* Button shine effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+
+                      <i className="material-symbols-outlined !text-[32px] relative z-10 animate-bounce-slow">
+                        upgrade
+                      </i>
+                      <span className="relative z-10">
+                        {locale === "ar" ? "ترقية الآن 🚀" : "Upgrade Now 🚀"}
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* Small note */}
+                  <p className="mt-6 text-sm text-amber-700 dark:text-amber-300 flex items-center gap-2">
+                    <i className="material-symbols-outlined !text-[16px]">
+                      info
+                    </i>
+                    {locale === "ar"
+                      ? "ابدأ الآن بخطة Pro بأسعار تنافسية"
+                      : "Start now with Pro plan at competitive prices"}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <div
+              className={`bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700 ${
+                !isPremiumUser ? "opacity-60 pointer-events-none" : ""
+              }`}
+            >
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <i className="material-symbols-outlined text-primary-500">
+                  web
+                </i>
+                {locale === "ar" ? "إعدادات الميديا" : "Media Settings"}
+                <span className="text-xs bg-amber-500 text-white px-2 py-1 rounded-full font-bold ml-2">
+                  PRO
+                </span>
+              </h2>
+
+              <div className="space-y-6">
+                {/* Footer Logo Section */}
+                {/* <div className="space-y-4">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                    <i className="material-symbols-outlined !text-[18px] text-primary-500">
+                      image
+                    </i>
+                    {locale === "ar" ? "شعار الفوتر" : "Footer Logo"}
+                  </label>
+
+                  {logoPreview && (
+                    <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                      <div className="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center border-2 border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <img
+                          src={formData.footerLogo || logoPreview}
+                          alt="Footer Logo"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                          {locale === "ar" ? "الشعار الحالي" : "Current Logo"}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  <input
+                    type="text"
+                    value={formData.footerLogo}
+                    onChange={(e) =>
+                      setFormData({ ...formData, footerLogo: e.target.value })
+                    }
+                    className="form-input"
+                    placeholder={locale === "ar" ? "رابط الشعار" : "Logo URL"}
+                    disabled={!isPremiumUser}
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {locale === "ar"
+                      ? "يمكنك استخدام نفس اللوجو من الأعلى أو رابط مختلف"
+                      : "You can use the same logo from above or a different URL"}
+                  </p>
+                </div> */}
+
+                {/* Footer Description */}
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                    <i className="material-symbols-outlined !text-[18px] text-primary-500">
+                      description
+                    </i>
+                    {locale === "ar"
+                      ? "وصف الفوتر (إنجليزي)"
+                      : "Footer Description (English)"}
+                  </label>
+                  <textarea
+                    value={formData.footerDescriptionEn}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        footerDescriptionEn: e.target.value,
+                      })
+                    }
+                    rows={3}
+                    className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-primary-500 dark:bg-gray-700 dark:text-white resize-none transition-colors"
+                    placeholder="Brief description about your business..."
+                    disabled={!isPremiumUser}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                    <i className="material-symbols-outlined !text-[18px] text-primary-500">
+                      article
+                    </i>
+                    {locale === "ar"
+                      ? "وصف الفوتر (عربي)"
+                      : "Footer Description (Arabic)"}
+                  </label>
+                  <textarea
+                    value={formData.footerDescriptionAr}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        footerDescriptionAr: e.target.value,
+                      })
+                    }
+                    rows={3}
+                    className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-primary-500 dark:bg-gray-700 dark:text-white resize-none transition-colors"
+                    dir="rtl"
+                    placeholder="وصف مختصر عن مشروعك..."
+                    disabled={!isPremiumUser}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Social Media Links */}
+            <div
+              className={`bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700 ${
+                !isPremiumUser ? "opacity-60 pointer-events-none" : ""
+              }`}
+            >
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <i className="material-symbols-outlined text-blue-500">share</i>
+                {locale === "ar"
+                  ? "روابط التواصل الاجتماعي"
+                  : "Social Media Links"}
+              </h2>
+
+              <div className="space-y-4">
+                {/* Facebook */}
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                    <i className="ri-facebook-fill text-[#1877F2] text-xl"></i>
+                    {locale === "ar" ? "فيسبوك" : "Facebook"}
+                  </label>
+                  <input
+                    type="url"
+                    value={formData.socialFacebook}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        socialFacebook: e.target.value,
+                      })
+                    }
+                    className="form-input"
+                    placeholder="https://facebook.com/yourpage"
+                    disabled={!isPremiumUser}
+                  />
+                </div>
+
+                {/* Instagram */}
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                    <i className="ri-instagram-fill text-[#E4405F] text-xl"></i>
+                    {locale === "ar" ? "إنستغرام" : "Instagram"}
+                  </label>
+                  <input
+                    type="url"
+                    value={formData.socialInstagram}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        socialInstagram: e.target.value,
+                      })
+                    }
+                    className="form-input"
+                    placeholder="https://instagram.com/yourprofile"
+                    disabled={!isPremiumUser}
+                  />
+                </div>
+
+                {/* Twitter */}
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                    <i className="ri-twitter-x-fill text-gray-900 dark:text-white text-xl"></i>
+                    {locale === "ar" ? "تويتر (X)" : "Twitter (X)"}
+                  </label>
+                  <input
+                    type="url"
+                    value={formData.socialTwitter}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        socialTwitter: e.target.value,
+                      })
+                    }
+                    className="form-input"
+                    placeholder="https://twitter.com/yourhandle"
+                    disabled={!isPremiumUser}
+                  />
+                </div>
+
+                {/* WhatsApp */}
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                    <i className="ri-whatsapp-fill text-[#25D366] text-xl"></i>
+                    {locale === "ar" ? "واتساب" : "WhatsApp"}
+                  </label>
+                  <input
+                    type="tel"
+                    value={formData.socialWhatsapp}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        socialWhatsapp: e.target.value,
+                      })
+                    }
+                    className="form-input"
+                    placeholder="+966501234567"
+                    dir="ltr"
+                    disabled={!isPremiumUser}
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {locale === "ar"
+                      ? "أدخل رقم الهاتف مع كود الدولة (مثال: +966501234567)"
+                      : "Enter phone number with country code (e.g., +966501234567)"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                <div className="flex items-start gap-3">
+                  <i className="material-symbols-outlined text-blue-500 !text-[24px] mt-0.5">
+                    info
+                  </i>
+                  <div>
+                    <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-1">
+                      {locale === "ar" ? "ملاحظة" : "Note"}
+                    </h4>
+                    <p className="text-sm text-blue-700 dark:text-blue-400">
+                      {locale === "ar"
+                        ? "سيتم عرض هذه الروابط في فوتر قائمتك. يمكنك ترك أي حقل فارغاً إذا لم تكن تستخدم تلك المنصة."
+                        : "These links will be displayed in your menu footer. You can leave any field empty if you don't use that platform."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
         )}
 
         {/* Action Buttons - Hide in Appearance tab */}

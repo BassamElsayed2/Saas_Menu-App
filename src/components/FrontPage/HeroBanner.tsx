@@ -99,7 +99,7 @@ const HeroSection = () => {
                 asChild
                 className="group relative overflow-hidden hover:scale-105 transition-all duration-300 shadow-glow text-white font-semibold"
               >
-                <a href="#contact" className="flex items-center gap-2">
+                <a href="#packages" className="flex items-center gap-2">
                   <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <span className="relative z-10 text-white drop-shadow-sm">
                     {t("cta")}

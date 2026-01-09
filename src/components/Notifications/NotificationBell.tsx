@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import { useTranslations } from "next-intl";
 
 interface Notification {
@@ -27,16 +33,25 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const lastFetchRef = useRef<number>(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const API_URL =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+  const API_URL = useMemo(
+    () => process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+    []
+  );
+
+  // Cache token to avoid repeated localStorage reads
+  const getAuthToken = useCallback(() => {
+    return (
+      localStorage.getItem("auth_token") || localStorage.getItem("accessToken")
+    );
+  }, []);
 
   // Fetch notifications
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     try {
-      const token =
-        localStorage.getItem("auth_token") ||
-        localStorage.getItem("accessToken");
+      const token = getAuthToken();
       if (!token) return;
 
       const response = await fetch(`${API_URL}/notifications`, {
@@ -50,14 +65,19 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
     } catch (error) {
       console.error("Failed to fetch notifications:", error);
     }
-  };
+  }, [API_URL, getAuthToken]);
 
-  // Fetch unread count
-  const fetchUnreadCount = async () => {
+  // Fetch unread count with debounce to avoid excessive requests
+  const fetchUnreadCount = useCallback(async () => {
+    const now = Date.now();
+    // Prevent fetching if last fetch was less than 30 seconds ago
+    if (now - lastFetchRef.current < 30000) {
+      return;
+    }
+    lastFetchRef.current = now;
+
     try {
-      const token =
-        localStorage.getItem("auth_token") ||
-        localStorage.getItem("accessToken");
+      const token = getAuthToken();
       if (!token) return;
 
       const response = await fetch(`${API_URL}/notifications/unread-count`, {
@@ -71,47 +91,46 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
     } catch (error) {
       console.error("Failed to fetch unread count:", error);
     }
-  };
+  }, [API_URL, getAuthToken]);
 
   // Mark notification as read
-  const markAsRead = async (notificationId: number) => {
-    try {
-      const token =
-        localStorage.getItem("auth_token") ||
-        localStorage.getItem("accessToken");
-      if (!token) return;
+  const markAsRead = useCallback(
+    async (notificationId: number) => {
+      try {
+        const token = getAuthToken();
+        if (!token) return;
 
-      const response = await fetch(
-        `${API_URL}/notifications/${notificationId}/read`,
-        {
-          method: "PATCH",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+        const response = await fetch(
+          `${API_URL}/notifications/${notificationId}/read`,
+          {
+            method: "PATCH",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-      if (!response.ok) throw new Error("Failed to mark as read");
+        if (!response.ok) throw new Error("Failed to mark as read");
 
-      // Update local state
-      setNotifications((prev) =>
-        prev.map((n) =>
-          n.id === notificationId
-            ? { ...n, isRead: true, readAt: new Date().toISOString() }
-            : n
-        )
-      );
-      setUnreadCount((prev) => Math.max(0, prev - 1));
-    } catch (error) {
-      console.error("Failed to mark notification as read:", error);
-    }
-  };
+        // Update local state
+        setNotifications((prev) =>
+          prev.map((n) =>
+            n.id === notificationId
+              ? { ...n, isRead: true, readAt: new Date().toISOString() }
+              : n
+          )
+        );
+        setUnreadCount((prev) => Math.max(0, prev - 1));
+      } catch (error) {
+        console.error("Failed to mark notification as read:", error);
+      }
+    },
+    [API_URL, getAuthToken]
+  );
 
   // Mark all as read
-  const markAllAsRead = async () => {
+  const markAllAsRead = useCallback(async () => {
     try {
       setLoading(true);
-      const token =
-        localStorage.getItem("auth_token") ||
-        localStorage.getItem("accessToken");
+      const token = getAuthToken();
       if (!token) return;
 
       const response = await fetch(`${API_URL}/notifications/read-all`, {
@@ -135,58 +154,64 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API_URL, getAuthToken]);
 
   // Delete notification
-  const deleteNotification = async (notificationId: number) => {
-    try {
-      const token =
-        localStorage.getItem("auth_token") ||
-        localStorage.getItem("accessToken");
-      if (!token) return;
+  const deleteNotification = useCallback(
+    async (notificationId: number) => {
+      try {
+        const token = getAuthToken();
+        if (!token) return;
 
-      const response = await fetch(
-        `${API_URL}/notifications/${notificationId}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+        const response = await fetch(
+          `${API_URL}/notifications/${notificationId}`,
+          {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-      if (!response.ok) throw new Error("Failed to delete");
+        if (!response.ok) throw new Error("Failed to delete");
 
-      // Update local state
-      setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
-      const notification = notifications.find((n) => n.id === notificationId);
-      if (notification && !notification.isRead) {
-        setUnreadCount((prev) => Math.max(0, prev - 1));
+        // Update local state
+        setNotifications((prev) => {
+          const notification = prev.find((n) => n.id === notificationId);
+          if (notification && !notification.isRead) {
+            setUnreadCount((count) => Math.max(0, count - 1));
+          }
+          return prev.filter((n) => n.id !== notificationId);
+        });
+      } catch (error) {
+        console.error("Failed to delete notification:", error);
       }
-    } catch (error) {
-      console.error("Failed to delete notification:", error);
-    }
-  };
+    },
+    [API_URL, getAuthToken]
+  );
 
-  // Format time ago
-  const timeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+  // Format time ago - memoized
+  const timeAgo = useCallback(
+    (dateString: string) => {
+      const date = new Date(dateString);
+      const now = new Date();
+      const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-    if (seconds < 60) return locale === "ar" ? "الآن" : "Just now";
-    if (seconds < 3600) {
-      const minutes = Math.floor(seconds / 60);
-      return locale === "ar" ? `منذ ${minutes} دقيقة` : `${minutes}m ago`;
-    }
-    if (seconds < 86400) {
-      const hours = Math.floor(seconds / 3600);
-      return locale === "ar" ? `منذ ${hours} ساعة` : `${hours}h ago`;
-    }
-    const days = Math.floor(seconds / 86400);
-    return locale === "ar" ? `منذ ${days} يوم` : `${days}d ago`;
-  };
+      if (seconds < 60) return locale === "ar" ? "الآن" : "Just now";
+      if (seconds < 3600) {
+        const minutes = Math.floor(seconds / 60);
+        return locale === "ar" ? `منذ ${minutes} دقيقة` : `${minutes}m ago`;
+      }
+      if (seconds < 86400) {
+        const hours = Math.floor(seconds / 3600);
+        return locale === "ar" ? `منذ ${hours} ساعة` : `${hours}h ago`;
+      }
+      const days = Math.floor(seconds / 86400);
+      return locale === "ar" ? `منذ ${days} يوم` : `${days}d ago`;
+    },
+    [locale]
+  );
 
-  // Get notification icon and color based on type
-  const getNotificationStyle = (type: string) => {
+  // Get notification icon and color based on type - memoized
+  const getNotificationStyle = useCallback((type: string) => {
     switch (type) {
       case "subscription_created":
         return { icon: "✅", color: "text-green-600", bg: "bg-green-50" };
@@ -199,7 +224,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
       default:
         return { icon: "🔔", color: "text-blue-600", bg: "bg-blue-50" };
     }
-  };
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -224,15 +249,20 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
   // Fetch on mount and when opened
   useEffect(() => {
     fetchUnreadCount();
-    const interval = setInterval(fetchUnreadCount, 60000); // Check every minute
-    return () => clearInterval(interval);
-  }, []);
+    // Increase interval to 2 minutes instead of 1 minute to reduce server load
+    intervalRef.current = setInterval(fetchUnreadCount, 120000);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [fetchUnreadCount]);
 
   useEffect(() => {
     if (isOpen) {
       fetchNotifications();
     }
-  }, [isOpen]);
+  }, [isOpen, fetchNotifications]);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -257,7 +287,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
           />
         </svg>
         {unreadCount > 0 && (
-          <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+          <span className="absolute top-0 right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
@@ -308,81 +338,17 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
                 </p>
               </div>
             ) : (
-              notifications.map((notification) => {
-                const style = getNotificationStyle(notification.type);
-                const title =
-                  locale === "ar" ? notification.titleAr : notification.title;
-                const message =
-                  locale === "ar"
-                    ? notification.messageAr
-                    : notification.message;
-
-                return (
-                  <div
-                    key={notification.id}
-                    className={`p-4 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${
-                      !notification.isRead
-                        ? "bg-blue-50 dark:bg-blue-900/10"
-                        : ""
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      {/* Icon */}
-                      <div
-                        className={`flex-shrink-0 w-10 h-10 rounded-full ${style.bg} flex items-center justify-center text-xl`}
-                      >
-                        {style.icon}
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2">
-                          <h4
-                            className={`text-sm font-semibold ${style.color} dark:opacity-90`}
-                          >
-                            {title}
-                          </h4>
-                          <button
-                            onClick={() => deleteNotification(notification.id)}
-                            className="flex-shrink-0 text-gray-400 hover:text-red-600 dark:hover:text-red-400"
-                            aria-label="Delete"
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
-                          {message}
-                        </p>
-                        <div className="flex items-center justify-between mt-2">
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
-                            {timeAgo(notification.createdAt)}
-                          </span>
-                          {!notification.isRead && (
-                            <button
-                              onClick={() => markAsRead(notification.id)}
-                              className="text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-                            >
-                              {locale === "ar"
-                                ? "تحديد كمقروء"
-                                : "Mark as read"}
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
+              notifications.map((notification) => (
+                <NotificationItem
+                  key={notification.id}
+                  notification={notification}
+                  locale={locale}
+                  onMarkAsRead={markAsRead}
+                  onDelete={deleteNotification}
+                  getNotificationStyle={getNotificationStyle}
+                  timeAgo={timeAgo}
+                />
+              ))
             )}
           </div>
         </div>
@@ -390,5 +356,96 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ locale }) => {
     </div>
   );
 };
+
+// Memoized notification item component to prevent unnecessary re-renders
+const NotificationItem = React.memo<{
+  notification: Notification;
+  locale: string;
+  onMarkAsRead: (id: number) => void;
+  onDelete: (id: number) => void;
+  getNotificationStyle: (type: string) => {
+    icon: string;
+    color: string;
+    bg: string;
+  };
+  timeAgo: (date: string) => string;
+}>(
+  ({
+    notification,
+    locale,
+    onMarkAsRead,
+    onDelete,
+    getNotificationStyle,
+    timeAgo,
+  }) => {
+    const style = getNotificationStyle(notification.type);
+    const title = locale === "ar" ? notification.titleAr : notification.title;
+    const message =
+      locale === "ar" ? notification.messageAr : notification.message;
+
+    return (
+      <div
+        className={`p-4 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${
+          !notification.isRead ? "bg-blue-50 dark:bg-blue-900/10" : ""
+        }`}
+      >
+        <div className="flex items-start gap-3">
+          {/* Icon */}
+          <div
+            className={`flex-shrink-0 w-10 h-10 rounded-full ${style.bg} flex items-center justify-center text-xl`}
+          >
+            {style.icon}
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start justify-between gap-2">
+              <h4
+                className={`text-sm font-semibold ${style.color} dark:opacity-90`}
+              >
+                {title}
+              </h4>
+              <button
+                onClick={() => onDelete(notification.id)}
+                className="flex-shrink-0 text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+                aria-label="Delete"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
+              {message}
+            </p>
+            <div className="flex items-center justify-between mt-2">
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {timeAgo(notification.createdAt)}
+              </span>
+              {!notification.isRead && (
+                <button
+                  onClick={() => onMarkAsRead(notification.id)}
+                  className="text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                  {locale === "ar" ? "تحديد كمقروء" : "Mark as read"}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+
+NotificationItem.displayName = "NotificationItem";
 
 export default NotificationBell;

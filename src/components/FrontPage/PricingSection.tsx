@@ -281,8 +281,12 @@ const PricingSection = () => {
                   >
                     {isComingSoon ? (
                       <span>{pkg.enterpriseCta}</span>
-                    ) : (
+                    ) : isEnterprise ? (
                       <a href="#contact">{pkg.enterpriseCta}</a>
+                    ) : (
+                      <a href={`/${locale}/authentication/sign-in`}>
+                        {pkg.enterpriseCta}
+                      </a>
                     )}
                   </Button>
                 </div>

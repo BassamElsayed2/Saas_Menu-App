@@ -483,7 +483,13 @@
     "contactSupport": "تواصل مع الدعم",
     "orContinueWith": "أو تابع باستخدام",
     "signInWithGoogle": "تسجيل الدخول بـ Google",
-    "googleNotConfigured": "تسجيل الدخول بـ Google غير مُفعّل حالياً. يرجى إعداد Google OAuth في الباك إند"
+    "googleNotConfigured": "تسجيل الدخول بـ Google غير مُفعّل حالياً. يرجى إعداد Google OAuth في الباك إند",
+    "loginSuccess": "تم تسجيل الدخول بنجاح!",
+    "googleAuthFailed": "فشل في الحصول على بيانات Google",
+    "googleSignInFailed": "فشل تسجيل الدخول بـ Google",
+    "accountCreatedSuccess": "تم إنشاء حسابك بنجاح!",
+    "googleOAuthNotConfigured": "⚠️ تسجيل الدخول بـ Google غير مُفعّل. يرجى إعداد Google OAuth في الباك إند.",
+    "googleOAuthSetupInstructions": "راجع ملف GOOGLE_OAUTH_SETUP.md للمزيد من المعلومات"
   },
   "SignUp": {
     "title": "إنشاء حساب جديد",
@@ -525,7 +531,15 @@
     "passwordUppercaseRule": "حرف كبير (A-Z)",
     "passwordLowercaseRule": "حرف صغير (a-z)",
     "passwordNumberRule": "رقم واحد (0-9)",
-    "passwordSpecialRule": "رمز خاص (@$!%*?&#...)"
+    "passwordSpecialRule": "رمز خاص (@$!%*?&#...)",
+    "orContinueWith": "أو تابع باستخدام",
+    "signUpWithGoogle": "إنشاء حساب بـ Google",
+    "googleAuthFailed": "فشل في الحصول على بيانات Google",
+    "googleSignInFailed": "فشل الإنشاء بـ Google",
+    "accountCreatedSuccess": "تم إنشاء حسابك بنجاح!",
+    "loginSuccess": "تم تسجيل الدخول بنجاح!",
+    "googleOAuthNotConfigured": "⚠️ إنشاء الحساب بـ Google غير مُفعّل. يرجى إعداد Google OAuth في الباك إند.",
+    "googleOAuthSetupInstructions": "راجع ملف GOOGLE_OAUTH_SETUP.md للمزيد من المعلومات"
   },
   "Common": {
     "loading": "جاري التحميل...",
@@ -878,7 +892,8 @@
     },
     "tabs": {
       "general": "عام",
-      "appearance": "الشكل والتصميم"
+      "appearance": "الشكل والتصميم",
+      "footer": "إعدادات الفوتر"
     },
     "tips": {
       "title": "نصيحة",

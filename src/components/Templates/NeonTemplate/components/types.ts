@@ -1,4 +1,8 @@
-import { MenuItem as BaseMenuItem, MenuData, MenuCustomizations } from "../../types";
+import {
+  MenuItem as BaseMenuItem,
+  MenuData,
+  MenuCustomizations,
+} from "../../types";
 
 export interface AdSpaceProps {
   position: "left" | "right";

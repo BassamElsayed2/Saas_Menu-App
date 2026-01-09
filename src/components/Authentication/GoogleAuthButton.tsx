@@ -2,7 +2,7 @@
 
 import React from "react";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,9 @@ interface GoogleAuthButtonProps {
 
 const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ mode }) => {
   const locale = useLocale();
+  const tSignIn = useTranslations("SignIn");
+  const tSignUp = useTranslations("SignUp");
+  const t = mode === "signin" ? tSignIn : tSignUp;
   const router = useRouter();
   const { isGoogleOAuthAvailable, isLoading: isGoogleLoading } =
     useGoogleOAuth();
@@ -21,11 +24,7 @@ const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ mode }) => {
 
   const handleSuccess = async (credentialResponse: CredentialResponse) => {
     if (!credentialResponse.credential) {
-      toast.error(
-        locale === "ar"
-          ? "فشل في الحصول على بيانات Google"
-          : "Failed to get Google credentials"
-      );
+      toast.error(t("googleAuthFailed"));
       return;
     }
 
@@ -60,12 +59,8 @@ const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ mode }) => {
 
       // Show success message
       const successMessage = data.isNew
-        ? locale === "ar"
-          ? "تم إنشاء حسابك بنجاح!"
-          : "Account created successfully!"
-        : locale === "ar"
-        ? "تم تسجيل الدخول بنجاح!"
-        : "Login successful!";
+        ? t("accountCreatedSuccess")
+        : t("loginSuccess");
 
       toast.success(successMessage);
 
@@ -77,23 +72,14 @@ const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ mode }) => {
       window.location.href = `/${locale}/${redirectPath}`;
     } catch (error: any) {
       console.error("Google auth error:", error);
-      toast.error(
-        error.message ||
-          (locale === "ar"
-            ? "فشل تسجيل الدخول بـ Google"
-            : "Failed to sign in with Google")
-      );
+      toast.error(error.message || t("googleSignInFailed"));
     } finally {
       setLoading(false);
     }
   };
 
   const handleError = () => {
-    toast.error(
-      locale === "ar"
-        ? "فشل تسجيل الدخول بـ Google"
-        : "Failed to sign in with Google"
-    );
+    toast.error(t("googleSignInFailed"));
   };
 
   // Don't render if Google OAuth is not available or still loading
@@ -110,14 +96,10 @@ const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ mode }) => {
     return (
       <div className="w-full p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md text-center">
         <p className="text-sm text-yellow-800 dark:text-yellow-200">
-          {locale === "ar"
-            ? "⚠️ تسجيل الدخول بـ Google غير مُفعّل. يرجى إعداد Google OAuth في الباك إند."
-            : "⚠️ Google Sign-In is not configured. Please set up Google OAuth in backend."}
+          {t("googleOAuthNotConfigured")}
         </p>
         <p className="text-xs text-yellow-600 dark:text-yellow-400 mt-1">
-          {locale === "ar"
-            ? "راجع ملف GOOGLE_OAUTH_SETUP.md للمزيد من المعلومات"
-            : "Check GOOGLE_OAUTH_SETUP.md for setup instructions"}
+          {t("googleOAuthSetupInstructions")}
         </p>
       </div>
     );

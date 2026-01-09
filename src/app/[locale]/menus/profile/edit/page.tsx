@@ -69,9 +69,8 @@ export default function EditProfilePage() {
         address: user.address || "",
       });
 
-      // Try to load profile image from localStorage (temporary solution)
-      const savedImage = localStorage.getItem(`profileImage_${user.id}`);
-      setProfileImage(savedImage || user.profileImage || null);
+      // Load profile image from user data
+      setProfileImage(user.profileImage || null);
     }
   }, [user]);
 
@@ -96,36 +95,39 @@ export default function EditProfilePage() {
 
     try {
       // Create FormData for upload
-      const formData = new FormData();
-      formData.append("image", file);
+      const uploadFormData = new FormData();
+      uploadFormData.append("file", file);
+      uploadFormData.append("type", "profile-images");
 
-      // TODO: Replace with actual API call
-      // const response = await api.post("/user/profile/image", formData);
-      // const newImageUrl = response.data.imageUrl;
+      // Upload to backend
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+      const token =
+        localStorage.getItem("accessToken") ||
+        localStorage.getItem("auth_token");
 
-      // Temporary: Create local preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const newImageUrl = reader.result as string;
-        setProfileImage(newImageUrl);
+      const uploadResponse = await fetch(`${apiUrl}/upload`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: uploadFormData,
+      });
 
-        // Save to localStorage (temporary until backend integration)
-        if (user?.id) {
-          localStorage.setItem(`profileImage_${user.id}`, newImageUrl);
-        }
+      if (!uploadResponse.ok) {
+        throw new Error("Failed to upload image");
+      }
 
-        // Update the user in React Query cache
-        queryClient.setQueryData(["currentUser"], (oldData: any) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            profileImage: newImageUrl,
-          };
-        });
+      const uploadData = await uploadResponse.json();
+      const newImageUrl = uploadData.url;
 
-        toast.success(t("imageUploadSuccess"));
-      };
-      reader.readAsDataURL(file);
+      // Update profile with new image URL
+      await updateProfile.mutateAsync({
+        profileImage: newImageUrl,
+      });
+
+      setProfileImage(newImageUrl);
+      toast.success(t("imageUploadSuccess"));
     } catch (error: any) {
       toast.error(error.message || t("imageUploadError"));
     } finally {
@@ -166,27 +168,23 @@ export default function EditProfilePage() {
     await processImageFile(file);
   };
 
-  const handleRemoveImage = () => {
-    setProfileImage(null);
-
-    // Remove from localStorage
-    if (user?.id) {
-      localStorage.removeItem(`profileImage_${user.id}`);
-    }
-
-    // Update the user in React Query cache
-    queryClient.setQueryData(["currentUser"], (oldData: any) => {
-      if (!oldData) return oldData;
-      return {
-        ...oldData,
+  const handleRemoveImage = async () => {
+    try {
+      // Update profile to remove image
+      await updateProfile.mutateAsync({
         profileImage: null,
-      };
-    });
+      });
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      setProfileImage(null);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+
+      toast.success(t("imageRemoveSuccess"));
+    } catch (error: any) {
+      toast.error(error.message || t("Failed to remove image"));
     }
-    toast.success(t("imageRemoveSuccess"));
   };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {

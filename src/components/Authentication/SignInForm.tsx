@@ -34,7 +34,7 @@ const SignInForm: React.FC = () => {
       const result = await login(email, password);
 
       // Login successful
-      toast.success("Login successful!");
+      toast.success(t("loginSuccess"));
 
       // Small delay for better UX
       await new Promise((resolve) => setTimeout(resolve, 300));

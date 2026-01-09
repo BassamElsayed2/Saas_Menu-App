@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useAuth } from "@/contexts/AuthContext";
 import { use } from "react";
+import toast from "react-hot-toast";
 
 interface Menu {
   id: number;
@@ -73,6 +74,7 @@ export default function UserDetailsPage({
     endDate: "",
   });
   const [submitting, setSubmitting] = useState(false);
+  const [showApplyFreeLimitsModal, setShowApplyFreeLimitsModal] = useState(false);
 
   useEffect(() => {
     // Wait for auth to load
@@ -170,32 +172,29 @@ export default function UserDetailsPage({
       );
 
       if (response.ok) {
-        alert("تم تحديث الاشتراك بنجاح!");
+        toast.success("تم تحديث الاشتراك بنجاح ✨");
         setShowSubscriptionModal(false);
         fetchUserDetails(); // Refresh user details
       } else {
         const error = await response.json();
-        alert(error.error || "فشل تحديث الاشتراك");
+        toast.error(error.error || "فشل تحديث الاشتراك");
       }
     } catch (error) {
       console.error("Error updating subscription:", error);
-      alert("حدث خطأ أثناء تحديث الاشتراك");
+      toast.error("حدث خطأ أثناء تحديث الاشتراك");
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleApplyFreeLimits = async () => {
-    if (
-      !confirm(
-        "هل أنت متأكد من تطبيق قيود الخطة المجانية؟\n\nسيتم:\n• تعطيل القوائم الزائدة\n• حذف المنتجات الزائدة\n• حذف جميع الإعلانات\n• حذف جميع الفروع\n\nهذا الإجراء لا يمكن التراجع عنه!"
-      )
-    ) {
-      return;
-    }
+    setShowApplyFreeLimitsModal(true);
+  };
 
+  const confirmApplyFreeLimits = async () => {
     try {
       setSubmitting(true);
+      setShowApplyFreeLimitsModal(false);
       const token =
         localStorage.getItem("auth_token") ||
         localStorage.getItem("accessToken");
@@ -217,22 +216,18 @@ export default function UserDetailsPage({
         const result = await response.json();
         const changes = result.changes;
 
-        let message = "✅ تم تطبيق قيود الخطة المجانية بنجاح!\n\n";
-        message += "التغييرات:\n";
-        message += `• القوائم المعطلة: ${changes.menusDeactivated}\n`;
-        message += `• المنتجات المحذوفة: ${changes.productsDeleted}\n`;
-        message += `• الإعلانات المحذوفة: ${changes.adsDeleted}\n`;
-        message += `• الفروع المحذوفة: ${changes.branchesDeleted}`;
-
-        alert(message);
+        toast.success(
+          `تم تطبيق قيود الخطة المجانية! القوائم المعطلة: ${changes.menusDeactivated}، المنتجات المحذوفة: ${changes.productsDeleted}`,
+          { duration: 5000 }
+        );
         fetchUserDetails(); // Refresh user details
       } else {
         const error = await response.json();
-        alert(error.error || "فشل تطبيق قيود الخطة المجانية");
+        toast.error(error.error || "فشل تطبيق قيود الخطة المجانية");
       }
     } catch (error) {
       console.error("Error applying free limits:", error);
-      alert("حدث خطأ أثناء تطبيق القيود");
+      toast.error("حدث خطأ أثناء تطبيق القيود");
     } finally {
       setSubmitting(false);
     }
@@ -269,14 +264,14 @@ export default function UserDetailsPage({
           );
           setUserDetails({ ...userDetails, menus: updatedMenus });
         }
-        alert(`تم ${!currentStatus ? "تفعيل" : "إيقاف"} القائمة بنجاح`);
+        toast.success(`تم ${!currentStatus ? "تفعيل" : "إيقاف"} القائمة بنجاح ✓`);
       } else {
         const error = await response.json();
-        alert(error.error || "فشل تحديث حالة القائمة");
+        toast.error(error.error || "فشل تحديث حالة القائمة");
       }
     } catch (error) {
       console.error("Error toggling menu status:", error);
-      alert("حدث خطأ أثناء تحديث حالة القائمة");
+      toast.error("حدث خطأ أثناء تحديث حالة القائمة");
     }
   };
 
@@ -599,14 +594,14 @@ export default function UserDetailsPage({
                     </div>
                   </div>
                   <div className="flex gap-2 ml-4">
-                    <button
-                      onClick={() =>
-                        window.open(`/${locale}/menu/${menu.slug}`, "_blank")
-                      }
+                    <a
+                      href={`/${locale}/menu/${menu.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       عرض
-                    </button>
+                    </a>
                     <button
                       onClick={() =>
                         handleToggleMenuStatus(menu.id, menu.isActive)
@@ -759,6 +754,52 @@ export default function UserDetailsPage({
                   إلغاء
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Apply Free Limits Confirmation Modal */}
+      {showApplyFreeLimitsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-[#0c1427] rounded-lg max-w-md w-full p-6">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              تأكيد تطبيق قيود الخطة المجانية
+            </h3>
+            <div className="mb-6">
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
+                هل أنت متأكد من تطبيق قيود الخطة المجانية؟
+              </p>
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                <p className="text-sm font-semibold text-red-900 dark:text-red-200 mb-2">
+                  سيتم تنفيذ الإجراءات التالية:
+                </p>
+                <ul className="text-sm text-red-800 dark:text-red-300 space-y-1">
+                  <li>• تعطيل القوائم الزائدة عن الحد المسموح</li>
+                  <li>• حذف المنتجات الزائدة عن الحد المسموح</li>
+                  <li>• حذف جميع الإعلانات الخاصة بالمستخدم</li>
+                  <li>• حذف جميع الفروع</li>
+                </ul>
+                <p className="text-sm font-bold text-red-900 dark:text-red-200 mt-3">
+                  ⚠️ هذا الإجراء لا يمكن التراجع عنه!
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={confirmApplyFreeLimits}
+                disabled={submitting}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              >
+                نعم، تطبيق القيود
+              </button>
+              <button
+                onClick={() => setShowApplyFreeLimitsModal(false)}
+                disabled={submitting}
+                className="flex-1 px-4 py-2 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                إلغاء
+              </button>
             </div>
           </div>
         </div>

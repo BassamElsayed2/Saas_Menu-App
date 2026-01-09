@@ -478,7 +478,13 @@
     "contactSupport": "Contact Support",
     "orContinueWith": "Or continue with",
     "signInWithGoogle": "Sign in with Google",
-    "googleNotConfigured": "Google Sign-In is not configured yet. Please set up Google OAuth in backend"
+    "googleNotConfigured": "Google Sign-In is not configured yet. Please set up Google OAuth in backend",
+    "loginSuccess": "Login successful!",
+    "googleAuthFailed": "Failed to get Google credentials",
+    "googleSignInFailed": "Failed to sign in with Google",
+    "accountCreatedSuccess": "Account created successfully!",
+    "googleOAuthNotConfigured": "⚠️ Google Sign-In is not configured. Please set up Google OAuth in backend.",
+    "googleOAuthSetupInstructions": "Check GOOGLE_OAUTH_SETUP.md for setup instructions"
   },
   "SignUp": {
     "title": "Create Account",
@@ -520,7 +526,15 @@
     "passwordUppercaseRule": "Uppercase letter (A-Z)",
     "passwordLowercaseRule": "Lowercase letter (a-z)",
     "passwordNumberRule": "One number (0-9)",
-    "passwordSpecialRule": "Special character (@$!%*?&#...)"
+    "passwordSpecialRule": "Special character (@$!%*?&#...)",
+    "orContinueWith": "Or continue with",
+    "signUpWithGoogle": "Sign up with Google",
+    "googleAuthFailed": "Failed to get Google credentials",
+    "googleSignInFailed": "Failed to sign up with Google",
+    "accountCreatedSuccess": "Account created successfully!",
+    "loginSuccess": "Login successful!",
+    "googleOAuthNotConfigured": "⚠️ Google Sign-Up is not configured. Please set up Google OAuth in backend.",
+    "googleOAuthSetupInstructions": "Check GOOGLE_OAUTH_SETUP.md for setup instructions"
   },
   "Common": {
     "loading": "Loading...",
@@ -870,7 +884,8 @@
     },
     "tabs": {
       "general": "General",
-      "appearance": "Appearance"
+      "appearance": "Appearance",
+      "footer": "Footer Settings"
     },
     "tips": {
       "title": "Tip",
