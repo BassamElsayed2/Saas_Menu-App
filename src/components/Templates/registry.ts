@@ -1,6 +1,8 @@
 import { TemplateInfo } from "./types";
 import DefaultTemplate from "./DefaultTemplate";
 import NeonTemplate from "./NeonTemplate";
+import CoffeeTemplate from "./CoffeTemplate";
+import TemplateOne from "./TemplateOne";
 
 /**
  * Template Registry
@@ -27,6 +29,22 @@ export const templates: TemplateInfo[] = [
     component: NeonTemplate,
     description: "Neon menu template with a modern design",
     descriptionAr: "قالب قائمة نيون مع تصميم عصري",
+  },
+  {
+    id: "coffee",
+    name: "Coffee Template",
+    nameAr: "قالب القهوة",
+    component: CoffeeTemplate,
+    description: "Coffee menu template with a modern design",
+    descriptionAr: "قالب قائمة القهوة عصري  ",
+  },
+  {
+    id: "template1",
+    name: "Template One",
+    nameAr: "قالب واحد",
+    component: TemplateOne,
+    description: "Template one with a modern design",
+    descriptionAr: "قالب واحد عصري مع تصميم",
   },
 ];
 

@@ -605,6 +605,7 @@
     "deleteError": "Failed to delete product",
     "loading": "Loading...",
     "saving": "Saving...",
+    "creating": "Creating...",
     "product": "Product",
     "products": "Products",
     "results": "results",
