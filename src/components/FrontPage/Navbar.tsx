@@ -19,7 +19,7 @@ const Navbar = () => {
     { key: "features", path: "/features" },
     { key: "useCases", path: "/use-cases" },
     { key: "pricing", path: "/pricing" },
-    { key: "contact", path: "#contact" }
+    { key: "contact", path: "/footer" },
   ];
 
   const [isDarkMode, setIsDarkMode] = useState(false);

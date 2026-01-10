@@ -13,7 +13,7 @@ const FooterSection = () => {
     { name: navT("features"), path: "#features" },
     { name: navT("team"), path: "#how-it-works" },
     { name: navT("faq"), path: "#packages" },
-    { name: navT("contact"), path: "#contact" },
+    { name: navT("contact"), path: "#footer" },
   ];
 
   const handleNavClick = (
@@ -38,7 +38,10 @@ const FooterSection = () => {
   };
 
   return (
-    <footer className="bg-gray-900 dark:bg-[#0a0e1a] text-gray-300 py-8 relative overflow-hidden border-t border-gray-800 dark:border-gray-900">
+    <footer
+      id="footer"
+      className="bg-gray-900 dark:bg-[#0a0e1a] text-gray-300 py-8 relative overflow-hidden border-t border-gray-800 dark:border-gray-900"
+    >
       {/* Background Animation */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl" />

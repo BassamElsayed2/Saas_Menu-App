@@ -36,13 +36,52 @@ export function useCurrentUser() {
   });
 }
 
+// Custom error class for login errors with additional context
+class LoginError extends Error {
+  errorType?: string;
+  isLocked?: boolean;
+  isSuspended?: boolean;
+  lockedUntil?: string;
+  remainingAttempts?: number;
+  suspendedReason?: string;
+
+  constructor(
+    message: string,
+    context?: {
+      errorType?: string;
+      isLocked?: boolean;
+      isSuspended?: boolean;
+      lockedUntil?: string;
+      remainingAttempts?: number;
+      suspendedReason?: string;
+    }
+  ) {
+    super(message);
+    this.name = 'LoginError';
+    if (context) {
+      Object.assign(this, context);
+    }
+  }
+}
+
 export function useLogin() {
   const queryClient = useQueryClient();
   
   return useMutation({
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
       const result = await api.login(email, password);
-      if (result.error) throw new Error(result.error);
+      if (result.error) {
+        // Create error with additional context
+        const errorContext = (result.data as any) || {};
+        throw new LoginError(result.error, {
+          errorType: errorContext.errorType,
+          isLocked: errorContext.isLocked,
+          isSuspended: errorContext.isSuspended,
+          lockedUntil: errorContext.lockedUntil,
+          remainingAttempts: errorContext.remainingAttempts,
+          suspendedReason: errorContext.suspendedReason,
+        });
+      }
       return result.data;
     },
     onSuccess: async (data) => {
@@ -69,8 +108,86 @@ export function useLogin() {
       
       // Toast will be shown by the component
     },
-    onError: (error: Error) => {
-      toast.error(error.message || 'Login failed');
+    onError: (error: Error | LoginError) => {
+      let errorMessage = error.message || 'فشل تسجيل الدخول';
+      let duration = 5000;
+      
+      // Handle different error types with detailed messages
+      if (error instanceof LoginError) {
+        // Account is locked
+        if (error.isLocked) {
+          const lockedUntil = error.lockedUntil 
+            ? new Date(error.lockedUntil) 
+            : null;
+          
+          if (lockedUntil) {
+            const minutesRemaining = Math.ceil(
+              (lockedUntil.getTime() - Date.now()) / 1000 / 60
+            );
+            errorMessage = `تم قفل حسابك لمدة ${minutesRemaining} دقيقة بسبب محاولات تسجيل دخول فاشلة متعددة. يرجى المحاولة مرة أخرى لاحقاً.`;
+          } else {
+            errorMessage = 'تم قفل حسابك مؤقتاً بسبب محاولات تسجيل دخول فاشلة متعددة. يرجى المحاولة مرة أخرى لاحقاً.';
+          }
+          duration = 8000; // Show longer for locked accounts
+        }
+        // Account is suspended
+        else if (error.isSuspended) {
+          errorMessage = error.suspendedReason 
+            ? `تم إيقاف هذا الحساب: ${error.suspendedReason}. برجاء التواصل مع الدعم.`
+            : 'تم إيقاف هذا الحساب. برجاء التواصل مع الدعم.';
+          duration = 8000;
+        }
+        // Invalid password with remaining attempts
+        else if (error.errorType === 'INVALID_PASSWORD' && error.remainingAttempts !== undefined) {
+          if (error.remainingAttempts > 0) {
+            errorMessage = `كلمة المرور غير صحيحة. لديك ${error.remainingAttempts} محاولة متبقية قبل قفل الحساب.`;
+          } else {
+            errorMessage = 'كلمة المرور غير صحيحة. تم استنفاد جميع المحاولات.';
+          }
+          duration = 6000;
+        }
+        // Email not found
+        else if (error.errorType === 'EMAIL_NOT_FOUND') {
+          errorMessage = 'البريد الإلكتروني غير مسجل في النظام. يرجى التحقق من البريد الإلكتروني والمحاولة مرة أخرى.';
+        }
+        // Generic error messages
+        else if (error.message?.includes('البريد الإلكتروني غير مسجل')) {
+          errorMessage = 'البريد الإلكتروني غير مسجل في النظام. يرجى التحقق من البريد الإلكتروني والمحاولة مرة أخرى.';
+        } else if (error.message?.includes('كلمة المرور غير صحيحة')) {
+          errorMessage = 'كلمة المرور غير صحيحة. يرجى التحقق من كلمة المرور والمحاولة مرة أخرى.';
+        } else if (error.message?.includes('Invalid email') || error.message?.includes('Invalid password')) {
+          errorMessage = 'البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى التحقق والمحاولة مرة أخرى.';
+        } else if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
+          errorMessage = 'البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى التحقق والمحاولة مرة أخرى.';
+        }
+      } else {
+        // Fallback for non-LoginError errors
+        if (error.message?.includes('البريد الإلكتروني غير مسجل')) {
+          errorMessage = 'البريد الإلكتروني غير مسجل في النظام. يرجى التحقق من البريد الإلكتروني والمحاولة مرة أخرى.';
+        } else if (error.message?.includes('كلمة المرور غير صحيحة')) {
+          errorMessage = 'كلمة المرور غير صحيحة. يرجى التحقق من كلمة المرور والمحاولة مرة أخرى.';
+        } else if (error.message?.includes('Invalid email') || error.message?.includes('Invalid password')) {
+          errorMessage = 'البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى التحقق والمحاولة مرة أخرى.';
+        } else if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
+          errorMessage = 'البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى التحقق والمحاولة مرة أخرى.';
+        } else if (error.message?.includes('Failed to fetch') || error.message?.includes('Network error')) {
+          errorMessage = 'فشل الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.';
+          duration = 6000;
+        }
+      }
+      
+      toast.error(errorMessage, {
+        duration,
+        style: {
+          background: '#ef4444',
+          color: '#fff',
+          fontSize: '16px',
+          padding: '16px',
+          borderRadius: '8px',
+          maxWidth: '500px',
+        },
+        icon: '⚠️',
+      });
     },
   });
 }

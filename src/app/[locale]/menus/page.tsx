@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useMenus, useCreateMenu, useDeleteMenu } from "@/hooks/useApi";
 import api from "@/lib/api";
@@ -36,22 +36,22 @@ export default function MenusPage() {
   const deleteMenu = useDeleteMenu();
 
   // Fetch subscription info
-  useEffect(() => {
-    const fetchSubscription = async () => {
-      try {
-        const result = await api.get("/user/subscription");
-        if (result.data) {
-          setSubscription(result.data.subscription);
-        }
-      } catch (error) {
-        console.error("Error fetching subscription:", error);
+  const fetchSubscription = useCallback(async () => {
+    try {
+      const result = await api.get("/user/subscription");
+      if (result.data) {
+        setSubscription(result.data.subscription);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching subscription:", error);
+    }
+  }, []);
 
+  useEffect(() => {
     if (user) {
       fetchSubscription();
     }
-  }, [user]);
+  }, [user, fetchSubscription]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -113,9 +113,9 @@ export default function MenusPage() {
             </div>
             <button
               onClick={() => {
-                // Check if user has reached the limit
+                // Check if user has reached the limit (only count active menus)
                 const maxMenus = subscription?.maxMenus || 1; // Default to 1 for free plan
-                const currentMenuCount = menus.length;
+                const currentMenuCount = menus.filter((menu: Menu) => menu.isActive).length;
 
                 if (currentMenuCount >= maxMenus) {
                   setShowUpgradeModal(true);
@@ -286,14 +286,17 @@ export default function MenusPage() {
 
       {/* Create Menu Modal */}
       {showCreateModal && (
-        <CreateMenuModal onClose={() => setShowCreateModal(false)} />
+        <CreateMenuModal 
+          onClose={() => setShowCreateModal(false)} 
+          onMenuCreated={fetchSubscription}
+        />
       )}
 
       {/* Upgrade Plan Modal */}
       {showUpgradeModal && (
         <UpgradePlanModal
           onClose={() => setShowUpgradeModal(false)}
-          currentMenuCount={menus.length}
+          currentMenuCount={menus.filter((menu: Menu) => menu.isActive).length}
           maxMenus={subscription?.maxMenus || 1}
           planName={subscription?.plan || "Free"}
         />
@@ -463,9 +466,10 @@ function DeleteConfirmModal({
 
 interface CreateMenuModalProps {
   onClose: () => void;
+  onMenuCreated?: () => void;
 }
 
-function CreateMenuModal({ onClose }: CreateMenuModalProps) {
+function CreateMenuModal({ onClose, onMenuCreated }: CreateMenuModalProps) {
   const t = useTranslations("Menus.createModal");
   const locale = useLocale();
   const router = useRouter();
@@ -580,6 +584,12 @@ function CreateMenuModal({ onClose }: CreateMenuModalProps) {
       };
 
       const result = await createMenu.mutateAsync(menuData);
+      
+      // Refresh subscription data after creating menu
+      if (onMenuCreated) {
+        onMenuCreated();
+      }
+      
       onClose();
 
       // Redirect to dashboard after creation

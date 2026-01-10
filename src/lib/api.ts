@@ -197,7 +197,16 @@ class ApiClient {
       if (!response.ok) {
         return {
           error: data.error || "Something went wrong",
-          data: undefined,
+          data: {
+            ...data,
+            // Include additional error context
+            errorType: data.errorType,
+            isLocked: data.isLocked,
+            isSuspended: data.isSuspended,
+            lockedUntil: data.lockedUntil,
+            remainingAttempts: data.remainingAttempts,
+            suspendedReason: data.suspendedReason,
+          },
         };
       }
 
@@ -290,6 +299,13 @@ class ApiClient {
       refreshToken: string;
       user: any;
       message: string;
+      error?: string;
+      errorType?: string;
+      isLocked?: boolean;
+      isSuspended?: boolean;
+      lockedUntil?: string;
+      remainingAttempts?: number;
+      suspendedReason?: string;
     }>(
       "/auth/login",
       {
@@ -305,6 +321,23 @@ class ApiClient {
       // Tokens saved successfully (removed console.log for security)
     } else {
       console.error("❌ Authentication error: No tokens received");
+    }
+
+    // If there's an error, include additional error information
+    if (result.error) {
+      // Create an error object with additional context
+      const errorWithContext = {
+        message: result.error,
+        errorType: result.data?.errorType,
+        isLocked: result.data?.isLocked,
+        isSuspended: result.data?.isSuspended,
+        lockedUntil: result.data?.lockedUntil,
+        remainingAttempts: result.data?.remainingAttempts,
+        suspendedReason: result.data?.suspendedReason,
+      };
+      
+      // Attach error context to result
+      (result as any).errorContext = errorWithContext;
     }
 
     return result;
