@@ -496,8 +496,7 @@
     "googleAuthFailed": "فشل في الحصول على بيانات Google",
     "googleSignInFailed": "فشل تسجيل الدخول بـ Google",
     "accountCreatedSuccess": "تم إنشاء حسابك بنجاح!",
-    "googleOAuthNotConfigured": "⚠️ تسجيل الدخول بـ Google غير مُفعّل. يرجى إعداد Google OAuth في الباك إند.",
-    "googleOAuthSetupInstructions": "راجع ملف GOOGLE_OAUTH_SETUP.md للمزيد من المعلومات"
+    "googleOAuthNotConfigured": "⚠️ تسجيل الدخول بـ Google غير مُفعّل."
   },
   "SignUp": {
     "title": "إنشاء حساب جديد",
@@ -546,8 +545,7 @@
     "googleSignInFailed": "فشل الإنشاء بـ Google",
     "accountCreatedSuccess": "تم إنشاء حسابك بنجاح!",
     "loginSuccess": "تم تسجيل الدخول بنجاح!",
-    "googleOAuthNotConfigured": "⚠️ إنشاء الحساب بـ Google غير مُفعّل. يرجى إعداد Google OAuth في الباك إند.",
-    "googleOAuthSetupInstructions": "راجع ملف GOOGLE_OAUTH_SETUP.md للمزيد من المعلومات"
+    "googleOAuthNotConfigured": "⚠️ إنشاء الحساب بـ Google غير مُفعّل."
   },
   "Common": {
     "loading": "جاري التحميل...",

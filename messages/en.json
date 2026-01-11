@@ -8,22 +8,22 @@
     "login": "Already have an account? Login",
     "startNow": "Start Now"
   },
-"navbar": {
-  "home": "Home",
-  "features": "Features",
-  "templates": "Menu",
-  "useCases": "Use Cases",
-  "pricing": "Pricing",
-  "team": "Our Team",
-  "faq": "FAQ's",
-  "contact": "Contact",
-  "login": "Login",
-  "language": "العربية",
-  "theme": {
-    "light": "Light Mode",
-    "dark": "Dark Mode"
-  }
-},
+  "navbar": {
+    "home": "Home",
+    "features": "Features",
+    "templates": "Menu",
+    "useCases": "Use Cases",
+    "pricing": "Pricing",
+    "team": "Our Team",
+    "faq": "FAQ's",
+    "contact": "Contact",
+    "login": "Login",
+    "language": "العربية",
+    "theme": {
+      "light": "Light Mode",
+      "dark": "Dark Mode"
+    }
+  },
   "heroSection": {
     "title1": "Digital Menu for Ordering and Payment",
     "title2": " via QR Code",
@@ -34,7 +34,16 @@
   },
   "trustedBy": {
     "title": "Trusted by Thousands of Restaurants and Hospitality Centers",
-    "partners": ["Ritz Carlton Hotel", "Nahib Restaurant", "Lonj Restaurant", "Sultan Restaurant", "Coffee House", "Shark Restaurant", "Plus Coffee", "King Hotel"]
+    "partners": [
+      "Ritz Carlton Hotel",
+      "Nahib Restaurant",
+      "Lonj Restaurant",
+      "Sultan Restaurant",
+      "Coffee House",
+      "Shark Restaurant",
+      "Plus Coffee",
+      "King Hotel"
+    ]
   },
   "HomePage": {
     "title": "Hello world!"
@@ -52,153 +61,152 @@
       "getStarted": "Get Started Free",
       "viewPricing": "View Pricing"
     },
-"features": {
-    "badge": "Our Products",
-    "title": "Features of the Menu",
-    "titleHighlight": "ENS",
-    "titleEnd": "Digital",
-    "description": "ENS provides you with the best digital menu solutions for restaurants and cafes through QR codes to receive orders and payments from your customers for a seamless and convenient experience, contributing to increasing customer satisfaction and boosting sales.",
-    "cta": "Try the Digital Menu Now",
-    "items": [
-      {
-        "title": "Customize the Visual Identity",
-        "description": "Design your digital identity by changing colors, logos, and covers, and link the digital menu to your social media accounts."
-      },
-      {
-        "title": "Advanced Reports and Analytics",
-        "description": "Get precise data and reports to understand your business performance, identify opportunities for improvement and development."
-      },
-      {
-        "title": "Payment Processing",
-        "description": "Receive orders and payments easily by linking the digital menu to the cashier system for a seamless and convenient experience."
-      },
-      {
-        "title": "Easy Dashboard",
-        "description": "Manage orders, branches, and instant updates through a simple and flexible interface, with the ability to add users."
-      },
-      {
-        "title": "Independent Control of Each Branch",
-        "description": "Control each branch individually, add and edit any products, and track sales easily."
-      },
-      {
-        "title": "Increase Profits",
-        "description": "Reduce your reliance on costly delivery applications and receive orders through your own platform without commissions."
-      },
-      {
-        "title": "Technical Support 24/7",
-        "description": "We provide continuous technical support to ensure you get help immediately whenever you need it."
-      },
-      {
-        "title": "Multi-Language Support",
-        "description": "Translate the menu into multiple languages to serve all customers from different countries."
-      }
-    ]
-  },
-  "whyUs": {
-    "title": "Why Choose ENS?",
-    "badge": "Why Choose us?",
-    "items": [
-      "No commissions on orders",
-      "Suitable for all restaurants and cafes",
-      "Simple and easy to use design",
-      "Instant updates without additional costs"
-    ]
-  },
-  "howItWorks": {
-    "badge": "How It Works",
-    "title": "Steps to Create a Digital Menu with",
-    "titleHighlight": "ENS",
-    "description": "Create a digital menu with easy and quick steps that reflects your restaurant's identity and simplifies the ordering and payment process for your customers.",
-    "steps": [
-      {
-        "number": "01",
-        "title": "Choose the Package",
-        "description": "Create an account and choose the package that suits your needs from our diverse solutions."
-      },
-      {
-        "number": "02",
-        "title": "Add the Items",
-        "description": "Send your menu to our team, and we will design an interactive digital menu. You can add or delete any item at any time."
-      },
-      {
-        "number": "03",
-        "title": "Share and Receive Orders",
-        "description": "Share the menu with your customers and receive orders and payments easily and quickly."
-      }
-    ]
-  },
-  "pricing": {
-    "title": "Choose the Package",
-    "titleHighlight": "The Most Suitable",
-    "description": "Choose the package that suits your restaurant from our smart solutions.",
-    "yearly": "Yearly",
-    "egp": "EGP",
-    "contactUs": "Contact Us",
-    "mostPopular": "Most Popular",
-    "save40": "Save 40%",
-    "loading": "Loading...",
-    "packages": [
-      {
-        "name": "Basic",
-        "originalPrice": "1700",
-        "price": "1080",
-        "features": [
-          "Dynamic Digital Menu",
-          "QR Code and Website Design",
-          "Integrated Dashboard with Reporting Interface",
-          "Translation of the Menu into Multiple Languages",
-          "Technical Support 24/7"
-        ],
-        "enterpriseCta": "Choose the Package"
-      },
-      {
-        "name": "Professional",
-        "originalPrice": "2500",
-        "price": "1370",
-        "features": [
-          "All Features of the Basic Package",
-          "Order from the Table from the QR Code",
-          "Delivery, Pickup and Car Orders",
-          "Payment Processing",
-          "Customer Management",
-          "Analytics and Reporting",
-          "Custom Domain",
-          "Priority Support"
-        ],
-        "enterpriseCta": "Choose the Package"
-      },
-      {
-        "name": "Enterprise",
-        "originalPrice": "",
-        "price": "",
+    "features": {
+      "badge": "Our Products",
+      "title": "Features of the Menu",
+      "titleHighlight": "ENS",
+      "titleEnd": "Digital",
+      "description": "ENS provides you with the best digital menu solutions for restaurants and cafes through QR codes to receive orders and payments from your customers for a seamless and convenient experience, contributing to increasing customer satisfaction and boosting sales.",
+      "cta": "Try the Digital Menu Now",
+      "items": [
+        {
+          "title": "Customize the Visual Identity",
+          "description": "Design your digital identity by changing colors, logos, and covers, and link the digital menu to your social media accounts."
+        },
+        {
+          "title": "Advanced Reports and Analytics",
+          "description": "Get precise data and reports to understand your business performance, identify opportunities for improvement and development."
+        },
+        {
+          "title": "Payment Processing",
+          "description": "Receive orders and payments easily by linking the digital menu to the cashier system for a seamless and convenient experience."
+        },
+        {
+          "title": "Easy Dashboard",
+          "description": "Manage orders, branches, and instant updates through a simple and flexible interface, with the ability to add users."
+        },
+        {
+          "title": "Independent Control of Each Branch",
+          "description": "Control each branch individually, add and edit any products, and track sales easily."
+        },
+        {
+          "title": "Increase Profits",
+          "description": "Reduce your reliance on costly delivery applications and receive orders through your own platform without commissions."
+        },
+        {
+          "title": "Technical Support 24/7",
+          "description": "We provide continuous technical support to ensure you get help immediately whenever you need it."
+        },
+        {
+          "title": "Multi-Language Support",
+          "description": "Translate the menu into multiple languages to serve all customers from different countries."
+        }
+      ]
+    },
+    "whyUs": {
+      "title": "Why Choose ENS?",
+      "badge": "Why Choose us?",
+      "items": [
+        "No commissions on orders",
+        "Suitable for all restaurants and cafes",
+        "Simple and easy to use design",
+        "Instant updates without additional costs"
+      ]
+    },
+    "howItWorks": {
+      "badge": "How It Works",
+      "title": "Steps to Create a Digital Menu with",
+      "titleHighlight": "ENS",
+      "description": "Create a digital menu with easy and quick steps that reflects your restaurant's identity and simplifies the ordering and payment process for your customers.",
+      "steps": [
+        {
+          "number": "01",
+          "title": "Choose the Package",
+          "description": "Create an account and choose the package that suits your needs from our diverse solutions."
+        },
+        {
+          "number": "02",
+          "title": "Add the Items",
+          "description": "Send your menu to our team, and we will design an interactive digital menu. You can add or delete any item at any time."
+        },
+        {
+          "number": "03",
+          "title": "Share and Receive Orders",
+          "description": "Share the menu with your customers and receive orders and payments easily and quickly."
+        }
+      ]
+    },
+    "pricing": {
+      "title": "Choose the Package",
+      "titleHighlight": "The Most Suitable",
+      "description": "Choose the package that suits your restaurant from our smart solutions.",
+      "yearly": "Yearly",
+      "egp": "EGP",
+      "contactUs": "Contact Us",
+      "mostPopular": "Most Popular",
+      "save40": "Save 40%",
+      "loading": "Loading...",
+      "packages": [
+        {
+          "name": "Basic",
+          "originalPrice": "1700",
+          "price": "1080",
+          "features": [
+            "Dynamic Digital Menu",
+            "QR Code and Website Design",
+            "Integrated Dashboard with Reporting Interface",
+            "Translation of the Menu into Multiple Languages",
+            "Technical Support 24/7"
+          ],
+          "enterpriseCta": "Choose the Package"
+        },
+        {
+          "name": "Professional",
+          "originalPrice": "2500",
+          "price": "1370",
+          "features": [
+            "All Features of the Basic Package",
+            "Order from the Table from the QR Code",
+            "Delivery, Pickup and Car Orders",
+            "Payment Processing",
+            "Customer Management",
+            "Analytics and Reporting",
+            "Custom Domain",
+            "Priority Support"
+          ],
+          "enterpriseCta": "Choose the Package"
+        },
+        {
+          "name": "Enterprise",
+          "originalPrice": "",
+          "price": "",
 
-        "features": [
-          "Infinite Branches",
-          "Loyalty Program",
-          "Custom Domain",
-          "Technical Support 24/7",
-          "Private Account Manager"
-        ],
-        "enterpriseCta": "Request a Quote"
-      }
-    ]
-  },
-  "contact": {
-    "title1": "Ready for a Quality Shift in",
-    "title2": "Customer Experience?",
-    "description": "Book your consultation with ENS now and create a digital menu that inspires your customers and boosts your sales.",
-    "whatsapp": "Contact Us via WhatsApp",
-    "restaurantName": "Restaurant Name",
-    "restaurantPlaceholder": "Enter the restaurant name or establishment",
-    "phone": "Phone Number",
-    "phonePlaceholder": "01xxxxxxxxx",
-    "submit": "Start Now",
-    "successTitle": "Thank you!",
-    "successDescription": "Your information has been received successfully. We will contact you soon.", 
-    "note": "We will contact you soon and we will understand your restaurant's needs"
-  },
+          "features": [
+            "Infinite Branches",
+            "Loyalty Program",
+            "Custom Domain",
+            "Technical Support 24/7",
+            "Private Account Manager"
+          ],
+          "enterpriseCta": "Request a Quote"
+        }
+      ]
+    },
+    "contact": {
+      "title1": "Ready for a Quality Shift in",
+      "title2": "Customer Experience?",
+      "description": "Book your consultation with ENS now and create a digital menu that inspires your customers and boosts your sales.",
+      "whatsapp": "Contact Us via WhatsApp",
+      "restaurantName": "Restaurant Name",
+      "restaurantPlaceholder": "Enter the restaurant name or establishment",
+      "phone": "Phone Number",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "submit": "Start Now",
+      "successTitle": "Thank you!",
+      "successDescription": "Your information has been received successfully. We will contact you soon.",
+      "note": "We will contact you soon and we will understand your restaurant's needs"
+    },
 
-  
     "cta": {
       "title": "Are you ready to get started?",
       "description": "Create your first menu in minutes. No credit card required.",
@@ -491,7 +499,7 @@
     "googleAuthFailed": "Failed to get Google credentials",
     "googleSignInFailed": "Failed to sign in with Google",
     "accountCreatedSuccess": "Account created successfully!",
-    "googleOAuthNotConfigured": "⚠️ Google Sign-In is not configured. Please set up Google OAuth in backend.",
+    "googleOAuthNotConfigured": "⚠️ Google Sign-In is not configured.",
     "googleOAuthSetupInstructions": "Check GOOGLE_OAUTH_SETUP.md for setup instructions"
   },
   "SignUp": {
@@ -541,7 +549,7 @@
     "googleSignInFailed": "Failed to sign up with Google",
     "accountCreatedSuccess": "Account created successfully!",
     "loginSuccess": "Login successful!",
-    "googleOAuthNotConfigured": "⚠️ Google Sign-Up is not configured. Please set up Google OAuth in backend.",
+    "googleOAuthNotConfigured": "⚠️ Google Sign-Up is not configured. ",
     "googleOAuthSetupInstructions": "Check GOOGLE_OAUTH_SETUP.md for setup instructions"
   },
   "Common": {

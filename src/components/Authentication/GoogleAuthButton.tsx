@@ -98,9 +98,6 @@ const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ mode }) => {
         <p className="text-sm text-yellow-800 dark:text-yellow-200">
           {t("googleOAuthNotConfigured")}
         </p>
-        <p className="text-xs text-yellow-600 dark:text-yellow-400 mt-1">
-          {t("googleOAuthSetupInstructions")}
-        </p>
       </div>
     );
   }
