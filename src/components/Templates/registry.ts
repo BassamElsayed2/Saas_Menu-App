@@ -30,14 +30,14 @@ export const templates: TemplateInfo[] = [
     description: "Neon menu template with a modern design",
     descriptionAr: "قالب قائمة نيون مع تصميم عصري",
   },
-  // {
-  //   id: "coffee",
-  //   name: "Coffee Template",
-  //   nameAr: "قالب القهوة",
-  //   component: CoffeeTemplate,
-  //   description: "Coffee menu template with a modern design",
-  //   descriptionAr: "قالب قائمة القهوة عصري  ",
-  // },
+  {
+    id: "coffee",
+    name: "Coffee Template",
+    nameAr: "قالب القهوة",
+    component: CoffeeTemplate,
+    description: "Coffee menu template with a modern design",
+    descriptionAr: "قالب قائمة القهوة عصري  ",
+  },
   // {
   //   id: "template1",
   //   name: "Template One",
