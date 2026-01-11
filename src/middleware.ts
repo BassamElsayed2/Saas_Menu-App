@@ -6,15 +6,18 @@ export function middleware(request: NextRequest) {
   const host = request.headers.get("host") || "";
   const hostname = host.split(":")[0];
   const url = request.nextUrl;
+  const pathname = url.pathname;
 
+  // 1️⃣ تجاهل الملفات الداخلية
   if (
-    url.pathname.startsWith("/api") ||
-    url.pathname.startsWith("/_next") ||
-    url.pathname.startsWith("/favicon.ico")
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/favicon.ico")
   ) {
     return NextResponse.next();
   }
 
+  // 2️⃣ Root domain (ensmenu.com)
   if (
     hostname === ROOT_DOMAIN ||
     hostname === `www.${ROOT_DOMAIN}` ||
@@ -23,13 +26,25 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // 3️⃣ Subdomain logic
   if (hostname.endsWith(`.${ROOT_DOMAIN}`)) {
     const tenant = hostname.replace(`.${ROOT_DOMAIN}`, "");
-    const locale = url.pathname.startsWith("/en") ? "en" : "ar";
-    const path = url.pathname === "/" ? "" : url.pathname;
+    const locale = pathname.startsWith("/en") ? "en" : "ar";
 
+    // لو الريكويست داخل menu أو menus بالفعل → سيبه
+    if (
+      pathname.startsWith(`/${locale}/menu/`) ||
+      pathname.startsWith(`/${locale}/menus/`)
+    ) {
+      return NextResponse.next();
+    }
+
+    // إزالة locale لو موجود
+    const cleanPath = pathname.replace(/^\/(ar|en)/, "");
+
+    // Rewrite ذكي → جرّب menus الأول
     return NextResponse.rewrite(
-      new URL(`/${locale}/menu/${tenant}${path}`, request.url)
+      new URL(`/${locale}/menus/${tenant}${cleanPath}`, request.url)
     );
   }
 
