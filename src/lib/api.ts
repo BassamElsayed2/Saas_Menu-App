@@ -335,7 +335,7 @@ class ApiClient {
         remainingAttempts: result.data?.remainingAttempts,
         suspendedReason: result.data?.suspendedReason,
       };
-      
+
       // Attach error context to result
       (result as any).errorContext = errorWithContext;
     }
