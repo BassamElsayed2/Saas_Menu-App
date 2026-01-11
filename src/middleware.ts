@@ -3,11 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 const ROOT_DOMAIN = "ensmenu.com";
 
 export function middleware(request: NextRequest) {
-  const host = request.headers.get("host") || "";
-  const hostname = host.split(":")[0];
+  const hostname = request.headers.get("host")?.split(":")[0] || "";
   const url = request.nextUrl;
 
-  // 1️⃣ Ignore internal routes
+  // Ignore internal routes
   if (
     url.pathname.startsWith("/api") ||
     url.pathname.startsWith("/_next") ||
@@ -18,31 +17,29 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2️⃣ Localhost
+  // Localhost
   if (hostname.includes("localhost")) {
     return NextResponse.next();
   }
 
-  // 3️⃣ Root domain (ensmenu.com)
+  // Root domain
   if (hostname === ROOT_DOMAIN || hostname === `www.${ROOT_DOMAIN}`) {
     return NextResponse.next();
   }
 
-  // 4️⃣ Subdomains (momoza.ensmenu.com)
+  // Subdomains: test3.ensmenu.com
   if (hostname.endsWith(`.${ROOT_DOMAIN}`)) {
     const tenant = hostname.replace(`.${ROOT_DOMAIN}`, "");
-
-    // Locale detection (simple & stable)
     const locale = url.pathname.startsWith("/en") ? "en" : "ar";
 
-    // Prevent infinite rewrite
-    if (url.pathname.startsWith(`/${locale}/menu/${tenant}`)) {
+    // Prevent infinite loop
+    if (url.pathname.startsWith(`/${locale}/menus/${tenant}`)) {
       return NextResponse.next();
     }
 
-    // Rewrite EVERYTHING to tenant route
+    // ✅ CORRECT ROUTE
     return NextResponse.rewrite(
-      new URL(`/${locale}/menu/${tenant}${url.pathname}`, request.url)
+      new URL(`/${locale}/menus/${tenant}`, request.url)
     );
   }
 
